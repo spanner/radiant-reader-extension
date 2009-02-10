@@ -1,0 +1,5 @@
+= Reader
+
+Readers are signed-in users to whom you can grant privileges. They don't see the admin interface: this is a way to control access to pages and functionality on the public site.
+
+With this extension you get the basic machinery of registration, login and user-management (by the admin and by the users themselves). It's not much use by itself but it provides a common core for more useful added functionality: see also spanner's Forum extension for discussions and page comments, Groups extension for fine-grained page-access control and Downloads extension for secure (nginx-only) access-controlled file downloads.
