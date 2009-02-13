@@ -85,19 +85,19 @@ describe Reader do
   
   it 'should not activate itself without confirmation' do
     @reader.save!
-    @reader.activate('nonsense').should be_false
+    @reader.activate!('nonsense').should be_false
   end
 
   it 'should activate itself with confirmation' do
     @reader.save!
-    @reader.activate(@reader.activation_code).should be_true
+    @reader.activate!(@reader.activation_code).should be_true
     @reader.activated?.should be_true
     @reader.activated_at.should_not be_nil
   end
   
   it 'should authenticate after activation' do
     @reader.save!
-    @reader.activate(@reader.activation_code).should be_true
+    @reader.activate!(@reader.activation_code).should be_true
     reader = Reader.authenticate('test', 'password')
     reader.should == @reader
   end
@@ -112,7 +112,7 @@ describe Reader do
   
   it 'should set an activation code when a new password is requested' do
     @reader.save!
-    @reader.activate(@reader.activation_code)
+    @reader.activate!(@reader.activation_code)
     @reader.activation_code.should be_nil
     @reader.repassword
     @reader.provisional_password.should_not be_nil
@@ -121,7 +121,7 @@ describe Reader do
   
   it 'should send out a confirmation email when a new password is requested' do
     @reader.save!
-    @reader.activate(@reader.activation_code)
+    @reader.activate!(@reader.activation_code)
     @reader.repassword
     message = ActionMailer::Base.deliveries.last
     message.should_not be_nil
@@ -133,7 +133,7 @@ describe Reader do
   
   it 'should not change the password without confirmation' do
     @reader.save!
-    @reader.activate(@reader.activation_code)
+    @reader.activate!(@reader.activation_code)
     @reader.repassword
     @reader.confirm_password('nonsense').should be_false
     @reader.password.should == @reader.sha1('password')
@@ -141,7 +141,7 @@ describe Reader do
   
   it 'should change the password with confirmation' do
     @reader.save!
-    @reader.activate(@reader.activation_code)
+    @reader.activate!(@reader.activation_code)
     @reader.repassword
     pw = @reader.provisional_password
     @reader.confirm_password(@reader.activation_code).should be_true

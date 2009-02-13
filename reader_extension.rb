@@ -7,6 +7,9 @@ class ReaderExtension < Radiant::Extension
   url "http://spanner.org/radiant/reader"
   
   define_routes do |map|
+    
+    map.resources :readers
+    
     map.with_options :controller => 'readers' do |map|
       map.reader_register     'readers/register',                :action => 'new'
       map.reader_login        'readers/login',                   :action => 'login'
@@ -15,6 +18,7 @@ class ReaderExtension < Radiant::Extension
       map.reader_activate     '/readers/activate',               :action => 'activate'
       map.reader_reactivate   '/readers/reactivate',             :action => 'reactivate'
       map.reader_password     '/readers/password',               :action => 'password'
+
 
       # map.reader_repassword '/readers/:id/repassword/:activation_code', :action => 'repassword'
       # map.reader_auto_activate '/activate/:id/:activation_code', :action => 'activate'

@@ -45,13 +45,14 @@ class ReadersController < ApplicationController
     end
   end
 
+  # fix this to give a specific error message
+
   def activate
     render and return if params[:activation_code].nil?
     render and return if params[:id].nil? && params[:email].nil?
-    @reader = params[:id] ? Reader.find_by_id_and_activation_code(params[:id], params[:activation_code]) : Reader.find_by_email_and_activation_code(params[:email], params[:activation_code])
+    @reader = params[:id] ? Reader.find(params[:id]) : Reader.find_by_email(params[:email])
     
-    if @reader
-      @reader.activate
+    if @reader && @reader.activate!(params[:activation_code])
       self.current_reader = @reader
       flash[:notice] = "Thank you! Your account has been activated."
       redirect_to url_for(@reader)
@@ -66,13 +67,13 @@ class ReadersController < ApplicationController
   def password
     render and return unless request.post?
     flash[:error] = "Please enter an email address." if params[:email].nil? 
-    @reader = Reader.find_by_email(params[:email])
-    if @reader.nil?
+    @reader = params[:email] && Reader.find_by_email(params[:email])
+    if @reader.nil? || !@reader
       @error = flash[:error] = "Sorry. That address is not known here."
       render and return
     end
     unless @reader.activated?
-      @reader.send_welcome_message
+      @reader.send_activation_message
       @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
       flash[:error] = @error
       render and return

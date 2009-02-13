@@ -48,14 +48,14 @@ class Reader < ActiveRecord::Base
     !activated_at.nil?
   end
   
-  def activate(code)
+  def activate!(code)
     return true if self.activated?
     return false unless code == self.activation_code
     self.activation_code = nil
     self.activated_at = Time.now
     self.save!
     self.send_welcome_message
-    return true
+    true
   end
 
   def repassword
@@ -68,6 +68,8 @@ class Reader < ActiveRecord::Base
   def confirm_password(code)
     return false unless code == self.activation_code
     self.password = provisional_password
+    self.current_password = provisional_password
+    self.provisional_password = nil
     self.activation_code = nil
     self.save!
   end
