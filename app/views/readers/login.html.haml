@@ -1,0 +1,34 @@
+= render :partial => 'controls'
+
+%div.login_form
+  %h1 
+    log in
+  %p 
+    If you haven't already, you will need to
+    = link_to "register", reader_register_url
+    first. It only takes a moment.
+
+  - form_for :reader, :url => reader_login_url, :html => {:class => 'friendly'} do |f|
+    .form-area
+      %p
+        %label{:for => "reader_login"} Username
+        %br
+        = f.text_field "login"
+      %p
+        %label{:for => "reader_password"} Password
+        %br
+        = f.password_field "password"
+      %p
+        = hidden_field_tag "backto", request.referer
+        = submit_tag "Log in"
+        = check_box_tag "remember_me"
+        %label{:for => "remember_me"} Remember me
+        %span.formnote
+          not recommended if you share this computer
+
+- content_for :breadcrumbs do
+  = link_to 'Home', '/' 
+  &gt; Log in
+
+- content_for :title do
+  Log in

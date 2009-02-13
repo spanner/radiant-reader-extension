@@ -1,0 +1,44 @@
+= render :partial => 'controls'
+
+%div.preferences_form
+  %h1 
+    Revise your account
+	%p
+	  If you want to make changes to your account, please first enter your current password. This is to stop some passing ruffian from making changes in your absence.
+  - unless @reader.errors.empty?
+    %p.haserror
+      %strong Sorry: there were problems.
+      Please check the form. The affected fields will be 
+      %span.with_errors highlighted
+  - form_for :reader, :url => reader_url(@reader), :html => { :method => "put", :class => 'friendly'} do |f| 
+    %p{ :class => @reader.errors.on(:current_password) ? 'with_errors' : '' }
+      %label{ :for => 'reader_current_password', :class => 'required' }
+        Password
+      %span.formnote
+        can't remember? 
+        = link_to "Make a new one", reader_password_url
+      %br
+      = password_field_tag "current_password", params[:current_password], :class => 'standard'
+      - if @reader.errors.on(:current_password)
+        %br
+        = @reader.errors.on(:current_password).to_a.to_sentence
+    = render :partial => 'form', :locals => {:f => f}
+    %p
+      = submit_tag "Update your account"
+      or 
+      link_to 'cancel', request.referer
+  %p
+		= link_to gravatar(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
+		If you would like a picture to appear next to your messages, give yourself a 
+		= link_to "gravatar.", "http://www.gravatar.com/signup", :target => '_blank'
+		This is what appears for you at the moment.
+
+- content_for :breadcrumbs do 
+  = link_to 'Home', '/'
+  &gt;
+  = link_to 'You', '/readers/me'
+  &gt;
+  Revise your account
+
+- content_for :title do 
+  Revise your account

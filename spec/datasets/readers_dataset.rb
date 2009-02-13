@@ -4,6 +4,7 @@ class ReadersDataset < Dataset::Base
     create_reader "Normal"
     create_reader "Idle"
     create_reader "Industrious"
+    create_reader "Inactive"
   end
   
   helpers do

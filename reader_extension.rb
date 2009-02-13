@@ -1,18 +1,28 @@
 # Uncomment this if you reference any of your controllers in activate
-# require_dependency 'application'
+require_dependency 'application'
 
 class ReaderExtension < Radiant::Extension
   version "0.1"
-  description "Centralises user registration and management tasks for the benefit of other extensions"
+  description "Centralises reader/member/user registration and management tasks for the benefit of other extensions"
   url "http://spanner.org/radiant/reader"
   
-  # define_routes do |map|
-  #   map.namespace :admin, :member => { :remove => :get } do |admin|
-  #     admin.resources :reader
-  #   end
-  # end
+  define_routes do |map|
+    map.with_options :controller => 'readers' do |map|
+      map.reader_register     'readers/register',                :action => 'new'
+      map.reader_login        'readers/login',                   :action => 'login'
+      map.reader_logout       'readers/logout',                  :action => 'logout'
+      map.reader_self         'readers/me',                      :action => 'me'
+      map.reader_activate     '/readers/activate',               :action => 'activate'
+      map.reader_reactivate   '/readers/reactivate',             :action => 'reactivate'
+      map.reader_password     '/readers/password',               :action => 'password'
+
+      # map.reader_repassword '/readers/:id/repassword/:activation_code', :action => 'repassword'
+      # map.reader_auto_activate '/activate/:id/:activation_code', :action => 'activate'
+    end
+  end
   
   def activate
+    ApplicationController.send :include, ReaderLoginSystem
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   

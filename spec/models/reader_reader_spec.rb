@@ -1,4 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+ActionMailer::Base.delivery_method = :test  
+ActionMailer::Base.perform_deliveries = true  
+ActionMailer::Base.deliveries = []  
 
 describe Reader do
   dataset :readers
@@ -63,8 +66,86 @@ describe Reader do
     @reader.password.should == @reader.sha1('password')
   end
   
-  it 'should verify its email address' do
+  it 'should await activation after creation' do
+    @reader.save!
+    @reader.activation_code.should_not be_nil
+    @reader.activated_at.should be_nil
+    @reader.activated?.should be_false
+  end
 
+  it 'should send out an activation email' do
+    @reader.save!
+    message = ActionMailer::Base.deliveries.last
+    message.should_not be_nil
+    message.subject.should == "Please activate your account"
+    message.body.should =~ /#{@reader.name}/
+    message.body.should =~ /#{@reader.login}/
+    message.body.should =~ /#{@reader.current_password}/
+  end
+  
+  it 'should not activate itself without confirmation' do
+    @reader.save!
+    @reader.activate('nonsense').should be_false
+  end
+
+  it 'should activate itself with confirmation' do
+    @reader.save!
+    @reader.activate(@reader.activation_code).should be_true
+    @reader.activated?.should be_true
+    @reader.activated_at.should_not be_nil
+  end
+  
+  it 'should authenticate after activation' do
+    @reader.save!
+    @reader.activate(@reader.activation_code).should be_true
+    reader = Reader.authenticate('test', 'password')
+    reader.should == @reader
+  end
+  
+  it 'should not authenticate with bad password' do
+    Reader.authenticate('test', 'wrong password').should be_nil
+  end
+  
+  it 'should not authenticate if it does not exist' do
+    Reader.authenticate('loch ness monster', 'password').should be_nil
+  end
+  
+  it 'should set an activation code when a new password is requested' do
+    @reader.save!
+    @reader.activate(@reader.activation_code)
+    @reader.activation_code.should be_nil
+    @reader.repassword
+    @reader.provisional_password.should_not be_nil
+    @reader.activation_code.should_not be_nil
+  end
+  
+  it 'should send out a confirmation email when a new password is requested' do
+    @reader.save!
+    @reader.activate(@reader.activation_code)
+    @reader.repassword
+    message = ActionMailer::Base.deliveries.last
+    message.should_not be_nil
+    message.subject.should == "Reset your password"
+    message.body.should =~ /#{@reader.name}/
+    message.body.should =~ /#{@reader.login}/
+    message.body.should =~ /#{@reader.provisional_password}/
+  end
+  
+  it 'should not change the password without confirmation' do
+    @reader.save!
+    @reader.activate(@reader.activation_code)
+    @reader.repassword
+    @reader.confirm_password('nonsense').should be_false
+    @reader.password.should == @reader.sha1('password')
+  end
+  
+  it 'should change the password with confirmation' do
+    @reader.save!
+    @reader.activate(@reader.activation_code)
+    @reader.repassword
+    pw = @reader.provisional_password
+    @reader.confirm_password(@reader.activation_code).should be_true
+    @reader.password.should == @reader.sha1(pw)
   end
   
   it 'should default to trusted status' do
@@ -75,18 +156,5 @@ describe Reader do
     @reader.trusted = false
     @reader.trusted.should == false
   end
-  
-  it 'should authenticate with correct username and password' do
-    @reader.save!
-    reader = Reader.authenticate('test', 'password')
-    reader.should == @reader
-  end
-  
-  it 'should not authenticate with bad password' do
-    Reader.authenticate('test', 'bad password').should be_nil
-  end
-  
-  it 'should not authenticate with nonexistent user' do
-    Reader.authenticate('loch ness monster', 'password').should be_nil
-  end
+    
 end

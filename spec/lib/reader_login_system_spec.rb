@@ -1,0 +1,132 @@
+require File.dirname(__FILE__) + "/../spec_helper"
+
+class StubController < ActionController::Base
+  include LoginSystem
+  include ReaderLoginSystem
+  
+  def rescue_action(e) raise e end
+  
+  def method_missing(method, *args, &block)
+    if (args.size == 0) and not block_given?
+     render :text => 'just a test' unless @performed_render || @performed_redirect
+    else
+      super
+    end
+  end
+end
+
+
+describe 'Reader Login System:', :type => :controller do
+  dataset :readers
+  dataset :users
+  
+  before do
+    map = ActionController::Routing::RouteSet::Mapper.new(ActionController::Routing::Routes)
+    map.connect ':controller/:action/:id'
+    ActionController::Routing::Routes.named_routes.install
+  end
+
+  after do
+    ActionController::Routing::Routes.reload
+  end
+
+  describe StubController do
+    
+    describe ".login_from_cookie" do
+      before do
+        Time.zone = 'UTC'
+        Radiant::Config.stub!(:[]).with('session_timeout').and_return(2.weeks)
+      end
+
+      it "should not login reader if no cookie found" do
+        controller.should_not_receive(:current_reader=)
+        get :index
+      end
+
+      describe "with reader_session_token" do
+        before do
+          @reader = readers(:normal)
+          @cookies = { :reader_session_token => 12345 }
+          controller.stub!(:cookies).and_return(@cookies)
+          Reader.should_receive(:find_by_session_token).and_return(@reader)
+        end
+
+        after do
+          controller.send :login_from_cookie
+        end
+
+        it "should log in reader if reader_session_token is presented" do
+          controller.should_receive(:current_reader=).with(@reader).and_return {
+            controller.stub!(:current_reader).and_return(@reader)
+          }
+        end
+
+        it "should remember reader" do
+          @reader.should_receive(:remember_me)
+        end
+
+        it "should update cookie" do
+          @cookies.should_receive(:[]=) do |name,content|
+            name.should eql(:reader_session_token)
+            content[:value].should eql(@reader.session_token)
+            content[:expires].should be_close((Time.zone.now + 2.weeks).utc, 1.minute) # sometimes specs are slow
+          end
+        end
+        
+      end
+
+      describe "with session_token" do
+        before do
+          @user = users(:existing)
+          @cookies = { :session_token => 12345 }
+          controller.stub!(:cookies).and_return(@cookies)
+          User.should_receive(:find_by_session_token).and_return(@user)
+        end
+
+        after do
+          controller.send :login_from_cookie
+        end
+
+        it "should still log in user if session_token is presented" do
+          controller.should_receive(:current_user=).with(@user).and_return {
+            controller.stub!(:current_user).and_return(@user)
+          }
+        end
+        
+        it "should update cookie with session_token" do
+          @cookies.should_receive(:[]=) do |name,content|
+            name.should eql(:session_token)
+            content[:value].should eql(@user.session_token)
+            content[:expires].should be_close((Time.zone.now + 2.weeks).utc, 1.minute) # sometimes specs are slow
+          end
+        end
+      end
+      
+      describe "with both session tokens" do
+        before do
+          @user = users(:existing)
+          @reader = readers(:normal)
+          @cookies = { :session_token => 12345, :reader_session_token => 12345 }
+          controller.stub!(:cookies).and_return(@cookies)
+          Reader.should_receive(:find_by_session_token).and_return(@reader)
+          User.should_receive(:find_by_session_token).and_return(@user)
+        end
+
+        after do
+          controller.send :login_from_cookie
+        end
+
+        it "should log in both user and reader" do
+          controller.should_receive(:current_reader=).with(@reader).and_return {
+            controller.stub!(:current_reader).and_return(@reader)
+          }
+          controller.should_receive(:current_user=).with(@user).and_return {
+            controller.stub!(:current_user).and_return(@user)
+          }
+        end
+        
+      end
+      
+    end
+  end
+end

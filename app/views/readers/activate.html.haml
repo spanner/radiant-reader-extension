@@ -1,0 +1,48 @@
+= render :partial => 'controls'
+
+- if current_reader && current_reader.activated?
+  %h1 Welcome!
+  %p Your account is active. Get on with it. Whatever it was. And thanks for persevering with the sign-up process.
+- else
+  %div.activation_form
+    %h1 Please activate your account</h2>
+		%p
+      - if current_reader
+				We have sent an email message to 
+				%strong= current_reader.email
+			- else
+				You should have received an email 
+			containing a link that will automatically activate your account. If for some reason that doesn't work, you can also enter your email address and activation code here:
+    - if @error
+		  %p.haserror
+		    @error
+		
+    = form_for :reader, :url => reader_activate_url, :html => {:class => 'friendly'} do
+      %p
+      %label{:for => "email"}
+        Email Address
+        %br
+        = text_field_tag 'email', (params[:email] || (current_reader ? current_reader.email : '')), :class => 'standard'
+      %p
+      %label{:for => "activation_code"}
+        Activation Code
+        %br
+        = text_field_tag.standard :activation_code, '', :class => 'standard'
+      %p
+				= submit_tag 'Activate your account'
+
+		%p
+			If the activation message has gone astray, we can 
+			= link_to 'send it again.', reader_reactivate_url
+			Or if you think you might have put the wrong email address in, the easiest thing to do is 
+			= link_to 'register again', reader_register_url
+			with the right one.
+
+
+- content_for :breadcrumbs do
+  = link_to 'Home', '/'
+  &gt;
+  Activate your account
+
+- content_for :title do
+  Activate your account

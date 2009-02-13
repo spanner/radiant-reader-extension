@@ -1,0 +1,21 @@
+Hello <%= @reader.name %>,
+
+Welcome to [site title here]! 
+
+Your account has been created. To activate it, all you have to do is click on this link:
+
+  <%= @url %>
+
+(If your email program hasn't turned that into a link, just paste the address into a web browser window.)
+
+On this first visit you'll be logged in automatically, but next time you'll need to know your username and password. Here's a reminder:
+
+  login page: <%= Radiant::Config['forum.site_url'] %>/users/login
+  username: <%= @reader.login %>
+  password: <%= @reader.current_password %>
+  
+Once you've logged in a couple of times we'll forget the plaintext version of your password, so you may want to keep a note somewhere safe.
+
+best wishes,
+
+Gill Cycles' Robotic Overlord

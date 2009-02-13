@@ -1,0 +1,67 @@
+%p{ :class => @reader.errors.on(:name) ? 'with_errors' : '' }
+  %label{ :for => 'reader_name', :class => 'required' }
+    Your name
+  %span.formnote
+    as you would like it to appear
+  %br
+  = f.text_field "name", :class => 'titular'
+  - if @reader.errors.on(:name)
+    %br
+    = @reader.errors.on(:name).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:email) ? 'with_errors' : '' }
+  %label{ :for => 'reader_email', :class => 'required' }
+    Your name
+  %br
+  = f.text_field "email", :class => 'standard'
+  - if @reader.errors.on(:email)
+    %br
+    = @reader.errors.on(:email).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:description) ? 'with_errors' : '' }
+  %label{ :for => 'reader_description', :class => 'optional' }
+    A little about yourself
+  %span.formnote
+    you can fill this in later
+  %br
+  = f.text_area "description", :class => 'standard', :rows => 8
+  - if @reader.errors.on(:description)
+    %br
+    = @reader.errors.on(:description).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:login) ? 'with_errors' : '' }
+  %label{ :for => 'reader_login', :class => 'optional' }
+    Login readername
+  %span.formnote
+    leave this blank to use your email address
+  %br
+  = f.text_field "login", :class => 'standard'
+  - if @reader.errors.on(:login)
+    %br
+    = @reader.errors.on(:login).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:password) ? 'with_errors' : '' }
+  %label{ :for => 'reader_password', :class => 'required' }
+    Password
+  %span.formnote
+    at least five characters, please
+  %br
+  = password_field_tag "password", "", :class => 'standard'
+  - if @reader.errors.on(:password)
+    %br
+    = @reader.errors.on(:password).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:password_confirmation) ? 'with_errors' : '' }
+  %label{ :for => 'reader_password_confirmation', :class => 'required' }
+    Confirm password
+  %br
+  = password_field_tag "password_confirmation", "", :class => 'standard'
+  - if @reader.errors.on(:password_confirmation)
+    %br
+    = @reader.errors.on(:password_confirmation).to_a.to_sentence
+
+%p
+  = f.check_box "receive_email"
+  %label{ :for => "reader_receive_email }
+    Receive email from this site
+

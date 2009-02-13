@@ -12,6 +12,9 @@ class CreateReaders < ActiveRecord::Migration
       t.column :updated_by_id, :integer
       t.column :salt, :string
       t.column :session_token, :string
+      t.column :activation_code, :string
+      t.column :provisional_password, :string
+      t.column :activated_at, :datetime
     end
     add_index :readers, ["login"], :name => "login", :unique => true
   end
