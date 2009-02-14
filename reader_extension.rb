@@ -11,7 +11,7 @@ class ReaderExtension < Radiant::Extension
     
     map.resources :readers
     map.namespace :admin do |admin|
-      admin.resource :readers
+      admin.resources :readers
     end
     
     map.with_options :controller => 'readers' do |map|
@@ -28,6 +28,8 @@ class ReaderExtension < Radiant::Extension
   
   def activate
     ApplicationController.send :include, ReaderLoginSystem
+    Radiant::AdminUI.send :include, ReaderAdminUI         # UI is an instance and already loaded, and this doesn't get there in time. so:
+    Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   

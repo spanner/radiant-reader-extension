@@ -1,0 +1,61 @@
+- form_for [:admin, @reader] do |f|
+  = hidden_field 'reader', 'lock_version'
+  = render_region :form_top
+  %table.fieldset{:cellpadding=>0, :cellspacing=>0, :border=>0}
+    - render_region :form do |form|
+      - form.edit_name do
+        %tr
+          %th.label
+            = f.label :name
+          %td.field
+            = f.text_field "name", :class => 'textbox', :maxlength => 100 
+          %td.help Required.
+      - form.edit_email do
+        %tr
+          %th.label
+            = f.label :email, "Email", :class => 'optional'
+          %td.field
+            = f.text_field "email", :class => 'textbox', :maxlength => 255
+          %td.help
+            Optional. Please use a valid e-mail address.
+      - form.edit_username do
+        %tr
+          %th.label
+            = f.label :login, 'Username'
+          %td.field
+            = f.text_field "login", :class => 'textbox', :maxlength => 40 
+          %td.help
+            At least 3 characters. Must be unique.
+      - form.edit_password do
+        %tr
+          %th.label
+            = f.label :password
+          %td.field
+            = f.password_field "password", :class => 'textbox', :value => '', :maxlength => 40
+          %td.help{:rowspan=>2}
+            At least 5 characters.
+            - unless @reader.new_record?
+              Leave password blank for it to remain unchanged.
+        %tr
+          %th.label
+            = f.label :password_confirmation, "Confirm Password"
+          %td.field
+            = f.password_field "password_confirmation", :class => 'textbox', :value => '', :maxlength => 40
+      - form.edit_description do
+        %tr
+          %th.label
+            = f.label :description, "Description", :class => 'optional'
+          %td.field
+            ~ f.text_area "description", :size => '40x4', :class => "textarea" 
+          %td.help
+            Optional.
+  - render_region :form_bottom do |form_bottom|
+    - form_bottom.edit_timestamp do
+      = updated_stamp @reader  
+    - form_bottom.edit_buttons do
+      %p.buttons
+        = save_model_button(@reader)
+        = save_model_and_continue_editing_button(@reader)
+        or 
+        = link_to "Cancel", admin_readers_path
+          

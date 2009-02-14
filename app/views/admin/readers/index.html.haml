@@ -1,0 +1,28 @@
+%h1 Readers
+
+= render_region :top 
+
+%table#readers.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+  %thead
+    %tr
+      - render_region :thead do |thead|
+        - thead.title_header do
+          %th.reader Name / Login
+        - thead.description_header do
+          %th.roles Description
+        - thead.modify_header do
+          %th.modify Modify
+  %tbody
+    - @readers.each do |reader|
+      %tr.node.level-1
+        - render_region :tbody do |tbody|
+          - tbody.title_cell do
+            %td.reader
+              = link_to reader.name, edit_admin_reader_url(reader)
+              %small.login= h reader.login
+          - tbody.description_cell do
+            %td.roles= reader.description
+          - tbody.modify_cell do
+            %td.remove
+              = link_to(image('remove', :alt => 'Remove User'), remove_admin_user_url(user)) 
+
