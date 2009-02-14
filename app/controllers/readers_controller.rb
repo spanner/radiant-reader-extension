@@ -1,8 +1,10 @@
 class ReadersController < ApplicationController
   radiant_layout 'master'
   no_login_required
-  skip_before_filter :verify_authenticity_token
   before_filter :no_removing, :only => [:remove, :destroy]
+
+  # I have no idea where this default is being overridden
+  skip_before_filter :verify_authenticity_token if ENV["RAILS_ENV"] == "test"
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')

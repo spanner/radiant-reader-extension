@@ -1,5 +1,6 @@
 # Uncomment this if you reference any of your controllers in activate
 require_dependency 'application'
+require 'gravtastic'
 
 class ReaderExtension < Radiant::Extension
   version "0.1"
