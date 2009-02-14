@@ -9,6 +9,8 @@ class CreateReaders < ActiveRecord::Migration
       t.column :description, :text
       t.column :notes, :text
       t.column :trusted, :boolean, :default => true
+      t.column :receive_email, :boolean, :default => false
+      t.column :receive_essential_email, :boolean, :default => true
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
       t.column :created_by_id, :integer

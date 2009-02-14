@@ -9,12 +9,6 @@ class ReaderExtension < Radiant::Extension
   
   define_routes do |map|
     
-    map.resources :readers
-
-    map.namespace :admin do |admin|
-      admin.resources :readers
-    end
-    
     map.with_options :controller => 'readers' do |map|
       map.reader_register     'readers/register',                :action => 'new'
       map.reader_login        'readers/login',                   :action => 'login'
@@ -23,6 +17,12 @@ class ReaderExtension < Radiant::Extension
       map.reader_activate     '/readers/activate',               :action => 'activate'
       map.reader_reactivate   '/readers/reactivate',             :action => 'reactivate'
       map.reader_password     '/readers/password',               :action => 'password'
+    end
+    
+    map.resources :readers
+
+    map.namespace :admin do |admin|
+      admin.resources :readers
     end
     
   end

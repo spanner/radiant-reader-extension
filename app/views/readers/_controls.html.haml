@@ -1,4 +1,4 @@
-= content_for "user_controls" do
+= content_for "reader_controls" do
   %div#reader_links
   - if current_reader
     -if current_reader.activated?
@@ -17,6 +17,6 @@
   - else
     %p
       To take part, please 
-      = link_to 'log in', user_login_url
+      = link_to 'log in', reader_login_url
       or
-      = link_to 'register', new_user_url
+      = link_to 'register', new_reader_url

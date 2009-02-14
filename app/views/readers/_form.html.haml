@@ -31,7 +31,7 @@
 
 %p{ :class => @reader.errors.on(:login) ? 'with_errors' : '' }
   %label{ :for => 'reader_login', :class => 'optional' }
-    Login readername
+    Login username
   %span.formnote
     leave this blank to use your email address
   %br
@@ -62,6 +62,6 @@
 
 %p
   = f.check_box "receive_email"
-  %label{ :for => "reader_receive_email }
+  %label{ :for => "reader_receive_email" }
     Receive email from this site
 

@@ -26,7 +26,7 @@ module ReaderLoginSystem
       end
       @current_reader
     end
-    
+     
     # it is quite possible to be logged in both as user and reader
     # they may differ or overlap in their priveleges
     # or it may be useful for an admin to masquerade as a reader to review pages

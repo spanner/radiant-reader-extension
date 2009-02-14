@@ -8,7 +8,7 @@ module ReaderSiteExtension
   end
 
   def reader_layout_or_default
-    self.reader_layout_id ? self.reader_layout : Layout.find_by_name(Radiant::Config['readers.layout'])
+    self.reader_layout.nil? ? Radiant::Config['readers.layout'] || 'Main' : self.reader_layout.name
   end
 
 end
