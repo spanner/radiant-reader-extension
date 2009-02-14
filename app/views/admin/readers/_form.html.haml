@@ -12,11 +12,11 @@
       - form.edit_email do
         %tr
           %th.label
-            = f.label :email, "Email", :class => 'optional'
+            = f.label :email, "Email", :class => 'required'
           %td.field
             = f.text_field "email", :class => 'textbox', :maxlength => 255
           %td.help
-            Optional. Please use a valid e-mail address.
+            Required and must be valid.
       - form.edit_username do
         %tr
           %th.label
@@ -24,7 +24,7 @@
           %td.field
             = f.text_field "login", :class => 'textbox', :maxlength => 40 
           %td.help
-            At least 3 characters. Must be unique.
+            Defaults to email address. Must be unique.
       - form.edit_password do
         %tr
           %th.label
@@ -43,11 +43,29 @@
       - form.edit_description do
         %tr
           %th.label
-            = f.label :description, "Description", :class => 'optional'
+            = f.label :description, "Readers description", :class => 'optional'
           %td.field
             ~ f.text_area "description", :size => '40x4', :class => "textarea" 
           %td.help
             Optional.
+      - form.edit_status do
+        %tr
+          %th.label
+            = f.label :trusted, 'Trusted?'
+          %td.field{:style=>"text-align: left;"}
+            = f.check_box "trusted"
+          %td.help
+            True by default. Uncheck to limit a reader's actions on the site.
+      - form.edit_notes do
+        %tr
+          %th.label
+            = f.label :notes, "Admin notes", :class => 'optional'
+          %td.field
+            ~ f.text_area "notes", :size => '40x4', :class => "textarea" 
+          %td.help
+            Optional.
+
+
   - render_region :form_bottom do |form_bottom|
     - form_bottom.edit_timestamp do
       = updated_stamp @reader  
