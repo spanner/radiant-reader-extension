@@ -1,10 +1,20 @@
 class ReadersController < ApplicationController
-  radiant_layout 'master'
   no_login_required
   before_filter :no_removing, :only => [:remove, :destroy]
+  radiant_layout :readers_layout
 
   # I have no idea where this default is being overridden
   skip_before_filter :verify_authenticity_token if ENV["RAILS_ENV"] == "test"
+
+  def readers_layout
+    if Radiant::Config['readers.site_based'] && site = Page.current_site
+      site.reader_layout_or_default
+    elsif default_layout = Layout.find_by_name(Radiant::Config['readers.layout'])
+      default_layout
+    else
+      Layout.find(:first)
+    end
+  end
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')

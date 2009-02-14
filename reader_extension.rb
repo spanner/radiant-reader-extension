@@ -31,6 +31,13 @@ class ReaderExtension < Radiant::Extension
     ApplicationController.send :include, ReaderLoginSystem
     Radiant::AdminUI.send :include, ReaderAdminUI         # UI is an instance and already loaded, and this doesn't get there in time. so:
     Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions
+    Radiant::Config['readers.layout'] = "Main"
+    if defined? MultiSiteExtension
+      Radiant::Config['readers.site_based'] = true 
+      Site.send :include, ReaderSiteExtension
+    else
+      Radiant::Config['readers.site_based'] = false 
+    end
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   

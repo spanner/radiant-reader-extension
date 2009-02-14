@@ -18,6 +18,7 @@
         - render_region :tbody do |tbody|
           - tbody.title_cell do
             %td.reader
+              = link_to gravatar_for(reader), edit_admin_reader_url(reader)
               = link_to reader.name, edit_admin_reader_url(reader)
               %small.login= h reader.login
           - tbody.description_cell do

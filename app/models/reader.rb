@@ -3,6 +3,7 @@ require 'digest/sha1'
 class Reader < ActiveRecord::Base
   
   is_gravtastic 
+  belongs_to :site unless Radiant::Config['readers.site_based'].nil?
  
   validates_uniqueness_of :login, :message => 'login already in use'
   validates_confirmation_of :password, :message => 'must match confirmation', :if => :confirm_password?

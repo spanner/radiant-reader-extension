@@ -2,7 +2,7 @@ module ReaderLoginSystem
 
   def self.included(base)
     base.class_eval %{
-      helper_method :current_reader 
+      helper_method :current_reader
       before_filter :set_current_reader
       alias_method_chain :login_from_cookie, :readers
       alias_method_chain :set_session_cookie, :readers
@@ -15,7 +15,7 @@ module ReaderLoginSystem
     def current_reader
       @current_reader ||= Reader.find(session['reader_id']) rescue nil
     end
-
+    
     def current_reader=(value=nil)
       if value && value.is_a?(Reader)
         @current_reader = value
@@ -26,7 +26,7 @@ module ReaderLoginSystem
       end
       @current_reader
     end
-
+    
     # it is quite possible to be logged in both as user and reader
     # they may differ or overlap in their priveleges
     # or it may be useful for an admin to masquerade as a reader to review pages

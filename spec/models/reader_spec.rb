@@ -157,4 +157,18 @@ describe Reader do
     @reader.trusted.should == false
   end
     
+  if defined? MultiSiteExtension
+    describe "since multi_site is installed" do
+      it "should belong to a site" do
+        Reader.reflect_on_association(:site).should_not be_nil
+      end
+    end
+  else
+    describe "since multi_site is not installed" do
+      it "should not belong to a site" do
+        Reader.reflect_on_association(:site).should be_nil
+      end
+    end
+  end
+  
 end

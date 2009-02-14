@@ -16,7 +16,7 @@ describe Admin::ReadersController do
     :get => [:index, :new, :edit, :remove],
     :post => [:create],
     :put => [:update],
-    :delete => [:destroy] 
+    :delete => [:destroy]
   }.each do |method, actions|
     actions.each do |action|
       it "should require login to access the #{action} action" do

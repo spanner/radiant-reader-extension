@@ -1,6 +1,7 @@
 class CreateReaders < ActiveRecord::Migration
   def self.up
     create_table :readers, :force => true do |t|
+      t.column :site_id, :integer
       t.column :name, :string, :limit => 100
       t.column :email, :string
       t.column :login, :string, :limit => 40, :default => "", :null => false

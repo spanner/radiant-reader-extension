@@ -46,7 +46,7 @@ describe ReadersController do
   describe "with a correct activation" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
       @reader = Reader.find_by_name('newuser')
       post :activate, :email => @reader.email, :activation_code => @reader.activation_code
       @reader.reload
@@ -66,7 +66,7 @@ describe ReadersController do
   describe "with an incorrect activation" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
       @reader = Reader.find_by_name('newuser')
       post :activate, :email => @reader.email, :activation_code => 'down periscope'
     end
@@ -164,7 +164,7 @@ describe ReadersController do
   
   describe "with a reset password confirmation" do
     before do
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
       @reader = Reader.find_by_name('newuser')
       post :activate, :email => @reader.email, :activation_code => @reader.activation_code
       @reader.reload
@@ -216,7 +216,7 @@ describe ReadersController do
     describe "who has logged in" do
       before do
         request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-        post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+        post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
         @reader = Reader.find_by_email('newuser@spanner.org')
         post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
         @reader.reload
