@@ -10,6 +10,7 @@ class ReaderExtension < Radiant::Extension
   define_routes do |map|
     
     map.resources :readers
+
     map.namespace :admin do |admin|
       admin.resources :readers
     end

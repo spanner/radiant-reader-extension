@@ -264,7 +264,7 @@ describe ReadersController do
   describe "with an update request" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
       @reader = Reader.find_by_email('newuser@spanner.org')
       post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
       # @reader.reload
@@ -272,7 +272,7 @@ describe ReadersController do
 
     describe "that includes the correct password" do
       before do
-        post :update, :reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'
+        post :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'}
         @reader.reload
       end
       
@@ -289,7 +289,7 @@ describe ReadersController do
 
     describe "that does not include the correct password" do
       before do
-        post :update, :reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'wrongo'
+        post :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'wrongo'}
         # @reader.reload
       end
 
@@ -306,7 +306,7 @@ describe ReadersController do
 
     describe "that does not validate" do
       before do
-        post :update, :reader => {:id => @reader.id, :name => "New Name", :email => 'invalid'}, :current_password => 'password'
+        post :update, {:reader => {:id => @reader.id, :name => "New Name", :email => 'invalid'}, :current_password => 'password'}
         @reader.reload
       end
 

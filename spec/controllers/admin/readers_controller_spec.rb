@@ -12,10 +12,12 @@ describe Admin::ReadersController do
     controller.class.model_class.should == Reader
   end
 
-  { :get => [:index, :new, :edit, :remove],
+  { 
+    :get => [:index, :new, :edit, :remove],
     :post => [:create],
     :put => [:update],
-    :delete => [:destroy] }.each do |method, actions|
+    :delete => [:destroy] 
+  }.each do |method, actions|
     actions.each do |action|
       it "should require login to access the #{action} action" do
         logout

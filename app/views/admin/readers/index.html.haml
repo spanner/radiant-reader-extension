@@ -26,3 +26,7 @@
             %td.remove
               = link_to(image('remove', :alt => 'Remove User'), remove_admin_user_url(user)) 
 
+- render_region :bottom do |bottom|
+  - bottom.new_button do
+    %p
+      = link_to image('new-reader', :alt => 'New Reader'), new_admin_reader_url, :title => "New Reader"
