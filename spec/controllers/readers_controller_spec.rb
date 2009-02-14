@@ -5,6 +5,7 @@ ActionMailer::Base.deliveries = []
 
 describe ReadersController do
   dataset :readers
+  dataset :users
 
   it "should render the registration screen on get to new" do
     get :new
@@ -34,7 +35,6 @@ describe ReadersController do
       response.should be_redirect
       response.should redirect_to(:action => 'activate')
     end
-      
   end
 
   it "should render the activation screen on get to activate" do
@@ -213,45 +213,112 @@ describe ReadersController do
   end
   
   describe "to the browser" do
+    describe "who has logged in" do
+      before do
+        request.env["HTTP_REFERER"] = 'http://test.host/referer!'
+        post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+        @reader = Reader.find_by_email('newuser@spanner.org')
+        post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
+        @reader.reload
+        @read = readers(:industrious)
+      end
   
-    it "should show a reader page to a logged-in reader" do 
-    
+      it "should show another reader's page" do 
+        get :show, :id => @read.id
+        response.should be_success
+        response.should render_template("show")
+      end
+
+      it "should refuse to show the edit page for another reader" do 
+        get :edit, :id => @read.id
+        response.should be_success
+        flash[:error].should =~ /another person/
+      end
+
+      it "should not remove this reader" do 
+        get :remove, :id => @reader.id
+        response.should be_redirect
+        Reader.find(@reader.id).should_not be_nil
+      end
+
+      it "should not remove another reader" do 
+        get :remove, :id => @read.id
+        response.should be_redirect
+        Reader.find(@read.id).should_not be_nil
+      end
     end
 
-    it "should show a reader page to a logged-in user" do 
-    
+    describe "who has not logged in" do
+      before do
+        @read = readers(:industrious)
+      end
+  
+      it "should not show a reader's page" do 
+        get :show, :id => @read.id
+        response.should be_redirect
+        response.should redirect_to(:action => 'login')
+      end
     end
-
-    it "should refuse to show a reader page to an anonymous visitor" do 
-    
-    end
-
-    it "should refuse to show the reader list" do 
-    
-    end
-
-    it "should refuse to remove a reader" do 
-    
-    end
-
-    it "should refuse to show the edit page for another reader" do 
-    
-    end
-
   end
-  
+    
   describe "with an update request" do
-
-    it "should refuse to update a reader who is not logged in" do 
-    
+    before do
+      request.env["HTTP_REFERER"] = 'http://test.host/referer!'
+      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
+      @reader = Reader.find_by_email('newuser@spanner.org')
+      post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
+      # @reader.reload
     end
 
-    it "should refuse to update a reader who does not supply the correct password" do 
-    
+    describe "that includes the correct password" do
+      before do
+        post :update, :reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'
+        @reader.reload
+      end
+      
+      it "should update the reader" do 
+        @reader.name.should == 'New Name'
+      end
+
+      it "should redirect to the reader page" do 
+        response.should be_redirect
+        response.should redirect_to(:action => 'show', :id => @reader.id)
+      end
+      
     end
 
-    it "should update a reader who is logged in and supplies the correct password" do 
-    
+    describe "that does not include the correct password" do
+      before do
+        post :update, :reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'wrongo'
+        # @reader.reload
+      end
+
+      it "should not update the reader" do 
+        @reader.name.should == 'newuser'
+      end
+
+      it "should rerender the edit form" do 
+        response.should be_success
+        response.should render_template("edit")
+      end
+
+    end
+
+    describe "that does not validate" do
+      before do
+        post :update, :reader => {:id => @reader.id, :name => "New Name", :email => 'invalid'}, :current_password => 'password'
+        @reader.reload
+      end
+
+      it "should not update the reader" do 
+        @reader.name.should == 'newuser'
+      end
+
+      it "should rerender the edit form" do 
+        response.should be_success
+        response.should render_template("edit")
+      end
+
     end
   end
 end

@@ -4,6 +4,8 @@
   %h1 
     Revise your account
 	%p
+	  Hello 
+	  = @reader.name
 	  If you want to make changes to your account, please first enter your current password. This is to stop some passing ruffian from making changes in your absence.
   - unless @reader.errors.empty?
     %p.haserror

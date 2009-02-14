@@ -2,31 +2,25 @@ class ReadersController < ApplicationController
   radiant_layout 'master'
   no_login_required
   skip_before_filter :verify_authenticity_token
-
-  only_allow_access_to :index, :remove,
-    :when => :admin,
-    :denied_url => {:controller => 'page', :action => :me},
-    :denied_message => 'You must have administrative privileges to list or affect other readers.'
+  before_filter :no_removing, :only => [:remove, :destroy]
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
   end
 
   def show
+    redirect_to reader_login_url and return unless current_reader
     @reader = Reader.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.rss  { render :layout => false }
-    end
   end
 
   def new
+    redirect_to url_for(current_reader) and return if current_reader
     @reader = Reader.new
   end
   
   def edit
-    @reader = Reader.find(params[:id])
-    # fail unless current_reader or admin
+    @reader = current_reader
+    flash[:error] = "you cannot edit another person's account" if params[:id] && @reader.id != params[:id]
   end
   
   def create
@@ -100,8 +94,8 @@ class ReadersController < ApplicationController
 
   def update
     @reader = current_reader
-    @reader.attributes = params[:reader]
-    if @reader.authenticate(@reader.login, params[:current_password])
+    if @reader.authenticated?(params[:current_password])
+      @reader.attributes = params[:reader]
       @reader.password = params[:password]
       @reader.password_confirmation = params[:password_confirmation]
       if @reader.save
@@ -117,7 +111,7 @@ class ReadersController < ApplicationController
       render :action => 'edit'
     end
   end
-    
+        
   def login
     if request.post?
       login = params[:reader][:login]
@@ -141,5 +135,22 @@ class ReadersController < ApplicationController
     current_reader = nil
     redirect_to :back
   end
+
+  def no_removing
+    announce_cannot_delete_readers
+    redirect_to admin_readers_url
+  end
+  
+  def remove 
+  end
+
+  def destroy
+  end
+  
+  private
+  
+    def announce_cannot_delete_readers
+      flash[:error] = 'You cannot delete readers here. Please log in to the admin interface.'
+    end  
      
 end
