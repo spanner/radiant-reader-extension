@@ -1,6 +1,8 @@
 class ExtendSites < ActiveRecord::Migration
   def self.up
-    add_column :sites, :reader_layout_id, :integer if defined? MultiSiteExtension
+    if defined? MultiSiteExtension
+      add_column :sites, :reader_layout_id, :integer
+    end
   end
 
   def self.down

@@ -1,7 +1,7 @@
 = render :partial => 'controls'
 
 %div.reader_show
-  = gravatar(@reader, {:size => 128}, {:class => 'big_gravatar'})
+  = gravatar_for(@reader, {:size => 128}, {:class => 'big_gravatar'})
   %h1.reader
     = @reader.name
   - if @reader.description.blank?

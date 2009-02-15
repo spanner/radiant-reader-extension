@@ -13,10 +13,13 @@ class ReaderExtension < Radiant::Extension
       map.reader_register     'readers/register',                :action => 'new'
       map.reader_login        'readers/login',                   :action => 'login'
       map.reader_logout       'readers/logout',                  :action => 'logout'
-      map.reader_self         'readers/me',                      :action => 'me'
+      map.reader_self         'me',                              :action => 'me'
+      map.reader_edit_self    'me/edit',                         :action => 'edit'
       map.reader_activate     '/readers/activate',               :action => 'activate'
       map.reader_reactivate   '/readers/reactivate',             :action => 'reactivate'
       map.reader_password     '/readers/password',               :action => 'password'
+      map.reader_repassword     '/users/:id/repassword/:activation_code', :action => 'repassword'
+      map.reader_auto_activate  '/activate/:id/:activation_code', :action => 'activate'
     end
     
     map.resources :readers

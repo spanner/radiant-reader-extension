@@ -9,11 +9,13 @@ class ReadersController < ApplicationController
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
   end
-
+  
   def show
     redirect_to reader_login_url and return unless current_reader
-    @reader = Reader.find(params[:id])
+    @reader = params[:id] ? Reader.find(params[:id]) : current_reader
   end
+
+  alias_method :me, :show
 
   def new
     redirect_to url_for(current_reader) and return if current_reader
@@ -27,11 +29,11 @@ class ReadersController < ApplicationController
   
   def create
     @reader = Reader.new(params[:reader])
+    @reader.site = current_site if Radiant::Config['readers.site_based']
     @reader.login = @reader.email if @reader.login.blank?
     @reader.password = params[:password]
     @reader.password_confirmation = params[:password_confirmation]
     @reader.current_password = params[:password]
-    
     if (@reader.valid?)
       @reader.save
       self.current_reader = @reader
@@ -44,17 +46,22 @@ class ReadersController < ApplicationController
   # fix this to give a specific error message
 
   def activate
-    render and return if params[:activation_code].nil?
-    render and return if params[:id].nil? && params[:email].nil?
-    @reader = params[:id] ? Reader.find(params[:id]) : Reader.find_by_email(params[:email])
+    if params[:activation_code].nil?
+      render and return 
+    end
+
+    if params[:id].nil? && params[:email].nil?
+      flash[:error] = "Email address or accound id is required. Please look again at your activation message."
+      render and return
+    end
     
+    @reader = params[:id] ? Reader.find(params[:id]) : Reader.find_by_email(params[:email])
     if @reader && @reader.activate!(params[:activation_code])
       self.current_reader = @reader
       flash[:notice] = "Thank you! Your account has been activated."
       redirect_to url_for(@reader)
     else
       flash[:error] = "Unable to activate your account. Please check activation code."
-      render
     end
   end
 

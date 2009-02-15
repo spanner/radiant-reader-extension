@@ -89,7 +89,6 @@ class Reader < ActiveRecord::Base
     define_method("send_#{message}_message".intern) { ReaderNotifier.send("deliver_#{message}".intern, self) }
   end
 
-
   protected
 
     def generate_activation_code

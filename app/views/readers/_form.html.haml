@@ -11,7 +11,7 @@
 
 %p{ :class => @reader.errors.on(:email) ? 'with_errors' : '' }
   %label{ :for => 'reader_email', :class => 'required' }
-    Your name
+    Your email address
   %br
   = f.text_field "email", :class => 'standard'
   - if @reader.errors.on(:email)

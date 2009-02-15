@@ -16,10 +16,10 @@ module ReadersHelper
     default_gravatar_options = {
       
     }
-    default_image_options = {
+    default_img_options = {
       
     }
-    image_tag user.gravatar_url(default_gravatar_options.merge(gravatar_options)), default_img_options.merge(img_options)
+    image_tag reader.gravatar_url(default_gravatar_options.merge(gravatar_options)), default_img_options.merge(img_options)
   end
   
 end
