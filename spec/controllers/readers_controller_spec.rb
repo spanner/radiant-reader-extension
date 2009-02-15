@@ -2,10 +2,16 @@ require File.dirname(__FILE__) + '/../spec_helper'
 ActionMailer::Base.delivery_method = :test  
 ActionMailer::Base.perform_deliveries = true  
 ActionMailer::Base.deliveries = []  
+Radiant::Config['readers.default_mail_from_address'] = "test@example.com"
+Radiant::Config['readers.default_mail_from_name'] = "test"
+Radiant::Config['site.title'] = 'Test Site'
+Radiant::Config['site.url'] = 'www.example.com'
+Radiant::Config['readers.layout'] = 'Main'
 
 describe ReadersController do
   dataset :readers
   dataset :users
+  dataset :reader_layouts
 
   it "should render the registration screen on get to new" do
     get :new
@@ -118,11 +124,10 @@ describe ReadersController do
 
   describe "with a reset password request" do
     it "should reject an unknown email address" do
-      post :password, :email => "normal@spanner.org"
-      
+      post :password, :email => "pope@spanner.org"
     end
     
-    describe "that is recognised" do
+    describe "with a recognised email address" do
       before do
         post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
         @reader = Reader.find_by_name('newuser')

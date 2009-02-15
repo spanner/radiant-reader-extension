@@ -1,10 +1,16 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 ActionMailer::Base.delivery_method = :test  
 ActionMailer::Base.perform_deliveries = true  
-ActionMailer::Base.deliveries = []  
+ActionMailer::Base.deliveries = []
+Radiant::Config['readers.default_mail_from_address'] = "test@example.com"
+Radiant::Config['readers.default_mail_from_name'] = "test"
+Radiant::Config['site.title'] = 'Test Site'
+Radiant::Config['site.url'] = 'www.example.com'
+Radiant::Config['readers.layout'] = 'Main'
 
 describe Reader do
   dataset :readers
+  dataset :reader_layouts
   
   before do
     @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password', :trusted => 1
@@ -77,7 +83,7 @@ describe Reader do
     @reader.save!
     message = ActionMailer::Base.deliveries.last
     message.should_not be_nil
-    message.subject.should == "Please activate your account"
+    message.subject.should =~ /activate/
     message.body.should =~ /#{@reader.name}/
     message.body.should =~ /#{@reader.login}/
     message.body.should =~ /#{@reader.current_password}/

@@ -23,7 +23,7 @@ class ReaderNotifier < ActionMailer::Base
       site = Page.current_site
       site_title = site.nil? ? Radiant::Config['site.title'] : site.name
       site_url = site.nil? ? Radiant::Config['site.url'] : site.base_domain
-      default_url_options[:host] = site_url
+      default_url_options[:host] = site_url || "www.example.com"
 
       @from = (site.nil? || site.mail_from_address.blank?) ? Radiant::Config['readers.default_mail_from_address'] : site.mail_from_address
       @content_type = 'text/plain'

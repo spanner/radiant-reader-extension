@@ -1,6 +1,7 @@
 class ReadersController < ApplicationController
   no_login_required
   before_filter :no_removing, :only => [:remove, :destroy]
+
   radiant_layout { |controller| controller.find_readers_layout }
 
   # I have no idea where this default is being overridden
@@ -140,6 +141,7 @@ class ReadersController < ApplicationController
   def logout
     cookies[:session_token] = { :expires => 1.day.ago }
     current_reader.forget_me
+    set_session_cookie
     flash[:notice] = "Goodbye #{current_reader.name}. You are now logged out"
     current_reader = nil
     redirect_to :back
