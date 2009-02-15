@@ -3,10 +3,10 @@
 %div.preferences_form
   %h1 
     Revise your account
-	%p
-	  Hello 
-	  = @reader.name
-	  If you want to make changes to your account, please first enter your current password. This is to stop some passing ruffian from making changes in your absence.
+  %p
+    Hello 
+    = @reader.name
+    If you want to make changes to your account, please first enter your current password. This is to stop some passing ruffian from making changes in your absence.
   - unless @reader.errors.empty?
     %p.haserror
       %strong Sorry: there were problems.
@@ -30,10 +30,10 @@
       or 
       link_to 'cancel', request.referer
   %p
-		= link_to gravatar(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
-		If you would like a picture to appear next to your messages, give yourself a 
-		= link_to "gravatar.", "http://www.gravatar.com/signup", :target => '_blank'
-		This is what appears for you at the moment.
+    = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
+    If you would like a picture to appear next to your messages, give yourself a 
+    = link_to "gravatar.", "http://www.gravatar.com/signup", :target => '_blank'
+    This is what appears for you at the moment.
 
 - content_for :breadcrumbs do 
   = link_to 'Home', '/'

@@ -14,7 +14,7 @@ class ReaderNotifier < ActionMailer::Base
   def password(reader)
     setup_email(reader)
     @subject += 'Reset your password'
-    @body[:confirmation_url] = reader_repassword_url(reader)
+    @body[:confirmation_url] = reader_repassword_url(:id => reader.id, :activation_code => reader.activation_code)
   end
 
   protected
