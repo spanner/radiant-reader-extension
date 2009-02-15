@@ -1,5 +1,27 @@
 = Reader
 
-Readers are signed-in users to whom you can grant privileges. They don't see the admin interface: this is a way to control access to pages and functionality on the public site.
+Readers are logged-in visitors to whom you can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site. 
 
-With this extension you get the basic machinery of registration, login and user-management (by the admin and by the users themselves). It's not much use by itself but it provides a common core for more useful added functionality: see also spanner's Forum extension for discussions and page comments, Groups extension for fine-grained page-access control and Downloads extension for secure (nginx-only) access-controlled file downloads.
+With this extension you get the basic machinery of registration, login and user-management (by the admin and by the users themselves). It's not much use by itself but it provides a common core for more interesting added functionality: see also spanner's Forum extension for discussions and page comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-only) access-controlled file downloads. More will follow.
+
+###Installation
+
+To install the reader extension, just run 
+ 
+	rake production db:migrate:extensions
+	rake production radiant:extensions:reader:update
+
+The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader admin layout (see below) and feel free to modify.
+
+###Configuration
+
+###Layouts
+
+###Reader and Multi_site
+
+###Using readers in other extensions
+
+###Author and copyright
+
+
+

@@ -44,7 +44,10 @@
   %label{ :for => 'reader_password', :class => 'required' }
     Password
   %span.formnote
-    at least five characters, please
+    - if @reader.new_record?
+      at least five characters, please
+    - else
+      leave these fields blank unless you want to change your password
   %br
   = password_field_tag "password", "", :class => 'standard'
   - if @reader.errors.on(:password)

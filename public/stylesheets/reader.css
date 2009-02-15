@@ -1,0 +1,98 @@
+/*
+
+cool grey 3: #cacac8
+cool grey 6: #afafaf
+cool grey 11: #4d4e53
+rubine red: #d1005d
+agreeable green: #5da454
+
+*/
+
+
+/***** friendly forms ********/
+
+form.friendly input.titular {
+  width: 95%;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.6em;
+  line-height: 1;
+  color: #4d4e53;
+	clear: both; 
+  border: 1px solid #afafaf;
+	padding: 5px;
+}
+
+form.friendly textarea, form.friendly select, form.friendly input.standard {
+  width: 95%;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2em;
+  line-height: 1;
+  color: #4d4e53;
+  border: 1px solid #8c8d8e;
+  padding: 5px;
+}
+
+form.friendly textarea {
+  line-height: 1.2;
+}
+
+span.formnote {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 75%;
+  color: #afafaf;
+}
+
+/***** input validation and error reporting ********/
+
+p.haserror {
+  color: #d1005d !important;
+}
+
+div.error-with-field {
+  display: inline;
+}
+
+small.error {
+  display: none;
+}
+
+p.with_errors {
+	border-left: 4px solid #d1005d;
+	margin-left: -16px;
+	padding-left: 12px;
+	color: #d1005d !important;
+}
+
+p.with_errors input, p.with_errors textarea {
+	border: 1px solid #d1005d !important;
+}
+
+p.with_errors label {
+	color: #d1005d !important;
+}
+
+/***** gravatars and other useful things ********/
+
+img.gravatar {
+  float: left;
+  margin: 0 10px 3px 0;
+  width: 128px;
+  width: 64px;
+  height: 64px;
+}
+
+img.thumbnail_gravatar {
+  float: left;
+  margin: 2px 10px 10px 0;
+  width: 32px;
+  height: 32px;
+}
+
+img.big_gravatar {
+  float: left;
+  margin: 8px 10px 4px 0;
+  width: 128px;
+  height: 128px;
+}
+
+
