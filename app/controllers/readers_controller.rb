@@ -13,7 +13,7 @@ class ReadersController < ApplicationController
   
   def show
     redirect_to reader_login_url and return unless current_reader
-    @reader = params[:id] ? Reader.find(params[:id]) : current_reader
+    @reader = Reader.find(params[:id])
   end
 
   alias_method :me, :show
@@ -30,13 +30,11 @@ class ReadersController < ApplicationController
   
   def create
     @reader = Reader.new(params[:reader])
-    @reader.site = current_site if Radiant::Config['readers.site_based']
-    @reader.login = @reader.email if @reader.login.blank?
     @reader.password = params[:password]
     @reader.password_confirmation = params[:password_confirmation]
     @reader.current_password = params[:password]
     if (@reader.valid?)
-      @reader.save
+      @reader.save!
       self.current_reader = @reader
       redirect_to :action => 'activate'
     else
@@ -55,7 +53,7 @@ class ReadersController < ApplicationController
       flash[:error] = "Email address or accound id is required. Please look again at your activation message."
       render and return
     end
-    
+
     @reader = params[:id] ? Reader.find(params[:id]) : Reader.find_by_email(params[:email])
     if @reader && @reader.activate!(params[:activation_code])
       self.current_reader = @reader
@@ -151,23 +149,7 @@ class ReadersController < ApplicationController
     announce_cannot_delete_readers
     redirect_to admin_readers_url
   end
-  
-  def remove 
-  end
-
-  def destroy
-  end
-  
-  def find_readers_layout
-    if Radiant::Config['readers.site_based'] && current_site
-      current_site.reader_layout_or_default
-    elsif default_layout = Radiant::Config['readers.layout']
-      default_layout
-    else
-      Layout.find(:first).name
-    end
-  end
-  
+      
   private
   
     def announce_cannot_delete_readers

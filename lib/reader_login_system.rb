@@ -7,8 +7,21 @@ module ReaderLoginSystem
       alias_method_chain :login_from_cookie, :readers
       alias_method_chain :set_session_cookie, :readers
     } 
+    base.extend ClassMethods
     super
   end
+
+  def find_readers_layout
+    if Radiant::Config['readers.site_based'] && current_site
+      current_site.reader_layout_or_default
+    elsif default_layout = Radiant::Config['reader.layout']
+      default_layout
+    else
+      Layout.find(:first).name
+    end
+  end
+
+  # this should all look familiar
 
   protected
     
@@ -25,6 +38,24 @@ module ReaderLoginSystem
         session['reader_id'] = nil
       end
       @current_reader
+    end
+
+    def authenticate_reader
+      login_from_cookie
+      if current_reader
+        true
+      else
+        respond_to do |format|
+          format.html { 
+            session[:return_to] = request.request_uri
+            redirect_to reader_login_url
+          }
+          format.js {
+            render :template => 'readers/login', :layout => false
+          }
+        end
+        false
+      end
     end
      
     # it is quite possible to be logged in both as user and reader
@@ -52,9 +83,23 @@ module ReaderLoginSystem
   private
 
     def set_current_reader
-
+      Reader.current_reader = current_reader
     end
 
+  module ClassMethods
+    def no_reader_required
+      skip_before_filter :authenticate_reader
+    end
+
+    def reader_required?
+      filter_chain.any? {|f| f.method == :authenticate_reader }
+    end
+
+    def reader_required
+      before_filter :authenticate_reader
+    end
+    
+  end
 end
 
 

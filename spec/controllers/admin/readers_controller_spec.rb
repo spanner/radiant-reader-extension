@@ -4,6 +4,10 @@ describe Admin::ReadersController do
   dataset :users
   dataset :readers
   
+  before do
+    @site = current_site = Reader.current_site = Page.current_site = sites(:mysite)
+  end
+
   it "should be a ResourceController" do
     controller.should be_kind_of(Admin::ResourceController)
   end
@@ -13,7 +17,7 @@ describe Admin::ReadersController do
   end
 
   { 
-    :get => [:index, :new, :edit, :remove],
+    :get => [:index, :new, :edit],
     :post => [:create],
     :put => [:update],
     :delete => [:destroy]

@@ -28,7 +28,7 @@
     %p
       = submit_tag "Update your account"
       or 
-      link_to 'cancel', request.referer
+      = link_to 'cancel', request.referer
   %p
     = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
     If you would like a picture to appear next to your messages, give yourself a 

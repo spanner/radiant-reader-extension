@@ -2,17 +2,17 @@ require File.dirname(__FILE__) + '/../spec_helper'
 ActionMailer::Base.delivery_method = :test  
 ActionMailer::Base.perform_deliveries = true  
 ActionMailer::Base.deliveries = []  
-Radiant::Config['readers.default_mail_from_address'] = "test@example.com"
-Radiant::Config['readers.default_mail_from_name'] = "test"
-Radiant::Config['site.title'] = 'Test Site'
-Radiant::Config['site.url'] = 'www.example.com'
-Radiant::Config['readers.layout'] = 'Main'
 
 describe ReadersController do
+  dataset :reader_sites
   dataset :readers
-  dataset :users
   dataset :reader_layouts
-
+  
+  before do
+    controller.stub!(:request).and_return(request)
+    controller.set_current_site
+  end
+    
   it "should render the registration screen on get to new" do
     get :new
     response.should be_success
@@ -21,11 +21,11 @@ describe ReadersController do
   
   describe "with a registration" do
     before do
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
-      @reader = Reader.find_by_name('newuser')
+      post :create, :reader => {:name => "registering user", :email => 'registrant@spanner.org'}, :password => "password", :password_confirmation => "password"
+      @reader = Reader.find_by_name('registering user')
     end
     
-    it "should create a new user" do
+    it "should create a new reader" do
       @reader.should_not be_nil
     end
 
@@ -33,11 +33,15 @@ describe ReadersController do
       controller.send(:current_reader).should == @reader
     end
 
-    it "should default to email address as login" do
+    it "should have defaulted to email address as login" do
       @reader.login.should == @reader.email
     end
 
-    it "should redirect to activate when register is successful" do
+    it "should have assigned the new reader to the current site" do
+      @reader.site.should == sites(:test)
+    end
+
+    it "should redirect to activate" do
       response.should be_redirect
       response.should redirect_to(:action => 'activate')
     end
@@ -52,28 +56,28 @@ describe ReadersController do
   describe "with a correct activation" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
-      @reader = Reader.find_by_name('newuser')
-      post :activate, :email => @reader.email, :activation_code => @reader.activation_code
-      @reader.reload
+      post :create, {:reader => {:name => "activating user", :email => 'activating@spanner.org'}, :password => "password", :password_confirmation => "password"}
+      @newreader = Reader.find_by_name('activating user')
+      post :activate, :email => @newreader.email, :activation_code => @newreader.activation_code
+      @reader = Reader.find_by_name('activating user')
     end
 
     it "should activate the reader" do
       @reader.activated?.should be_true
-      @reader.activated_at.should be_close((Time.zone.now).utc, 1.minute) # sometimes specs are slow
+      @reader.activated_at.should be_close((Time.now).utc, 1.minute) # sometimes specs are slow
     end
 
     it "should redirect to the self page" do
       response.should be_redirect
-      response.should redirect_to(:action => 'show', :id => @reader.id)
+      response.should redirect_to(:action => 'show', :id => @newreader.id)
     end
   end
 
   describe "with an incorrect activation" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
-      @reader = Reader.find_by_name('newuser')
+      post :create, {:reader => {:name => "wrongly activating user", :email => 'notactivating@spanner.org'}, :password => "password", :password_confirmation => "password"}
+      @reader = Reader.find_by_name('wrongly activating user')
       post :activate, :email => @reader.email, :activation_code => 'down periscope'
     end
     
@@ -95,9 +99,9 @@ describe ReadersController do
   describe "with a correct login" do
     before do
       request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-      post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
-      @reader = Reader.find_by_email('newuser@spanner.org')
-      post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
+      post :create, :reader => {:name => "logging in user", :email => 'loggingin@spanner.org'}, :password => "password", :password_confirmation => "password"
+      @reader = Reader.find_by_email('loggingin@spanner.org')
+      post :login, :reader => {:login => "loggingin@spanner.org", :password => "password"}
     end
     
     it "should set the current reader" do
@@ -110,12 +114,14 @@ describe ReadersController do
     end
   end
   
-  it "should render the login template when login fails" do
-    post :login, :reader => {:login => "normal", :password => "wrong"}
-    response.should render_template("login")
-    flash[:error].should_not be_nil
+  describe "with an incorrect login" do
+    it "should render the login template" do
+      post :login, :reader => {:login => "normal", :password => "wrong"}
+      response.should render_template("login")
+      flash[:error].should_not be_nil
+    end
   end
-
+  
   it "should render the reset password screen on get to password" do
     get :password
     response.should be_success
@@ -129,12 +135,11 @@ describe ReadersController do
     
     describe "with a recognised email address" do
       before do
-        post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
-        @reader = Reader.find_by_name('newuser')
-        post :activate, :email => @reader.email, :activation_code => @reader.activation_code
-        @reader.reload
-        post :password, :email => @reader.email
-        @reader.reload
+        post :create, :reader => {:name => "passwording user", :email => 'pwing@spanner.org'}, :password => "password", :password_confirmation => "password"
+        reader = Reader.find_by_name('passwording user')
+        post :activate, :email => reader.email, :activation_code => reader.activation_code
+        post :password, :email => reader.email
+        @reader = Reader.find_by_name('passwording user')
       end
 
       it "should create a provisional password" do
@@ -150,8 +155,8 @@ describe ReadersController do
 
     describe "that is for an account not yet activated" do
       before do
-        post :create, :reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"
-        @reader = Reader.find_by_name('newuser')
+        post :create, :reader => {:name => "inactive user", :email => 'notactivated@spanner.org'}, :password => "password", :password_confirmation => "password"
+        @reader = Reader.find_by_name('inactive user')
         post :password, :email => @reader.email
       end
 
@@ -169,19 +174,18 @@ describe ReadersController do
   
   describe "with a reset password confirmation" do
     before do
-      post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
-      @reader = Reader.find_by_name('newuser')
-      post :activate, :email => @reader.email, :activation_code => @reader.activation_code
-      @reader.reload
-      post :password, :email => @reader.email
-      @reader.reload
+      post :create, {:reader => {:name => "repasswording user", :email => 'repasswording@spanner.org'}, :password => "password", :password_confirmation => "password"}
+      reader = Reader.find_by_name('repasswording user')
+      post :activate, :email => reader.email, :activation_code => reader.activation_code
+      post :password, :email => reader.email
+      @reader = Reader.find_by_name('repasswording user')
       @newpw = @reader.provisional_password
     end
 
     describe "that is correct" do
       before do
         post :repassword, :id => @reader.id, :activation_code => @reader.activation_code
-        @reader.reload
+        @reader = Reader.find_by_name('repasswording user')
       end
     
       it "should reset the password" do
@@ -220,46 +224,49 @@ describe ReadersController do
   describe "to the browser" do
     describe "who has logged in" do
       before do
-        request.env["HTTP_REFERER"] = 'http://test.host/referer!'
-        post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
-        @reader = Reader.find_by_email('newuser@spanner.org')
-        post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
-        @reader.reload
-        @read = readers(:industrious)
+        login_as_reader(:normal)
       end
   
-      it "should show another reader's page" do 
-        get :show, :id => @read.id
+      it "should show another reader page" do 
+        get :show, :id => reader_id(:idle)
         response.should be_success
         response.should render_template("show")
       end
 
+      it "should raise a Not Found error when asked for a reader from another site" do 
+        lambda { 
+          get :show, :id => reader_id(:othersite) 
+        }.should raise_error(ActiveRecord::RecordNotFound)
+      end
+
       it "should refuse to show the edit page for another reader" do 
-        get :edit, :id => @read.id
+        get :edit, :id => reader_id(:idle)
         response.should be_success
         flash[:error].should =~ /another person/
       end
 
       it "should not remove this reader" do 
-        get :remove, :id => @reader.id
+        delete :destroy, :id => reader_id(:normal)
         response.should be_redirect
-        Reader.find(@reader.id).should_not be_nil
+        response.should redirect_to(admin_readers_url)
+        Reader.find(reader_id(:normal)).should_not be_nil
       end
 
       it "should not remove another reader" do 
-        get :remove, :id => @read.id
+        delete :destroy, :id => reader_id(:idle)
         response.should be_redirect
-        Reader.find(@read.id).should_not be_nil
+        response.should redirect_to(admin_readers_url)
+        Reader.find(reader_id(:idle)).should_not be_nil
       end
     end
 
     describe "who has not logged in" do
       before do
-        @read = readers(:industrious)
+        logout_reader
       end
   
-      it "should not show a reader's page" do 
-        get :show, :id => @read.id
+      it "should not show a reader page" do 
+        get :show, :id => reader_id(:idle)
         response.should be_redirect
         response.should redirect_to(:action => 'login')
       end
@@ -272,13 +279,12 @@ describe ReadersController do
       post :create, {:reader => {:name => "newuser", :email => 'newuser@spanner.org'}, :password => "password", :password_confirmation => "password"}
       @reader = Reader.find_by_email('newuser@spanner.org')
       post :login, :reader => {:login => "newuser@spanner.org", :password => "password"}
-      # @reader.reload
     end
 
     describe "that includes the correct password" do
       before do
-        post :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'}
-        @reader.reload
+        put :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'}
+        @reader = Reader.find_by_email('newuser@spanner.org')
       end
       
       it "should update the reader" do 
@@ -311,8 +317,8 @@ describe ReadersController do
 
     describe "that does not validate" do
       before do
-        post :update, {:reader => {:id => @reader.id, :name => "New Name", :email => 'invalid'}, :current_password => 'password'}
-        @reader.reload
+        post :update, {:reader => {:id => @reader.id, :name => "New Name", :login => 'I'}, :current_password => 'password'}
+        @reader = Reader.find_by_email('newuser@spanner.org')
       end
 
       it "should not update the reader" do 

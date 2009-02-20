@@ -1,8 +1,8 @@
 = Reader
 
-Readers are logged-in visitors to whom you can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site. 
+Readers are logged-in visitors to whom you can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. A person can have both user and reader logins, and the administrator may find it useful to do just that.
 
-With this extension you get the basic machinery of registration, login and user-management (by the admin and by the users themselves). It's not much use by itself but it provides a common core for more interesting added functionality: see also spanner's Forum extension for discussions and page comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-only) access-controlled file downloads. More will follow.
+With this extension you get the basic machinery of registration, login and user-management (by admin and by the users themselves). It's not much use by itself but it provides a common core for more interesting added functionality: see (soon) spanner's Forum extension for discussions and page comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-only) access-controlled file downloads. More will follow.
 
 ###Installation
 
@@ -11,17 +11,43 @@ To install the reader extension, just run
 	rake production db:migrate:extensions
 	rake production radiant:extensions:reader:update
 
-The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader admin layout (see below) and feel free to modify.
+The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and feel free to modify.
 
 ###Configuration
 
+The reader extension likes you to set a few configuration options:
+
+Radiant::Config['readers.default_mail_from_name'] is the sender's name at the bottom of the various email messages that get sent out
+Radiant::Config['readers.default_mail_from_address'] is the address from which those messages appear to come
+Radiant::Config['readers.default_layout'] is the name of the radiant layout you would like to use for reader administration pages. The default is otherwise 'Main'
+Radiant::Config['site.title'] will appear in email messages
+Radiant::Config['site.url'] will appear in links in email messages
+
+These are all prefixed 'default_' because if you're using Multi_site they're likely to be overridden by site-specific settings. If you have set a default site, these settings should be unnecessary.
+
 ###Layouts
+
+We use the very excellent share_layouts extension to wrap the layout of your public site around the administrative pages produced by the reader extension. The details of the layout are up to you: as long as it calls <r:content /> at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful.
+
+To indicate which layout you would like to use, set the Radiant::Config['readers.default_layout'] value. 
 
 ###Reader and Multi_site
 
+If you're using multi_site then reader will notice: readers will belong_to the site that they register with, and instead of global configuration values we'll get most of our bits of text from site attributes. 
+
+At the moment this requires the use of my fork of multi_site (at http://github.com/wrross/radiant-multi-site-extension). It's a minor change that makes available an ApplicationController.current_site method and adds a couple of useful fields to the site model including 'reader_layout', which determines for each site the layout used for reader pages.
+
+There are all sorts of scoping and validation issues that I haven't dealt with yet, but I'm getting on to that next.
+
 ###Using readers in other extensions
+
+...is the whole point. The readers admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages. 
+
+I have half a dozen other extensions to publish over the next week or two. By the time I've finished doing that I should have a pretty good idea of what to write here...
 
 ###Author and copyright
 
-
+Copyright spanner ltd 2007-9.
+Released under the same terms as Rails.
+Contact will at spanner.org
 

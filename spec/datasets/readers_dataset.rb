@@ -1,15 +1,18 @@
 class ReadersDataset < Dataset::Base
-  
+  uses :reader_sites
+    
   def load
     create_reader "Normal"
     create_reader "Idle"
-    create_reader "Industrious"
-    create_reader "Inactive"
+    create_reader "Activated"
+    create_reader "Inactive", :activated_at => nil
+    create_reader "Othersite", :site => sites(:yoursite)
   end
   
   helpers do
     def create_reader(name, attributes={})
-      create_record :reader, name.symbolize, reader_attributes(attributes.update(:name => name))
+      attributes = reader_attributes(attributes.update(:name => name))
+      reader = create_model Reader, name.symbolize, attributes
     end
     
     def reader_attributes(attributes={})
@@ -18,8 +21,10 @@ class ReadersDataset < Dataset::Base
       attributes = { 
         :name => name,
         :email => "#{symbol}@spanner.org", 
-        :login => symbol.to_s,
-        :password => "password"
+        :password => "password", 
+        :password_confirmation => "password",
+        :site => sites(:test),
+        :activated_at => Time.now.utc
       }.merge(attributes)
       attributes
     end
@@ -29,14 +34,13 @@ class ReadersDataset < Dataset::Base
       reader_attributes(attributes).update(:password => password, :password_confirmation => password)
     end
     
-    def login_as(user)
+    def login_as_reader(reader)
       login_reader = reader.is_a?(Reader) ? reader : readers(reader)
-      flunk "Can't login as non-existing reader #{reader.to_s}." unless login_reader
       request.session['reader_id'] = login_reader.id
       login_reader
     end
     
-    def logout
+    def logout_reader
       request.session['reader_id'] = nil
     end
   end

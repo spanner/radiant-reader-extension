@@ -1,6 +1,4 @@
 unless defined? RADIANT_ROOT
-  ENV["RAILS_ENV"] = "test"
-
   case
   when ENV["RADIANT_ENV_FILE"]
     require ENV["RADIANT_ENV_FILE"]
