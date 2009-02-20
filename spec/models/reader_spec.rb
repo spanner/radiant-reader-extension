@@ -14,7 +14,7 @@ describe Reader do
   dataset :reader_sites
   
   before do  # we need associations
-    @site = Reader.current_site = Page.current_site = sites(:test)
+    @site = Page.current_site = sites(:test)
     @existing_reader = readers(:normal)
   end
   

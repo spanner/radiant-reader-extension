@@ -218,132 +218,132 @@ a {
 </div>
 <div class="example_group">
   <dl>
-  <dt id="example_group_6">Admin::ReadersController</dt>
+  <dt id="example_group_6">Reader-extended site</dt>
     <script type="text/javascript">moveProgressBar('7.2');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to update action if you are not an admin</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should be able to set its own layout</span></dd>
     <script type="text/javascript">moveProgressBar('8.2');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to update action if you are an admin</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should default to the globally configured layout</span></dd>
     <script type="text/javascript">moveProgressBar('9.2');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the update action</span></dd>
-    <script type="text/javascript">moveProgressBar('10.3');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to edit action if you are not an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('11.3');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to edit action if you are an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('12.3');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the edit action</span></dd>
-    <script type="text/javascript">moveProgressBar('13.4');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to new action if you are not an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('14.4');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to new action if you are an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('15.4');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the new action</span></dd>
-    <script type="text/javascript">moveProgressBar('16.4');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to index action if you are not an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('17.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to index action if you are an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('18.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the index action</span></dd>
-    <script type="text/javascript">moveProgressBar('19.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to destroy action if you are not an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('20.6');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to destroy action if you are an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('21.6');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the destroy action</span></dd>
-    <script type="text/javascript">moveProgressBar('22.6');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should deny you access to create action if you are not an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('23.7');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to create action if you are an admin</span></dd>
-    <script type="text/javascript">moveProgressBar('24.7');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should require login to access the create action</span></dd>
-    <script type="text/javascript">moveProgressBar('25.7');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should handle Readers</span></dd>
-    <script type="text/javascript">moveProgressBar('26.8');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should be a ResourceController</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should have a layout association</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_7">Reader whenm a new password is requested</dt>
-    <script type="text/javascript">moveProgressBar('27.8');</script>
+    <script type="text/javascript">moveProgressBar('10.3');</script>
     <dd class="spec passed"><span class="passed_spec_name">should change the password with correct confirmation</span></dd>
-    <script type="text/javascript">moveProgressBar('28.8');</script>
+    <script type="text/javascript">moveProgressBar('11.3');</script>
     <dd class="spec passed"><span class="passed_spec_name">should not change the password without correct confirmation</span></dd>
-    <script type="text/javascript">moveProgressBar('29.8');</script>
+    <script type="text/javascript">moveProgressBar('12.3');</script>
     <dd class="spec passed"><span class="passed_spec_name">should send out a confirmation email</span></dd>
-    <script type="text/javascript">moveProgressBar('30.9');</script>
+    <script type="text/javascript">moveProgressBar('13.4');</script>
     <dd class="spec passed"><span class="passed_spec_name">should set an activation code</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_8">Reader on login</dt>
-    <script type="text/javascript">moveProgressBar('31.9');</script>
+    <script type="text/javascript">moveProgressBar('14.4');</script>
     <dd class="spec passed"><span class="passed_spec_name">should not authenticate if it does not exist</span></dd>
-    <script type="text/javascript">moveProgressBar('32.9');</script>
+    <script type="text/javascript">moveProgressBar('15.4');</script>
     <dd class="spec passed"><span class="passed_spec_name">should not authenticate with bad password</span></dd>
-    <script type="text/javascript">moveProgressBar('34.0');</script>
+    <script type="text/javascript">moveProgressBar('16.4');</script>
     <dd class="spec passed"><span class="passed_spec_name">should authenticate</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_9">Reader on activation</dt>
-    <script type="text/javascript">moveProgressBar('35.0');</script>
+    <script type="text/javascript">moveProgressBar('17.5');</script>
     <dd class="spec passed"><span class="passed_spec_name">should activate itself with confirmation</span></dd>
-    <script type="text/javascript">moveProgressBar('36.0');</script>
+    <script type="text/javascript">moveProgressBar('18.5');</script>
     <dd class="spec passed"><span class="passed_spec_name">should not activate itself without confirmation</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_10">Reader on update</dt>
-    <script type="text/javascript">moveProgressBar('37.1');</script>
+    <script type="text/javascript">moveProgressBar('19.5');</script>
     <dd class="spec passed"><span class="passed_spec_name">should be puttable in the doghouse</span></dd>
-    <script type="text/javascript">moveProgressBar('38.1');</script>
+    <script type="text/javascript">moveProgressBar('20.6');</script>
     <dd class="spec passed"><span class="passed_spec_name">should save new password if different</span></dd>
-    <script type="text/javascript">moveProgressBar('39.1');</script>
+    <script type="text/javascript">moveProgressBar('21.6');</script>
     <dd class="spec passed"><span class="passed_spec_name">should keep existing password if an empty password is supplied</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_11">Reader on creation</dt>
-    <script type="text/javascript">moveProgressBar('40.2');</script>
+    <script type="text/javascript">moveProgressBar('22.6');</script>
     <dd class="spec passed"><span class="passed_spec_name">should default to trusted status</span></dd>
-    <script type="text/javascript">moveProgressBar('41.2');</script>
+    <script type="text/javascript">moveProgressBar('23.7');</script>
     <dd class="spec passed"><span class="passed_spec_name">should send out an activation email</span></dd>
-    <script type="text/javascript">moveProgressBar('42.2');</script>
+    <script type="text/javascript">moveProgressBar('24.7');</script>
     <dd class="spec passed"><span class="passed_spec_name">should await activation</span></dd>
-    <script type="text/javascript">moveProgressBar('43.2');</script>
+    <script type="text/javascript">moveProgressBar('25.7');</script>
     <dd class="spec passed"><span class="passed_spec_name">should create a salt when encrypting the password</span></dd>
-    <script type="text/javascript">moveProgressBar('44.3');</script>
+    <script type="text/javascript">moveProgressBar('26.8');</script>
     <dd class="spec passed"><span class="passed_spec_name">should save password encrypted</span></dd>
-    <script type="text/javascript">moveProgressBar('45.3');</script>
+    <script type="text/javascript">moveProgressBar('27.8');</script>
     <dd class="spec passed"><span class="passed_spec_name">should belong to the current site</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
   <dt id="example_group_12">Reader on validation</dt>
-    <script type="text/javascript">moveProgressBar('46.3');</script>
+    <script type="text/javascript">moveProgressBar('28.8');</script>
     <dd class="spec passed"><span class="passed_spec_name">should confirm the password by default</span></dd>
-    <script type="text/javascript">moveProgressBar('47.4');</script>
+    <script type="text/javascript">moveProgressBar('29.8');</script>
     <dd class="spec passed"><span class="passed_spec_name">should require a unique login</span></dd>
-    <script type="text/javascript">moveProgressBar('48.4');</script>
+    <script type="text/javascript">moveProgressBar('30.9');</script>
     <dd class="spec passed"><span class="passed_spec_name">should require a valid email address</span></dd>
-    <script type="text/javascript">moveProgressBar('49.4');</script>
+    <script type="text/javascript">moveProgressBar('31.9');</script>
     <dd class="spec passed"><span class="passed_spec_name">should require a name</span></dd>
   </dl>
 </div>
 <div class="example_group">
   <dl>
-  <dt id="example_group_13">Reader-extended site</dt>
+  <dt id="example_group_13">Admin::ReadersController</dt>
+    <script type="text/javascript">moveProgressBar('32.9');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to update action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('34.0');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to update action if you are an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('35.0');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the update action</span></dd>
+    <script type="text/javascript">moveProgressBar('36.0');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to edit action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('37.1');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to edit action if you are an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('38.1');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the edit action</span></dd>
+    <script type="text/javascript">moveProgressBar('39.1');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to new action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('40.2');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to new action if you are an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('41.2');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the new action</span></dd>
+    <script type="text/javascript">moveProgressBar('42.2');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to index action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('43.2');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to index action if you are an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('44.3');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the index action</span></dd>
+    <script type="text/javascript">moveProgressBar('45.3');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to destroy action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('46.3');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to destroy action if you are an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('47.4');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the destroy action</span></dd>
+    <script type="text/javascript">moveProgressBar('48.4');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should deny you access to create action if you are not an admin</span></dd>
+    <script type="text/javascript">moveProgressBar('49.4');</script>
+    <dd class="spec passed"><span class="passed_spec_name">should allow you to access to create action if you are an admin</span></dd>
     <script type="text/javascript">moveProgressBar('50.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should be able to set its own layout</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should require login to access the create action</span></dd>
     <script type="text/javascript">moveProgressBar('51.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should default to the globally configured layout</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should handle Readers</span></dd>
     <script type="text/javascript">moveProgressBar('52.5');</script>
-    <dd class="spec passed"><span class="passed_spec_name">should have a layout association</span></dd>
+    <dd class="spec passed"><span class="passed_spec_name">should be a ResourceController</span></dd>
   </dl>
 </div>
 <div class="example_group">
@@ -538,7 +538,7 @@ a {
     <dd class="spec passed"><span class="passed_spec_name">should render the registration screen on get to new</span></dd>
   </dl>
 </div>
-<script type="text/javascript">document.getElementById('duration').innerHTML = "Finished in <strong>3.435803 seconds</strong>";</script>
+<script type="text/javascript">document.getElementById('duration').innerHTML = "Finished in <strong>2.437519 seconds</strong>";</script>
 <script type="text/javascript">document.getElementById('totals').innerHTML = "97 examples, 0 failures";</script>
 </div>
 </div>

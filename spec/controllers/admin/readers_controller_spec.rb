@@ -5,7 +5,7 @@ describe Admin::ReadersController do
   dataset :readers
   
   before do
-    @site = current_site = Reader.current_site = Page.current_site = sites(:mysite)
+    @site = current_site = Page.current_site = sites(:mysite)
   end
 
   it "should be a ResourceController" do

@@ -283,7 +283,7 @@ describe ReadersController do
 
     describe "that includes the correct password" do
       before do
-        put :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'password'}
+        put :update, {:id => @reader.id, :reader => {:name => "New Name"}, :current_password => 'password'}
         @reader = Reader.find_by_email('newuser@spanner.org')
       end
       
@@ -300,7 +300,7 @@ describe ReadersController do
 
     describe "that does not include the correct password" do
       before do
-        post :update, {:reader => {:id => @reader.id, :name => "New Name"}, :current_password => 'wrongo'}
+        put :update, {:id => @reader.id, :reader => {:name => "New Name"}, :current_password => 'wrongo'}
         # @reader.reload
       end
 
@@ -317,7 +317,7 @@ describe ReadersController do
 
     describe "that does not validate" do
       before do
-        post :update, {:reader => {:id => @reader.id, :name => "New Name", :login => 'I'}, :current_password => 'password'}
+        put :update, {:id => @reader.id, :reader => {:name => "New Name", :login => 'I'}, :current_password => 'password'}
         @reader = Reader.find_by_email('newuser@spanner.org')
       end
 

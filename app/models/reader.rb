@@ -19,7 +19,7 @@ class Reader < ActiveRecord::Base
   validates_length_of :email, :maximum => 255, :allow_nil => true, :message => '%d-character limit'
   validates_numericality_of :id, :only_integer => true, :allow_nil => true, :message => 'must be a number'
 
-  cattr_accessor :current_site
+  # cattr_reader :current_site
   cattr_accessor :current_reader
   attr_writer :confirm_password
   attr_accessor :current_password   # used for authentication on update and to mention password in initial email
@@ -41,6 +41,14 @@ class Reader < ActiveRecord::Base
   
   def sha1(phrase)
     Digest::SHA1.hexdigest("--#{salt}--#{phrase}--")
+  end
+
+  def self.current_site
+    @@current_site ||= Page.current_site
+  end
+  
+  def current_site
+    @@current_site ||= Page.current_site
   end
   
   def self.authenticate(login, password)
