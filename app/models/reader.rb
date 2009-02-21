@@ -1,15 +1,13 @@
 require 'digest/sha1'
 
 class Reader < ActiveRecord::Base
-  
+  is_site_scoped
   is_gravtastic 
-  belongs_to :site
+  cattr_accessor :current_reader
   
   validates_uniqueness_of :login, :message => "already in use", :scope => :site_id
   validates_uniqueness_of :email, :message => "already in use", :scope => :site_id
   validates_confirmation_of :password, :message => 'must match confirmation', :if => :confirm_password?
-  validates_presence_of :site, :message => 'not set'
-  validates_associated :site, :message => 'set but not valid'
   validates_presence_of :name, :login, :email, :message => 'required'
   validates_presence_of :password, :password_confirmation, :message => 'required', :if => :new_record?
   validates_format_of :email, :message => 'invalid email address', :allow_nil => true, :with => /^$|^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
@@ -19,38 +17,19 @@ class Reader < ActiveRecord::Base
   validates_length_of :email, :maximum => 255, :allow_nil => true, :message => '%d-character limit'
   validates_numericality_of :id, :only_integer => true, :allow_nil => true, :message => 'must be a number'
 
-  # cattr_reader :current_site
-  cattr_accessor :current_reader
   attr_writer :confirm_password
-  attr_accessor :current_password   # used for authentication on update and to mention password in initial email
+  attr_accessor :current_password   # used for authentication on update and (since it's there) to mention password in initial email
 
-  before_validation_on_create :set_site
   before_validation :set_login
   before_create :generate_activation_code
   before_create :encrypt_password
   after_create :send_activation_message
   before_update :encrypt_password_unless_empty_or_unchanged
 
-  class << self
-    def find_with_site(*args)
-      # raise(MultiSite::SiteNotFound, "no site found", caller) unless current_site
-      current_site.readers.find_without_site(*args)
-    end
-    alias_method_chain :find, :site
-  end
-  
   def sha1(phrase)
     Digest::SHA1.hexdigest("--#{salt}--#{phrase}--")
   end
 
-  def self.current_site
-    @@current_site ||= Page.current_site
-  end
-  
-  def current_site
-    @@current_site ||= Page.current_site
-  end
-  
   def self.authenticate(login, password)
     reader = find_by_login(login)
     if reader && reader.authenticated?(password)
@@ -112,15 +91,11 @@ class Reader < ActiveRecord::Base
   ['activation', 'welcome', 'account', 'password'].each do |message|
     define_method("send_#{message}_message".intern) { ReaderNotifier.send("deliver_#{message}".intern, self) }
   end
-
+  
   protected
 
     def generate_activation_code
       self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
-    end
-
-    def set_site
-      self.site ||= current_site
     end
 
     def set_login
@@ -140,7 +115,7 @@ class Reader < ActiveRecord::Base
     end
     
     def encrypt_password_unless_empty_or_unchanged
-      user = self.class.find_without_site(self.id)
+      user = self.class.find(self.id)
       case password
       when ''
         self.password = user.password

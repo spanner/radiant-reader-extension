@@ -308,11 +308,10 @@ describe ReadersController do
         @reader.name.should == 'newuser'
       end
 
-      it "should rerender the edit form" do 
+      it "should re-render the edit form" do 
         response.should be_success
         response.should render_template("edit")
       end
-
     end
 
     describe "that does not validate" do
@@ -325,7 +324,7 @@ describe ReadersController do
         @reader.name.should == 'newuser'
       end
 
-      it "should rerender the edit form" do 
+      it "should re-render the edit form" do 
         response.should be_success
         response.should render_template("edit")
       end

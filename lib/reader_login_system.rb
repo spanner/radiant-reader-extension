@@ -12,12 +12,12 @@ module ReaderLoginSystem
   end
 
   def find_readers_layout
-    if Radiant::Config['readers.site_based'] && current_site
+    if current_site
       current_site.reader_layout_or_default
     elsif default_layout = Radiant::Config['reader.layout']
       default_layout
-    else
-      Layout.find(:first).name
+    elsif any_layout = Layout.find(:first)
+      any_layout.name
     end
   end
 
