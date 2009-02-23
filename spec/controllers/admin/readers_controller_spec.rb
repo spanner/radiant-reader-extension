@@ -4,10 +4,6 @@ describe Admin::ReadersController do
   dataset :users
   dataset :readers
   
-  before do
-    @site = current_site = Page.current_site = sites(:mysite)
-  end
-
   it "should be a ResourceController" do
     controller.should be_kind_of(Admin::ResourceController)
   end

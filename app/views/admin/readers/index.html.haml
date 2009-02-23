@@ -1,6 +1,6 @@
-%h1 Readers
-
 = render_region :top 
+
+%h1 Readers
 
 %table#readers.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
   %thead
@@ -25,7 +25,7 @@
             %td.roles= reader.description
           - tbody.modify_cell do
             %td.remove
-              = link_to(image('remove', :alt => 'Remove User'), remove_admin_user_url(user)) 
+              = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 
 
 - render_region :bottom do |bottom|
   - bottom.new_button do

@@ -22,7 +22,6 @@ class CreateReaders < ActiveRecord::Migration
       t.column :activated_at, :datetime
       # t.column :lock_version, :integer, :default => 0
     end
-    add_index :readers, ["login"], :name => "login", :unique => true
     add_index :readers, ["session_token"], :name => "session_token"
   end
 

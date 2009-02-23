@@ -13,13 +13,7 @@ module ReadersHelper
   end
   
   def gravatar_for(reader, gravatar_options={}, img_options ={})
-    default_gravatar_options = {
-      
-    }
-    default_img_options = {
-      
-    }
-    image_tag reader.gravatar_url(default_gravatar_options.merge(gravatar_options)), default_img_options.merge(img_options)
+    image_tag reader.gravatar_url(gravatar_options), img_options
   end
   
 end

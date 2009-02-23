@@ -24,7 +24,7 @@ class ReaderExtension < Radiant::Extension
     
     map.resources :readers
 
-    map.namespace :admin do |admin|
+    map.namespace :admin, :member => { :remove => :get } do |admin|
       admin.resources :readers
     end
     
@@ -36,6 +36,8 @@ class ReaderExtension < Radiant::Extension
     Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions
     Radiant::Config['readers.default_layout'] = "Main"
     Site.send :include, ReaderSite
+
+    admin.readers.index.add :top, "site_subnav"
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   
