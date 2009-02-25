@@ -9,6 +9,7 @@ class ReadersController < ApplicationController
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
+    flash[:notice] = "Herrroooo!"
   end
   
   def show
@@ -25,8 +26,8 @@ class ReadersController < ApplicationController
   end
   
   def edit
-    @reader = current_reader
-    flash[:error] = "you can't edit another person's account" if params[:id] && @reader.id != params[:id]
+    @reader = current_reader    
+    flash[:error] = "you can't edit another person's account" if params[:id] && @reader.id != params[:id].to_i
   end
   
   def create
@@ -38,6 +39,7 @@ class ReadersController < ApplicationController
 
     unless @reader.email.blank?
       flash[:error] = "Please don't fill in the spam trap field."
+      @reader.email = ''
       @reader.errors.add(:trap, "must be empty")
       render :action => 'new' and return
     end
@@ -68,12 +70,20 @@ class ReadersController < ApplicationController
     end
 
     @reader = params[:id] ? Reader.find(params[:id]) : Reader.find_by_email(params[:email])
-    if @reader && @reader.activate!(params[:activation_code])
-      self.current_reader = @reader
-      flash[:notice] = "Thank you! Your account has been activated."
-      redirect_to url_for(@reader)
+    if @reader
+      if @reader.activated?
+        flash[:notice] = "Hello #{@reader.name}! Your account is already active. Please move along."
+        redirect_to url_for(@reader)
+      elsif @reader.activate!(params[:activation_code])
+        self.current_reader = @reader
+        flash[:notice] = "Thank you! Your account has been activated."
+        redirect_to url_for(@reader)
+      else
+        @reader.errors.add(:activation_code, "please check that this is correct")
+        flash[:error] = "Unable to activate your account. Please check your activation code."
+      end
     else
-      flash[:error] = "Unable to activate your account. Please check activation code."
+      flash[:error] = "Unable to activate your account. Please check the activation message."
     end
   end
 

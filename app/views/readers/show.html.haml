@@ -1,3 +1,4 @@
+= render :partial => 'flasher'
 = render :partial => 'controls'
 
 %div.reader_show
@@ -8,7 +9,8 @@
     %p No description available.
   - else
     = @reader.description
-
+  %div.stretcher
+    %p
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt;

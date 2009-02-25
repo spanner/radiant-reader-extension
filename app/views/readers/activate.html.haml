@@ -1,6 +1,9 @@
+= render :partial => 'flasher'
+
 - if current_reader && current_reader.activated?
   %h1 Welcome!
   %p Your account is active. Thanks for persevering with the sign-up process. Now get on with it.
+
 - else
   %div.activation_form
     %h1 Please activate your account</h2>
@@ -15,12 +18,11 @@
       %p.haserror
         @error
     - form_for :reader, :url => reader_activate_url, :html => {:class => 'friendly'} do |f|
-      %p
-        %label{:for => "email"}
-          Email Address
-          %br
-          = text_field_tag 'email', (params[:email] || (current_reader ? current_reader.email : '')), :class => 'standard'
-      %p
+      %label{:for => "email"}
+        Email Address
+        %br
+        = text_field_tag 'email', (params[:email] || (current_reader ? current_reader.email : '')), :class => 'standard'
+      %p{ :class => @reader && @reader.errors.on(:activation_code) ? 'with_errors' : '' }
         %label{:for => "activation_code"}
           Activation Code
           %br

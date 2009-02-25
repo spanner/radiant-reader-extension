@@ -13,9 +13,35 @@
   = text_field_with_errors(f, @reader, 'email', {:label => 'Your email address', :required => true})
 
 = text_area_with_errors(f, @reader, 'description', {:label => 'A little about yourself', :help => 'you can fill this in later', :required => true})
-= text_field_with_errors(f, @reader, 'login', {:label => 'Login username', :help => 'leave this blank to use your email address', :required => true})
-= password_field_with_errors(f, @reader, 'password', {:label => 'Password', :help => @reader.new_record? ? 'at least five characters, please' : 'leave these blank unless you want to change your password', :required => true})
-= password_field_with_errors(f, @reader, 'password_confirmation', {:label => 'Confirm password', :required => true})
+= text_field_with_errors(f, @reader, 'login', {:label => 'Login username', :help => 'leave blank to use your email address', :required => true})
+
+%p{ :class => @reader.errors.on(:password) ? 'with_errors' : '' }
+  %label{ :for => 'reader_password', :class => 'required'}
+    - if @reader.new_record?
+      Password
+    - else
+      Change password?
+    %span.formnote
+      - if @reader.new_record?
+        at least five characters, please
+      - else
+        leave blank to keep existing password
+  %br
+  = password_field_tag 'password', params[:password], :class => 'standard'
+  - if @reader.errors.on(:password)
+    %br
+    = @reader.errors.on(:password).to_a.to_sentence
+
+%p{ :class => @reader.errors.on(:password_confirmation) ? 'with_errors' : '' }
+  %label{ :for => 'reader_password_confirmation', :class => 'required'}
+    Confirm 
+    = "new" unless @reader.new_record?
+    password
+  %br
+  = password_field_tag 'password_confirmation', params[:password_confirmation], :class => 'standard'
+  - if @reader.errors.on(:password_confirmation)
+    %br
+    = @reader.errors.on(:password_confirmation).to_a.to_sentence
 
 - if @reader.new_record?
   %p{ :class => @reader.errors.on(:trap) ? 'with_errors' : 'hidden' }

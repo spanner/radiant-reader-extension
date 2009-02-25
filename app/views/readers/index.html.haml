@@ -1,3 +1,4 @@
+= render :partial => 'flasher'
 = render :partial => 'controls'
 
 %div
@@ -6,4 +7,5 @@
   #readers
     - @readers.each do |reader|
       = link_to gravatar_for(reader, {:size => 64}, {:class => 'gravatar'}), reader_url(reader), {:title => reader.name}
-      
+  %div.stretcher
+    %p 
