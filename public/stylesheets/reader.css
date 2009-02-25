@@ -71,6 +71,10 @@ p.with_errors label {
 	color: #d1005d !important;
 }
 
+p.hidden {
+  display: none;
+}
+
 /***** gravatars and other useful things ********/
 
 img.gravatar {

@@ -37,7 +37,6 @@ class ReaderExtension < Radiant::Extension
     Radiant::Config['readers.default_layout'] = "Main"
     Site.send :include, ReaderSite
 
-    admin.readers.index.add :top, "site_subnav"
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   

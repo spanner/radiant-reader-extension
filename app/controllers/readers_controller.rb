@@ -21,11 +21,12 @@ class ReadersController < ApplicationController
   def new
     redirect_to url_for(current_reader) and return if current_reader
     @reader = Reader.new
+    session[:email_field] = @email_field = @reader.generate_email_field_name
   end
   
   def edit
     @reader = current_reader
-    flash[:error] = "you cannot edit another person's account" if params[:id] && @reader.id != params[:id]
+    flash[:error] = "you can't edit another person's account" if params[:id] && @reader.id != params[:id]
   end
   
   def create
@@ -33,6 +34,19 @@ class ReadersController < ApplicationController
     @reader.password = params[:password]
     @reader.password_confirmation = params[:password_confirmation]
     @reader.current_password = params[:password]
+    @email_field = session[:email_field]
+
+    unless @reader.email.blank?
+      flash[:error] = "Please don't fill in the spam trap field."
+      @reader.errors.add(:trap, "must be empty")
+      render :action => 'new' and return
+    end
+    unless @email_field
+      flash[:error] = "Please use the registration form."
+      render :action => 'new' and return
+    end
+    
+    @reader.email = params[@email_field.intern]
     if (@reader.valid?)
       @reader.save!
       self.current_reader = @reader
@@ -42,15 +56,14 @@ class ReadersController < ApplicationController
     end
   end
 
-  # fix this to give a specific error message
-
   def activate
     if params[:activation_code].nil?
+      # probably the initial request
       render and return 
     end
 
     if params[:id].nil? && params[:email].nil?
-      flash[:error] = "Email address or accound id is required. Please look again at your activation message."
+      flash[:error] = "Email address or account id is required. Please look again at your activation message."
       render and return
     end
 
@@ -64,14 +77,17 @@ class ReadersController < ApplicationController
     end
   end
 
-  # password returns (and then processes) a reset my password form
+  # password returns (on get) or processes (on post) a reset my password form
 
   def password
     render and return unless request.post?
-    flash[:error] = "Please enter an email address." if params[:email].nil? 
-    @reader = params[:email] && Reader.find_by_email(params[:email])
-    if @reader.nil? || !@reader
-      @error = flash[:error] = "Sorry. That address is not known here."
+    if params[:email].nil? 
+      flash[:error] = "Please enter an email address." 
+    else
+      @reader = Reader.find_by_email(params[:email])
+    end
+    unless @reader
+      flash[:error] = "Sorry. That address is not known here."
       render and return
     end
     unless @reader.activated?
@@ -84,7 +100,7 @@ class ReadersController < ApplicationController
     render
   end
   
-  # repassword is hit when they click on the confirmation link or enter the code
+  # repassword is hit when they click on the confirmation link or enter the code in the reset my password message
   
   def repassword
     redirect_to :action => 'password' if params[:activation_code].nil? || params[:id].nil?
@@ -124,22 +140,22 @@ class ReadersController < ApplicationController
     if request.post?
       login = params[:reader][:login]
       password = params[:reader][:password]
-      flash[:error] = "sorry: login not correct" unless current_reader = Reader.authenticate(login, password)
+      flash[:error] = "sorry: login not correct" unless @reader = Reader.authenticate(login, password)
     end
-    if current_reader
+    if @reader
       if params[:remember_me]
-        current_reader.remember_me
-        set_session_cookie
+        @reader.remember_me
+        current_reader = @reader
+        set_reader_cookie
       end
-      flash[:notice] = "Hello #{current_reader.name}. You are now logged in"
+      flash[:notice] = "Hello #{@reader.name}. You are now logged in"
       redirect_to params[:backto] || :back
     end
   end
   
   def logout
-    cookies[:session_token] = { :expires => 1.day.ago }
+    cookies[:reader_session_token] = { :expires => 1.day.ago }
     current_reader.forget_me
-    set_session_cookie
     flash[:notice] = "Goodbye #{current_reader.name}. You are now logged out"
     current_reader = nil
     redirect_to :back

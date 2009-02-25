@@ -20,7 +20,7 @@ The update task will install a /stylesheets/admin/reader.css that you can probab
 Reader adds a few administrative columns to the site table: 
 
 * reader_layout determinds the layout used to present reader pages and defaults to 'Main' or the first layout it finds in that site.
-* email_from_name and email_from_address determine who and where the administrative email sent to readers appear to come from. They default to the name and email address of the owner of the site.
+* email_from_name and email_from_address determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
 
 ###Layouts
 

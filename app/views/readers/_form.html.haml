@@ -1,70 +1,30 @@
-%p{ :class => @reader.errors.on(:name) ? 'with_errors' : '' }
-  %label{ :for => 'reader_name', :class => 'required' }
-    Your name
-  %span.formnote
-    as you would like it to appear
-  %br
-  = f.text_field "name", :class => 'titular'
-  - if @reader.errors.on(:name)
+= text_field_with_errors(f, @reader, 'name', {:label => 'Your name', :help => 'as you would like it to appear', :required => true, :class => 'titular'})
+
+- if @reader.new_record?
+  %p{ :class => @reader.errors.on(:email) ? 'with_errors' : '' }
+    %label{ :for => "reader_#{@email_field}", :class => 'required' }
+      Your email address
     %br
-    = @reader.errors.on(:name).to_a.to_sentence
+    = text_field_tag @email_field, params[@email_field.intern], :id => "reader_#{@email_field}", :class => 'standard'
+    - if @reader.errors.on(:email)
+      %br
+      = @reader.errors.on(:email).to_a.to_sentence
+- else
+  = text_field_with_errors(f, @reader, 'email', {:label => 'Your email address', :required => true})
 
-%p{ :class => @reader.errors.on(:email) ? 'with_errors' : '' }
-  %label{ :for => 'reader_email', :class => 'required' }
-    Your email address
-  %br
-  = f.text_field "email", :class => 'standard'
-  - if @reader.errors.on(:email)
-    %br
-    = @reader.errors.on(:email).to_a.to_sentence
+= text_area_with_errors(f, @reader, 'description', {:label => 'A little about yourself', :help => 'you can fill this in later', :required => true})
+= text_field_with_errors(f, @reader, 'login', {:label => 'Login username', :help => 'leave this blank to use your email address', :required => true})
+= password_field_with_errors(f, @reader, 'password', {:label => 'Password', :help => @reader.new_record? ? 'at least five characters, please' : 'leave these blank unless you want to change your password', :required => true})
+= password_field_with_errors(f, @reader, 'password_confirmation', {:label => 'Confirm password', :required => true})
 
-%p{ :class => @reader.errors.on(:description) ? 'with_errors' : '' }
-  %label{ :for => 'reader_description', :class => 'optional' }
-    A little about yourself
-  %span.formnote
-    you can fill this in later
-  %br
-  = f.text_area "description", :class => 'standard', :rows => 8
-  - if @reader.errors.on(:description)
-    %br
-    = @reader.errors.on(:description).to_a.to_sentence
-
-%p{ :class => @reader.errors.on(:login) ? 'with_errors' : '' }
-  %label{ :for => 'reader_login', :class => 'optional' }
-    Login username
-  %span.formnote
-    leave this blank to use your email address
-  %br
-  = f.text_field "login", :class => 'standard'
-  - if @reader.errors.on(:login)
-    %br
-    = @reader.errors.on(:login).to_a.to_sentence
-
-%p{ :class => @reader.errors.on(:password) ? 'with_errors' : '' }
-  %label{ :for => 'reader_password', :class => 'required' }
-    Password
-  %span.formnote
-    - if @reader.new_record?
-      at least five characters, please
-    - else
-      leave these fields blank unless you want to change your password
-  %br
-  = password_field_tag "password", "", :class => 'standard'
-  - if @reader.errors.on(:password)
-    %br
-    = @reader.errors.on(:password).to_a.to_sentence
-
-%p{ :class => @reader.errors.on(:password_confirmation) ? 'with_errors' : '' }
-  %label{ :for => 'reader_password_confirmation', :class => 'required' }
-    Confirm password
-  %br
-  = password_field_tag "password_confirmation", "", :class => 'standard'
-  - if @reader.errors.on(:password_confirmation)
-    %br
-    = @reader.errors.on(:password_confirmation).to_a.to_sentence
-
-%p
-  = f.check_box "receive_email"
-  %label{ :for => "reader_receive_email" }
-    Receive email from this site
-
+- if @reader.new_record?
+  %p{ :class => @reader.errors.on(:trap) ? 'with_errors' : 'hidden' }
+    %label{ :for => 'reader_email', :class => 'required' }
+      Don't fill this in!
+      %span.formnote
+        it's a spam trap and you weren't supposed to see it
+      %br
+    = f.text_field 'email', :class => 'required'
+    - if @reader.errors.on(:trap)
+      %br
+      = @reader.errors.on(:trap).to_a.to_sentence

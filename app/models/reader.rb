@@ -12,7 +12,6 @@ class Reader < ActiveRecord::Base
   validates_presence_of :password, :password_confirmation, :message => 'required', :if => :new_record?
   validates_format_of :email, :message => 'invalid email address', :allow_nil => true, :with => /^$|^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
-  validates_length_of :login, :within => 3..40, :allow_nil => true, :too_long => '%d-character limit', :too_short => '%d-character minimum'
   validates_length_of :password, :within => 5..40, :allow_nil => true, :too_long => '%d-character limit', :too_short => '%d-character minimum', :if => :validate_length_of_password?
   validates_length_of :email, :maximum => 255, :allow_nil => true, :message => '%d-character limit'
   validates_numericality_of :id, :only_integer => true, :allow_nil => true, :message => 'must be a number'
@@ -36,7 +35,7 @@ class Reader < ActiveRecord::Base
       reader
     end
   end
-  
+    
   def authenticated?(pw)
     self.password == sha1(pw)
   end
@@ -91,6 +90,15 @@ class Reader < ActiveRecord::Base
   ['activation', 'welcome', 'account', 'password'].each do |message|
     define_method("send_#{message}_message".intern) { ReaderNotifier.send("deliver_#{message}".intern, self) }
   end
+    
+  def generate_email_field_name
+    generate_password(32)
+  end
+  
+  def generate_password(length=12)
+    chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
+    Array.new(length, '').collect{chars[rand(chars.size)]}.join
+  end
   
   protected
 
@@ -124,10 +132,5 @@ class Reader < ActiveRecord::Base
         encrypt_password
       end
     end
-
-    def generate_password(length=8)
-      chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
-      Array.new(length, '').collect{chars[rand(chars.size)]}.join
-    end
-
+    
 end
