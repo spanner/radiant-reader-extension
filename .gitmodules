@@ -1,3 +1,6 @@
 [submodule "vendor/plugins/gravtastic"]
 	path = vendor/plugins/gravtastic
 	url = git://github.com/chrislloyd/gravtastic.git
+[submodule "vendor/plugins/white_list"]
+	path = vendor/plugins/white_list
+	url = git://github.com/bhedana/white_list.git
