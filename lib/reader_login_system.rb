@@ -85,6 +85,7 @@ module ReaderLoginSystem
     def set_current_reader
       Reader.current_reader = current_reader
     end
+        
 
   module ClassMethods
     def no_reader_required

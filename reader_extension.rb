@@ -36,6 +36,10 @@ class ReaderExtension < Radiant::Extension
     Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions
     Radiant::Config['readers.default_layout'] = "Main"
     Site.send :include, ReaderSite
+    ApplicationHelper.send :include, ReaderHelper
+    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
+      "<span class='field_error'>#{html_tag}</span>" 
+    end 
 
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end

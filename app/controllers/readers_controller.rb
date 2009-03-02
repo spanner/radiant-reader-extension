@@ -1,7 +1,7 @@
 class ReadersController < ApplicationController
   no_login_required
+  before_filter :authenticate_reader, :only => [:show, :edit, :update]
   before_filter :no_removing, :only => [:remove, :destroy]
-
   radiant_layout { |controller| controller.find_readers_layout }
 
   # I have no idea where this default is being overridden
@@ -13,7 +13,6 @@ class ReadersController < ApplicationController
   end
   
   def show
-    redirect_to reader_login_url and return unless current_reader
     @reader = Reader.find(params[:id])
   end
 
@@ -128,8 +127,8 @@ class ReadersController < ApplicationController
 
   def update
     @reader = current_reader
+    @reader.attributes = params[:reader]
     if @reader.authenticated?(params[:current_password])
-      @reader.attributes = params[:reader]
       @reader.password = params[:password]
       @reader.password_confirmation = params[:password_confirmation]
       if @reader.save
@@ -139,7 +138,7 @@ class ReadersController < ApplicationController
         render :action => 'edit'
       end
     else
-      flash[:error] = 'Wrong password!'
+      flash[:error] = "That's not the right password!"
       @reader.valid?    # so that we can flag any other errors on the form
       @reader.errors.add(:current_password, "not correct")
       render :action => 'edit'
@@ -153,21 +152,21 @@ class ReadersController < ApplicationController
       flash[:error] = "sorry: login not correct" unless @reader = Reader.authenticate(login, password)
     end
     if @reader
+      Reader.current_reader = self.current_reader = @reader
       if params[:remember_me]
         @reader.remember_me
-        current_reader = @reader
         set_reader_cookie
       end
-      flash[:notice] = "Hello #{@reader.name}. You are now logged in"
-      redirect_to params[:backto] || :back
+      flash[:notice] = "Hello #{@reader.name}. You are logged in"
+      redirect_to session[:return_to] || :back
     end
   end
   
   def logout
     cookies[:reader_session_token] = { :expires => 1.day.ago }
-    current_reader.forget_me
     flash[:notice] = "Goodbye #{current_reader.name}. You are now logged out"
-    current_reader = nil
+    self.current_reader.forget_me
+    Reader.current_reader = self.current_reader = nil
     redirect_to :back
   end
 

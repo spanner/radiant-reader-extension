@@ -8,9 +8,10 @@
   - if @reader.description.blank?
     %p No description available.
   - else
-    = @reader.description
+    = clean_textilize @reader.description
   %div.stretcher
     %p
+      = "posts is #{@posts}"
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt;

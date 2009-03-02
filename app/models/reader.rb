@@ -83,7 +83,6 @@ class Reader < ActiveRecord::Base
   end
 
   def forget_me
-    logger.warn "!!! forget me"
     update_attribute(:session_token, nil)
   end
     
