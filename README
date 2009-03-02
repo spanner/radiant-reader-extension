@@ -1,10 +1,10 @@
 = Reader
 
-Readers are logged-in visitors to whom you or your extensions can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. A person can have both user and reader logins, and the administrator may find it useful to do just that.
+Readers are logged-in visitors to whom you or your extensions can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. A person can have both user and reader logins, and an administrator may find it useful to do just that.
 
-With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation and password reset functionality. An email address spoofing box should prevent spam signups.
+With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation and password reset functionality. An email address honeypot box should prevent spam signups.
 
-This isn't much use by itself but it provides a common core for more interesting added functionality: see (soon) spanner's Forum extension for discussions and page/blog comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-based) access-controlled file downloads. More will follow.
+This isn't much use by itself but it provides a common core for more interesting added functionality: see spanner's Forum extension for discussions and page/blog comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-based) access-controlled file downloads. More will follow.
 
 ###Installation
 
@@ -36,6 +36,7 @@ I have half a dozen other extensions to publish over the next week or two. By th
 
 * http://github.com/spanner/radiant-multi-site-extension
 * http://github.com/spanner/radiant-scoped-admin-extension
+* http://github.com/spanner/radiant-forum-extension
 
 ###Author and copyright
 
