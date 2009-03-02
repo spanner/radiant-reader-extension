@@ -9,11 +9,15 @@ This isn't much use by itself but it provides a common core for more interesting
 ###Installation
 
 Reader requires share_layouts and the spanner fork of multi_site from github. To install the extension, just run 
+
+  rake rake ray:extension:install name=reader
+  
+(If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree)
  
 	rake production db:migrate:extensions
 	rake production radiant:extensions:reader:update
 
-The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and feel free to modify.
+The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then modify or replace.
 
 ###Configuration
 
