@@ -41,6 +41,8 @@ class ReaderExtension < Radiant::Extension
       "<span class='field_error'>#{html_tag}</span>" 
     end 
 
+    admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage" 
+    
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
   end
   
