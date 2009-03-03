@@ -23,7 +23,7 @@
               = link_to reader.name, edit_admin_reader_url(reader)
               %small.login= h reader.login
           - tbody.description_cell do
-            %td.roles= reader.description
+            %td.roles= truncate_and_textilize(reader.description)
           - tbody.modify_cell do
             %td.remove
               = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 

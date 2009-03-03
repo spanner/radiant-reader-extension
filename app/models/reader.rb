@@ -4,6 +4,9 @@ class Reader < ActiveRecord::Base
   is_site_scoped
   is_gravtastic :with => :email, :rating => 'PG', :size => 48
   cattr_accessor :current_reader
+
+  belongs_to :created_by, :class_name => 'User'   # not usually necessary but sometimes admin intervenes
+  belongs_to :updated_by, :class_name => 'User'
   
   validates_uniqueness_of :login, :message => "already in use", :scope => :site_id
   validates_uniqueness_of :email, :message => "already in use", :scope => :site_id
