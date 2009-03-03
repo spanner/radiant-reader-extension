@@ -12,10 +12,11 @@ Reader requires the spanner fork of multi_site, but apart from that it declares 
 
   rake ray:extension:install name="multi-site" hub="spanner"
   rake rake ray:extension:install name="reader"
+  rake radiant:extensions:reader:update
   
 And I think that's it. If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree. 
 
-The update task will install a /stylesheets/admin/reader.css that you can probably ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then modify or replace.
+The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then modify or replace.
 
 ###Configuration
 
@@ -26,13 +27,17 @@ Reader adds a few administrative columns to the site table:
 
 ###Layouts
 
-We use the very pleasing share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls <r:content /> at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful. The site edit form now includes a drop-down on which to choose the reader layout.
+We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls <r:content /> at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful. 
+
+The site edit form is extended to include a drop-down with which to choose the reader layout.
 
 ###Using readers in other extensions
 
-...is the whole point. The readers admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages. 
+...is the whole point. The reader admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages.
 
-I have half a dozen other extensions to publish over the next week or two. By the time I've finished doing that I should have a pretty good idea of what to write here...
+Marking a reader as untrusted does nothing much here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
+
+I have half a dozen other extensions to publish over the next week or two. By the time I've finished doing that I should have a pretty good idea of what else to write here...
 
 ###See also
 
@@ -43,6 +48,6 @@ I have half a dozen other extensions to publish over the next week or two. By th
 ###Author and copyright
 
 Copyright spanner ltd 2007-9.
-Released under the same terms as Rails.
+Released under the same terms as Rails and/or Radiant.
 Contact will at spanner.org
 

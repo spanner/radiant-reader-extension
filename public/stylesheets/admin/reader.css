@@ -1,0 +1,50 @@
+#content table.index tr.node td.reader {
+  width: 35%;
+  padding: .5em;
+}
+
+#content table.index tr.node td.reader_description {
+  padding: .5em;
+}
+
+#content table.index tr.node td.reader_description p {
+  margin-top: 0;
+}
+
+#content table.index .node .reader small {
+  color: #666;
+  font-size: 90%;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: .5em;
+}
+
+#content table.index .node .reader a, #content table.index .node .reader a:visited {
+  font-size: 115%;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+
+#content table.index .node .reader a.untrusted, #content table.index .node .reader a.untrusted:visited {
+  color: #c00;
+}
+
+#content table.index .node .reader a:hover, #content table.index .node .reader a:visited:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+#content table.index tr.node td.reader_description {
+  color: #999;
+}
+
+#content table.index p.admin_notes {
+  color: #c00;
+  margin: 0 0 0 40px;
+}
+
+#content table.index p.admin_notes {
+  color: #c00;
+  margin: 0 0 0 40px;
+}

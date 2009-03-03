@@ -1,3 +1,4 @@
+- include_stylesheet('admin/reader')
 = render_region :top 
 = render :partial => 'admin/shared/site_jumper'
 
@@ -10,20 +11,28 @@
         - thead.title_header do
           %th.reader Name / Login
         - thead.description_header do
-          %th.roles Description
+          %th.reader_description Self-description
         - thead.modify_header do
           %th.modify Modify
   %tbody
     - @readers.each do |reader|
       %tr.node.level-1
         - render_region :tbody do |tbody|
+
           - tbody.title_cell do
             %td.reader
-              = link_to gravatar_for(reader), edit_admin_reader_url(reader)
-              = link_to reader.name, edit_admin_reader_url(reader)
-              %small.login= h reader.login
+              = link_to gravatar_for(reader, {:size => 24}, {:width => 24, :height => 24}), edit_admin_reader_url(reader)
+              = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
+              - unless reader.notes.blank?
+                %p.admin_notes
+                  %strong
+                    note:
+                  = reader.notes
+
           - tbody.description_cell do
-            %td.roles= truncate_and_textilize(reader.description)
+            %td.reader_description
+              = truncate_and_textilize(reader.description, 24)
+            
           - tbody.modify_cell do
             %td.remove
               = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 
