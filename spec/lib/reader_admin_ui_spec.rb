@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + "/../spec_helper"
 describe "AdminUI extensions for readers" do
   before :each do
     @admin = Radiant::AdminUI.new
+    @admin.reader = Radiant::AdminUI.load_default_reader_regions
   end
 
   it "should be included into Radiant::AdminUI" do
