@@ -1,0 +1,6 @@
+%p.subtitle
+  %label{:for=>"site_reader_layout_id", :class => "admin_only"}
+    Layout for readers
+  = select :site, :reader_layout_id, @site.layouts.map { |l| [l.name, l.id] }
+  %br
+  %span.formnote currently you have to be logged into the site to see its layouts here. will fix.

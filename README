@@ -8,15 +8,24 @@ This isn't much use by itself but it provides a common core for more interesting
 
 ###Installation
 
-Reader requires the spanner fork of multi_site, but apart from that it declares its dependencies. This ought to be all you need:
+Reader requires the spanner fork of multi_site, but apart from that it declares its dependencies. At the moment Ray doesn't know about this extension so you probably want to do something like this:
+
+  rake ray:extension:install name="multi-site" hub="spanner"
+  git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
+  rake radiant:extensions:reader:migrate
+
+But in future this ought to be all you need:
 
   rake ray:extension:install name="multi-site" hub="spanner"
   rake rake ray:extension:install name="reader"
+  
+And then in both cases run
+
   rake radiant:extensions:reader:update
   
 And I think that's it. If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree. 
 
-The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then modify or replace.
+The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon.
 
 ###Configuration
 
