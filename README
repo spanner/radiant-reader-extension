@@ -8,22 +8,23 @@ This isn't much use by itself but it provides a common core for more interesting
 
 ###Installation
 
-Reader requires the spanner fork of multi_site, but apart from that it declares its dependencies. At the moment Ray doesn't know about this extension so you probably want to do something like this:
+Reader requires the spanner fork of multi_site, but apart from that it declares its dependencies. At the moment Ray doesn't know about this extension so you will need to do something like this:
 
-  rake ray:extension:install name="multi-site" hub="spanner"
+  git submodule add git://github.com/spanner/radiant-multi-site-extension.git vendor/extensions/multi_site
   git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
+  cd vendor/extensions/reader
+    git submodule add git://github.com/bhedana/white_list.git vendor/plugins/white_list
+    git submodule add git://github.com/chrislloyd/gravtastic.git vendor/plugins/gravtastic
+  cd ../..
   rake radiant:extensions:reader:migrate
+  rake radiant:extensions:reader:update
 
-But in future this ought to be all you need:
+It's a bit of a mess I agree, but that's mostly because I've written it to work with Ray, but Ray is in a rather in-between state at the moment. In future this ought to be all you need:
 
   rake ray:extension:install name="multi-site" hub="spanner"
   rake rake ray:extension:install name="reader"
-  
-And then in both cases run
-
-  rake radiant:extensions:reader:update
-  
-And I think that's it. If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree. 
+    
+If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree 
 
 The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon.
 
