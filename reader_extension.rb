@@ -43,7 +43,7 @@ class ReaderExtension < Radiant::Extension
 
     admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage" 
     
-    admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:admin]
+    admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
   end
   
   def deactivate
