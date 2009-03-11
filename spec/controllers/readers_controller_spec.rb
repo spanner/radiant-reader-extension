@@ -1,12 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-@sited = defined? Site
 
 describe ReadersController do
   dataset :readers
   
   before do
     controller.stub!(:request).and_return(request)
-    Page.current_site = sites(:test) if @sited
+    Page.current_site = sites(:test) if defined? Site
     request.env["HTTP_REFERER"] = 'http://test.host/referer!'
   end
     
@@ -45,7 +44,7 @@ describe ReadersController do
       @reader.login.should == @reader.email
     end
     
-    if @sited
+    if defined? Site
       it "should have assigned the new reader to the current site" do
         @reader.site.should == sites(:test)
       end
@@ -250,7 +249,7 @@ describe ReadersController do
         response.should render_template("show")
       end
 
-      if @sited
+      if defined? Site
         it "should raise a Not Found error when asked for a reader from another site" do 
           lambda { 
             get :show, :id => reader_id(:elsewhere) 
@@ -332,7 +331,7 @@ describe ReadersController do
 
     describe "that does not validate" do
       before do
-        put :update, {:reader => {:id => reader_id(:normal), :login => "visible@spanner.org"}, :current_password => 'password'}
+        put :update, {:id => reader_id(:normal), :reader => {:login => "visible@spanner.org"}, :current_password => 'password'}
         @reader = readers(:normal)
       end
 

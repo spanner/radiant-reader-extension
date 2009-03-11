@@ -1,12 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-@sited = true if defined? Site
 
 describe Reader do
   dataset :readers
   dataset :reader_layouts
   
   before do  # we need associations
-    @site = Page.current_site = sites(:test) if @sited
+    @site = Page.current_site = sites(:test) if defined? Site
     @existing_reader = readers(:normal)
   end
   
@@ -50,7 +49,7 @@ describe Reader do
       @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
     end
   
-    if @sited
+    if defined? Site
       it "should belong to the current site" do
         @reader.site.should_not be_nil
         @reader.site.should == Reader.current_site
