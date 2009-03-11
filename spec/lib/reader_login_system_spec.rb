@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + "/../spec_helper"
+@sited = defined? Site
 
 class StubController < ActionController::Base
   include LoginSystem
@@ -19,14 +20,13 @@ describe 'Reader Login System:', :type => :controller do
   controller_name "stub"
   dataset :users
   dataset :readers
-  dataset :reader_sites
   
   before do
     map = ActionController::Routing::RouteSet::Mapper.new(ActionController::Routing::Routes)
     map.connect ':controller/:action/:id'
     ActionController::Routing::Routes.named_routes.install
     controller.stub!(:request).and_return(request)
-    controller.set_current_site
+    controller.set_current_site if @sited
   end
 
   after do
@@ -74,8 +74,10 @@ describe 'Reader Login System:', :type => :controller do
         end
       end
       
-      it "should not log in a reader from another site" do
+      if @sited
+        it "should not log in a reader from another site" do
         
+        end
       end
     end
 

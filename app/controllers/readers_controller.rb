@@ -4,9 +4,6 @@ class ReadersController < ApplicationController
   before_filter :no_removing, :only => [:remove, :destroy]
   radiant_layout { |controller| controller.find_readers_layout }
 
-  # I have no idea where this default is being overridden
-  skip_before_filter :verify_authenticity_token if ENV["RAILS_ENV"] == "test"
-
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
     flash[:notice] = "Herrroooo!"
@@ -157,9 +154,10 @@ class ReadersController < ApplicationController
         @reader.remember_me
         set_reader_cookie
       end
-      flash[:notice] = "Hello #{@reader.name}. You are logged in"
+      flash[:notice] = "Hello #{@reader.name}. You are logged in."
       redirect_to session[:return_to] || :back
     end
+    render
   end
   
   def logout

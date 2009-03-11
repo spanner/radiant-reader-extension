@@ -1,12 +1,12 @@
 require 'digest/sha1'
 class ReadersDataset < Dataset::Base
-  uses :reader_sites
+  uses :reader_sites if defined? Site
     
   def load
     create_reader "Normal"
     create_reader "Visible"
     create_reader "Inactive", :activated_at => nil, :activation_code => 'randomstring'
-    create_reader "Elsewhere", :site_id => site_id(:yoursite)
+    create_reader "Elsewhere", :site_id => site_id(:yoursite) if defined? Site
     create_reader "Repasswording", :provisional_password => 'testy', :activation_code => 'randomstring'
   end
   
@@ -25,10 +25,10 @@ class ReadersDataset < Dataset::Base
         :login => "#{symbol}@spanner.org", 
         :salt => "golly",
         :password => Digest::SHA1.hexdigest("--golly--password--"),
-        :site_id => site_id(:test),
         :activation_code => nil,
         :activated_at => Time.now.utc
       }.merge(attributes)
+      attributes[:site_id] ||= site_id(:test) if defined? Site
       attributes
     end
         

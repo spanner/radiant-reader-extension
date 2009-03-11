@@ -34,9 +34,11 @@
             
           - tbody.modify_cell do
             %td.remove
-              = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 
+              - if admin?
+                = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 
 
 - render_region :bottom do |bottom|
   - bottom.new_button do
-    %p
-      = link_to image('new-reader', :alt => 'New Reader'), new_admin_reader_url, :title => "New Reader"
+    - if admin?
+      %p
+        = link_to image('new-reader', :alt => 'New Reader'), new_admin_reader_url, :title => "New Reader"

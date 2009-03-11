@@ -1,20 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-ActionMailer::Base.delivery_method = :test  
-ActionMailer::Base.perform_deliveries = true  
-ActionMailer::Base.deliveries = []
-Radiant::Config['readers.default_mail_from_address'] = "test@example.com"
-Radiant::Config['readers.default_mail_from_name'] = "test"
-Radiant::Config['site.title'] = 'Test Site'
-Radiant::Config['site.url'] = 'www.example.com'
-Radiant::Config['readers.layout'] = 'Main'
+
+@sited = defined? Site
 
 describe Reader do
   dataset :readers
   dataset :reader_layouts
-  dataset :reader_sites
+  dataset :reader_sites if @sited
   
   before do  # we need associations
-    @site = Page.current_site = sites(:test)
+    @site = Page.current_site = sites(:test) if @sited
     @existing_reader = readers(:normal)
   end
   
@@ -57,12 +51,14 @@ describe Reader do
       @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
     end
   
-    it "should belong to the current site" do
-      @reader.site.should_not be_nil
-      @reader.site.should == Reader.current_site
-      @reader.site.name.should == @site.name
+    if @sited
+      it "should belong to the current site" do
+        @reader.site.should_not be_nil
+        @reader.site.should == Reader.current_site
+        @reader.site.name.should == @site.name
+      end
     end
-
+    
     it 'should save password encrypted' do
       @reader.confirm_password = true
       @reader.password_confirmation = @reader.password = 'test_password'

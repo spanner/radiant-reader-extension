@@ -13,9 +13,9 @@ describe Admin::ReadersController do
   end
 
   { 
-    :get => [:index, :new, :edit],
-    :post => [:create],
-    :put => [:update],
+    :get => [:new, :edit],
+    :post => [:create], #omitted because failure and success look the same to restrict_access 
+    :put => [:update], #omitted because failure and success look the same to restrict_access 
     :delete => [:destroy]
   }.each do |method, actions|
     actions.each do |action|
@@ -27,15 +27,25 @@ describe Admin::ReadersController do
       it "should allow you to access to #{action} action if you are an admin" do
         lambda { 
           send(method, action, :id => reader_id(:normal)) 
-        }.should restrict_access(:allow => users(:admin),
-                                 :url => '/admin/page')
+        }.should restrict_access(:allow => users(:admin), :url => '/admin/pages')
       end
       
       it "should deny you access to #{action} action if you are not an admin" do
         lambda { 
           send(method, action, :id => reader_id(:normal)) 
-        }.should restrict_access(:deny => [users(:developer), users(:existing)],
-                                 :url => '/admin/page')
+        }.should restrict_access(:deny => [users(:developer), users(:existing)], :url => '/admin/pages')
+      end
+    end
+  end
+  
+  { 
+    :get => [:index],
+  }.each do |method, actions|
+    actions.each do |action|
+      it "should allow you to access to #{action} action even if you are not an admin" do
+        lambda { 
+          send(method, action, :id => reader_id(:normal)) 
+        }.should restrict_access(:allow => [users(:developer), users(:admin), users(:existing)], :url => '/admin/pages')
       end
     end
   end

@@ -20,17 +20,17 @@ class ReaderNotifier < ActionMailer::Base
   protected
   
     def setup_email(reader)
-      site = reader.site
-      default_url_options[:host] = site.base_domain
-      @from = site.mail_from_address
+      site = reader.site if reader.respond_to?(:site)
+      default_url_options[:host] = site ? site.base_domain : Radiant::Config['site.url'] || 'www.example.com'
+      @from = site ? site.mail_from_address : Radiant::Config['readers.default_mail_from_address']
       @content_type = 'text/plain'
       @recipients = "#{reader.email}"
       @subject = ""
       @sent_on = Time.now
       @body[:reader] = reader
-      @body[:sender] = site.mail_from_name
-      @body[:site_title] = site.name
-      @body[:site_url] = site.base_domain
+      @body[:sender] = site ? site.mail_from_name : Radiant::Config['readers.default_mail_from_name']
+      @body[:site_title] = site ? site.name : Radiant::Config['site.title']
+      @body[:site_url] = site ? site.base_domain : Radiant::Config['site.url']
       @body[:login_url] = reader_login_url
       @body[:my_url] = reader_self_url
       @body[:prefs_url] = reader_edit_self_url

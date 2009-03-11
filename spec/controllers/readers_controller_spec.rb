@@ -2,13 +2,14 @@ require File.dirname(__FILE__) + '/../spec_helper'
 ActionMailer::Base.delivery_method = :test  
 ActionMailer::Base.perform_deliveries = true  
 ActionMailer::Base.deliveries = []  
+@sited = defined? Site
 
 describe ReadersController do
   dataset :readers
   
   before do
     controller.stub!(:request).and_return(request)
-    Page.current_site = sites(:test)
+    Page.current_site = sites(:test) if @sited
     request.env["HTTP_REFERER"] = 'http://test.host/referer!'
   end
     
@@ -46,9 +47,11 @@ describe ReadersController do
     it "should have defaulted to email address as login" do
       @reader.login.should == @reader.email
     end
-
-    it "should have assigned the new reader to the current site" do
-      @reader.site.should == sites(:test)
+    
+    if @sited
+      it "should have assigned the new reader to the current site" do
+        @reader.site.should == sites(:test)
+      end
     end
 
     it "should redirect to activate" do
@@ -250,12 +253,14 @@ describe ReadersController do
         response.should render_template("show")
       end
 
-      it "should raise a Not Found error when asked for a reader from another site" do 
-        lambda { 
-          get :show, :id => reader_id(:elsewhere) 
-        }.should raise_error(ActiveRecord::RecordNotFound)
+      if @sited
+        it "should raise a Not Found error when asked for a reader from another site" do 
+          lambda { 
+            get :show, :id => reader_id(:elsewhere) 
+          }.should raise_error(ActiveRecord::RecordNotFound)
+        end
       end
-
+      
       it "should refuse to show the edit page for another reader" do 
         get :edit, :id => reader_id(:visible)
         response.should be_success
@@ -297,7 +302,7 @@ describe ReadersController do
 
     describe "that includes the correct password" do
       before do
-        put :update, {:reader => {:id => reader_id(:normal), :name => "New Name"}, :current_password => 'password'}
+        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}, :current_password => 'password'}
         @reader = readers(:normal)
       end
       
@@ -314,7 +319,7 @@ describe ReadersController do
 
     describe "that does not include the correct password" do
       before do
-        put :update, {:reader => {:id => reader_id(:normal), :name => "New Name"}, :current_password => 'wrongo'}
+        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}, :current_password => 'wrongo'}
         @reader = readers(:normal)
       end
 
