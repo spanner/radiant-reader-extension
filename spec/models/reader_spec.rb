@@ -1,11 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-
-@sited = defined? Site
+@sited = true if defined? Site
 
 describe Reader do
   dataset :readers
   dataset :reader_layouts
-  dataset :reader_sites if @sited
   
   before do  # we need associations
     @site = Page.current_site = sites(:test) if @sited
@@ -16,6 +14,7 @@ describe Reader do
     before do
       @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
       @reader.confirm_password = false
+      @reader.should be_valid
     end
     
     it "should require a name" do

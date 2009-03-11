@@ -1,7 +1,7 @@
 require 'digest/sha1'
 class ReadersDataset < Dataset::Base
   uses :reader_sites if defined? Site
-    
+
   def load
     create_reader "Normal"
     create_reader "Visible"

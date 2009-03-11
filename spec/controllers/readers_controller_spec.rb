@@ -1,7 +1,4 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-ActionMailer::Base.delivery_method = :test  
-ActionMailer::Base.perform_deliveries = true  
-ActionMailer::Base.deliveries = []  
 @sited = defined? Site
 
 describe ReadersController do

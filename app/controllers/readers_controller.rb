@@ -157,7 +157,6 @@ class ReadersController < ApplicationController
       flash[:notice] = "Hello #{@reader.name}. You are logged in."
       redirect_to session[:return_to] || :back
     end
-    render
   end
   
   def logout
