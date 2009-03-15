@@ -7,7 +7,8 @@ class ReaderLayoutsDataset < Dataset::Base
   
   helpers do
     def create_layout(name, attributes={})
-      create_record :layout, name.symbolize, attributes.update(:name => name)
+      attributes[:site] ||= sites(:test) if defined? Site
+      create_model :layout, name.symbolize, attributes.update(:name => name)
     end
   end
  

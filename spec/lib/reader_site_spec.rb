@@ -4,22 +4,20 @@ if defined? Site
   describe 'Reader-extended site' do
     dataset :reader_sites
     dataset :reader_layouts
-    Radiant::Config['readers.default_layout'] = 'Main'
+    Radiant::Config['reader.layout'] = 'This one'
 
-    it "should have a layout association" do
+    it "should have a reader_layout association" do
       Site.reflect_on_association(:reader_layout).should_not be_nil
     end
     
-    it "should default to the globally configured layout" do
-      sites(:mysite).reader_layout_or_default.should == "Main"
+    it "should return no layout by default" do
+      sites(:mysite).layout_for(:reader).should be_nil
     end
     
     it "should be able to set its own layout" do
       site = sites(:mysite)
-      layout = Layout.new(:name => 'testing')
-      layout.save
-      site.reader_layout = layout
-      site.reader_layout_or_default.should == layout.name
+      site.reader_layout = layouts(:other)
+      site.layout_for(:reader).should == 'Other'
     end
   end
 end
