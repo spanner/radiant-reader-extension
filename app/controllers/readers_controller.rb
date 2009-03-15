@@ -2,7 +2,7 @@ class ReadersController < ApplicationController
   no_login_required
   before_filter :authenticate_reader, :only => [:show, :edit, :update]
   before_filter :no_removing, :only => [:remove, :destroy]
-  radiant_layout { |controller| controller.find_readers_layout }
+  radiant_layout { |controller| controller.layout_for :reader }
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')

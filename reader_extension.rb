@@ -32,6 +32,7 @@ class ReaderExtension < Radiant::Extension
   
   def activate
     ActiveRecord::Base.send :include, FakeSiteScope
+    ApplicationController.send :include, ControllerExtensions
     ApplicationController.send :include, ReaderLoginSystem
     Radiant::AdminUI.send :include, ReaderAdminUI         # UI is an instance and already loaded, and this doesn't get there in time. so:
     Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions

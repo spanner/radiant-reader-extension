@@ -11,17 +11,7 @@ module ReaderLoginSystem
     super
   end
 
-  def find_readers_layout
-    if defined? Site && current_site
-      current_site.reader_layout_or_default
-    elsif default_layout = Radiant::Config['reader.layout']
-      default_layout
-    elsif any_layout = Layout.find(:first)
-      any_layout.name
-    end
-  end
-
-  # this should all look familiar
+  # this should all feel familiar
 
   protected
     
