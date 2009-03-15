@@ -8,8 +8,12 @@ module ReaderSite
     super
   end
 
-  def reader_layout_or_default
-    self.reader_layout.nil? ? Radiant::Config['readers.default_layout'] || 'Main' : self.reader_layout.name
+  def layout_for(area = :reader)
+    if self.respond_to?("#{area}_layout") && layout = self.send("#{area}_layout".intern)
+      layout
+    elsif layout = self.reader_layout
+      layout
+    end
   end
 
 end

@@ -39,7 +39,7 @@ class ReaderExtension < Radiant::Extension
     Radiant::Config['readers.default_layout'] = "Main"
     ApplicationHelper.send :include, ReaderHelper
     
-    if defined? Site && admin.sites
+    if defined? Site && admin.sites       # currently we know it's the spanner multi_site if admin.sites is defined
       Site.send :include, ReaderSite
       admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
     end

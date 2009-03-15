@@ -8,7 +8,7 @@ class ReadersController < ApplicationController
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
     flash[:notice] = "Herrroooo!"
   end
-  
+
   def show
     @reader = Reader.find(params[:id])
   end
