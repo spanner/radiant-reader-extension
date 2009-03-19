@@ -34,14 +34,16 @@ class ReaderExtension < Radiant::Extension
     ActiveRecord::Base.send :include, FakeSiteScope
     ApplicationController.send :include, ControllerExtensions
     ApplicationController.send :include, ReaderLoginSystem
-    Radiant::AdminUI.send :include, ReaderAdminUI         # UI is an instance and already loaded, and this doesn't get there in time. so:
-    Radiant::AdminUI.instance.reader = Radiant::AdminUI.load_default_reader_regions
-    Radiant::Config['readers.default_layout'] = "Main"
+
+    Radiant::AdminUI.send :include, ReaderAdminUI unless defined? admin.reader
+    admin.reader = Radiant::AdminUI.load_default_reader_regions
+
     ApplicationHelper.send :include, ReaderHelper
     
     if defined? Site && admin.sites       # currently we know it's the spanner multi_site if admin.sites is defined
       Site.send :include, ReaderSite
       admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
+      admin.readers.index.add :top, "admin/shared/site_jumper"
     end
     
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
