@@ -102,6 +102,13 @@ class Reader < ActiveRecord::Base
     Array.new(length, '').collect{chars[rand(chars.size)]}.join
   end
   
+  # this makes more sense in other extensions that modify reader login behaviour. 
+  # here we just default to the reader's account page
+
+  def homepage
+    "/readers/#{id}"
+  end
+  
   protected
 
     def generate_activation_code

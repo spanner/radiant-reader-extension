@@ -2,7 +2,6 @@ require File.dirname(__FILE__) + "/../spec_helper"
 
 if defined? Site
   describe 'Reader-extended site' do
-    dataset :reader_sites
     dataset :reader_layouts
     Radiant::Config['reader.layout'] = 'This one'
 

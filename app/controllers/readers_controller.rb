@@ -141,22 +141,34 @@ class ReadersController < ApplicationController
       render :action => 'edit'
     end
   end
-        
+  
+  # there are always three login cases: 
+  # * an interrupting form (we want to redirect to session[:return_to])
+  # * a marginal form (we probably want to redirect :back)
+  # * a direct login (we want to display a sensible default home page)
+  # to get round that, we redirect the reader who is already logged in 
+  # to her home page, which method is very likely to have been overridden.
+  # that means we can just return a redirect :back from the login routine
+  
   def login
-    if request.post?
+    if current_reader
+      redirect_to default_welcome_page and return
+    elsif request.post?
       login = params[:reader][:login]
       password = params[:reader][:password]
       flash[:error] = "sorry: login not correct" unless @reader = Reader.authenticate(login, password)
     end
     if @reader
       Reader.current_reader = self.current_reader = @reader
-      if params[:remember_me]
-        @reader.remember_me
-        set_reader_cookie
-      end
+      @reader.remember_me if params[:remember_me]
+      set_reader_cookie
       flash[:notice] = "Hello #{@reader.name}. You are logged in."
       redirect_to session[:return_to] || :back
     end
+  end
+  
+  def default_welcome_page(reader = current_reader)
+    reader.homepage
   end
   
   def logout
