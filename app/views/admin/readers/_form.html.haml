@@ -6,7 +6,7 @@
         - form.edit_honorific do
           %tr
             %th.label
-              = f.label :honorific, 'Title or rank' {:class => 'optional'}
+              = f.label :honorific, 'Title or rank', {:class => 'optional'}
             %td.field
               = f.text_field "honorific", :class => 'textbox', :maxlength => 100 
             %td.help Optional.
