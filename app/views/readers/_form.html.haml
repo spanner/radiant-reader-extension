@@ -1,3 +1,6 @@
+- if Radiant::Config['reader.use_honorifics?']
+  = text_field_with_errors(f, @reader, 'honorific', {:label => 'Title or rank', :help => 'as you would like us to display it', :required => false, :class => 'standard'})
+
 = text_field_with_errors(f, @reader, 'name', {:label => 'Your name', :help => 'as you would like it to appear', :required => true, :class => 'titular'})
 
 - if @reader.new_record?

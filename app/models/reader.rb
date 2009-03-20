@@ -13,7 +13,10 @@ class Reader < ActiveRecord::Base
   validates_confirmation_of :password, :message => 'must match confirmation', :if => :confirm_password?
   validates_presence_of :name, :login, :email, :message => 'required'
   validates_presence_of :password, :password_confirmation, :message => 'required', :if => :new_record?
-  validates_format_of :email, :message => 'invalid email address', :allow_nil => true, :with => /^$|^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+
+  include RFC822
+  validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
+
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
   validates_length_of :password, :within => 5..40, :allow_nil => true, :too_long => '%d-character limit', :too_short => '%d-character minimum', :if => :validate_length_of_password?
   validates_length_of :email, :maximum => 255, :allow_nil => true, :message => '%d-character limit'
