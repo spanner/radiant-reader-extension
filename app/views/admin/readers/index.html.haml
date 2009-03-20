@@ -5,14 +5,7 @@
 
 %table#readers.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
   %thead
-    %tr
-      - render_region :thead do |thead|
-        - thead.title_header do
-          %th.reader Name / Login
-        - thead.description_header do
-          %th.reader_description Self-description
-        - thead.modify_header do
-          %th.modify Modify
+    = render :partial => 'list_head'
   %tbody
     - @readers.each do |reader|
       = render :partial => 'listed', :locals => {:reader => reader}

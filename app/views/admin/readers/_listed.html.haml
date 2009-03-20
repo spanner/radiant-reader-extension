@@ -1,0 +1,20 @@
+%tr.node.level-1
+  - render_region :tbody do |tbody|
+    - tbody.title_cell do
+      %td.reader
+        = link_to gravatar_for(reader, {:size => 24}, {:width => 24, :height => 24}), edit_admin_reader_url(reader)
+        = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
+        - unless reader.notes.blank?
+          %p.admin_notes
+            %strong
+              note:
+            = reader.notes
+
+    - tbody.description_cell do
+      %td.reader_description
+        = truncate_and_textilize(reader.description, 24)
+      
+    - tbody.modify_cell do
+      %td.remove
+        - if admin?
+          = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 

@@ -1,6 +1,7 @@
 class ReadersController < ApplicationController
   no_login_required
   before_filter :authenticate_reader, :only => [:show, :edit, :update]
+  before_filter :all_about_me, :only => [:show, :edit, :update]
   before_filter :no_removing, :only => [:remove, :destroy]
   radiant_layout { |controller| controller.layout_for :reader }
 
@@ -179,10 +180,16 @@ class ReadersController < ApplicationController
     redirect_to :back
   end
 
-  def no_removing
-    announce_cannot_delete_readers
-    redirect_to admin_readers_url
-  end
+  protected
+
+    def no_removing
+      announce_cannot_delete_readers
+      redirect_to admin_readers_url
+    end
+  
+    def all_about_me
+      params[:id] = current_reader.id if params[:id] == 'me'
+    end
       
   private
   

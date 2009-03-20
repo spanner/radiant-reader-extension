@@ -6,7 +6,7 @@
         - form.edit_honorific do
           %tr
             %th.label
-              = f.label :honorific, 'Title or rank', {:class => 'optional'}
+              = f.label :honorific, 'Title or rank', :class => 'optional'
             %td.field
               = f.text_field "honorific", :class => 'textbox', :maxlength => 100 
             %td.help Optional.
@@ -61,7 +61,8 @@
           %th.label
             = f.label :trusted, 'Trusted?'
           %td.field{:style=>"text-align: left;"}
-            = f.check_box "trusted"
+            %span.checkbox
+              = f.check_box "trusted"
           %td.help
             True by default. Uncheck to limit a reader's actions on the site.
       - form.edit_notes do
@@ -72,7 +73,6 @@
             ~ f.text_area "notes", :size => '40x4', :class => "textarea" 
           %td.help
             Optional.
-
 
   - render_region :form_bottom do |form_bottom|
     - form_bottom.edit_timestamp do
