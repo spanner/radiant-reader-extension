@@ -118,7 +118,7 @@ describe Reader do
   
   describe "on update" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
+      @reader = readers(:normal)
     end
 
     it 'should keep existing password if an empty password is supplied' do
@@ -140,6 +140,33 @@ describe Reader do
       @reader.trusted.should == false
     end
   end
+  
+  describe "on update if really a user" do
+    before do
+      @reader = readers(:user)
+    end
+    
+    it "should update the user's attributes too" do
+      @reader.name = "Cardinal Fang"
+      @reader.save!
+      readers(:user).name.should == "Cardinal Fang"
+    end
+    
+    describe "and with a new password" do
+      before do
+        @reader.password = @reader.password_confirmation = 'blotto'
+        @reader.save!
+      end
+      it "should still be able to log in" do
+        @reader.authenticated?('blotto').should be_true
+      end
+      it "the user should still be able to log in" do
+        @reader.user.authenticated?('blotto').should be_true
+      end
+    end
+      
+  end
+  
   
   describe "on activation" do
     before do
