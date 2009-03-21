@@ -1,14 +1,15 @@
 # Reader
 
-Readers are logged-in visitors to whom you or your extensions can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. A person can have both user and reader logins, and an administrator may find it useful to do just that.
+Readers are logged-in members or visitors to whom you or your extensions can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. 
 
-With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation, password reset and some useful registers behind the scenes that record last login and visit. An email address honeypot box should prevent spam signups, and a bit of glue code means that your existing user accounts become reader accounts when they need to.
+With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation, password reset and some useful registers behind the scenes that record last login and visit. A trick email address field (so-called inverse captcha) should prevent spam signups, and a bit of glue code means that your existing user accounts become reader accounts when they need to.
 
 This isn't much use by itself but it provides a common core for more interesting added functionality: see spanner's [forum extension](http://github.com/spanner/radiant-forum-extension) for discussions and page/blog comments, [reader groups](http://github.com/spanner/radiant-reader_group-extension) for proper page-access control and downloads extension for secure (nginx-based) access-controlled file downloads. More will follow.
 
 ## Status
 
-Should be good. Tests are very thorough (a lot of our code relies on this extension) and as I write there are no known issues.
+Should be ready for use. Tests are very thorough (a lot of our code relies on this extension) and as I write there are no known issues.
+
 
 ## Installation
 
@@ -23,7 +24,7 @@ Reader requires the spanner fork of multi_site and a couple of plugins. At the m
   	rake radiant:extensions:reader:migrate
   	rake radiant:extensions:reader:update
 
-It's a bit of a mess I agree, but that's mostly because I've written it to work with Ray, but Ray is in a rather in-between state at the moment. In future this ought to be all you need:
+It's a bit of a mess I agree. That's mostly because I've written it to work with Ray, but Ray is in a rather in-between state at the moment. In future this ought to be all you need:
 
 	rake ray:extension:install name="multi-site" hub="spanner"
 	rake rake ray:extension:install name="reader"
@@ -41,7 +42,7 @@ There are corresponding Radiant::Config entries for single-site installations.
 
 ## Layouts
 
-We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls <r:content /> at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful. 
+We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls `<r:content />` at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful. 
 
 The site edit form is extended to include a drop-down with which to choose the reader layout.
 
@@ -55,9 +56,10 @@ I have half a dozen other extensions to publish over the next week or two. By th
 
 ## See also
 
-* http://github.com/spanner/radiant-multi-site-extension
-* http://github.com/spanner/radiant-scoped-admin-extension
-* http://github.com/spanner/radiant-forum-extension
+* [multi_site](http://github.com/spanner/radiant-multi-site-extension)
+* [scoped-admin](http://github.com/spanner/radiant-scoped-admin-extension)
+* [reader_group](http://github.com/spanner/radiant-reader_group-extension)
+* [forum](http://github.com/spanner/radiant-forum-extension)
 
 ## Bugs and comments
 
