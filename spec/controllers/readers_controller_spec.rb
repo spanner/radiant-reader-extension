@@ -134,6 +134,18 @@ describe ReadersController do
       flash[:notice].should =~ /Hello #{@reader.name}/
     end
   end
+
+  describe "with a correct login that belongs to a user account" do
+    before do
+      @reader = readers(:user)
+      post :login, :reader => {:login => @reader.login, :password => "password"}
+    end
+
+    it "should have logged that user in too" do
+      controller.send(:current_user).should == users(:existing)
+    end
+  end
+
   
   describe "with an incorrect login" do
     it "should rerender the login template" do

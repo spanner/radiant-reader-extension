@@ -27,7 +27,6 @@ class ReaderExtension < Radiant::Extension
     map.namespace :admin, :member => { :remove => :get } do |admin|
       admin.resources :readers
     end
-    
   end
   
   def activate
@@ -37,6 +36,7 @@ class ReaderExtension < Radiant::Extension
 
     Radiant::AdminUI.send :include, ReaderAdminUI unless defined? admin.reader
     admin.reader = Radiant::AdminUI.load_default_reader_regions
+    UserActionObserver.instance.send :add_observer!, Reader 
 
     ApplicationHelper.send :include, ReaderHelper
     

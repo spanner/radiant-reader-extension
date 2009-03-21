@@ -28,7 +28,14 @@ describe Reader do
       @reader.errors.on(:email).should_not be_empty
       @reader.email = 'nodomain'
       @reader.should_not be_valid
-      @reader.email = 'bad@punctuation'
+      @reader.email = 'bad@punctuation,com'
+      @reader.should_not be_valid
+    end
+
+    it "should require an email address that is not in use by either reader or user" do
+      @reader.email = readers(:normal).email
+      @reader.should_not be_valid
+      @reader.email = users(:another).email
       @reader.should_not be_valid
     end
   
@@ -85,6 +92,27 @@ describe Reader do
     
     it 'should default to trusted status' do
       @reader.trusted.should == true
+    end
+  end
+  
+  describe "on create_for_user" do
+    it "should return the existing reader if there is one" do
+      reader = Reader.find_or_create_for_user(users(:existing))
+      reader.should == readers(:user)
+      reader.is_user?.should be_true
+      reader.is_admin?.should be_false
+    end
+
+    it "should create a matching reader if necessary" do
+      user = users(:admin)
+      reader = Reader.find_or_create_for_user(user)
+      [:name, :email, :login, :created_at, :password, :notes].each do |att|
+        reader.send(att).should == user.send(att)
+      end
+      reader.salt.should == user.salt
+      reader.authenticated?('password').should be_true
+      reader.is_user?.should be_true
+      reader.is_admin?.should be_true
     end
   end
   
@@ -185,5 +213,5 @@ describe Reader do
       @reader.confirm_password(@reader.activation_code).should be_true
       @reader.password.should == @reader.sha1(pw)
     end
-  end      
+  end
 end

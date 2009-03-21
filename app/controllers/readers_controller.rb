@@ -154,6 +154,8 @@ class ReadersController < ApplicationController
   def login
     if current_reader
       redirect_to default_welcome_page and return
+    elsif current_user
+      @reader = Reader.find_or_create_for_user(current_user)
     elsif request.post?
       login = params[:reader][:login]
       password = params[:reader][:password]
@@ -162,14 +164,19 @@ class ReadersController < ApplicationController
     if @reader
       Reader.current_reader = self.current_reader = @reader
       @reader.remember_me if params[:remember_me]
-      set_reader_cookie
+      if @reader.is_user?
+        self.current_user = @reader.user
+        @reader.user.remember_me if params[:remember_me]
+      end
+      set_session_cookie
       flash[:notice] = "Hello #{@reader.name}. You are logged in."
       redirect_to session[:return_to] || :back
+      session[:return_to] = nil
     end
   end
   
   def default_welcome_page(reader = current_reader)
-    reader.homepage
+    reader.is_user? ? admin_pages_url : reader.homepage
   end
   
   def logout
@@ -177,6 +184,11 @@ class ReadersController < ApplicationController
     flash[:notice] = "Goodbye #{current_reader.name}. You are now logged out"
     self.current_reader.forget_me
     Reader.current_reader = self.current_reader = nil
+    if (self.current_user)
+      cookies[:session_token] = { :expires => 1.day.ago } if cookies[:session_token] 
+      self.current_user.forget_me
+      self.current_user = nil
+    end
     redirect_to :back
   end
 

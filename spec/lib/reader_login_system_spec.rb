@@ -32,7 +32,7 @@ describe 'Reader Login System:', :type => :controller do
     ActionController::Routing::Routes.reload
   end
   
-  describe ".login_from_cookie" do
+  describe "authenticating" do
     before do
       Time.zone = 'UTC'
       Radiant::Config.stub!(:[]).with('session_timeout').and_return(2.weeks)
@@ -72,17 +72,12 @@ describe 'Reader Login System:', :type => :controller do
           content[:expires].should be_close((Time.zone.now + 2.weeks).utc, 1.minute) # sometimes specs are slow
         end
       end
-      
-      if defined? Site
-        it "should not log in a reader from another site" do
-        
-        end
-      end
     end
 
     describe "with session_token" do
       before do
         @user = users(:existing)
+        @reader = readers(:user)
         @cookies = { :session_token => 12345 }
         controller.stub!(:cookies).and_return(@cookies)
         User.should_receive(:find_by_session_token).and_return(@user)
@@ -92,18 +87,10 @@ describe 'Reader Login System:', :type => :controller do
         controller.send :login_from_cookie
       end
 
-      it "should still log in user if session_token is presented" do
+      it "should log in user" do
         controller.should_receive(:current_user=).with(@user).and_return {
           controller.stub!(:current_user).and_return(@user)
         }
-      end
-      
-      it "should update cookie with session_token" do
-        @cookies.should_receive(:[]=) do |name,content|
-          name.should eql(:session_token)
-          content[:value].should eql(@user.session_token)
-          content[:expires].should be_close((Time.zone.now + 2.weeks).utc, 1.minute) # sometimes specs are slow
-        end
       end
     end
     
@@ -130,5 +117,15 @@ describe 'Reader Login System:', :type => :controller do
         }
       end
     end
-  end  
+  end 
+  
+  describe '.authenticate' do
+    
+  end
+  
+  
+  
+  
+  
+  
 end

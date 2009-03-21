@@ -5,11 +5,12 @@ class Reader < ActiveRecord::Base
   is_gravtastic :with => :email, :rating => 'PG', :size => 48
   cattr_accessor :current_reader
 
-  belongs_to :created_by, :class_name => 'User'   # not usually necessary but sometimes admin intervenes
+  belongs_to :user
+  belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   
-  validates_uniqueness_of :login, :message => "already in use", :scope => :site_id
-  validates_uniqueness_of :email, :message => "already in use", :scope => :site_id
+  validates_uniqueness_of :login, :message => "already in use"
+  validate :email_must_not_be_in_use
   validates_confirmation_of :password, :message => 'must match confirmation', :if => :confirm_password?
   validates_presence_of :name, :login, :email, :message => 'required'
   validates_presence_of :password, :password_confirmation, :message => 'required', :if => :new_record?
@@ -28,8 +29,12 @@ class Reader < ActiveRecord::Base
   before_validation :set_login
   before_create :generate_activation_code
   before_create :encrypt_password
-  after_create :send_activation_message
+  after_create :send_activation_message_if_necessary
+  before_update :update_user
   before_update :encrypt_password_unless_empty_or_unchanged
+  
+  @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
+  cattr_accessor :user_columns
 
   def sha1(phrase)
     Digest::SHA1.hexdigest("--#{salt}--#{phrase}--")
@@ -112,6 +117,24 @@ class Reader < ActiveRecord::Base
     "/readers/#{id}"
   end
   
+  def is_user?
+    self.user ? true : false
+  end
+
+  def is_admin?
+    self.user && self.user.admin? ? true : false
+  end
+
+  def self.find_or_create_for_user(user)
+    reader = self.find_or_create_by_user_id(user.id)
+    if reader.new_record?
+      user_columns.each { |att| reader.send("#{att.to_s}=", user.send(att)) }
+      reader.activated_at = Time.now
+      reader.save(false)
+    end
+    reader
+  end
+  
   protected
 
     def generate_activation_code
@@ -124,22 +147,56 @@ class Reader < ActiveRecord::Base
   
   private
   
+    def email_must_not_be_in_use
+      reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
+      user = User.find_by_email(self.email)
+      if user && user != self.user
+        errors.add(:email, "belongs to an author here: do you need to log in?")
+      elsif reader && reader != self
+        errors.add(:email, "is already registered here")
+      else
+        return true
+      end
+      return false
+    end
+
     def validate_length_of_password?
       new_record? or not password.to_s.empty?
     end
   
-    def encrypt_password
-      self.current_password = password
-      self.salt = Digest::SHA1.hexdigest("--#{Time.now}--#{login}--rich_tea--")
-      self.password = sha1(password)
+    def send_activation_message_if_necessary
+      if self.activated?
+        self.activation_code = nil
+        self.save!
+      else
+        self.send_activation_message 
+      end
     end
     
+    def encrypt_password
+      if self.user && self.password == self.user.password #it's already encrypted
+        self.salt = self.user.salt
+      else
+        self.current_password = password
+        self.salt = Digest::SHA1.hexdigest("--#{Time.now}--#{login}--rich_tea--")
+        self.password = sha1(password)
+      end
+    end
+    
+    def update_user
+      if self.user
+        user_columns.each { |att| self.user.send("#{att.to_s}=", send(att)) if send("#{att.to_s}_changed?") }
+        self.user.password_confirmation = self.password_confirmation if self.password_changed?
+        self.user.save! if self.user.changed?
+      end
+    end
+
     def encrypt_password_unless_empty_or_unchanged
-      user = self.class.find(self.id)
+      reader = self.class.find(self.id)
       case password
       when ''
-        self.password = user.password
-      when user.password  
+        self.password = reader.password
+      when reader.password  
       else
         encrypt_password
       end

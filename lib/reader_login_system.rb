@@ -16,7 +16,7 @@ module ReaderLoginSystem
   protected
     
     def current_reader
-      @current_reader ||= Reader.find(session['reader_id']) rescue nil
+      @current_reader ||= current_user ? Reader.find_or_create_for_user(current_user) : Reader.find(session['reader_id']) rescue nil
     end
     
     def current_reader=(value=nil)
@@ -47,18 +47,15 @@ module ReaderLoginSystem
         false
       end
     end
-     
-    # it is quite possible to be logged in both as user and reader
-    # they may differ or overlap in their priveleges
-    # or it may be useful for an admin to masquerade as a reader to review pages
 
     def login_from_cookie_with_readers
-      if !cookies[:reader_session_token].blank? && reader = Reader.find_by_session_token(cookies[:reader_session_token]) # don't find by empty value
+      if !cookies[:reader_session_token].blank? && reader = Reader.find_by_session_token(cookies[:reader_session_token])
         reader.remember_me
         self.current_reader = reader
+        self.current_user = reader.user if reader.is_user?
         set_session_cookie
       end
-      login_from_cookie_without_readers
+      login_from_cookie_without_readers unless current_user
     end
     
     def set_session_cookie_with_readers
