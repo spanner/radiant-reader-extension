@@ -43,12 +43,20 @@ class Reader < ActiveRecord::Base
   def self.authenticate(login, password)
     reader = find_by_login(login)
     if reader && reader.authenticated?(password)
+      reader.previous_login = reader.last_login
+      reader.last_login = Time.now
+      reader.timestamp
       reader
     end
   end
     
   def authenticated?(pw)
     self.password == sha1(pw)
+  end
+  
+  def timestamp(at=Time.now)
+    self.last_seen = at
+    self.save
   end
 
   def after_initialize

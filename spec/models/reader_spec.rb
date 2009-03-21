@@ -204,7 +204,29 @@ describe Reader do
     end
   end
   
-  describe "whenm a new password is requested" do
+  describe "on time-stamping" do
+    before do
+      @reader = readers(:normal)
+      @reader.timestamp
+    end
+    it "should set last_seen to now" do
+      @reader.last_seen.should be_close(Time.now, 1.minute)
+    end
+  end
+  
+  describe "on authentication" do
+    before do
+      @reader = Reader.authenticate(readers(:normal).login, 'password')
+    end
+    it "should record the login" do
+      @reader.last_login.should be_close(Time.now, 1.minute)
+    end
+    it "should timestamp itself" do
+      @reader.last_seen.should be_close(Time.now, 1.minute)
+    end
+  end
+  
+  describe "when a new password is requested" do
     before do
       @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
       @reader.confirm_password = false

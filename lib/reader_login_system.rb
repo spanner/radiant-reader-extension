@@ -19,13 +19,14 @@ module ReaderLoginSystem
       @current_reader ||= current_user ? Reader.find_or_create_for_user(current_user) : Reader.find(session['reader_id']) rescue nil
     end
     
-    def current_reader=(value=nil)
-      if value && value.is_a?(Reader)
-        @current_reader = value
-        session['reader_id'] = value.id 
+    def current_reader=(reader=nil)
+      if reader && reader.is_a?(Reader)
+        session['reader_id'] = reader.id
+        reader.timestamp
+        @current_reader = reader
       else
-        @current_reader = nil
         session['reader_id'] = nil
+        @current_reader = nil
       end
       @current_reader
     end

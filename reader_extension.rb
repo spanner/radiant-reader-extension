@@ -30,7 +30,7 @@ class ReaderExtension < Radiant::Extension
   end
   
   def activate
-    ActiveRecord::Base.send :include, FakeSiteScope
+    ActiveRecord::Base.send :include, ModelExtensions
     ApplicationController.send :include, ControllerExtensions
     ApplicationController.send :include, ReaderLoginSystem
 
