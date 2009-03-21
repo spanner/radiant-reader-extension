@@ -164,9 +164,7 @@ describe Reader do
         @reader.user.authenticated?('blotto').should be_true
       end
     end
-      
   end
-  
   
   describe "on activation" do
     before do

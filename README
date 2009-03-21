@@ -2,9 +2,17 @@
 
 Readers are logged-in visitors to whom you or your extensions can grant privileges. They don't see the admin interface: this is a way to control access to pages and extended functionality on the public site, not in radiant proper. A person can have both user and reader logins, and an administrator may find it useful to do just that.
 
-With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation and password reset functionality. An email address honeypot box should prevent spam signups.
+With this extension you get a simple but complete machinery of registration, login and user-management (by the admin and by the users themselves). It includes input validation, email address confirmation and password reset functionality. An email address honeypot box should prevent spam signups, and a bit of glue code means that your existing user accounts become reader accounts when they need to.
 
 This isn't much use by itself but it provides a common core for more interesting added functionality: see spanner's Forum extension for discussions and page/blog comments, Groups extension for proper page-access control and Downloads extension for secure (nginx-based) access-controlled file downloads. More will follow.
+
+###Status
+
+Should be good. Tests pass, no known issues.
+
+###Next up
+
+Since-you-were-here functionality for the forum and (planned) versioned extensions.
 
 ###Installation
 
@@ -24,8 +32,6 @@ It's a bit of a mess I agree, but that's mostly because I've written it to work 
   rake ray:extension:install name="multi-site" hub="spanner"
   rake rake ray:extension:install name="reader"
     
-If you don't have Ray, stop reading this and go to http://github.com/johnmuhl/radiant-ray-extension/tree 
-
 The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon.
 
 ###Configuration
@@ -54,6 +60,11 @@ I have half a dozen other extensions to publish over the next week or two. By th
 * http://github.com/spanner/radiant-multi-site-extension
 * http://github.com/spanner/radiant-scoped-admin-extension
 * http://github.com/spanner/radiant-forum-extension
+
+###Bugs and comments
+
+In lighthouse please: http://spanner.lighthouseapp.com/projects/26912-radiant-extensions 
+or for little things, an email or github message is fine.
 
 ###Author and copyright
 
