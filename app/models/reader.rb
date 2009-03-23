@@ -173,10 +173,7 @@ class Reader < ActiveRecord::Base
     end
   
     def send_activation_message_if_necessary
-      if self.activated?
-        self.activation_code = nil
-        self.save!
-      else
+      unless self.activated?
         self.send_activation_message 
       end
     end

@@ -3,7 +3,7 @@ class ReaderNotifier < ActionMailer::Base
   def activation(reader)
     setup_email(reader)
     @subject += "Please activate your account at #{@body[:site_title]}"
-    @body[:activation_url] = reader_auto_activate_url(:id => reader.id, :activation_code => reader.activation_code)
+    @body[:activation_url] = activate_reader_url(reader, :activation_code => reader.activation_code)
   end
 
   def welcome(reader)
@@ -14,7 +14,7 @@ class ReaderNotifier < ActionMailer::Base
   def password(reader)
     setup_email(reader)
     @subject += 'Reset your password'
-    @body[:confirmation_url] = reader_repassword_url(:id => reader.id, :activation_code => reader.activation_code)
+    @body[:confirmation_url] = repassword_reader_url(reader, :activation_code => reader.activation_code)
   end
 
   protected
@@ -32,8 +32,8 @@ class ReaderNotifier < ActionMailer::Base
       @body[:site_title] = site ? site.name : Radiant::Config['site.title']
       @body[:site_url] = site ? site.base_domain : Radiant::Config['site.url']
       @body[:login_url] = reader_login_url
-      @body[:my_url] = reader_self_url
-      @body[:prefs_url] = reader_edit_self_url
+      @body[:my_url] = reader_url(reader)
+      @body[:prefs_url] = edit_reader_url(reader)
     end
   
 end
