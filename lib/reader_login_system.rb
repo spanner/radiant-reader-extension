@@ -88,6 +88,11 @@ module ReaderLoginSystem
       before_filter :authenticate_reader
     end
     
+    def reader_but_not_user_required
+      no_login_required
+      reader_required
+    end
+    
   end
 end
 
