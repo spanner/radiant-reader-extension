@@ -18,8 +18,8 @@ Reader requires the spanner fork of multi_site and a couple of plugins. At the m
 	git submodule add git://github.com/spanner/radiant-multi-site-extension.git vendor/extensions/multi_site
 	git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
 	cd vendor/extensions/reader
-		git submodule add git://github.com/bhedana/white_list.git vendor/plugins/white_list
-		git submodule add git://github.com/chrislloyd/gravtastic.git vendor/plugins/gravtastic
+		git submodule init
+		git submodule update
 	cd ../..
   	rake radiant:extensions:reader:migrate
   	rake radiant:extensions:reader:update
