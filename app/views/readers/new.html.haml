@@ -1,8 +1,6 @@
 = render :partial => 'flasher'
 
 %div.register_form
-  %h1
-    create a new account
   %p
     If you've already done this, you should only need to
     = link_to "log in", reader_login_url
@@ -30,5 +28,5 @@
   = link_to 'Home', '/'
   &gt; Register
 
-- content_for :title do
-  Register
+- content_for :pagetitle do
+  Create a new account

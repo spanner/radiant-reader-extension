@@ -20,7 +20,7 @@
         Password
       %span.formnote
         can't remember? 
-        = link_to "Make a new one", reader_password_url
+        = link_to "Make a new one", password_reader_url
       %br
       = password_field_tag "current_password", params[:current_password], :class => 'standard'
       - if @reader.errors.on(:current_password)
