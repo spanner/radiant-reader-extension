@@ -1,59 +1,68 @@
+
+- with_error_report(@reader.errors.on(:name)) do
+  = f.label :name, 'Your name', :class => 'required'
+  %span.formnote as you would like it to appear
+  %br
+  = f.text_field :name, :class => 'standard'
+
 - if Radiant::Config['reader.use_honorifics?']
-  = text_field_with_errors(f, @reader, 'honorific', {:label => 'Title or rank', :help => 'as you would like us to display it', :required => false, :class => 'standard'})
-
-= text_field_with_errors(f, @reader, 'name', {:label => 'Your name', :help => 'as you would like it to appear', :required => true, :class => 'titular'})
-
-- if @reader.new_record?
-  %p{ :class => @reader.errors.on(:email) ? 'with_errors' : '' }
-    %label{ :for => "reader_#{@email_field}", :class => 'required' }
-      Your email address
+  - with_error_report(@reader.errors.on(:honorific)) do
+    = f.label :honorific, 'Title or rank', :class => 'optional'
+    %span.formnote as you would like us to display it when you are credited
     %br
-    = text_field_tag @email_field, params[@email_field.intern], :id => "reader_#{@email_field}", :class => 'standard'
-    - if @reader.errors.on(:email)
-      %br
-      = @reader.errors.on(:email).to_a.to_sentence
-- else
-  = text_field_with_errors(f, @reader, 'email', {:label => 'Your email address', :required => true})
+    = f.text_field :honorific, :class => 'standard'
 
-= text_area_with_errors(f, @reader, 'description', {:label => 'A little about yourself', :help => 'you can fill this in later', :required => true})
-= text_field_with_errors(f, @reader, 'login', {:label => 'Login username', :help => 'leave blank to use your email address', :required => true})
+- if @reader.new_record? && @email_field
 
-%p{ :class => @reader.errors.on(:password) ? 'with_errors' : '' }
-  %label{ :for => 'reader_password', :class => 'required'}
-    - if @reader.new_record?
-      Password
-    - else
-      Change password?
-    %span.formnote
-      - if @reader.new_record?
-        at least five characters, please
-      - else
-        leave blank to keep existing password
-  %br
-  = password_field_tag 'password', params[:password], :class => 'standard'
-  - if @reader.errors.on(:password)
+  - with_error_report(@reader.errors.on(:email)) do
+    = f.label @email_field, 'Your email address', :class => 'required'
+    %span.formnote this has to work
     %br
-    = @reader.errors.on(:password).to_a.to_sentence
+    = text_field_tag @email_field, params[@email_field] || @reader.email, :id => "reader_#{@email_field}", :class => 'standard'
 
-%p{ :class => @reader.errors.on(:password_confirmation) ? 'with_errors' : '' }
-  %label{ :for => 'reader_password_confirmation', :class => 'required'}
-    Confirm 
-    = "new" unless @reader.new_record?
-    password
-  %br
-  = password_field_tag 'password_confirmation', params[:password_confirmation], :class => 'standard'
-  - if @reader.errors.on(:password_confirmation)
-    %br
-    = @reader.errors.on(:password_confirmation).to_a.to_sentence
-
-- if @reader.new_record?
-  %p{ :class => @reader.errors.on(:trap) ? 'with_errors' : 'hidden' }
-    %label{ :for => 'reader_email', :class => 'required' }
-      Don't fill this in!
+  .innocuous
+    - with_error_report(@reader.errors.on(:trap)) do
+      %label{ :for => 'reader_email', :class => 'required' }
+        Don't fill this in!
       %span.formnote
         it's a spam trap and you weren't supposed to see it
       %br
-    = f.text_field 'email', :class => 'required'
-    - if @reader.errors.on(:trap)
+      = text_field_tag 'reader_email', '', :name => 'reader[email]', :class => 'standard'
+
+- else
+
+  - with_error_report(@reader.errors.on(:email)) do
+    = f.label :email, 'Your email address', :class => 'required'
+    %br
+    = f.text_field :email, :class => 'standard'
+
+- with_error_report(@reader.errors.on(:description)) do
+  = f.label :description, 'A little about yourself', :class => 'optional'
+  %span.formnote you can fill this in later
+  %br
+  = f.text_area :description, :class => 'standard', :rows => 8
+
+- with_error_report(@reader.errors.on(:login)) do
+  = f.label :login, 'Login username', :class => 'optional'
+  %span.formnote leave blank to use your email address
+  %br
+  = f.text_field :login, :class => 'standard'
+
+- with_error_report(@reader.errors.on(:password)) do
+  - label = @reader.new_record? ? 'Password' : 'Change password?'
+  - cssclass = @reader.new_record? ? 'required' : 'optional'
+  - help = @reader.new_record? ? 'at least four characters, please' : 'leave blank to keep present password. if changing, at least four characters.'
+  
+  = f.label :password, label, :class => cssclass
+  %span.formnote
+    = help
+    %br
+  = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+
+- with_error_report(@reader.errors.on(:password_confirmation)) do
+  = f.label :password_confirmation, "Confirm password", :class => @reader.new_record? ? 'required' : 'optional'
+  - unless @reader.new_record?
+    %span.formnote
+      leave blank to keep present password
       %br
-      = @reader.errors.on(:trap).to_a.to_sentence
+  = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'

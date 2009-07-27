@@ -1,0 +1,70 @@
+.mainform
+  - if @reader
+
+    %p
+      %strong
+        Hello
+        = @reader.name + '.'
+      Thank you for persevering with the authorization process. 
+      %br
+      Please enter and confirm the new password you would like to use.
+
+    - if @reader.errors.any?
+      %p.haserror
+        %strong
+          Sorry: there was a problem.
+        = @reader.errors.full_messages.to_sentence
+
+    - form_for @reader, :url => password_reset_path, :method => :put, :html => {:class => 'friendly', :autocomplete => "off"} do |f|
+
+      = hidden_field_tag :id, params[:id]
+      = hidden_field_tag :confirmation_code, @reader.perishable_token
+
+      %p{:class => @reader.errors ? 'haserror' : ''}
+        = f.label :password, "New password", :class => 'required'
+        %br
+        = f.password_field :password, :class => 'titular'
+
+      %p{:class => @reader.errors ? 'haserror' : ''}
+        = f.label :password_confirmation, "Repeat for confirmation", :class => 'required'
+        %br
+        = f.password_field :password_confirmation, :class => 'titular'
+      %p
+        = f.submit "Update my password and log me in"
+        
+      %p
+        Your password hasn't changed yet, so if you've just remembered it you can still
+        = link_to "log in.", reader_login_url
+
+      - content_for :title do
+        Change my password
+
+  - else 
+
+    %p.haserror
+      Sorry: the system can't find you. That link must have been garbled somewhere along the line. 
+      Please paste the 20-character confirmation code into the box below and we'll try again.
+      
+    - form_tag edit_password_reset_path, :method => 'GET', :class => 'friendly', :autocomplete => "off" do
+      = hidden_field_tag :id, params[:id]
+      %p
+        %label{:for => "confirmation_code"}
+          confirmation code
+        %br
+        = text_field_tag 'confirmation_code', '', :class => 'titular'
+
+      %p
+        = submit_tag 'try again'
+    
+    %p
+      The confirmation code only works for ten minutes, but you can always 
+      = link_to "enter your email address again", new_password_reset_url
+      and we'll send a new one.
+      
+    - content_for :title do
+      Please enter confirmation code
+      
+- content_for :breadcrumbs do
+  = link_to 'Home', '/'
+  &gt; Reset password
+

@@ -83,7 +83,7 @@ describe ReadersController do
   describe "with a correct activation" do
     before do
       @newreader = readers(:inactive)
-      post :activate, :email => @newreader.email, :activation_code => @newreader.activation_code
+      post :activate, :id => @newreader.id, :activation_code => @newreader.perishable_token
       @reader = Reader.find_by_name('Inactive')
     end
 
@@ -94,7 +94,7 @@ describe ReadersController do
 
     it "should redirect to the self page" do
       response.should be_redirect
-      response.should redirect_to(:action => 'show', :id => @newreader.id)
+      response.should redirect_to(reader_url(@newreader))
     end
   end
 
@@ -108,151 +108,18 @@ describe ReadersController do
       response.should render_template("activate")
     end
 
-    it "should flash an appropriate error message" do
-      flash[:error].should =~ /Unable to activate/
-    end
-  end
-
-  it "should render the login screen on get to login" do
-    get :login
-    response.should be_success
-    response.should render_template("login")
-  end
-
-  describe "with a correct login" do
-    before do
-      @reader = readers(:normal)
-      post :login, :reader => {:login => @reader.login, :password => "password"}
-    end
-    
-    it "should redirect back" do
-      response.should be_redirect
-      response.should redirect_to('http://test.host/referer!')
-    end
-
-    it "should say hello" do
-      flash[:notice].should =~ /Hello #{@reader.name}/
-    end
-  end
-
-  describe "with a correct login that belongs to a user account" do
-    before do
-      @reader = readers(:user)
-      post :login, :reader => {:login => @reader.login, :password => "password"}
-    end
-
-    it "should have logged that user in too" do
-      controller.send(:current_user).should == users(:existing)
-    end
-  end
-
-  
-  describe "with an incorrect login" do
-    it "should rerender the login template" do
-      @reader = readers(:normal)
-      post :login, :reader => {:login => @reader.login, :password => "wrongo"}
-      response.should be_success
-      response.should render_template("login")
+    it "should flash an error" do
       flash[:error].should_not be_nil
     end
   end
-  
-  it "should render the reset password screen on get to password" do
-    get :password
-    response.should be_success
-    response.should render_template("password")
-  end
 
-  describe "with a reset password request" do
-    it "should reject an unknown email address" do
-      post :password, :email => "pope@spanner.org"
-    end
-    
-    describe "with a recognised email address" do
-      before do
-        post :password, :email => 'normal@spanner.org'
-        @reader = readers(:normal)
-      end
-
-      it "should create a provisional password" do
-        @reader.provisional_password.should_not be_nil
-      end
-      
-      it "should send a repassword notification" do
-        message = ActionMailer::Base.deliveries.last
-        message.should_not be_nil
-        message.subject.should =~ /password/
-      end
-    end
-
-    describe "that is for an account not yet activated" do
-      before do
-        post :password, :email => 'inactive@spanner.org'
-        @reader = readers(:inactive)
-      end
-
-      it "should not create a provisional password" do
-        @reader.provisional_password.should be_nil
-      end
-
-      it "should resend the activation message" do
-        message = ActionMailer::Base.deliveries.last
-        message.should_not be_nil
-        message.subject.should =~ /activate/
-      end
-    end
-  end
-  
-  describe "with a reset password confirmation" do
-    before do
-      @reader = readers(:repasswording)
-      @newpw = @reader.provisional_password
-    end
-
-    describe "that is correct" do
-      before do
-        post :repassword, :id => @reader.id, :activation_code => @reader.activation_code
-        @reader = Reader.find_by_name('Repasswording')
-      end
-    
-      it "should reset the password" do
-        @reader.password.should == @reader.sha1(@newpw)
-        @reader.authenticated?(@newpw).should be_true
-      end
-
-      it "should clear away the provisional and activation clutter" do
-        @reader.provisional_password.should be_nil
-        @reader.activation_code.should be_nil
-      end
-
-    end
-
-    describe "that is not correct" do
-      before do
-        post :repassword, :id => @reader.id, :activation_code => 'dive dive dive'
-      end
-
-      it "should not reset the password" do
-        @reader.password.should_not == @reader.sha1(@newpw)
-      end
-
-      it "should redirect to the password form" do
-        response.should be_redirect
-        response.should redirect_to(:action => 'password')
-      end
-
-      it "should flash an error" do
-        response.should be_redirect
-        response.should redirect_to(:action => 'password')
-        flash[:error].should =~ /activation code/
-      end
-    end
-  end
   
   describe "to the browser" do
     describe "who has logged in" do
       before do
-        login_as_reader(:normal)
+        activate_authlogic
+        rsession = ReaderSession.create!(readers(:normal))
+        # controller.stub!(:current_reader_session).and_return(rsession)
       end
   
       it "should show another reader page" do 
@@ -260,18 +127,10 @@ describe ReadersController do
         response.should be_success
         response.should render_template("show")
       end
-
-      if defined? Site
-        it "should raise a Not Found error when asked for a reader from another site" do 
-          lambda { 
-            get :show, :id => reader_id(:elsewhere) 
-          }.should raise_error(ActiveRecord::RecordNotFound)
-        end
-      end
       
       it "should refuse to show the edit page for another reader" do 
         get :edit, :id => reader_id(:visible)
-        response.should be_success
+        response.should be_success        
         flash[:error].should =~ /another person/
       end
 
@@ -298,14 +157,15 @@ describe ReadersController do
       it "should not show a reader page" do 
         get :show, :id => reader_id(:visible)
         response.should be_redirect
-        response.should redirect_to(:action => 'login')
+        response.should redirect_to(new_reader_session_url)
       end
     end
   end
     
   describe "with an update request" do
     before do
-      login_as_reader(:normal)
+      activate_authlogic
+      ReaderSession.create readers(:normal)
     end
 
     describe "that includes the correct password" do
@@ -320,7 +180,7 @@ describe ReadersController do
 
       it "should redirect to the reader page" do 
         response.should be_redirect
-        response.should redirect_to(:action => 'show', :id => @reader.id)
+        response.should redirect_to(reader_url(@reader))
       end
       
     end

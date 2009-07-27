@@ -13,9 +13,6 @@ Should be ready for use. Tests are very thorough (a lot of our code relies on th
 
 ## Installation
 
-Reader requires the spanner fork of multi_site and a couple of plugins. At the moment Ray doesn't know about this extension so you will need to do something crunchy like this:
-
-	git submodule add git://github.com/spanner/radiant-multi-site-extension.git vendor/extensions/multi_site
 	git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
 	cd vendor/extensions/reader
 		git submodule init

@@ -1,5 +1,5 @@
 # Uncomment this if you reference any of your controllers in activate
-require_dependency 'application'
+require_dependency 'application_controller'
 require 'gravtastic'
 
 class ReaderExtension < Radiant::Extension
@@ -9,31 +9,27 @@ class ReaderExtension < Radiant::Extension
   
   define_routes do |map|
     
-    map.with_options :controller => 'readers' do |map|
-      map.reader_register       'readers/register',                :action => 'new'
-      map.reader_login          'readers/login',                   :action => 'login'
-      map.reader_logout         'readers/logout',                  :action => 'logout'
-    end
-
-    map.resources :readers, :member => {:password => :any, :repassword => :any, :activate => :any}
-    
-    map.namespace :admin, :member => { :remove => :get } do |admin|
+    map.resources :readers, :member => {:activate => :any}
+    map.resource :reader_session
+    map.resource :password_reset
+    map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
+    map.activate_reader '/activate/:id/:activation_code', :controller => 'readers', :action => 'activate'
+    map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
+    map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
+    map.namespace :admin do |admin|
       admin.resources :readers
     end
   end
   
   def activate
-    ActiveRecord::Base.send :include, ModelExtensions
     ApplicationController.send :include, ControllerExtensions
-    ApplicationController.send :include, ReaderLoginSystem
-
     Radiant::AdminUI.send :include, ReaderAdminUI unless defined? admin.reader
     admin.reader = Radiant::AdminUI.load_default_reader_regions
     UserActionObserver.instance.send :add_observer!, Reader 
 
     ApplicationHelper.send :include, ReaderHelper
     
-    if defined? Site && admin.sites       # currently we know it's the spanner multi_site if admin.sites is defined
+    if defined? Site && defined? ActiveRecord::SiteNotFound       # currently we know it's the spanner multi_site if ActiveRecord::SiteNotFound is defined
       Site.send :include, ReaderSite
       admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       admin.readers.index.add :top, "admin/shared/site_jumper"

@@ -10,8 +10,11 @@ unless defined? RADIANT_ROOT
 end
 
 require "#{RADIANT_ROOT}/spec/spec_helper"
-
 Dataset::Resolver.default << (File.dirname(__FILE__) + "/datasets")
+
+require "authlogic/test_case"
+include Authlogic::TestCase
+
 ActionMailer::Base.delivery_method = :test  
 ActionMailer::Base.perform_deliveries = true  
 ActionMailer::Base.deliveries = []
@@ -20,6 +23,7 @@ Radiant::Config['readers.default_mail_from_name'] = "test"
 Radiant::Config['site.title'] = 'Test Site'
 Radiant::Config['site.url'] = 'www.example.com'
 Radiant::Config['readers.layout'] = 'Main'
+
 
 if File.directory?(File.dirname(__FILE__) + "/matchers")
   Dir[File.dirname(__FILE__) + "/matchers/*.rb"].each {|file| require file }

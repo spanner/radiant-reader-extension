@@ -1,0 +1,32 @@
+- include_stylesheet 'reader'
+
+%p
+  Please enter your email address below. If we recognise it, we'll send you a message with a confirmation link. 
+  Click on that link to bring up a form where you can enter a new password.
+  %strong
+    Your password will not change until you fill in that form,
+  so only you can complete this process.
+  
+- if @error
+  %p.haserror
+    = @error
+
+.password_form
+
+  - email = current_reader.email if current_reader
+  - form_tag password_reset_path, :class => 'friendly' do
+    %p
+      %label{:for => "email"}
+        Email address
+      %br
+      = text_field_tag 'email', email, :class => 'titular'
+
+    %p
+      = submit_tag 'send me instructions'
+
+- content_for :breadcrumbs do
+  = link_to 'Home', '/'
+  &gt; Reset password
+
+- content_for :title do
+  Reset your password

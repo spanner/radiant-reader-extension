@@ -3,29 +3,10 @@ module ReaderHelper
 
     base.module_eval do
 
-      def text_field_with_errors(form, thing, name, options={})
-        field_with_errors(form, thing, name, 'text', options)
-      end
-  
-      def text_area_with_errors(form, thing, name, options={})
-        field_with_errors(form, thing, name, 'text_area', {:rows => 8}.merge(options))
-      end
-  
-      def field_with_errors(form, thing, name, type, options={})
-        render :partial => 'field', :locals => {
-          :form => form,
-          :thing => thing,
-          :tag => {
-            :type => type,
-            :name => name,
-            :symbol => name.intern,
-            :fieldid => "#{thing.class.to_s.downcase.underscore}_#{name.downcase}",
-            :required => options[:required] || false,
-            :class => 'standard',
-            :label => name,
-            :help => ''
-          }.merge(options)
-        }
+      # wraps the block in a p with the right class and shows the errors nicely, if there are any
+
+      def with_error_report(errors, &block)
+        render({:layout => 'wrappers/field_errors', :locals => {:errors => errors}}, {}, &block)
       end
   
       def gravatar_for(reader, gravatar_options={}, img_options ={})

@@ -2,15 +2,15 @@
 = render :partial => 'controls'
 
 %div.reader_show
-  %h1.reader
-    = @reader.name
+  = gravatar_for(@reader, {:size => 256}, {:class => 'big_gravatar'})
+
   - if @reader.description.blank?
     %p No description available.
   - else
     = clean_textilize @reader.description
-  %div.stretcher
-    %p
-      = "posts is #{@posts}"
+
+  = render :partial => 'contributions'
+      
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt;
@@ -18,7 +18,6 @@
   &gt;
   = @reader.name
 
-- content_for :pagetitle do
-  = gravatar_for(@reader, {:size => 128}, {:class => 'big_gravatar'})
+- content_for :title do
   = @reader.name
 

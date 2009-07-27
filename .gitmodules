@@ -4,3 +4,6 @@
 [submodule "vendor/plugins/white_list"]
 	path = vendor/plugins/white_list
 	url = git://github.com/bhedana/white_list.git
+[submodule "vendor/plugins/authlogic"]
+	path = vendor/plugins/authlogic
+	url = git://github.com/binarylogic/authlogic.git

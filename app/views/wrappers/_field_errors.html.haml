@@ -1,0 +1,5 @@
+%p{ :class => errors ? 'haserror' : '' }
+  = yield
+  - if errors
+    This
+    = errors.to_a.to_sentence

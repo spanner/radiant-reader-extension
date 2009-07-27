@@ -2,30 +2,30 @@
 = render :partial => 'controls'
 
 %div.preferences_form
-  %h1 
-    Revise your account
   %p
     Hello 
     %strong
       = "#{@reader.name}."
-    If you want to make changes to your account, please first enter your current password. This is so that no passing ruffian can edit you in your absence.
+    You can use this form to change your preferences and enter a bit more information about yourself.
+    First, just to make sure you're you, please enter your current password.
+
   - unless @reader.errors.empty?
     %p.haserror
       %strong Sorry: there were problems.
-      Please check the form. The affected fields will be 
-      %span.with_errors highlighted
+      Please check the form. The affected fields will be highlighted
+      
   - form_for :reader, :url => reader_url(@reader), :html => { :method => "put", :class => 'friendly'} do |f| 
-    %p{ :class => @reader.errors.on(:current_password) ? 'with_errors' : '' }
-      %label{ :for => 'reader_current_password', :class => 'required' }
-        Password
+    
+    - with_error_report(@reader.errors.on(:current_password)) do
+      = f.label :current_password, "Current password", :class => 'required'
       %span.formnote
-        can't remember? 
-        = link_to "Make a new one", password_reader_url
-      %br
-      = password_field_tag "current_password", params[:current_password], :class => 'standard'
-      - if @reader.errors.on(:current_password)
-        %br
-        = @reader.errors.on(:current_password).to_a.to_sentence
+        can't remember?
+        = link_to "Make a new one", new_password_reset_url
+      = f.password_field :current_password, :class => 'standard', :autocomplete => 'off'
+      
+    %p
+      Fields with bold headings are required and will cause grumbling if left blank.
+      
     = render :partial => 'form', :locals => {:f => f}
     %p
       = submit_tag "Update your account"

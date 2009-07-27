@@ -1,32 +1,40 @@
+= render :partial => 'controls'
 = render :partial => 'flasher'
 
 %div.register_form
   %p
     If you've already done this, you should only need to
-    = link_to "log in", reader_login_url
+    = link_to "log in.", reader_login_url
+    Otherwise, please take a moment to register an accout. Only the fields labelled in bold are required: the rest you can fill in later if you prefer.
+
   - unless @reader.errors.empty?
     %p.haserror
       %strong Sorry: there were problems.
-      Please check the form. The affected fields will be 
-      %span.emphatic highlighted
+      Please check the form. The affected fields will be highlighted
+      
   - form_for :reader, :url => readers_url, :html => {:class => 'friendly'} do |f|
     = render :partial => 'form', :locals => {:f => f}
     %p
       = submit_tag "Register"
       or 
       = link_to 'cancel', request.referer
-  %p
-    When you press the 'register' button we will send a confirmation email to the address you enter above. Click on a link in that message, and you're in.
-  %p
-    If you would like a picture to appear next to your messages, give yourself a 
-    = link_to "gravatar.", "http://www.gravatar.com"
-  %p 
-    Please make sure you are happy with our 
-    = link_to "terms and conditions", "/terms"
+
+  %h3
+    notes
+
+  %ul.friendly
+    %li
+      When you press the 'register' button we will send a confirmation email to the address you enter above. Click on a link in that message, and you're in.
+    %li
+      If you would like a picture to appear next to your messages, give yourself a 
+      = link_to "gravatar.", "http://www.gravatar.com"
+    %li
+      Please make sure you're happy with our 
+      = link_to "terms and conditions", "/terms"
 
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt; Register
 
-- content_for :pagetitle do
-  Create a new account
+- content_for :title do
+  Register here

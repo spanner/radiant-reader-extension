@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Reader do
   dataset :readers
   dataset :reader_layouts
+  activate_authlogic
   
-  before do  # we need associations
-    @site = Page.current_site = sites(:test) if defined? Site
+  before do
     @existing_reader = readers(:normal)
   end
   
@@ -44,39 +44,14 @@ describe Reader do
       @reader.should_not be_valid
       @reader.errors.on(:login).should_not be_empty
     end
-    
-    it 'should confirm the password by default' do
-      @reader = Reader.new
-      @reader.confirm_password?.should == true
-    end
   end
   
   describe "on creation" do
     before do
       @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
     end
-  
-    if defined? Site
-      it "should belong to the current site" do
-        @reader.site.should_not be_nil
-        @reader.site.should == Reader.current_site
-        @reader.site.name.should == @site.name
-      end
-    end
-    
-    it 'should save password encrypted' do
-      @reader.confirm_password = true
-      @reader.password_confirmation = @reader.password = 'test_password'
-      @reader.save!
-      @reader.password.should == @reader.sha1('test_password')
-    end
-    
-    it "should create a salt when encrypting the password" do
-      @reader.salt.should_not be_nil
-    end
-    
+      
     it 'should await activation' do
-      @reader.activation_code.should_not be_nil
       @reader.activated_at.should be_nil
       @reader.activated?.should be_false
     end
@@ -106,11 +81,11 @@ describe Reader do
     it "should create a matching reader if necessary" do
       user = users(:admin)
       reader = Reader.find_or_create_for_user(user)
-      [:name, :email, :login, :created_at, :password, :notes].each do |att|
+      [:name, :email, :login, :created_at, :notes].each do |att|
         reader.send(att).should == user.send(att)
       end
-      reader.salt.should == user.salt
-      reader.authenticated?('password').should be_true
+      reader.crypted_password.should == user.password
+      ReaderSession.new(:login => 'admin', :password => 'password').should be_valid
       reader.is_user?.should be_true
       reader.is_admin?.should be_true
     end
@@ -119,18 +94,6 @@ describe Reader do
   describe "on update" do
     before do
       @reader = readers(:normal)
-    end
-
-    it 'should keep existing password if an empty password is supplied' do
-      @reader.password_confirmation = @reader.password = ''
-      @reader.save!
-      @reader.password.should == @reader.sha1('password')
-    end
-  
-    it 'should save new password if different' do
-      @reader.password_confirmation = @reader.password = 'cool beans'
-      @reader.save!
-      @reader.password.should == @reader.sha1('cool beans')
     end
     
     it 'should be puttable in the doghouse' do
@@ -142,42 +105,40 @@ describe Reader do
   end
   
   describe "on update if really a user" do
-    before do
-      @reader = readers(:user)
+    
+    it "should update the user's attributes" do
+      reader = readers(:user)
+      reader.name = "Cardinal Fang"
+      reader.save!
+      
+      User.find_by_name("Cardinal Fang").should == users(:existing)
     end
     
-    it "should update the user's attributes too" do
-      @reader.name = "Cardinal Fang"
-      @reader.save!
-      readers(:user).name.should == "Cardinal Fang"
-    end
-    
-    describe "and with a new password" do
-      before do
-        @reader.password = @reader.password_confirmation = 'blotto'
-        @reader.save!
-      end
-      it "should still be able to log in" do
-        @reader.authenticated?('blotto').should be_true
-      end
-      it "the user should still be able to log in" do
-        @reader.user.authenticated?('blotto').should be_true
-      end
+    it "should update the user's credentials" do
+      reader = readers(:user)
+      reader.password = reader.password_confirmation = 'blotto'
+      reader.save!
+      ReaderSession.new(:login => reader.login, :password => 'blotto').should be_valid
+      reader.user.authenticated?('blotto').should be_true
     end
   end
   
   describe "on activation" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'another login', :password => 'password', :password_confirmation => 'password', :trusted => 1
-      @reader.confirm_password = false
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'another_login', :password => 'password', :password_confirmation => 'password', :trusted => 1
+    end
+    
+    it 'should be retrieved by id and activation code' do
+      Reader.find_by_id_and_perishable_token(@reader.id, @reader.perishable_token).should == @reader
     end
 
-    it 'should not activate itself without confirmation' do
-      @reader.activate!('nonsense').should be_false
+    it 'should not be retrievable with no or the wrong code' do
+      Reader.find_by_id_and_perishable_token(@reader.id, 'walrus').should be_nil
+      Reader.find_by_id_and_perishable_token(@reader.id, '').should be_nil
     end
 
-    it 'should activate itself with confirmation' do
-      @reader.activate!( @reader.activation_code ).should be_true
+    it 'should activate itself' do
+      @reader.activate!
       @reader.activated?.should be_true
       @reader.activated_at.should_not be_nil
     end
@@ -185,80 +146,20 @@ describe Reader do
   
   describe "on login" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
-      @reader.confirm_password = false
-      @reader.activate!(@reader.activation_code).should be_true
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'hoohaa', :password_confirmation => 'hoohaa'
+      @reader.activate!
     end
     
     it 'should authenticate' do
-      reader = Reader.authenticate('test', 'password')
-      reader.should == @reader
+      ReaderSession.new(:login => 'test', :password => 'hoohaa').should be_valid
     end
   
     it 'should not authenticate with bad password' do
-      Reader.authenticate('test', 'wrong password').should be_nil
+      ReaderSession.new(:login => 'test', :password => 'corcovado').should_not be_valid
     end
   
     it 'should not authenticate if it does not exist' do
-      Reader.authenticate('loch ness monster', 'password').should be_nil
-    end
-  end
-  
-  describe "on time-stamping" do
-    before do
-      @reader = readers(:normal)
-      @reader.timestamp
-    end
-    it "should set last_seen to now" do
-      @reader.last_seen.should be_close(Time.now, 1.minute)
-    end
-  end
-  
-  describe "on authentication" do
-    before do
-      @reader = Reader.authenticate(readers(:normal).login, 'password')
-    end
-    it "should record the login" do
-      @reader.last_login.should be_close(Time.now, 1.minute)
-    end
-    it "should timestamp itself" do
-      @reader.last_seen.should be_close(Time.now, 1.minute)
-    end
-  end
-  
-  describe "when a new password is requested" do
-    before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
-      @reader.confirm_password = false
-      @reader.activate!(@reader.activation_code)
-      @reader.activation_code.should be_nil
-      @reader.repassword
-    end
-  
-    it 'should set an activation code' do
-      @reader.provisional_password.should_not be_nil
-      @reader.activation_code.should_not be_nil
-    end
-  
-    it 'should send out a confirmation email' do
-      message = ActionMailer::Base.deliveries.last
-      message.should_not be_nil
-      message.subject.should == "Reset your password"
-      message.body.should =~ /#{@reader.name}/
-      message.body.should =~ /#{@reader.login}/
-      message.body.should =~ /#{@reader.provisional_password}/
-    end
-  
-    it 'should not change the password without correct confirmation' do
-      @reader.confirm_password('').should be_false
-      @reader.confirm_password('nonsense').should be_false
-      @reader.password.should == @reader.sha1('password')
-    end
-  
-    it 'should change the password with correct confirmation' do
-      pw = @reader.provisional_password
-      @reader.confirm_password(@reader.activation_code).should be_true
-      @reader.password.should == @reader.sha1(pw)
+      ReaderSession.new(:login => 'loch ness monster', :password => 'blotto').should_not be_valid
     end
   end
 end
