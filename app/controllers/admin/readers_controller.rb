@@ -4,5 +4,13 @@ class Admin::ReadersController < Admin::ResourceController
     :when => :admin,
     :denied_url => { :controller => 'pages', :action => 'index' },
     :denied_message => 'You must be an administrator to add or modify readers.'
-    
+  
+  def create
+    model.update_attributes!(params[:reader])
+    model.current_password = params[:reader][:password]
+    model.send_invitation_message
+    announce_saved
+    response_for :create
+  end
+  
 end

@@ -4,10 +4,9 @@
 %div.preferences_form
   %p
     Hello 
-    %strong
-      = "#{@reader.name}."
+    = link_to "#{@reader.name}.", reader_url(@reader)
     You can use this form to change your preferences and enter a bit more information about yourself.
-    First, just to make sure you're you, please enter your current password.
+    First, just to make sure you're you, please enter your current password:
 
   - unless @reader.errors.empty?
     %p.haserror

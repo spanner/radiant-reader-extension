@@ -4,6 +4,12 @@ Welcome to <%= @site_title %>! And thank you for persevering with the registrati
 
 You can put in a bit more information about yourself at any time by going to <%= @prefs_url %>.
 
+On your return, you may need to log in. Here's a reminder, before we discard the unencrypted version of your password:
+
+  login at: <%= @login_url %>
+  username: <%= @reader.login %>
+  password: <%= @reader.clear_password %>
+
 best wishes,
 
 <%= @sender %>

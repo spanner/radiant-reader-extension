@@ -1,22 +1,18 @@
 Hello <%= @reader.name %>,
 
-Welcome! An account has been created for you at <%= @site_title %>. To activate it, all you have to do is click on this link:
+You are invited to join the <%= @site_title %> site. To accept the invitation, all you have to do is click on this link:
 
   <%= @activation_url %>
 
 (If your email program hasn't turned that into a link, just paste the address into a web browser window.)
 
-On this first visit you'll be logged in automatically, but next time you'll need to know your username and password: Here's a reminder:
+On this first visit you'll be logged in automatically, but next time you'll need to know your username and password:
 
   login at: <%= @login_url %>
   username: <%= @reader.login %>
   password: <%= @reader.clear_password %>
-
-You can see yourself as others might see you here:
-
-  <%= @my_url%>
   
-And change your listing and preferences here:
+You can change all that here:
 
   <%= @prefs_url%>
 

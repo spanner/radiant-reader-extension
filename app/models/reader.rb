@@ -1,6 +1,8 @@
 require 'digest/sha1'
 
 class Reader < ActiveRecord::Base
+  @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
+  cattr_accessor :user_columns
   cattr_accessor :current
 
   is_site_scoped if defined? ActiveRecord::SiteNotFound
@@ -10,17 +12,16 @@ class Reader < ActiveRecord::Base
     config.transition_from_restful_authentication = true
     config.validate_email_field = false
     config.validate_login_field = false
+    config.disable_perishable_token_maintenance = true
   end
 
   belongs_to :user
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   
-  attr_writer :confirm_password
-  attr_accessor :current_password   # used for authentication on update and (since it's there) to mention password in initial email
+  attr_accessor :current_password   # used for authentication on update
 
   before_save :set_login
-  after_create :send_activation_message_if_necessary
   before_update :update_user
 
   validates_presence_of :name, :email, :message => 'is required'
@@ -31,12 +32,6 @@ class Reader < ActiveRecord::Base
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
   
-  @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
-  cattr_accessor :user_columns
-
-  def activated?
-    !self.activated_at.nil?
-  end
   
   def activate!
     self.activated_at = Time.now.utc
@@ -44,7 +39,7 @@ class Reader < ActiveRecord::Base
     self.send_welcome_message
   end
 
-  def active?
+  def activated?
     !inactive?
   end
 
@@ -52,7 +47,7 @@ class Reader < ActiveRecord::Base
     self.activated_at.nil? || self.activated_at > Time.now
   end
 
-  ['activation', 'welcome', 'password_reset'].each do |message|
+  ['activation', 'invitation', 'welcome', 'password_reset'].each do |message|
     define_method("send_#{message}_message".intern) { 
       reset_perishable_token!  
       ReaderNotifier.send("deliver_#{message}".intern, self) 
@@ -113,13 +108,11 @@ class Reader < ActiveRecord::Base
       new_record? or not password.to_s.empty?
     end
   
-    def send_activation_message_if_necessary
-      unless self.activated?
-        self.send_activation_message 
+    def send_invitation_message_if_invited
+      if UserActionObserver.current_user && !self.activated? && self.user != UserActionObserver.current_user
+        self.send_invitation_message 
       end
     end
-        
-    # redo this with authlogic hooks
 
     def update_user
       if self.user

@@ -2,7 +2,17 @@
 = render :partial => 'controls'
 
 %div.reader_show
-  = gravatar_for(@reader, {:size => 256}, {:class => 'big_gravatar'})
+  - if @reader == current_reader
+    %p.system_message
+      %strong
+        Hello 
+        = @reader.name + '.'
+      This is the page that other (logged-in) site visitors will see when they click on your name. You can change the text that appears here by 
+      = link_to "editing your preferences", edit_reader_url(@reader)
+      and you can change the picture by 
+      = link_to "giving yourself a gravatar.", "http://gravatar.com/signup"
+
+  = gravatar_for(@reader, {:size => 128}, {:class => 'big_gravatar'})
 
   - if @reader.description.blank?
     %p No description available.

@@ -38,7 +38,10 @@
 
 - with_error_report(@reader.errors.on(:description)) do
   = f.label :description, 'A little about yourself', :class => 'optional'
-  %span.formnote you can fill this in later
+  %span.formnote 
+    you can fill this in later. 
+    Textile formatting 
+    is allowed.
   %br
   = f.text_area :description, :class => 'standard', :rows => 8
 

@@ -12,7 +12,11 @@ class ReaderSessionsController < ApplicationController
     @reader_session = ReaderSession.new(params[:reader_session])
     if @reader_session.save
       flash[:notice] = "Login successful!"
-      redirect_back_or_to @reader_session.reader.homepage
+      if @reader_session.reader.activated? && @reader_session.reader.clear_password        
+        @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login after activation
+        @reader_session.reader.save(false)
+      end
+      redirect_back_or_to url_for(@reader_session.reader)
     else
       render :action => :new
     end
@@ -21,7 +25,7 @@ class ReaderSessionsController < ApplicationController
   def destroy
     current_reader_session.destroy
     flash[:notice] = "Logout successful!"
-    redirect_back_or_to new_reader_session_url
+    redirect_back_or_to reader_login_url
   end
 
 end

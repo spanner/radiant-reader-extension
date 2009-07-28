@@ -1,45 +1,36 @@
 = render :partial => 'flasher'
 
 - if current_reader && current_reader.activated?
-  %h1 Welcome!
-  %p Your account is active. Thanks for persevering with the sign-up process. Now get on with it.
+  %p Your account is active. Thanks for persevering with the sign-up process.
+
+  - content_for :title do
+    Welcome!
 
 - else
   %div.activation_form
-    %h1 Please activate your account</h2>
     %p
+      Please check your email.
       - if current_reader
-        We have sent an email message to 
+        We have sent a message to 
         %strong= current_reader.email
       - else
-        You should have received an email 
-      containing a link that will automatically activate your account. If for some reason that doesn't work, you can also enter your email address and activation code here:
+        You should have received a message 
+      containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
+      = link_to "send it again.", resend_activation_reader_url(current_reader)
+      
     - if @error
       %p.haserror
         @error
-    - form_for :reader, :url => reader_activate_url, :html => {:class => 'friendly'} do |f|
-      %label{:for => "email"}
-        Email Address
-        %br
-        = text_field_tag 'email', (params[:email] || (current_reader ? current_reader.email : '')), :class => 'standard'
-      %p{ :class => @reader && @reader.errors.on(:activation_code) ? 'with_errors' : '' }
-        %label{:for => "activation_code"}
-          Activation Code
-          %br
-          = text_field_tag :activation_code, '', :class => 'standard'
-      %p
-        = submit_tag 'Activate your account'
     %p
-      If the activation message has gone astray, we can 
-      = link_to 'send it again.', reader_reactivate_url
       If you think you might have put the wrong email address in, the easiest thing to do is 
-      = link_to 'register again', reader_register_url
+      = link_to 'register again', new_reader_url
       with the right one. The failed registration attempt will be purged after a couple of days.
+
+  - content_for :title do
+    Thank you
 
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt;
   Activate your account
 
-- content_for :title do
-  Activate your account

@@ -17,4 +17,4 @@
     - tbody.modify_cell do
       %td.remove
         - if admin?
-          = link_to(image('remove', :alt => 'Remove Reader'), remove_admin_reader_url(reader)) 
+          = link_to(image('remove', :alt => 'Remove Reader'), admin_reader_url(reader), :method => :delete, :confirm => "really delete reader #{reader.name}?") 

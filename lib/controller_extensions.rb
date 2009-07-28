@@ -15,7 +15,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     #   Radiant::Config["forum.layout"]
     #   Radiant::Config["reader.layout"]
     #   a layout called 'Main'
-    #   the first layout it can find
+    #   any layout it can find
   
     def layout_for(area = :reader)
       logger.warn "*** layout_for(#{area})"
@@ -64,7 +64,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
     
     def current_reader=(reader)
-      current_reader_session = ReaderSession.create(reader)
+      current_reader_session = ReaderSession.create!(reader)
       @current_reader = reader
     end
 

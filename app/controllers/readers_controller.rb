@@ -4,23 +4,26 @@ class ReadersController < ApplicationController
 
   before_filter :require_reader, :only => [:show, :edit, :update]
   before_filter :i_am_me, :only => [:show]
-  before_filter :restrict_to_self, :only => [:edit, :update]
+  before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
-    flash[:notice] = "Herrroooo!"
   end
 
   def show
     @reader = Reader.find(params[:id])
+    if @reader.inactive? && @reader == current_reader
+      render :action => 'activate'
+    end
   end
 
-  alias_method :me, :show
-
   def new
-    redirect_to url_for(current_reader) and return if current_reader
+    if current_reader
+      flash[:error] = "You're already logged in."
+      redirect_to url_for(current_reader) and return
+    end
     @reader = Reader.new
     session[:email_field] = @email_field = @reader.generate_email_field_name
   end
@@ -32,10 +35,7 @@ class ReadersController < ApplicationController
   
   def create
     @reader = Reader.new(params[:reader])
-    @reader.password = params[:password]
-    @reader.password_confirmation = params[:password_confirmation]
-    @reader.current_password = params[:password]
-    @email_field = session[:email_field]
+    @reader.clear_password = params[:reader][:password]
 
     unless @reader.email.blank?
       flash[:error] = "Please don't fill in the spam trap field."
@@ -43,16 +43,18 @@ class ReadersController < ApplicationController
       @reader.errors.add(:trap, "must be empty")
       render :action => 'new' and return
     end
-    unless @email_field
+
+    unless @email_field = session[:email_field]
       flash[:error] = "Please use the registration form."
-      render :action => 'new' and return
+      redirect_to new_reader_url and return
     end
     
     @reader.email = params[@email_field.intern]
     if (@reader.valid?)
       @reader.save!
+      @reader.send_activation_message
       self.current_reader = @reader
-      redirect_to :action => 'activate'
+      redirect_to url_for(@reader)
     else
       render :action => 'new'
     end
@@ -60,6 +62,7 @@ class ReadersController < ApplicationController
 
   def update
     @reader.attributes = params[:reader]
+    @reader.clear_password = params[:reader][:password] if params[:reader][:password]
     if @reader.save
       flash[:notice] = "Your account has been updated"
       redirect_to url_for(@reader)
@@ -67,6 +70,9 @@ class ReadersController < ApplicationController
       render :action => 'edit'
     end
   end
+
+  # a proper rest fanatic would do this with a reader_activations controller
+  # and possibly even an activations class that remembers the cleartext password and time of invitation
 
   def activate
     if params[:activation_code].nil?
@@ -97,6 +103,16 @@ class ReadersController < ApplicationController
     else
       flash[:error] = "Sorry: can't find you. Please check the link in your activation message. If it's broken over two lines you might need to put it back together."
     end
+  end
+  
+  def resend_activation
+    if @reader.activated?
+      flash[:notice] = "Hello #{@reader.name}! Your account is already active."
+    else
+      @reader.send_activation_message
+      flash[:notice] = "Activation message sent to #{@reader.email}."
+    end
+    redirect_to url_for(@reader)
   end
 
   def default_welcome_page(reader = current_reader)

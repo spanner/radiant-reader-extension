@@ -7,6 +7,7 @@ class AdaptForAuthlogic < ActiveRecord::Migration
     add_column :readers, :failed_login_count, :integer, :null => false, :default => 0
     add_column :readers, :current_login_ip, :string
     add_column :readers, :last_login_ip, :string
+    add_column :readers, :clear_password, :string
 
     change_column :readers, :password, :string, :limit => 255
     change_column :readers, :salt, :string, :limit => 255

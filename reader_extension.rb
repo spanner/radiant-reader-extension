@@ -9,16 +9,17 @@ class ReaderExtension < Radiant::Extension
   
   define_routes do |map|
     
-    map.resources :readers, :member => {:activate => :any}
-    map.resource :reader_session
-    map.resource :password_reset
-    map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
-    map.activate_reader '/activate/:id/:activation_code', :controller => 'readers', :action => 'activate'
-    map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
-    map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
     map.namespace :admin do |admin|
       admin.resources :readers
     end
+
+    map.resources :readers, :member => {:activate => :any, :resend_activation => :any}
+    map.resource :reader_session
+    map.resource :password_reset
+    map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
+    map.activate_me '/activate/:id/:activation_code', :controller => 'readers', :action => 'activate'
+    map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
+    map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
   end
   
   def activate
@@ -26,7 +27,6 @@ class ReaderExtension < Radiant::Extension
     Radiant::AdminUI.send :include, ReaderAdminUI unless defined? admin.reader
     admin.reader = Radiant::AdminUI.load_default_reader_regions
     UserActionObserver.instance.send :add_observer!, Reader 
-
     ApplicationHelper.send :include, ReaderHelper
     
     if defined? Site && defined? ActiveRecord::SiteNotFound       # currently we know it's the spanner multi_site if ActiveRecord::SiteNotFound is defined
