@@ -1,6 +1,8 @@
 # Reader
 
-This is a framework that handles all the dull bits of registering, activating, reminding, logging in and self-editing aspects of site membership. It uses authlogic to handle sessions and provides complete interfaces both for the administrator and the visitor. The admin interface is basic and fits in with radiant. The visitor interface is more friendly (and incidentally includes a trick email field - so-called inverse captcha - that should prevent spam signups).
+This is a framework that takes care of all the dull bits of registering, activating, reminding, logging in and editing preferences for your site visitors. 
+
+It uses authlogic to handle sessions and provides complete interfaces both for the administrator and the visitor. The admin interface is basic and fits in with radiant. The visitor interface is more friendly (and incidentally includes a trick email field - so-called inverse captcha - that should prevent spam signups).
 
 The visitors are referred to as 'readers' here. Readers never see the admin interface, but your site authors and admins are automatically given reader status.
 
@@ -9,6 +11,8 @@ The purpose of this extension is to provide a common core that supports other vi
 ## Latest
 
 Just updated for radiant 0.8 and moved across to authlogic. I've also added more tests and improved the activation process so that inactive visitors can be reminded of the activation requirement even if they log in and out.
+
+You will need to migrate to get the authlogic changes but after that it should handle password upgrades transparently.
 
 ## Status
 
@@ -24,26 +28,29 @@ Should be ready for use. Tests are very thorough (a lot of our code relies on th
   	rake radiant:extensions:reader:migrate
   	rake radiant:extensions:reader:update
 
-It's a bit lengthy but that's mostly because I've written it to work with Ray, but Ray is in a rather in-between state at the moment. In future this might be all you need:
+Sorry: it's a bit of a faff to get the submodules in.
 
-	rake rake ray:extension:install name="reader"
-    
-The update task will install a /stylesheets/admin/reader.css that you can ignore and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon. There is also a very thing /javascripts/reader.js: all it does is fade notifications.
+The update task will install a /stylesheets/admin/reader.css that you can leave alone and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon. There is also a very thin /javascripts/reader.js: all it does is fade notifications.
 
 ## Configuration
 
 Under multisite Reader adds a few administrative columns to the site table: 
 
 * reader_layout determines the layout used to present reader pages and defaults to 'Main' or the first layout it finds in that site.
-* `email_from_name` and `email_from_address` determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
+* `mail_from_name` and `mail_from_address` determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
 
-There are corresponding Radiant::Config entries for single-site installations.
+There are corresponding Radiant::Config entries for single-site installations:
+
+	site.title
+	site.url
+	site.default_mail_from_name
+	site.default_mail_from_address
+	
+These are mostly used in email, but they are required.
 
 ## Layouts
 
-We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls `<r:content />` at some point, it'll work. The reader pages also define title and breadcrumbs parts that may be useful.
-
-The site edit form is extended to include a drop-down with which to choose the reader layout.
+We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls `<r:content />` at some point, it'll work. Ideally it will call `<r:content part="title" />` too. There is also a breadcrumbs part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
 
 ## Using readers in other extensions
 
@@ -55,6 +62,7 @@ Marking a reader as untrusted does nothing much here apart from making them go r
 
 * [reader_group](http://github.com/spanner/radiant-reader_group-extension)
 * [forum](http://github.com/spanner/radiant-forum-extension)
+* [downloads](http://github.com/spanner/radiant-downloads-extension)
 
 ## Bugs and comments
 
