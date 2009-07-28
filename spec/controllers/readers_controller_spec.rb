@@ -24,7 +24,7 @@ describe ReadersController do
   describe "with a registration" do
     before do
       session[:email_field] = @email_field = 'randomstring'
-      post :create, :reader => {:name => "registering user"}, :password => "password", :password_confirmation => "password", :randomstring => 'registrant@spanner.org'
+      post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "password"}, :randomstring => 'registrant@spanner.org'
       @reader = Reader.find_by_name('registering user')
     end
     
@@ -50,12 +50,20 @@ describe ReadersController do
       end
     end
 
-    it "should redirect to activate" do
+    it 'should send out an activation email' do
+      message = ActionMailer::Base.deliveries.last
+      message.should_not be_nil
+      message.body.should =~ /#{@reader.name}/
+      message.body.should =~ /#{@reader.login}/
+      message.body.should =~ /#{@reader.clear_password}/
+    end
+
+    it "should redirect to the reader page" do
       response.should be_redirect
-      response.should redirect_to(:action => 'activate')
+      response.should redirect_to(reader_url(@reader))
     end
     
-    describe "with the honeytrap field filled in" do
+    describe "with the trap field filled in" do
       before do
         session[:email_field] = @email_field = 'randomstring'
         post :create, :reader => {:name => "bot user", :email => 'registrant@spanner.org'}, :password => "password", :password_confirmation => "password"
@@ -157,7 +165,7 @@ describe ReadersController do
       it "should not show a reader page" do 
         get :show, :id => reader_id(:visible)
         response.should be_redirect
-        response.should redirect_to(new_reader_session_url)
+        response.should redirect_to(reader_login_url)
       end
     end
   end
@@ -170,7 +178,7 @@ describe ReadersController do
 
     describe "that includes the correct password" do
       before do
-        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}, :current_password => 'password'}
+        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name", :current_password => 'password'}}
         @reader = readers(:normal)
       end
       

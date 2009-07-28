@@ -7,7 +7,7 @@ class Admin::ReadersController < Admin::ResourceController
   
   def create
     model.update_attributes!(params[:reader])
-    model.current_password = params[:reader][:password]
+    model.current_password = params[:reader][:password] if params[:reader] && params[:reader][:password]      # condition is so that radiant tests pass
     model.send_invitation_message
     announce_saved
     response_for :create

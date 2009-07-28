@@ -12,7 +12,7 @@ class Reader < ActiveRecord::Base
     config.transition_from_restful_authentication = true
     config.validate_email_field = false
     config.validate_login_field = false
-    config.disable_perishable_token_maintenance = true
+    # config.disable_perishable_token_maintenance = true
   end
 
   belongs_to :user
@@ -32,7 +32,6 @@ class Reader < ActiveRecord::Base
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
   
-  
   def activate!
     self.activated_at = Time.now.utc
     self.save!
@@ -45,6 +44,10 @@ class Reader < ActiveRecord::Base
 
   def inactive?
     self.activated_at.nil? || self.activated_at > Time.now
+  end
+  
+  def disable_perishable_token_maintenance?
+    inactive? && !new_record?
   end
 
   ['activation', 'invitation', 'welcome', 'password_reset'].each do |message|

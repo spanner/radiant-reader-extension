@@ -12,7 +12,6 @@ describe Reader do
   describe "on validation" do
     before do
       @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
-      @reader.confirm_password = false
       @reader.should be_valid
     end
     
@@ -54,15 +53,6 @@ describe Reader do
     it 'should await activation' do
       @reader.activated_at.should be_nil
       @reader.activated?.should be_false
-    end
-
-    it 'should send out an activation email' do
-      message = ActionMailer::Base.deliveries.last
-      message.should_not be_nil
-      message.subject.should =~ /activate/
-      message.body.should =~ /#{@reader.name}/
-      message.body.should =~ /#{@reader.login}/
-      message.body.should =~ /#{@reader.current_password}/
     end
     
     it 'should default to trusted status' do

@@ -24,13 +24,13 @@ describe Admin::ReadersController do
         lambda { send(method, action, :id => reader_id(:normal)).should require_login }
       end
 
-      it "should allow you to access to #{action} action if you are an admin" do
+      it "should allow you access to the #{action} action if you are an admin" do
         lambda { 
           send(method, action, :id => reader_id(:normal)) 
         }.should restrict_access(:allow => users(:admin), :url => '/admin/pages')
       end
       
-      it "should deny you access to #{action} action if you are not an admin" do
+      it "should deny you access to the #{action} action if you are not an admin" do
         lambda { 
           send(method, action, :id => reader_id(:normal)) 
         }.should restrict_access(:deny => [users(:developer), users(:existing)], :url => '/admin/pages')
