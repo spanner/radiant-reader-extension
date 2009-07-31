@@ -172,8 +172,7 @@ describe ReadersController do
     
   describe "with an update request" do
     before do
-      activate_authlogic
-      ReaderSession.create readers(:normal)
+      login_as_reader(:normal)
     end
 
     describe "that includes the correct password" do

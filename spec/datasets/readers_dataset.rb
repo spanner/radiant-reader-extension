@@ -1,4 +1,3 @@
-require 'digest/sha1'
 require "authlogic/test_case"
 
 class ReadersDataset < Dataset::Base
@@ -33,13 +32,16 @@ class ReadersDataset < Dataset::Base
     end
         
     def login_as_reader(reader)
+      activate_authlogic
       login_reader = reader.is_a?(Reader) ? reader : readers(reader)
       ReaderSession.create(login_reader)
       login_reader
     end
     
     def logout_reader
-      request.session['reader_id'] = nil
+      if session = ReaderSession.find
+        session.destroy
+      end
     end
   end
  

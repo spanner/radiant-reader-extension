@@ -3,6 +3,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
   def self.included(base)
     
     base.class_eval do
+      before_filter :set_reader_for_user
       helper_method :current_reader_session, :current_reader, :current_reader=, :logged_in?, :logged_in_user?, :logged_in_admin?
     end
 
@@ -48,6 +49,12 @@ module ControllerExtensions    # for inclusion into ApplicationController
 
   protected
 
+    def set_reader_for_user
+      if current_user
+        @current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
+      end
+    end
+
     def current_reader_session
       return @current_reader_session if defined?(@current_reader_session)
       @current_reader_session = ReaderSession.find
@@ -76,7 +83,10 @@ module ControllerExtensions    # for inclusion into ApplicationController
       else
         store_location
         flash[:notice] = "Please log in"
-        redirect_to reader_login_url
+        respond_to do |format|
+          format.html { redirect_to reader_login_url }
+          format.js { render :template => 'readers/login', :layout => false }
+        end
         return false
       end
     end
