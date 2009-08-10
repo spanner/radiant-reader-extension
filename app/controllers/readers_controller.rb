@@ -1,5 +1,6 @@
 class ReadersController < ReaderActionController
 
+  before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :i_am_me, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]

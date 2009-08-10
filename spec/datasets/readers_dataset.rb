@@ -1,7 +1,9 @@
 require "authlogic/test_case"
 
 class ReadersDataset < Dataset::Base
-  uses :users, (:reader_sites if defined? Site)
+  datasets = [:users]
+  datasets << :reader_sites if defined? Site
+  uses *datasets
 
   def load
     create_reader "Normal"
