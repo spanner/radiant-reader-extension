@@ -20,7 +20,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     #   any layout it can find
   
     def layout_for(area = :reader)
-      logger.warn "*** layout_for(#{area})"
       if defined? Site && current_site && current_site.respond_to?(:layout_for)
         current_site.layout_for(area)
       elsif default_layout = Radiant::Config["#{area}.layout"]
@@ -82,7 +81,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
 
     def set_site_title
       if defined? Site && current_site
-        @site_title = current_site.title
+        @site_title = current_site.name
         @short_site_title = current_site.abbreviation || @site_title
         @site_url = current_site.base_domain
       else

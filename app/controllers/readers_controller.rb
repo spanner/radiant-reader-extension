@@ -1,8 +1,5 @@
-class ReadersController < ApplicationController
-  no_login_required
-  radiant_layout { |controller| controller.layout_for :reader }
+class ReadersController < ReaderActionController
 
-  before_filter :require_reader, :only => [:show, :edit, :update]
   before_filter :i_am_me, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
