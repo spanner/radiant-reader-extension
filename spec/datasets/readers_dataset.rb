@@ -1,8 +1,7 @@
 require "authlogic/test_case"
 
 class ReadersDataset < Dataset::Base
-  uses :users
-
+  uses :users, (:reader_sites if defined? Site)
   def load
     create_reader "Normal"
     create_reader "Visible"
@@ -28,6 +27,7 @@ class ReadersDataset < Dataset::Base
         :password => 'password',
         :password_confirmation => 'password'
       }.merge(attributes)
+      attributes[:site] = sites(:test) if defined? Site
       attributes
     end
         

@@ -4,6 +4,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     
     base.class_eval do
       before_filter :set_reader_for_user
+      before_filter :set_site_title
       helper_method :current_reader_session, :current_reader, :current_reader=, :logged_in?, :logged_in_user?, :logged_in_admin?
     end
 
@@ -49,11 +50,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
 
   protected
 
-    def set_reader_for_user
-      if current_user
-        @current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
-      end
-    end
+  # access control
 
     def current_reader_session
       return @current_reader_session if defined?(@current_reader_session)
@@ -76,6 +73,24 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     # before_filters
+    
+    def set_reader_for_user
+      if current_user
+        @current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
+      end
+    end
+
+    def set_site_title
+      if defined? Site && current_site
+        @site_title = current_site.title
+        @short_site_title = current_site.abbreviation || @site_title
+        @site_url = current_site.base_domain
+      else
+        @site_title = Radiant::Config['site.title']
+        @short_site_title = Radiant::Config['site.abbreviation'] || @site_title
+        @site_url = request.host
+      end
+    end
 
     def require_reader
       if current_reader
