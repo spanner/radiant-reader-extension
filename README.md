@@ -10,13 +10,13 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-Just updated for radiant 0.8 and moved across to authlogic. I've also added more tests and improved the activation process so that inactive visitors can be reminded of the activation requirement even if they log in and out.
-
-You will need to migrate to get the authlogic changes but after that it should handle password upgrades transparently.
+Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites.
 
 ## Status
 
-Should be ready for use. Tests are very thorough (a lot of our code relies on this extension) but the latest updates were quite sweeping so issues are possible.
+Recently updated for radiant 0.8 and moved across to authlogic. I've added more tests and improved the activation process so that inactive visitors can be reminded of the activation requirement even if they log in and out.Should be ready for use. Tests are very thorough (a lot of our code relies on this extension) but the latest updates were quite sweeping so issues are possible.
+
+You will need to migrate to get the authlogic changes but after that it should handle password upgrades transparently.
 
 ## Installation
 
@@ -34,13 +34,14 @@ The update task will install a /stylesheets/admin/reader.css that you can leave 
 
 ## Configuration
 
-Under multisite Reader adds a few administrative columns to the site table: 
+Under multi_site Reader adds a few administrative columns to the site table: 
 
 * reader_layout determines the layout used to present reader pages and defaults to 'Main' or the first layout it finds in that site.
 * `mail_from_name` and `mail_from_address` determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
 
 There are corresponding Radiant::Config entries for single-site installations:
 
+	reader.layout
 	site.title
 	site.url
 	site.default_mail_from_name
@@ -50,11 +51,15 @@ These are mostly used in email, but they are required.
 
 ## Layouts
 
-We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. The details of the layout are up to you: as long as it calls `<r:content />` at some point, it'll work. Ideally it will call `<r:content part="title" />` too. There is also a breadcrumbs part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
+We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. You can designate any layout as the 'reader layout': in a single-site installation put the name of the layout in a `reader.layout` config entry. In a multi-site installation you'll find a 'reader layout' dropdown on the 'edit site' page. Choose the one you want to use for each site.
+
+The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="title" />` too. There is also a `breadcrumbs` part if that's required. In most cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
 
 ## Using readers in other extensions
 
-...is the idea. The reader admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages.
+The reader admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages.
+
+Most of your controllers will want to inherit from `ReaderActionController`.
 
 Marking a reader as untrusted does nothing much here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
 
