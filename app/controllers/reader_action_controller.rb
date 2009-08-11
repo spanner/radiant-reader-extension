@@ -5,13 +5,9 @@ class ReaderActionController < ApplicationController
   before_filter :set_site_title
   
   before_filter :require_reader, :except => [:index, :show]
-  helper_method :current_site, :logged_in?, :logged_in_user?, :logged_in_admin?
+  helper_method :current_site, :current_site=, :logged_in?, :logged_in_user?, :logged_in_admin?
   
   radiant_layout { |controller| controller.layout_for :reader }
-
-  def current_site
-    Page.current_site if defined? Site
-  end
 
   # authorisation helpers
 
@@ -30,7 +26,7 @@ class ReaderActionController < ApplicationController
 protected
   
   # context-setters
-  
+    
   def set_reader_for_user
     if current_user
       @current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))

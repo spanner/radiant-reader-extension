@@ -6,6 +6,7 @@ class Reader < ActiveRecord::Base
   cattr_accessor :current
 
   is_site_scoped if defined? ActiveRecord::SiteNotFound
+    
   is_gravtastic :with => :email, :rating => 'PG', :size => 48
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
@@ -75,7 +76,11 @@ class Reader < ActiveRecord::Base
   end
 
   def self.find_or_create_for_user(user)
-    reader = self.find_or_create_by_user_id(user.id)
+    if user.respond_to?(:site) && site = Page.current_site
+      reader = self.find_or_create_by_site_id_and_user_id(site.id, user.id)
+    else
+      reader = self.find_or_create_by_user_id(user.id)
+    end
     if reader.new_record?
       user_columns.each { |att| reader.send("#{att.to_s}=", user.send(att)) }
       reader.crypted_password = user.password
