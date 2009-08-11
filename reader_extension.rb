@@ -23,16 +23,19 @@ class ReaderExtension < Radiant::Extension
   end
   
   def activate
+    Reader
     ApplicationController.send :include, ControllerExtensions
-    Radiant::AdminUI.send :include, ReaderAdminUI unless defined? admin.reader
-    admin.reader = Radiant::AdminUI.load_default_reader_regions
     UserActionObserver.instance.send :add_observer!, Reader 
     ApplicationHelper.send :include, ReaderHelper
+    Site.send :include, ReaderSite if defined? Site
     
-    if defined? Site && defined? ActiveRecord::SiteNotFound       # currently we know it's the spanner multi_site if ActiveRecord::SiteNotFound is defined
-      Site.send :include, ReaderSite
-      admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
-      admin.readers.index.add :top, "admin/shared/site_jumper"
+    unless defined? admin.reader
+      Radiant::AdminUI.send :include, ReaderAdminUI
+      admin.reader = Radiant::AdminUI.load_default_reader_regions
+      if defined? admin.sites
+        admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
+        admin.readers.index.add :top, "admin/shared/site_jumper"
+      end
     end
     
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]

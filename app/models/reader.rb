@@ -85,7 +85,7 @@ class Reader < ActiveRecord::Base
     end
     reader
   end
-  
+    
   protected
 
     def set_login

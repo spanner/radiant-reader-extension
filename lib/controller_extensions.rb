@@ -3,9 +3,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
   def self.included(base)
     
     base.class_eval do
-      before_filter :set_reader_for_user
-      before_filter :set_site_title
-      helper_method :current_reader_session, :current_reader, :current_reader=, :logged_in?, :logged_in_user?, :logged_in_admin?
+      helper_method :current_reader_session, :current_reader, :current_reader=
     end
 
     # returns a layout name for processing by radiant_layout
@@ -33,30 +31,14 @@ module ControllerExtensions    # for inclusion into ApplicationController
       end
     end
 
-    # reader authentication helpers
-
-    def logged_in?
-      true if current_reader
-    end
-
-    def logged_in_user?
-      true if logged_in? && current_reader.is_user?
-    end
-
-    def logged_in_admin?
-      true if logged_in_user? && current_reader.admin?
-    end
-
   protected
-
-  # access control
 
     def current_reader_session
       return @current_reader_session if defined?(@current_reader_session)
       @current_reader_session = ReaderSession.find
       @current_reader_session
     end
-    
+
     def current_reader_session=(reader_session)
       @current_reader_session = reader_session
     end
@@ -65,64 +47,10 @@ module ControllerExtensions    # for inclusion into ApplicationController
       return @current_reader if defined?(@current_reader)
       @current_reader = current_reader_session.record if current_reader_session
     end
-    
+
     def current_reader=(reader)
       current_reader_session = ReaderSession.create!(reader)
       @current_reader = reader
-    end
-
-    # before_filters
-    
-    def set_reader_for_user
-      if current_user
-        @current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
-      end
-    end
-
-    def set_site_title
-      if defined? Site && current_site
-        @site_title = current_site.name
-        @short_site_title = current_site.abbreviation || @site_title
-        @site_url = current_site.base_domain
-      else
-        @site_title = Radiant::Config['site.title']
-        @short_site_title = Radiant::Config['site.abbreviation'] || @site_title
-        @site_url = request.host
-      end
-    end
-
-    def require_reader
-      if current_reader
-        Reader.current = current_reader
-      else
-        store_location
-        flash[:notice] = "Please log in"
-        respond_to do |format|
-          format.html { redirect_to reader_login_url }
-          format.js { render :template => 'readers/login', :layout => false }
-        end
-        return false
-      end
-    end
-
-    def require_no_reader
-      if current_reader
-        store_location
-        flash[:notice] = "Please log out first"
-        redirect_back_or_to url_for(current_reader)
-        return false
-      end
-    end
-
-    def store_location
-      session[:return_to] = request.request_uri
-    end
-
-    # generic responses
-
-    def redirect_back_or_to(default)
-      redirect_to(session[:return_to] || default)
-      session[:return_to] = nil
     end
 
   end
