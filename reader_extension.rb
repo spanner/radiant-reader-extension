@@ -10,7 +10,7 @@ class ReaderExtension < Radiant::Extension
   define_routes do |map|
     
     map.namespace :admin do |admin|
-      admin.resources :readers
+      admin.resources :readers, :except => [:show]
     end
 
     map.resources :readers, :member => {:activate => :any, :resend_activation => :any}
@@ -34,11 +34,11 @@ class ReaderExtension < Radiant::Extension
       admin.reader = Radiant::AdminUI.load_default_reader_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
-        admin.readers.index.add :top, "admin/shared/site_jumper"
       end
     end
     
     admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
+    admin.tabs['Readers'].add_link('reader list', '/admin/readers')
     
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
       "<span class='field_error'>#{html_tag}</span>" 

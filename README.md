@@ -10,13 +10,17 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites.
+Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
 
 ## Status
 
 Recently updated for radiant 0.8 and moved across to authlogic. I've added more tests and improved the activation process so that inactive visitors can be reminded of the activation requirement even if they log in and out.Should be ready for use. Tests are very thorough (a lot of our code relies on this extension) but the latest updates were quite sweeping so issues are possible.
 
 You will need to migrate to get the authlogic changes but after that it should handle password upgrades transparently.
+
+## Requirements
+
+Radiant 0.8, and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
 
 ## Installation
 
@@ -75,7 +79,7 @@ In [lighthouse](http://spanner.lighthouseapp.com/projects/26912-radiant-extensio
 
 ## Author and copyright
 
-Copyright spanner ltd 2007-9.
-Released under the same terms as Rails and/or Radiant.
-Contact will at spanner.org
+* Copyright spanner ltd 2007-9.
+* Released under the same terms as Rails and/or Radiant.
+* Contact will at spanner.org
 
