@@ -1,4 +1,5 @@
 class ReaderLayoutsDataset < Dataset::Base
+  uses :reader_sites if defined? Site
   
   def load
     create_layout "Main"

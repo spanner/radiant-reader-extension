@@ -1,6 +1,6 @@
 %div#reader_links
   - if current_reader
-    -if current_reader.activated?
+    - if current_reader.activated?
       %p
         You're logged in as 
         %strong
@@ -25,4 +25,3 @@
       = link_to 'log in', reader_login_url
       or
       = link_to 'register', new_reader_url
-  = render :partial => 'readers/extra_controls'

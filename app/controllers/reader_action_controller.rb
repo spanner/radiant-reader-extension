@@ -50,7 +50,6 @@ protected
       Reader.current = current_reader
     else
       store_location
-      flash[:notice] = "Please log in"
       respond_to do |format|
         format.html { redirect_to reader_login_url }
         format.js { render :template => 'readers/login', :layout => false }

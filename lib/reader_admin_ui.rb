@@ -7,6 +7,7 @@ module ReaderAdminUI
       alias_method :readers, :reader
 
       def load_default_regions_with_reader
+        load_default_regions_without_reader
         @reader = load_default_reader_regions
       end
 

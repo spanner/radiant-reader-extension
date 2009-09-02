@@ -1,6 +1,6 @@
-class ReaderSessionsController < ApplicationController
-  
-  before_filter :require_no_reader, :only => [:new, :create]
+class ReaderSessionsController < ReaderActionController
+
+  no_login_required
   before_filter :require_reader, :only => :destroy
   radiant_layout { |controller| controller.layout_for :reader }
   

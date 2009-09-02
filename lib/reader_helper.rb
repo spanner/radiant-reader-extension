@@ -10,6 +10,8 @@ module ReaderHelper
       end
   
       def gravatar_for(reader, gravatar_options={}, img_options ={})
+        size = gravatar_options[:size]
+        img_options[:size] = "#{size}x#{size}" if size
         image_tag reader.gravatar_url(gravatar_options), img_options
       end
 

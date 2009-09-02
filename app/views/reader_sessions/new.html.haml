@@ -1,5 +1,4 @@
 = render :partial => 'readers/flasher'
-= render :partial => 'readers/controls'
 
 - if logged_in?
   %p
@@ -11,14 +10,15 @@
     = link_to "log out", destroy_reader_session_url(@reader_session)
 
 - else
-  
+  %p
+    If you haven't already, you will need to
+    = link_to "register", new_reader_url
+    first. It only takes a minute or two.
   = render :partial => 'login_form'
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
-  &gt;
   = link_to 'Readers', '/readers'
   &gt; Log in
 
-- content_for :title do
+- content_for :pagetitle do
   Log in
