@@ -78,4 +78,12 @@ protected
     session[:return_to] = nil
   end
   
+  def render_page_or_feed(template_name = action_name)
+    respond_to do |format|
+      format.html { render :action => template_name }
+      format.rss  { render :action => template_name, :layout => 'feed' }
+      format.js  { render :action => template_name, :layout => false }
+    end
+  end
+  
 end
