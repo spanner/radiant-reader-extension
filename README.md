@@ -20,7 +20,7 @@ You will need to migrate to get the authlogic changes but after that it should h
 
 ## Requirements
 
-Radiant 0.8, and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+Radiant 0.8.x, and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
 
 ## Installation
 
