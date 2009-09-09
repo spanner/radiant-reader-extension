@@ -7,13 +7,9 @@
       = current_user.name 
     %br
     If that's not you, or you want to log in with another account, please 
-    = link_to "log out", destroy_reader_session_url(@reader_session)
+    = link_to "log out", reader_session_url(@reader_session, :method => 'delete')
 
 - else
-  %p
-    If you haven't already, you will need to
-    = link_to "register", new_reader_url
-    first. It only takes a minute or two.
   = render :partial => 'login_form'
 
 - content_for :breadcrumbs do

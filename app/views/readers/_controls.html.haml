@@ -5,7 +5,7 @@
         You're logged in as 
         %strong
           = current_reader.name
-        |
+        %br
         = link_to 'your page', reader_url(current_reader)
         |
         = link_to 'preferences', edit_reader_url(current_reader)
@@ -17,7 +17,7 @@
     -else
       %p 
         please check your email for an
-        = link_to 'activation', reader_activate_url
+        = link_to 'activation', activate_reader_url
         message
   - else
     %p

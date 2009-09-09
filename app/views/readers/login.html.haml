@@ -4,7 +4,7 @@
   %h1 
     log in
 
-  = render :partial => 'readers/login_form', :locals => {:backto => @backto}
+  = render :partial => 'reader_sessions/login_form', :locals => {:backto => @backto}
 
 - content_for :breadcrumbs do
   = link_to 'Home', '/' 

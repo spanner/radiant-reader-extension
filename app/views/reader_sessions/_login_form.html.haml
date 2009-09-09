@@ -6,7 +6,12 @@
     %br
     If you've forgotten your password we can always 
     = link_to 'make you a new one', repassword_url
-
+- else
+  %p
+    If you haven't already, you will need to 
+    = link_to "register", new_reader_url
+    first. It only takes a moment.
+    
 .loginform
   - form_for @reader_session, :url => reader_session_path, :html => {:class => 'friendly'} do |f|
     %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
