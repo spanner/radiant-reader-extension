@@ -17,7 +17,7 @@
     -else
       %p 
         please check your email for an
-        = link_to 'activation', activate_reader_url
+        = link_to 'activation', activate_reader_url(current_reader)
         message
   - else
     %p

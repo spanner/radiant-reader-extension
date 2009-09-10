@@ -1,0 +1,28 @@
+= render :partial => 'flasher'
+
+%div.reader_show
+  - if @reader == current_reader
+    %p
+      %strong
+        Hello 
+        = @reader.name + '.'
+      Thank you for joining us. An email has been sent to 
+      %strong
+        = @reader.email
+      with a reminder of your login and password and an activation link. 
+      Click on that link and the registration process will be complete.
+      
+    %p
+      We're sorry about the extra step: it's just to make sure that you are you. If the email hasn't come through yet, you can always go and
+      = link_to("give yourself a gravatar", "http://gravatar.com/signup") + '.'
+
+- content_for :breadcrumbs do
+  = link_to 'Home', '/'
+  &gt;
+  = link_to 'Readers', '/readers'
+  &gt;
+  = @reader.name
+
+- content_for :pagetitle do
+  Thank you. Please check your email
+

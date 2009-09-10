@@ -19,10 +19,11 @@ class ReadersController < ReaderActionController
 
   def new
     if current_reader
-      flash[:error] = "You're already logged in."
+      flash[:error] = "You're already logged in!"
       redirect_to url_for(current_reader) and return
     end
     @reader = Reader.new
+    session[:return_to] = request.referer
     session[:email_field] = @email_field = @reader.generate_email_field_name
   end
   
@@ -52,7 +53,7 @@ class ReadersController < ReaderActionController
       @reader.save!
       @reader.send_activation_message
       self.current_reader = @reader
-      redirect_to url_for(@reader)
+      render
     else
       render :action => 'new'
     end
@@ -95,11 +96,12 @@ class ReadersController < ReaderActionController
         @reader.activate!
         self.current_reader = @reader
         flash[:notice] = "Thank you! Your account has been activated."
-        redirect_to url_for(@reader)
+        render
       end
       
     else
-      flash[:error] = "Sorry: can't find you. Please check the link in your activation message. If it's broken over two lines you might need to put it back together."
+      @error = "Sorry: the activation code was not correct. Please check the link in your email message. If it's broken over two lines you might need to put it back together."
+      flash[:error] = "Sorry: can't find you."
     end
   end
   

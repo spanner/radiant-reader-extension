@@ -27,7 +27,7 @@ class Reader < ActiveRecord::Base
   before_update :update_user
 
   validates_presence_of :name, :email, :message => 'is required'
-  validates_uniqueness_of :login, :message => "is already in use"
+  validates_uniqueness_of :login, :message => "is already in use here"
   validate :email_must_not_be_in_use
 
   include RFC822

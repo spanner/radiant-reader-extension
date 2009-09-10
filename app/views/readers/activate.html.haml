@@ -1,33 +1,46 @@
 = render :partial => 'flasher'
 
 - if current_reader && current_reader.activated?
-  %p Your account is active. Thanks for persevering with the sign-up process.
+  %p
+    %strong
+      Hello 
+      = current_reader.name
+    Thank you very much for persevering with the registration process. Your account is now active.
 
-  - content_for :title do
+    - if session[:return_to]
+      %p 
+        Would you like to 
+        = link_to ("return to the page you were looking at before you started registering", session[:return_to]) + '?'
+    
+  - content_for :pagetitle do
     Welcome!
 
 - else
-  %div.activation_form
+  %div.activation
+    - if @error
+      %p.haserror
+        = @error
     %p
       Please check your email.
       - if current_reader
         We have sent a message to 
-        %strong= current_reader.email
+        %strong
+          = current_reader.email
+        containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
+        = link_to("send it again", new_password_reset_url) + ':'
+        just put your email address in the password reminder form.
       - else
         You should have received a message 
-      containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
-      = link_to "send it again.", resend_activation_reader_url(current_reader)
+        containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
+        = link_to("send it again", resend_activation_reader_url(current_reader)) + '.'
       
-    - if @error
-      %p.haserror
-        @error
     %p
       If you think you might have put the wrong email address in, the easiest thing to do is 
       = link_to 'register again', new_reader_url
       with the right one. The failed registration attempt will be purged after a couple of days.
 
-  - content_for :title do
-    Thank you
+  - content_for :pagetitle do
+    Please activate your account
 
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
