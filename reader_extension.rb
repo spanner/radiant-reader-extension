@@ -20,6 +20,7 @@ class ReaderExtension < Radiant::Extension
     map.activate_me '/activate/:id/:activation_code', :controller => 'readers', :action => 'activate'
     map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
     map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
+    map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
   end
   
   def activate

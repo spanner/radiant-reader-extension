@@ -119,6 +119,12 @@ class ReadersController < ReaderActionController
     reader.is_user? ? admin_pages_url : reader.homepage
   end
   
+  def permission_denied
+    session[:return_to] ||= request.referer
+    @title = flash[:error] || "Sorry: permission denied"
+    render
+  end
+  
 protected
 
   def i_am_me

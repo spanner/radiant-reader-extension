@@ -11,7 +11,7 @@ class ReaderSessionsController < ReaderActionController
   def create
     @reader_session = ReaderSession.new(params[:reader_session])
     if @reader_session.save
-      flash[:notice] = "Login successful!"
+      flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
       if @reader_session.reader.activated? && @reader_session.reader.clear_password        
         @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login after activation
         @reader_session.reader.save(false)
