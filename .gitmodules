@@ -1,6 +1,0 @@
-[submodule "vendor/plugins/gravtastic"]
-	path = vendor/plugins/gravtastic
-	url = git://github.com/chrislloyd/gravtastic.git
-[submodule "vendor/plugins/authlogic"]
-	path = vendor/plugins/authlogic
-	url = git://github.com/binarylogic/authlogic.git
