@@ -52,7 +52,7 @@ protected
       store_location
       respond_to do |format|
         format.html { redirect_to reader_login_url }
-        format.js { render :template => 'readers/login', :layout => false }
+        format.js { render :partial => 'reader_sessions/login_form' }
       end
       return false
     end
