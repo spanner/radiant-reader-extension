@@ -14,27 +14,31 @@ Brought into line with the latest version of our [multi_site](http://github.com/
 
 ## Status
 
-Recently updated for radiant 0.8 and moved across to authlogic. I've added more tests and improved the activation process so that inactive visitors can be reminded of the activation requirement even if they log in and out.Should be ready for use. Tests are very thorough (a lot of our code relies on this extension) but the latest updates were quite sweeping so issues are possible.
+Recently updated for radiant 0.8.1, which allowed us to remove the submodules and declare them as gem dependencies instead.
 
-You will need to migrate to get the authlogic changes but after that it should handle password upgrades transparently.
+Tests are reasonably thorough. A lot of our code relies on this extension.
 
 ## Requirements
 
-Radiant 0.8.x, and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+Radiant 0.8.1 (we need the new config machinery), and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+
+You also need two gems: authlogic and gravtastic. They are declared in the extension so you should be able just to run
+
+	rake gems:install
+
+It is very likely that you will also need to put
+
+	gem 'authlogic'
+
+in your environment.rb: it has to load before anything calls `require ApplicationController`, and most radiant extensions will do that.
 
 ## Installation
 
 	git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
-	cd vendor/extensions/reader
-		git submodule init
-		git submodule update
-	cd ../..
-  	rake radiant:extensions:reader:migrate
-  	rake radiant:extensions:reader:update
+	rake radiant:extensions:reader:migrate
+	rake radiant:extensions:reader:update
 
-Sorry: it's a bit of a faff to get the submodules in.
-
-The update task will install a /stylesheets/admin/reader.css that you can leave alone and a /stylesheets/reader.css that you should call from your reader layout (see below) and then improve upon. There is also a very thin /javascripts/reader.js: all it does is fade notifications.
+The update task will install a /stylesheets/admin/reader.css that you can leave alone and a /stylesheets/reader.css that you should call from your reader layout (see below) and will want to improve upon. There is also a very thin /javascripts/reader.js: all it does is fade notifications. The forum extension has a lot more javascripts for you to deplore.
 
 ## Configuration
 
@@ -45,11 +49,11 @@ Under multi_site Reader adds a few administrative columns to the site table:
 
 There are corresponding Radiant::Config entries for single-site installations:
 
-	reader.layout
-	site.title
-	site.url
-	site.default_mail_from_name
-	site.default_mail_from_address
+* reader.layout
+* site.title
+* site.url
+* site.mail_from_name
+* site.mail_from_address
 	
 These are mostly used in email, but they are required.
 
@@ -57,21 +61,22 @@ These are mostly used in email, but they are required.
 
 We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. You can designate any layout as the 'reader layout': in a single-site installation put the name of the layout in a `reader.layout` config entry. In a multi-site installation you'll find a 'reader layout' dropdown on the 'edit site' page. Choose the one you want to use for each site.
 
-The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="title" />` too. There is also a `breadcrumbs` part if that's required. In most cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
+The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="title" />` too. There is also a `breadcrumbs` part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
 
 ## Using readers in other extensions
 
 The reader admin pages are properly registered with the AdminUI as collections of parts, so you can override them in the same way as the other admin pages.
 
-Most of your controllers will want to inherit from `ReaderActionController`.
+Most of your reader-facing controllers will want to inherit from `ReaderActionController`.
 
-Marking a reader as untrusted does nothing much here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
+Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
 
 ## See also
 
 * [reader_group](http://github.com/spanner/radiant-reader_group-extension)
-* [forum](http://github.com/spanner/radiant-forum-extension)
 * [downloads](http://github.com/spanner/radiant-downloads-extension)
+* [forum](http://github.com/spanner/radiant-forum-extension)
+* [group_forum](http://github.com/spanner/radiant-group_forum-extension)
 
 ## Bugs and comments
 
