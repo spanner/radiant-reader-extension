@@ -1,6 +1,4 @@
-# Uncomment this if you reference any of your controllers in activate
 require_dependency 'application_controller'
-require 'gravtastic'
 
 class ReaderExtension < Radiant::Extension
   version "0.1"
@@ -26,6 +24,8 @@ class ReaderExtension < Radiant::Extension
   extension_config do |config|
     config.gem 'authlogic'
     config.gem 'gravtastic'
+    config.extension 'share_layouts'
+    config.extension 'submenu'
   end
   
   def activate

@@ -24,7 +24,7 @@ Radiant 0.8.1 (we need the new config machinery), and you need the [submenu](htt
 
 You also need two gems: authlogic and gravtastic. They are declared in the extension so you should be able just to run
 
-	rake gems:install
+	sudo rake gems:install
 
 It is very likely that you will also need to put
 
