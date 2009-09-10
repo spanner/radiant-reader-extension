@@ -58,9 +58,9 @@ describe ReadersController do
       message.body.should =~ /#{@reader.clear_password}/
     end
 
-    it "should redirect to the reader page" do
-      response.should be_redirect
-      response.should redirect_to(reader_url(@reader))
+    it "should render the please-activate page" do
+      response.should be_success
+      response.should render_template('create')
     end
     
     describe "with the trap field filled in" do
@@ -100,9 +100,9 @@ describe ReadersController do
       @reader.activated_at.should be_close((Time.now).utc, 1.minute) # sometimes specs are slow
     end
 
-    it "should redirect to the self page" do
-      response.should be_redirect
-      response.should redirect_to(reader_url(@newreader))
+    it "should show the confirmation page" do
+      response.should be_success
+      response.should render_template('activate')
     end
   end
 
@@ -130,10 +130,9 @@ describe ReadersController do
         # controller.stub!(:current_reader_session).and_return(rsession)
       end
   
-      it "should show another reader page" do 
+      it "should consent to show another reader page" do 
         get :show, :id => reader_id(:visible)
         response.should be_success
-        response.should render_template("show")
       end
       
       it "should refuse to show the edit page for another reader" do 

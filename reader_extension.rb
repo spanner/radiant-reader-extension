@@ -23,6 +23,11 @@ class ReaderExtension < Radiant::Extension
     map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
   end
   
+  extension_config do |config|
+    config.gem 'authlogic'
+    config.gem 'gravtastic'
+  end
+  
   def activate
     Reader
     ApplicationController.send :include, ControllerExtensions
