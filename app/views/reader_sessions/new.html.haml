@@ -10,7 +10,7 @@
     = link_to "log out", reader_session_url(@reader_session, :method => 'delete')
 
 - else
-  = render :partial => 'login_form'
+  = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do
   = link_to 'Readers', '/readers'

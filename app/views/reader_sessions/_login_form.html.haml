@@ -1,46 +1,52 @@
 - @reader_session ||= ReaderSession.new
+- no_title ||= false
 
-- if @error
-  %p.haserror
-    Sorry: we don't recognise that combination of username and password.
-    %br
-    If you've forgotten your password we can always 
-    = link_to 'make you a new one', repassword_url
+.login_form
+  - form_for @reader_session, :url => reader_session_path, :html => {:class => 'compact shaded'} do |f|
     
-.loginform
-  - form_for @reader_session, :url => reader_session_path, :html => {:class => 'friendly'} do |f|
-    .halfwidth
-      %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
-        %label{:for => "reader_session_login"}
-          Username
-        %br
-        = f.text_field :login, :class => 'login' 
-        - if @reader_session.errors.on(:login)
-          %br
-          This
-          = @reader_session.errors.on(:login).to_a.to_sentence
-          
-    .halfwidth
-      %p{ :class => @reader_session.errors.on(:password) ? 'haserror' : '' }
-        %label{:for => "reader_session_password"}
-          Password
-        %br
-        = f.password_field :password, :class => 'login'
-        - if @reader_session.errors.on(:password)
-          %br
-          This
-          = @reader_session.errors.on(:password).to_a.to_sentence
-    .nofloat
-      %p
-        = f.submit ' Log in '
-        = f.check_box :remember_me
-        %label.paranthetical{:for => "reader_session_remember_me"}
-          Remember me
-
-      %p.quiet
-        = link_to "Forgotten password?", new_password_reset_url
-
-      %p.quiet
-        If you haven't already, you will need to 
+    - unless no_title
+      %h3.spacy
+        Please log in or
         = link_to "register", new_reader_url
-        before you can log in. It only takes a moment.
+
+    - if @error
+      %p.haserror
+        Sorry: we don't recognise that combination of username and password.
+        %br
+        If you've forgotten your password we can always 
+        = link_to 'make you a new one', repassword_url
+
+    %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
+      %label{:for => "reader_session_login"}
+        Username
+      %br
+      = f.text_field :login, :class => 'login' 
+      - if @reader_session.errors.on(:login)
+        %br
+        This
+        = @reader_session.errors.on(:login).to_a.to_sentence
+        
+    %p{ :class => @reader_session.errors.on(:password) ? 'haserror' : '' }
+      %label{:for => "reader_session_password"}
+        Password
+      %br
+      = f.password_field :password, :class => 'login'
+      - if @reader_session.errors.on(:password)
+        %br
+        This
+        = @reader_session.errors.on(:password).to_a.to_sentence
+
+    %p.buttons
+      = f.submit ' Log in '
+      = f.check_box :remember_me
+      %label.paranthetical{:for => "reader_session_remember_me"}
+        Remember me
+
+  %p.quiet
+    If you haven't already, you will need to 
+    = link_to "register", new_reader_url
+    before you can log in. It only takes a moment.
+
+  %p.quiet
+    If you've forgotten your password, you can enter your email address to
+    = link_to("set a new one", new_password_reset_url) + '.'

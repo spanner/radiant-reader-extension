@@ -18,13 +18,16 @@ class ReaderSessionsController < ReaderActionController
       end
       redirect_back_or_to url_for(@reader_session.reader)
     else
-      render :action => :new
+      respond_to do |format|
+        format.html { render :action => :new }
+        format.js { render :action => :new, :layout => false }
+      end
     end
   end
   
   def destroy
     current_reader_session.destroy
-    flash[:notice] = "Logout successful!"
+    flash[:notice] = "You are logged out. Bye!"
     redirect_back_or_to reader_login_url
   end
 

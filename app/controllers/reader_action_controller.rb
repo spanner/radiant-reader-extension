@@ -52,7 +52,10 @@ protected
       store_location
       respond_to do |format|
         format.html { redirect_to reader_login_url }
-        format.js { render :partial => 'reader_sessions/login_form' }
+        format.js { 
+          logger.warn "*** require_reader is bouncing back a login form and return_to is #{session[:return_to]}"
+          render :partial => 'reader_sessions/login_form' 
+        }
       end
       return false
     end
@@ -67,8 +70,8 @@ protected
     end
   end
 
-  def store_location
-    session[:return_to] = request.request_uri
+  def store_location(location = request.request_uri)
+    session[:return_to] = location
   end
 
   # generic responses
