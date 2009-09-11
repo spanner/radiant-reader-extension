@@ -11,12 +11,20 @@ class ReaderSessionsController < ReaderActionController
   def create
     @reader_session = ReaderSession.new(params[:reader_session])
     if @reader_session.save
-      flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
       if @reader_session.reader.activated? && @reader_session.reader.clear_password        
         @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login after activation
         @reader_session.reader.save(false)
       end
-      redirect_back_or_to url_for(@reader_session.reader)
+      respond_to do |format|
+        format.html { 
+          flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
+          redirect_back_or_to url_for(@reader_session.reader) 
+        }
+        format.js { 
+          redirect_back_with_format(:js)
+        }
+      end
+      
     else
       respond_to do |format|
         format.html { render :action => :new }

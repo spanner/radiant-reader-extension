@@ -49,7 +49,7 @@ protected
     if current_reader
       Reader.current = current_reader
     else
-      store_location
+      store_location_and_format
       respond_to do |format|
         format.html { redirect_to reader_login_url }
         format.js { 
@@ -80,6 +80,14 @@ protected
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+  
+  def redirect_back_with_format(format = 'html')
+    address = session[:return_to]
+    raise StandardError, "Can't add format to an already formatted url: #{address}" unless File.extname(address).blank?
+    redirect_to address + ".#{format}"    # nasty!
+  end
+  
+  
   
   def render_page_or_feed(template_name = action_name)
     respond_to do |format|
