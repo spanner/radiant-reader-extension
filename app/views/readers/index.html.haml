@@ -3,7 +3,7 @@
 
 %div
   %h1 
-    Readers
+    People
   #readers
     - @readers.each do |reader|
       = link_to gravatar_for(reader, {:size => 64}, {:class => 'gravatar'}), reader_url(reader), {:title => reader.name}

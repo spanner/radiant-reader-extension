@@ -21,10 +21,13 @@
 
   = render :partial => 'contributions'
       
+- content_for :breadhead do
+  = link_to 'People', '/readers'
+
 - content_for :breadcrumbs do
   = link_to 'Home', '/'
   &gt;
-  = link_to 'Readers', '/readers'
+  = link_to 'People', '/readers'
   &gt;
   = @reader.name
 
