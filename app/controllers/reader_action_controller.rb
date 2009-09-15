@@ -49,13 +49,10 @@ protected
     if current_reader
       Reader.current = current_reader
     else
-      store_location_and_format
+      store_location
       respond_to do |format|
         format.html { redirect_to reader_login_url }
-        format.js { 
-          logger.warn "*** require_reader is bouncing back a login form and return_to is #{session[:return_to]}"
-          render :partial => 'reader_sessions/login_form' 
-        }
+        format.js { render :partial => 'reader_sessions/login_form' }
       end
       return false
     end
@@ -86,8 +83,6 @@ protected
     raise StandardError, "Can't add format to an already formatted url: #{address}" unless File.extname(address).blank?
     redirect_to address + ".#{format}"    # nasty!
   end
-  
-  
   
   def render_page_or_feed(template_name = action_name)
     respond_to do |format|
