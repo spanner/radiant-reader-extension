@@ -4,6 +4,16 @@ class ReaderLayoutsDataset < Dataset::Base
   def load
     create_layout "Main"
     create_layout "Other"
+    create_layout "email", :content => %{
+<html>
+  <head><title><r:title /></title></head>
+  <body>
+    <p>header</p>
+    <r:content />
+    <p>footer</p>
+  </body>
+<html>  
+    }
   end
   
   helpers do

@@ -20,8 +20,8 @@ module ControllerExtensions    # for inclusion into ApplicationController
     def layout_for(area = :reader)
       if defined? Site && current_site && current_site.respond_to?(:layout_for)
         current_site.layout_for(area)
-      elsif default_layout = Radiant::Config["#{area}.layout"]
-        default_layout
+      elsif area_layout = Radiant::Config["#{area}.layout"]
+        area_layout
       elsif reader_layout = Radiant::Config["reader.layout"]
         reader_layout
       elsif main_layout = Layout.find_by_name('Main')

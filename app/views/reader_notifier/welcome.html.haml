@@ -1,0 +1,41 @@
+%p
+  Hello 
+  = @reader.name + ','
+
+%p
+  Welcome to 
+  = @site_title + '!'
+  And thank you for persevering with the registration process. Your account is now active and you will have been logged in automatically.
+
+%p
+  You can put in a bit more information about yourself at any time by going to 
+  = @prefs_url + '.'
+
+%p
+  Next time you visit, you will need to log in. Here's a reminder before we discard the plain text version of your password:
+
+%ul
+  %li
+    login at: 
+    = @login_url
+  %li
+    username: 
+    = @reader.login
+  %li
+    password: 
+    = @reader.clear_password
+
+%p
+best wishes,
+
+%p
+  = @sender
+
+- content_for :header do
+  This is the header
+
+- content_for :footer do
+  This is the footer
+
+- content_for :pagetitle do
+  = @subject

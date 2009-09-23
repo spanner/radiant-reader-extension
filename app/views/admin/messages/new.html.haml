@@ -1,0 +1,45 @@
+- include_stylesheet('admin/group')
+
+%h1 
+  New message
+
+%p
+  Press 'preview message' below to see how your message will look when laid out and addressed to someone. 
+  Once a message is created, you can send it out at any time by pressing its 'deliver' button.
+
+- form_for :message, @message, :url => admin_messages_url, :html => {:id => 'message_form', :method => 'post'} do |f|
+  .form-area
+    %p.title
+      = f.label :subject, "Message Subject"
+      = f.text_field :subject, :class => 'textbox', :maxlength => 255
+    %p.description
+      = f.label :body, "Message Body"
+      = f.text_area :body, :class => 'textarea', :style => 'width: 100%'
+    %p.filter
+      %label{:for=>"snippet_filter_id"} Filter
+      = f.select :filter_id, [['none', '']] + TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter'
+
+    %p.buttons
+      = f.submit 'Preview message'
+      or
+      = link_to "cancel", admin_messages_url
+
+  %p
+    You can use tags, snippets and assets in your messages just as you would in a page. 
+    There are also a few simple mailmerge tags that you can use to place information about the recipient (or yourself) in each message as it is sent out. 
+    They should be self-explanatory:
+  %ul
+    %li
+      %code &lt;r:sender:name /&gt; 
+    %li
+      %code &lt;r:sender:email /&gt;
+    %li
+      %code &lt;r:recipient:name /&gt; 
+    %li
+      %code &lt;r:recipient:email /&gt;
+    %li
+      %code &lt;r:recipient:login /&gt;
+    %li
+      %code &lt;r:recipient:url /&gt;
+    %li
+      %code &lt;r:recipient:description /&gt;

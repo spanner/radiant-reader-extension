@@ -20,6 +20,9 @@ class Reader < ActiveRecord::Base
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   
+  has_many :message_readers
+  has_many :messages, :through => :message_readers
+  
   attr_accessor :current_password   # used for authentication on update
 
   before_save :set_login

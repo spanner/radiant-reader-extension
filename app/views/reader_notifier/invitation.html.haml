@@ -1,0 +1,52 @@
+#message
+  %p
+    Hello 
+    = @reader.name + ','
+
+  %p
+    You are invited to join the 
+    = link_to @site_title, @site_url
+    site. To accept the invitation, all you have to do is
+    %strong
+      = link_to('click on this link', @activation_url) + '.'
+
+  %p
+    On this first visit you'll be logged in automatically, but next time you'll need to know your username and password: Here's a reminder:
+
+  %ul
+    %li
+      login at: 
+      = @login_url
+    %li
+      username:
+      = @reader.login
+    %li  
+      password: 
+      = @reader.clear_password
+
+  %p 
+    To see yourself as others might see you, have a look at 
+    = link_to("your page", @my_url) + '.'
+    You can change your listing on your
+    = link_to "preferences page", @prefs_url
+    and if you'd like a picture to appear,
+    = link_to("get a gravatar", "http://www.gravatar.com/signup") + '.'
+
+  %p
+    We're about to forget your password, so we won't be able to remind you what it is, but if you get stuck you can always make a new one by clicking on the 'forgot my password' link on the login page.
+
+  %p
+    best wishes,
+
+  %p
+    = @sender
+
+- content_for :header do
+  This is the header
+
+- content_for :footer do
+  This is the footer
+
+- content_for :pagetitle do
+  = @subject
+

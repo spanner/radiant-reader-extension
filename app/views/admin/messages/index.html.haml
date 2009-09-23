@@ -1,0 +1,38 @@
+- include_stylesheet('admin/reader')
+= render_region :top 
+
+%h1 Messages
+
+%table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+  %thead
+    %tr
+      - render_region :thead do |thead|
+        - thead.subject_header do
+          %th.message Subject
+        - thead.recipients_header do
+          %th.message_recipients Sent to
+        - thead.modify_header do
+          %th.modify Modify
+  %tbody
+    - @messages.each do |message|
+      %tr.node.level-1
+        - render_region :tbody do |tbody|
+          - tbody.subject_cell do
+            %td.message
+              = link_to message.subject, edit_admin_message_url(message)
+
+          - tbody.recipients_cell do
+            %td.message_recipients
+              summary will appear here
+
+          - tbody.modify_cell do
+            %td.remove
+              = link_to(image('deliver', :alt => 'Deliver message'), deliver_admin_message_url(message)) 
+              = link_to(image('edit', :alt => 'Edit message'), edit_admin_message_url(message)) 
+              = link_to(image('remove', :alt => 'Remove message'), admin_message_url(message), :method => :delete, :confirm => "really delete message #{message.subject}?") 
+      
+- render_region :bottom do |bottom|
+  - bottom.new_button do
+    - if admin?
+      %p
+        = link_to image('new-message', :alt => 'New Message'), new_admin_message_url, :title => "Create a new message"
