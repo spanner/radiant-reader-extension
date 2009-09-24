@@ -26,14 +26,14 @@
           %p
             = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser'
             %label{:for => "delivery_to_selection"}
-              to selected readers
+              to selected people
 
         - delivery.choose_recipients do
 
           %ol#select_readers
             - @message.possible_readers.each do |reader|
               %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}
-                = check_box_tag "reader_ids[]", reader.id, !@message.delivered_to?(reader), :id => "reader_#{reader.id}"
+                = check_box_tag "reader_ids[]", reader.id, false, :id => "reader_#{reader.id}"
                 %label{:for => "reader_#{reader.id}"}
                   = reader.name
 

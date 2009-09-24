@@ -41,7 +41,7 @@ module ReaderAdminUI
           end
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}
-            edit.form.concat %w{edit_name edit_subject edit_body}
+            edit.form.concat %w{edit_subject edit_body edit_filter}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           message.index = Radiant::AdminUI::RegionSet.new do |index|

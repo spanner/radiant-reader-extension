@@ -1,0 +1,29 @@
+= render_region :form_top
+
+.form-area
+  - render_region :form do |formpart|
+
+    - formpart.edit_subject do
+      %p.title
+        = form.label :subject, "Message Subject"
+        = form.text_field :subject, :class => 'textbox', :maxlength => 255
+
+    - formpart.edit_body do
+      %p.body
+        = form.label :body, "Message Body"
+        = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
+
+    - formpart.edit_filter do
+      %p.filter
+        %label{:for=>"snippet_filter_id"} Filter
+        = form.select :filter_id, [['none', '']] + TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter'
+
+- render_region :form_bottom do |form_bottom|
+  - form_bottom.edit_timestamp do
+    = updated_stamp @message  
+  - form_bottom.edit_buttons do
+    %p.buttons
+      = save_model_button(@message)
+      = save_model_and_continue_editing_button(@message)
+      or
+      = link_to "cancel", admin_messages_url
