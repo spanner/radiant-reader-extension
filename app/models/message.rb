@@ -26,7 +26,7 @@ class Message < ActiveRecord::Base
   end
   
   def undelivered_readers
-    readers - recipients
+    possible_readers - recipients
   end
   
   def delivered?
@@ -42,17 +42,20 @@ class Message < ActiveRecord::Base
     ReaderNotifier.create_message(reader, self)
   end
   
-  def deliver
-    undelivered_readers.each { |reader| deliver_to(reader) }
+  def deliver(readers)
+    failures = []
+    readers.each do |reader|
+      failures.push(reader) unless deliver_to(reader)
+    end
+    failures
   end
-
-  def deliver_all
-    readers.each { |reader| deliver_to(reader) }
-  end
-
+  
   def deliver_to(reader)
     ReaderNotifier.deliver_message(reader, self)
     record_delivery(reader)
+    true
+  rescue
+    false
   end
   
   def record_delivery(reader)

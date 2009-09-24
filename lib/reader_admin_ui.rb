@@ -37,7 +37,7 @@ module ReaderAdminUI
         returning OpenStruct.new do |message|
           message.show = Radiant::AdminUI::RegionSet.new do |show|
             show.preview.concat %w{preview_headers preview_body}
-            show.deliver.concat %w{recipients options send_button}
+            show.delivery.concat %w{deliver_all deliver_unsent deliver_selection choose_recipients buttons}
           end
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}

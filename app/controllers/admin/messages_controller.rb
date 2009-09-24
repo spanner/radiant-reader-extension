@@ -5,13 +5,34 @@ class Admin::MessagesController < Admin::ResourceController
   before_filter :load_model, :except => :index
   
   # mock email view called into an iframe in the :show view
+  # the view calls @message.preview, which returns the message body
   def preview
     render :layout => false
   end
   
   def deliver
-    @message.deliver
-    flash[:notice] = "message delivered"
+    case params['delivery']
+    when "all"
+      @readers = Reader.find(:all)
+    when "unsent"
+      @readers = Reader.find(:all) - @message.recipients
+    when "selection"
+      @readers = Reader.find(params[:reader_ids])
+    else
+      redirect_to admin_message_url(@message)
+      return
+    end
+    failures = @message.deliver(@readers)
+    if failures.any?
+      if failures.length == @readers.length
+        flash[:error] = "All deliveries failed"
+      else
+        addresses = failures.map(&:email).to_sentence
+        flash[:notice] = "some deliveries failed: #{addresses}"
+      end
+    else
+      flash[:notice] = "message delivered to #{@readers.length} #{@template.pluralize(@readers.length, 'reader')}"
+    end
     redirect_to admin_message_url(@message)
   end
 

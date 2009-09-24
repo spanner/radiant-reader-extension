@@ -19,7 +19,7 @@
         - render_region :tbody do |tbody|
           - tbody.subject_cell do
             %td.message
-              = link_to message.subject, edit_admin_message_url(message)
+              = link_to message.subject, admin_message_url(message)
 
           - tbody.recipients_cell do
             %td.message_recipients

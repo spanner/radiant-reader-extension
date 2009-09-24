@@ -1,17 +1,64 @@
-%h1 
-  Message 
-  
-%p.actions
-  edit |
-  remove |
-  deliver
+- include_stylesheet('admin/messages')
+- include_javascript('admin/messages')
 
-%div.message_header
-  %ul
-    - @message.preview.each_header do |name, value|
-      %li
-        = name + ':'
-        %strong
-          = value
+= render_region :top 
 
-%iframe.message_preview{:src => preview_admin_message_url(@message), :width => '100%', :height => '500px'}
+.delivery
+  %h1
+    Send message
+
+  .delivery_form
+    - render_region :delivery do |delivery|
+      - form_for :message, @message, :url => deliver_admin_message_url(@message) do |f|
+        - delivery.deliver_all do
+          %p
+            = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser'
+            %label{:for => "delivery_to_all"}
+              to everyone
+
+        - delivery.deliver_unsent do
+          %p
+            = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser'
+            %label{:for => "delivery_to_unsent"}
+              to everyone who has not yet received it
+
+        - delivery.deliver_selection do
+          %p
+            = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser'
+            %label{:for => "delivery_to_selection"}
+              to selected readers
+
+        - delivery.choose_recipients do
+
+          %ol#select_readers
+            - @message.possible_readers.each do |reader|
+              %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}
+                = check_box_tag "reader_ids[]", reader.id, !@message.delivered_to?(reader), :id => "reader_#{reader.id}"
+                %label{:for => "reader_#{reader.id}"}
+                  = reader.name
+
+        - delivery.buttons do
+          %p.buttons
+            = submit_tag "send message", :disable_with => "Please wait..."
+      
+.preview
+  %h1
+    Preview:
+    = @message.subject
+
+  - render_region :preview do |preview|
+    - preview.preview_headers do
+      .message_header
+        %ul
+          - @message.preview.each_header do |name, value|
+            %li
+              = name + ':'
+              %strong
+                = value
+
+    - preview.preview_body do
+      %iframe.message_body{:src => preview_admin_message_url(@message)}
+      .preview_controls
+        %p
+          = link_to "edit message", edit_admin_message_url(@message)
+
