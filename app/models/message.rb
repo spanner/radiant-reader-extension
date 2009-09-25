@@ -1,7 +1,6 @@
 class Message < ActiveRecord::Base
 
   is_site_scoped if defined? ActiveRecord::SiteNotFound
-  default_scope :order => 'created_at DESC'
 
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
@@ -16,6 +15,10 @@ class Message < ActiveRecord::Base
   validates_presence_of :body
 
   object_id_attr :filter, TextFilter
+  
+  default_scope :order => 'created_at DESC'
+  named_scope :administrative, { :conditions => "function IS NOT NULL" }
+  named_scope :ordinary, { :conditions => "function IS NULL" }
   
   def filtered_body
     filter.filter(body)
@@ -50,15 +53,17 @@ class Message < ActiveRecord::Base
     failures
   end
   
-  def deliver_to(reader)
-    ReaderNotifier.deliver_message(reader, self)
+  def deliver_to(reader, sender=nil)
+    ReaderNotifier.deliver_message(reader, self, sender)
     record_delivery(reader)
     true
-  rescue
-    false
+  rescue => e
+    logger.warn "@@  delivery failed: #{e.inspect}"
+    raise
   end
   
   def record_delivery(reader)
     MessageReader.find_or_create_by_message_id_and_reader_id(self.id, reader.id).update_attribute(:sent_at, Time.now)
   end
+  
 end

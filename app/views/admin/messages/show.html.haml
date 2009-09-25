@@ -7,52 +7,59 @@
   %h1
     Send message
 
-  .delivery_form
-    - render_region :delivery do |delivery|
+  - if @message.function
+    %p.warning
+      This is the 
+      %strong
+        = @message.function 
+      message and will be sent out automatically when it is required.
+
+  -else
+    .delivery_form
       - form_for :message, @message, :url => deliver_admin_message_url(@message) do |f|
-        - delivery.deliver_all do
-          %p
-            = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser'
-            %label{:for => "delivery_to_all"}
-              to everyone
+        - render_region :delivery do |delivery|
+          - delivery.deliver_all do
+            %p
+              = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser'
+              %label{:for => "delivery_to_all"}
+                to everyone
 
-        - delivery.deliver_unsent do
-          %p
-            = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser'
-            %label{:for => "delivery_to_unsent"}
-              to everyone who has not yet received it
+          - delivery.deliver_unsent do
+            %p
+              = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser'
+              %label{:for => "delivery_to_unsent"}
+                to everyone who has not yet received it
 
-        - delivery.deliver_selection do
-          %p
-            = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser'
-            %label{:for => "delivery_to_selection"}
-              to selected people
+          - delivery.deliver_selection do
+            %p
+              = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser'
+              %label{:for => "delivery_to_selection"}
+                to selected people
 
-        - delivery.choose_recipients do
+          - delivery.choose_recipients do
 
-          %ol#select_readers
-            - @message.possible_readers.each do |reader|
-              %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}
-                = check_box_tag "reader_ids[]", reader.id, false, :id => "reader_#{reader.id}"
-                %label{:for => "reader_#{reader.id}"}
-                  = reader.name
+            %ol#select_readers
+              - @message.possible_readers.each do |reader|
+                %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}
+                  = check_box_tag "reader_ids[]", reader.id, false, :id => "reader_#{reader.id}"
+                  %label{:for => "reader_#{reader.id}"}
+                    = reader.name
 
-        - delivery.buttons do
-          %p.buttons
-            = submit_tag "send message", :disable_with => "Please wait..."
+          - delivery.buttons do
+            %p.buttons
+              = submit_tag "send message", :disable_with => "Please wait..."
       
 .preview
   %h1
-    Preview:
-    = @message.subject
+    Preview message
 
   - render_region :preview do |preview|
     - preview.preview_headers do
       .message_header
         %ul
           - @message.preview.each_header do |name, value|
-            %li
-              = name + ':'
+            %li{:class => name}
+              = "#{name}:"
               %strong
                 = value
 

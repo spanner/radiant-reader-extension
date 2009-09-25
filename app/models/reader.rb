@@ -54,13 +54,20 @@ class Reader < ActiveRecord::Base
     inactive? && !new_record?
   end
 
-  ['activation', 'invitation', 'welcome', 'password_reset'].each do |message|
-    define_method("send_#{message}_message".intern) { 
-      reset_perishable_token!  
-      ReaderNotifier.send("deliver_#{message}".intern, self) 
+  [:activation, :invitation, :welcome, :password_reset].each do |function|
+    define_method("send_#{function}_message".intern) {
+      reset_perishable_token!
+      message = Message.find_by_function("#{function}")
+      message.deliver_to(self) if message
     }
   end
-    
+  
+  def send_invitation_message_if_invited
+    if UserActionObserver.current_user && !self.activated? && self.user != UserActionObserver.current_user
+      send_invitation_message 
+    end
+  end
+  
   def generate_email_field_name
     generate_password(32)
   end
@@ -106,7 +113,7 @@ class Reader < ActiveRecord::Base
       reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
       user = User.find_by_email(self.email)
       if user && user != self.user
-        errors.add(:email, "belongs to an author here: do you need to log in?")
+        errors.add(:email, "belongs to an author here")
       elsif reader && reader != self
         errors.add(:email, "is already registered here")
       else
@@ -117,12 +124,6 @@ class Reader < ActiveRecord::Base
 
     def validate_length_of_password?
       new_record? or not password.to_s.empty?
-    end
-  
-    def send_invitation_message_if_invited
-      if UserActionObserver.current_user && !self.activated? && self.user != UserActionObserver.current_user
-        self.send_invitation_message 
-      end
     end
 
     def update_user

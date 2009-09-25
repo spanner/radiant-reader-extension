@@ -15,26 +15,7 @@
           %th.modify Modify
   %tbody
     - @messages.each do |message|
-      %tr.node.level-1
-        - render_region :tbody do |tbody|
-          - tbody.subject_cell do
-            %td.message
-              = link_to message.subject, admin_message_url(message)
-
-          - tbody.recipients_cell do
-            %td.message_recipients
-              %p
-                - if message.delivered?
-                  Sent to 
-                  = message.recipients.count
-                  = pluralize(message.recipients.count, 'person')
-                - else
-                  Not yet sent
-                  
-          - tbody.modify_cell do
-            %td.remove
-              = link_to(image('edit', :alt => 'Edit message'), edit_admin_message_url(message)) 
-              = link_to(image('remove', :alt => 'Remove message'), admin_message_url(message), :method => :delete, :confirm => "really delete message #{message.subject}?") 
+      = render :partial => 'listed', :locals => {:message => message}
       
 - render_region :bottom do |bottom|
   - bottom.new_button do

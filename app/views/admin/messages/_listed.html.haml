@@ -1,0 +1,26 @@
+%tr.node.level-1
+  - render_region :tbody do |tbody|
+    - tbody.subject_cell do
+      %td.message
+        = link_to message.subject, admin_message_url(message), :class => message.function ? "functional" : "normal"
+        - unless message.function.blank?
+          %small.function
+            = message.function
+
+    - tbody.recipients_cell do
+      %td.message_recipients
+        %p
+          - if message.delivered?
+            Sent to 
+            = message.recipients.count
+            = pluralize(message.recipients.count, 'person')
+          - else
+            Not yet sent
+            
+    - tbody.modify_cell do
+      %td.remove
+        = link_to(image('edit', :alt => 'Edit message'), edit_admin_message_url(message))
+        - if message.function.blank?
+          = link_to(image('remove', :alt => 'Remove message'), admin_message_url(message), :method => :delete, :confirm => "really delete message #{message.subject}?") 
+        - else
+          = image('noremove')

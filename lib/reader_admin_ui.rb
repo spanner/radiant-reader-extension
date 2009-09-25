@@ -40,7 +40,7 @@ module ReaderAdminUI
             show.delivery.concat %w{deliver_all deliver_unsent deliver_selection choose_recipients buttons}
           end
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
-            edit.main.concat %w{edit_header edit_form}
+            edit.main.concat %w{edit_header edit_form edit_footer}
             edit.form.concat %w{edit_subject edit_body edit_filter}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
@@ -49,8 +49,8 @@ module ReaderAdminUI
             index.tbody.concat %w{subject_cell recipients_cell modify_cell}
             index.bottom.concat %w{new_button}
           end
-          reader.remove = reader.index
-          reader.new = reader.edit
+          message.remove = message.index
+          message.new = message.edit
         end
       end
     end
