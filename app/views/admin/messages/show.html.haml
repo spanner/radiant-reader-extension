@@ -20,24 +20,28 @@
         - render_region :delivery do |delivery|
           - delivery.deliver_all do
             %p
-              = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser'
-              %label{:for => "delivery_to_all"}
-                to everyone
+              = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser', :disabled => @message.possible_readers.empty?
+              %label{:for => "delivery_to_all", :class => @message.possible_readers.any? ? '' : 'disabled'}
+                send to everyone
 
           - delivery.deliver_unsent do
             %p
-              = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser'
-              %label{:for => "delivery_to_unsent"}
-                to everyone who has not yet received it
+              = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser', :disabled => @message.undelivered_readers.empty?
+              %label{:for => "delivery_to_unsent", :class => @message.undelivered_readers.any? ? '' : 'disabled'}
+                send to the
+                = @message.undelivered_readers.count
+                = pluralize( @message.undelivered_readers.count, 'person')
+                who 
+                = @message.undelivered_readers.count == 1 ? 'has' : 'have'
+                not yet received this message
 
           - delivery.deliver_selection do
             %p
-              = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser'
-              %label{:for => "delivery_to_selection"}
-                to selected people
+              = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser', :disabled => @message.possible_readers.empty?
+              %label{:for => "delivery_to_selection", :class => @message.possible_readers.any? ? '' : 'disabled'}
+                send to selected people...
 
           - delivery.choose_recipients do
-
             %ol#select_readers
               - @message.possible_readers.each do |reader|
                 %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}

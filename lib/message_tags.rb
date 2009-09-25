@@ -3,9 +3,6 @@ module MessageTags
   
   class TagError < StandardError; end
 
-  # this is a nasty hack: it places variable names for actionamailer to interpoloate
-  # at this stage we don't actually have the recipient details
-
   desc %{
     The root 'site' tag is not meant to be called directly. 
     All it does is to prepare the way for eg.
@@ -32,7 +29,6 @@ module MessageTags
   tag 'site:login_url' do |tag|
     reader_login_url(:host => @mailer_vars[:@host])
   end
-  
 
   desc %{
     The root 'recipient' tag is not meant to be called directly. 

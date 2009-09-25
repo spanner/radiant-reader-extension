@@ -16,7 +16,7 @@ class Message < ActiveRecord::Base
 
   object_id_attr :filter, TextFilter
   
-  default_scope :order => 'created_at DESC'
+  default_scope :order => 'updated_at DESC, created_at DESC'
   named_scope :administrative, { :conditions => "function IS NOT NULL" }
   named_scope :ordinary, { :conditions => "function IS NULL" }
   

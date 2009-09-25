@@ -49,7 +49,7 @@ class Reader < ActiveRecord::Base
   def inactive?
     self.activated_at.nil? || self.activated_at > Time.now
   end
-  
+
   def disable_perishable_token_maintenance?
     inactive? && !new_record?
   end

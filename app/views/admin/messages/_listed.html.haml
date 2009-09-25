@@ -3,9 +3,7 @@
     - tbody.subject_cell do
       %td.message
         = link_to message.subject, admin_message_url(message), :class => message.function ? "functional" : "normal"
-        - unless message.function.blank?
-          %small.function
-            = message.function
+        = render :partial => 'list_notes', :locals => {:message => message}
 
     - tbody.recipients_cell do
       %td.message_recipients

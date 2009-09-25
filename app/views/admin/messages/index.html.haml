@@ -1,8 +1,12 @@
 - include_stylesheet('admin/messages')
 = render_region :top 
 
-%h1 Messages
+%h1
+  Messages
 
+%p
+  Click on a message to preview and edit it. Messages in red are administrative and sent out automatically when required. Messages in black are sent manually: on the preview page you can choose to whom.
+  
 %table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
   %thead
     %tr
