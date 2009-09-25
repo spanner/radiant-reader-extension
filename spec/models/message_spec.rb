@@ -89,7 +89,7 @@ describe Message do
       end
     
       it "should know to whom it has yet to be sent" do
-        @message.undelivered_readers.should == [readers(:visible)]
+        @message.undelivered_readers.should == Reader.find(:all) - @message.recipients
       end
     
       it "should report itself delivered to that reader" do
@@ -101,13 +101,6 @@ describe Message do
         @message.delivered_to?(readers(:visible)).should be_false
       end
 
-      describe "on deliver()" do
-        it "should have itself delivered to the other reader" do
-          ReaderNotifier.should_receive(:deliver_message).once.with(readers(:visible), messages(:normal))
-          ReaderNotifier.should_not_receive(:deliver_message).with(readers(:normal), messages(:normal))
-          messages(:normal).deliver
-        end
-      end
     end
     
     

@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe PasswordResetsController do
-  dataset :readers
+  dataset :readers, :messages
   
   before do
     controller.stub!(:request).and_return(request)
@@ -27,14 +27,6 @@ describe PasswordResetsController do
       it "should give instructions" do
         response.should be_success
         response.should render_template("create")
-      end
-      
-      it 'should send out a confirmation email' do
-        message = ActionMailer::Base.deliveries.pop
-        message.should_not be_nil
-        message.subject.should == "Reset your password"
-        message.body.should =~ /#{@reader.name}/
-        message.body.should =~ /#{@reader.perishable_token}/
       end
     end
     

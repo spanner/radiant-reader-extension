@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ReadersController do
-  dataset :readers
+  dataset :readers, :messages
   
   before do
     controller.stub!(:request).and_return(request)
@@ -48,14 +48,6 @@ describe ReadersController do
       it "should have assigned the new reader to the current site" do
         @reader.site.should == sites(:test)
       end
-    end
-
-    it 'should send out an activation email' do
-      message = ActionMailer::Base.deliveries.last
-      message.should_not be_nil
-      message.body.should =~ /#{@reader.name}/
-      message.body.should =~ /#{@reader.login}/
-      message.body.should =~ /#{@reader.clear_password}/
     end
 
     it "should render the please-activate page" do

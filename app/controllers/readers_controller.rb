@@ -47,7 +47,7 @@ class ReadersController < ReaderActionController
       flash[:error] = "Please use the registration form."
       redirect_to new_reader_url and return
     end
-    
+
     @reader.email = params[@email_field.intern]
     if (@reader.valid?)
       @reader.save!

@@ -33,8 +33,8 @@ describe Admin::MessagesController do
     it "should trigger a sending" do
       message = messages(:taggy)
       Message.should_receive(:find).at_least(:once).and_return(message)
-      message.should_receive(:deliver).once.and_return(true)
-      get :deliver, :id => message_id(:taggy)
+      message.should_receive(:deliver).once
+      get :deliver, :id => message_id(:taggy), :delivery => 'all'
       response.should be_redirect
       response.should redirect_to(admin_message_url(messages(:taggy)))
     end
