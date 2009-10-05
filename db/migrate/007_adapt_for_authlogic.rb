@@ -1,8 +1,8 @@
 class AdaptForAuthlogic < ActiveRecord::Migration
   def self.up
-    add_column :readers, :persistence_token, :string, :null => false
-    add_column :readers, :single_access_token, :string, :null => false
-    add_column :readers, :perishable_token, :string, :null => false
+    add_column :readers, :persistence_token, :string, :null => false, :default => ""
+    add_column :readers, :single_access_token, :string, :null => false, :default => ""
+    add_column :readers, :perishable_token, :string, :null => false, :default => ""
     add_column :readers, :login_count, :integer, :null => false, :default => 0
     add_column :readers, :failed_login_count, :integer, :null => false, :default => 0
     add_column :readers, :current_login_ip, :string

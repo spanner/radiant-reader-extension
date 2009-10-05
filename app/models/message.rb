@@ -8,7 +8,7 @@ class Message < ActiveRecord::Base
   has_many :message_readers
   has_many :readers, :through => :message_readers
 
-  has_many :deliveries, :class_name => 'MessageReader', :conditions => "message_readers.sent_at IS NOT NULL and message_readers.sent_at <= NOW()"
+  has_many :deliveries, :class_name => 'MessageReader', :conditions => ["message_readers.sent_at IS NOT NULL and message_readers.sent_at <= ?", Time.now.to_s(:db)]
   has_many :recipients, :through => :deliveries, :source => :reader
 
   validates_presence_of :subject

@@ -10,6 +10,8 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
+SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
+
 Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
 
 ## Status
@@ -20,7 +22,7 @@ Tests are reasonably thorough. A lot of our code relies on this extension.
 
 ## Requirements
 
-Radiant 0.8.1 (we need the new config machinery), and you need the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+Radiant 0.8.1 (we need the new config machinery), [share_layouts](http://github.com/radiant/radiant-share-layouts-extension) and the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
 
 You also need two gems: authlogic and gravtastic. They are declared in the extension so you should be able just to run
 
