@@ -1,15 +1,15 @@
 = render :partial => 'flasher'
 
 %div.apologetic
-    %p.haserror
-      You don't have permission to see the page you just requested. 
-      - if current_reader
-        Please talk to the site administrator about your account.
-      - else
-        Please log in.
+  %p.haserror
+    You don't have permission to see the page you just requested. 
+    - if current_reader
+      Please talk to the site administrator about your account.
+    - else
+      Please log in.
 
-    - unless current_reader
-      = render :partial => 'reader_sessions/login_form'
+  - unless current_reader
+    = render :partial => 'reader_sessions/login_form'
 
 - content_for :breadcrumbs do
   = link_to 'Home', '/'

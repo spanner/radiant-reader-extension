@@ -140,17 +140,3 @@ ul.help code {
   font-size: 115%;
 }
 
-#content .form-area p.group {
-  margin-top: 20px;
-}
-
-#content .form-area p.group select {
-  font-size:120%;
-  width: 60%;
-}
-
-#content .form-area span.formnote {
-  color: #7D796C;
-  font-size: 85%;
-}
-

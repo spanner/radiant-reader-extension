@@ -16,6 +16,8 @@ class ReaderExtension < Radiant::Extension
     end
 
     map.resources :readers, :member => {:activate => :any, :resend_activation => :any}
+    map.resources :messages, :only => [:index, :show], :member => [:preview]
+
     map.resource :reader_session
     map.resource :password_reset
     map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'

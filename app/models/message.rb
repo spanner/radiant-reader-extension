@@ -19,6 +19,7 @@ class Message < ActiveRecord::Base
   default_scope :order => 'updated_at DESC, created_at DESC'
   named_scope :administrative, { :conditions => "function IS NOT NULL" }
   named_scope :ordinary, { :conditions => "function IS NULL" }
+  named_scope :published, { :conditions => "status_id >= 100" }
   
   def filtered_body
     filter.filter(body)
@@ -40,9 +41,22 @@ class Message < ActiveRecord::Base
     recipients.include?(reader)
   end
     
-  def preview
-    reader = possible_readers.first || Reader.find_or_create_for_user(created_by)
+  def preview(reader=nil)
+    reader ||= possible_readers.first || Reader.find_or_create_for_user(created_by)
     ReaderNotifier.create_message(reader, self)
+  end
+  
+  def status
+    Status.find(self.status_id)
+  end
+  def status=(value)
+    self.status_id = value.id
+  end
+  def published?
+    status == Status[:published]
+  end
+  def published!
+    status = Status[:published]
   end
   
   def deliver(readers)
@@ -50,6 +64,7 @@ class Message < ActiveRecord::Base
     readers.each do |reader|
       failures.push(reader) unless deliver_to(reader)
     end
+    self.published!
     failures
   end
   

@@ -13,10 +13,14 @@
         = form.label :body, "Message Body"
         = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
-    - formpart.edit_filter do
-      %p.filter
-        %label{:for=>"snippet_filter_id"} Filter
-        = form.select :filter_id, [['none', '']] + TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter'
+    - formpart.edit_filter_and_status do
+      .row
+        %p.filter
+          = form.label :filter_id, "Filter?"
+          = form.select :filter_id, [['none', '']] + TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter'
+        %p
+          = form.label :status_id, "Status"
+          = form.select :status_id, Status.find_all.map { |s| [s.name, s.id] }, {}
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
