@@ -2,7 +2,7 @@
 - no_title ||= false
 
 .login_form
-  - form_for @reader_session, :url => reader_session_path, :html => {:class => 'compact inline'} do |f|
+  - form_for @reader_session, :url => reader_session_path, :html => {:class => 'compact inline friendly'} do |f|
     
     - unless no_title
       %h3.spacy
