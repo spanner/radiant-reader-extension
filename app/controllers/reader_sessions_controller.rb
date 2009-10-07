@@ -20,14 +20,15 @@ class ReaderSessionsController < ReaderActionController
           flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
           redirect_back_or_to url_for(@reader_session.reader)
         }
-        format.js { 
-          redirect_back_with_format(:js)
-        }
+        format.js { redirect_back_with_format(:js) }
       end
       
     else
       respond_to do |format|
-        format.html { render :action => :new }
+        format.html { 
+          flash[:error] = "Sorry: that combination of login and password is not known here."
+          render :action => :new 
+        }
         format.js { render :action => :new, :layout => false }
       end
     end
