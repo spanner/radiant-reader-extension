@@ -35,7 +35,6 @@ class ReaderSessionsController < ReaderActionController
   
   def destroy
     current_reader_session.destroy
-    current_reader = nil
     if current_user
       cookies[:session_token] = { :expires => 1.day.ago }
       current_user.forget_me
