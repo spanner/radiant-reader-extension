@@ -18,7 +18,7 @@ class ReaderSessionsController < ReaderActionController
       respond_to do |format|
         format.html { 
           flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
-          redirect_back_or_to url_for(@reader_session.reader) 
+          redirect_back_or_to url_for(@reader_session.reader)
         }
         format.js { 
           redirect_back_with_format(:js)
@@ -35,6 +35,13 @@ class ReaderSessionsController < ReaderActionController
   
   def destroy
     current_reader_session.destroy
+    current_reader = nil
+    if current_user
+      cookies[:session_token] = { :expires => 1.day.ago }
+      current_user.forget_me
+      session['user_id'] = nil
+      current_user = nil
+    end
     flash[:notice] = "You are logged out. Bye!"
     redirect_back_or_to reader_login_url
   end

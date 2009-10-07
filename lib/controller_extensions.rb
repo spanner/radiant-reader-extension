@@ -44,13 +44,15 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader
-      return @current_reader if defined?(@current_reader)
-      @current_reader = current_reader_session.record if current_reader_session
+      current_reader_session.record if current_reader_session
     end
 
     def current_reader=(reader)
-      current_reader_session = ReaderSession.create!(reader)
-      @current_reader = reader
+      if reader && reader.is_a?(Reader)
+        current_reader_session = ReaderSession.create!(reader)
+      else
+        current_reader_session.destroy
+      end
     end
 
   end
