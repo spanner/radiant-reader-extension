@@ -30,6 +30,7 @@ class ReaderExtension < Radiant::Extension
   extension_config do |config|
     config.gem 'authlogic'
     config.gem 'gravtastic'
+    config.gem 'rgrove-sanitize', :lib => 'sanitize'
     config.extension 'share_layouts'
     config.extension 'submenu'
   end
