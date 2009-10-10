@@ -7,25 +7,26 @@
         = @reader.name + '.'
       Thank you for persevering with the authorization process. 
       %br
-      Please enter and confirm the new password you would like to use.
+      Please enter and confirm the new password you would like to use. It must be at least four characters long, nothing obvious or typical and ideally a mixture of numbers and letters.
 
-    - if @reader.errors.any?
-      %p.haserror
-        %strong
-          Sorry: there was a problem.
-        = @reader.errors.full_messages.to_sentence
 
     - form_for @reader, :url => password_reset_path, :method => :put, :html => {:class => 'friendly', :autocomplete => "off"} do |f|
+
+      - if @reader.errors.any?
+        %p.haserror
+          %strong
+            Sorry: there was a problem.
+          = @reader.errors.full_messages.to_sentence
 
       = hidden_field_tag :id, params[:id]
       = hidden_field_tag :confirmation_code, @reader.perishable_token
 
-      %p{:class => @reader.errors ? 'haserror' : ''}
+      %p{:class => @reader.errors.any? ? 'haserror' : ''}
         = f.label :password, "New password", :class => 'required'
         %br
         = f.password_field :password, :class => 'titular'
 
-      %p{:class => @reader.errors ? 'haserror' : ''}
+      %p{:class => @reader.errors.any? ? 'haserror' : ''}
         = f.label :password_confirmation, "Repeat for confirmation", :class => 'required'
         %br
         = f.password_field :password_confirmation, :class => 'titular'
@@ -36,7 +37,7 @@
         Your password hasn't changed yet, so if you've just remembered it you can still
         = link_to "log in.", reader_login_url
 
-      - content_for :title do
+      - content_for :pagetitle do
         Change my password
 
   - else 
@@ -61,7 +62,7 @@
       = link_to "enter your email address again", new_password_reset_url
       and we'll send a new one.
       
-    - content_for :title do
+    - content_for :pagetitle do
       Please enter confirmation code
       
 - content_for :breadcrumbs do

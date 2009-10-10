@@ -55,6 +55,29 @@ module ControllerExtensions    # for inclusion into ApplicationController
       end
     end
 
+    def store_location(location = request.request_uri)
+      session[:return_to] = location
+    end
+
+    def redirect_back_or_to(default)
+      redirect_to(session[:return_to] || default)
+      session[:return_to] = nil
+    end
+
+    def redirect_back_with_format(format = 'html')
+      address = session[:return_to]
+      raise StandardError, "Can't add format to an already formatted url: #{address}" unless File.extname(address).blank?
+      redirect_to address + ".#{format}"    # nasty! but necessary for inline login.
+    end
+
+    def render_page_or_feed(template_name = action_name)
+      respond_to do |format|
+        format.html { render :action => template_name }
+        format.rss  { render :action => template_name, :layout => 'feed' }
+        format.js  { render :action => template_name, :layout => false }
+      end
+    end
+
   end
 end
 

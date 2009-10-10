@@ -81,11 +81,19 @@ module MessageTags
   end
 
   desc %{
-    Only for use in email messages. Displays the preferences url of the reader currently being emailed.
-    <pre><code><r:recipient:url /></code></pre>
+    Only for use in email messages. Displays the address that will activate the current reader account.
+    <pre><code><r:recipient:activation_url /></code></pre>
   }
   tag "recipient:activation_url" do |tag|
     activate_me_url(tag.locals.recipient, :activation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
+  end
+
+  desc %{
+    Only for use in email messages. Displays the address that will bring up a new-password form for the current reader account.
+    <pre><code><r:recipient:repassword_url /></code></pre>
+  }
+  tag "recipient:repassword_url" do |tag|
+    repassword_url(tag.locals.recipient, :confirmation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
   end
 
   desc %{

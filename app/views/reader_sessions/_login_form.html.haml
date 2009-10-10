@@ -41,11 +41,11 @@
       = f.check_box :remember_me
       %label.paranthetical{:for => "reader_session_remember_me"}
         Remember me
-
-  %p.quiet
-    If you haven't already, you will need to 
-    = link_to "register", new_reader_url
-    before you can log in. It only takes a moment.
+  - if Radiant::Config['reader.allow_registration?']
+    %p.quiet
+      If you haven't already, you will need to 
+      = link_to "register", new_reader_url
+      before you can log in. It only takes a moment.
 
   %p.quiet
     If you've forgotten your password, you can enter your email address to

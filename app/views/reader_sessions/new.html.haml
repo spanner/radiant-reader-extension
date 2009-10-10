@@ -10,6 +10,10 @@
     = link_to "log out", reader_logout_url
 
 - else
+  - if flash[:explanation]
+    %p
+      = flash[:explanation]
+      
   = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do

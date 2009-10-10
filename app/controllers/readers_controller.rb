@@ -1,5 +1,6 @@
 class ReadersController < ReaderActionController
-
+  
+  before_filter :check_registration_allowed, :only => [:new, :create]
   before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :i_am_me, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
@@ -150,6 +151,14 @@ protected
   def no_removing
     flash[:error] = "You can't delete readers here. Please log in to the admin interface."
     redirect_to admin_readers_url
+  end
+  
+  def check_registration_allowed
+    unless Radiant::Config['reader:allow_registration?']
+      flash[:error] = "Sorry. This site does not allow public registration."
+      redirect_to reader_login_url
+      false
+    end
   end
          
 end
