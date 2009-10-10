@@ -154,7 +154,7 @@ protected
   end
   
   def check_registration_allowed
-    unless Radiant::Config['reader:allow_registration?']
+    unless Radiant::Config['reader.allow_registration?']
       flash[:error] = "Sorry. This site does not allow public registration."
       redirect_to reader_login_url
       false

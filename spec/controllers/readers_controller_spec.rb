@@ -7,6 +7,7 @@ describe ReadersController do
     controller.stub!(:request).and_return(request)
     Page.current_site = sites(:test) if defined? Site
     request.env["HTTP_REFERER"] = 'http://test.host/referer!'
+    Radiant::Config['reader.allow_registration?'] = true
   end
     
   describe "with a get to new" do
