@@ -217,4 +217,17 @@ describe ReadersController do
 
     end
   end
+  
+  describe "when registration is not allowed" do
+    before do
+      Radiant::Config['reader.allow_registration?'] = false
+    end
+    
+    it "should not offer the registration form" do
+      get :new
+      response.should be_redirect
+      response.should redirect_to reader_login_url
+      flash[:error].should_not be_nil
+    end
+  end
 end
