@@ -7,7 +7,7 @@ class Reader < ActiveRecord::Base
   default_scope :order => 'name ASC'
 
   is_site_scoped if defined? ActiveRecord::SiteNotFound
-    
+
   is_gravtastic :with => :email, :rating => 'PG', :size => 48
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
@@ -19,10 +19,10 @@ class Reader < ActiveRecord::Base
   belongs_to :user
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
-  
+
   has_many :message_readers
   has_many :messages, :through => :message_readers
-  
+
   attr_accessor :current_password   # used for authentication on update
 
   before_save :set_login
@@ -35,7 +35,7 @@ class Reader < ActiveRecord::Base
   include RFC822
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
-    
+
   def activate!
     self.activated_at = Time.now.utc
     self.save!
@@ -56,27 +56,25 @@ class Reader < ActiveRecord::Base
 
   [:activation, :invitation, :welcome, :password_reset].each do |function|
     define_method("send_#{function}_message".intern) {
-      reset_perishable_token!
-      message = Message.find_by_function("#{function}")
-      message.deliver_to(self) if message
+      send_functional_message(function)
     }
   end
-  
-  def send_invitation_message_if_invited
-    if UserActionObserver.current_user && !self.activated? && self.user != UserActionObserver.current_user
-      send_invitation_message 
-    end
+
+  def send_functional_message(function)
+    reset_perishable_token!
+    message = Message.functional(function)
+    message.deliver_to(self) if message
   end
-  
+
   def generate_email_field_name
     generate_password(32)
   end
-  
+
   def generate_password(length=12)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
     Array.new(length, '').collect{chars[rand(chars.size)]}.join
   end
-  
+
   def is_user?
     self.user ? true : false
   end
@@ -100,15 +98,15 @@ class Reader < ActiveRecord::Base
     end
     reader
   end
-    
+
   protected
 
     def set_login
       self.login = self.email if self.login.blank?
     end
-  
+
   private
-  
+
     def email_must_not_be_in_use
       reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
       user = User.find_by_email(self.email)
@@ -133,5 +131,5 @@ class Reader < ActiveRecord::Base
         self.user.save! if self.user.changed?
       end
     end
-    
+
 end

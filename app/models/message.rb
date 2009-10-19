@@ -15,37 +15,42 @@ class Message < ActiveRecord::Base
   validates_presence_of :body
 
   object_id_attr :filter, TextFilter
-  
+
   default_scope :order => 'updated_at DESC, created_at DESC'
+  named_scope :for_function, lambda { |f| {:conditions => ["function = ?", f]} }
   named_scope :administrative, { :conditions => "function IS NOT NULL" }
   named_scope :ordinary, { :conditions => "function IS NULL" }
   named_scope :published, { :conditions => "status_id >= 100" }
-  
+
+  def self.functional(function)
+    for_function(function).first
+  end
+
   def filtered_body
     filter.filter(body)
   end
-  
+
   def possible_readers
     Reader.find(:all)
   end
-  
+
   def undelivered_readers
     possible_readers - recipients
   end
-  
+
   def delivered?
     deliveries.any?
   end
-  
+
   def delivered_to?(reader)
     recipients.include?(reader)
   end
-    
+
   def preview(reader=nil)
     reader ||= possible_readers.first || Reader.find_or_create_for_user(created_by)
     ReaderNotifier.create_message(reader, self)
   end
-  
+
   def status
     Status.find(self.status_id)
   end
@@ -58,7 +63,7 @@ class Message < ActiveRecord::Base
   def published!
     status = Status[:published]
   end
-  
+
   def deliver(readers)
     failures = []
     readers.each do |reader|
@@ -67,7 +72,7 @@ class Message < ActiveRecord::Base
     self.published!
     failures
   end
-  
+
   def deliver_to(reader, sender=nil)
     ReaderNotifier.deliver_message(reader, self, sender)
     record_delivery(reader)
@@ -76,9 +81,9 @@ class Message < ActiveRecord::Base
     logger.warn "@@  delivery failed: #{e.inspect}"
     raise
   end
-  
+
   def record_delivery(reader)
     MessageReader.find_or_create_by_message_id_and_reader_id(self.id, reader.id).update_attribute(:sent_at, Time.now)
   end
-  
+
 end
