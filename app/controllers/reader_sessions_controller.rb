@@ -18,7 +18,7 @@ class ReaderSessionsController < ReaderActionController
       respond_to do |format|
         format.html { 
           flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
-          redirect_back_or_to url_for(@reader_session.reader)
+          redirect_back_or_to default_loggedin_url
         }
         format.js { redirect_back_with_format(:js) }
       end
@@ -44,6 +44,12 @@ class ReaderSessionsController < ReaderActionController
     end
     flash[:notice] = "You are logged out. Bye!"
     redirect_back_or_to reader_login_url
+  end
+  
+protected
+
+  def default_loggedin_url
+    url_for(@reader_session.reader)
   end
 
 end

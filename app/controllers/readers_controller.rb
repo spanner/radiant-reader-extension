@@ -85,8 +85,9 @@ class ReadersController < ReaderActionController
       flash[:error] = "Sorry: bad link. Please look again at your activation message."
       render and return
     end
-    
-    @reader = Reader.find_by_id_and_perishable_token(params[:id], params[:activation_code])    #NB not using authlogic's find_using_perishable_token because I don't want the token to time out
+
+    #NB not using authlogic's find_using_perishable_token because I don't want the token to expire
+    @reader = Reader.find_by_id_and_perishable_token(params[:id], params[:activation_code])
 
     if @reader
       if @reader.activated?

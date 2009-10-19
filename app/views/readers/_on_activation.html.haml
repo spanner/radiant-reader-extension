@@ -1,0 +1,4 @@
+- if session[:return_to]
+  %p 
+    Would you like to 
+    = link_to ("return to the page you were looking at before you started registering", session[:return_to]) + '?'

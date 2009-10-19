@@ -1,19 +1,15 @@
 = render :partial => 'flasher'
 
 - if current_reader && current_reader.activated?
+
   %p
-    %strong
-      Hello 
-      = current_reader.name
     Thank you very much for persevering with the registration process. Your account is now active.
 
-    - if session[:return_to]
-      %p 
-        Would you like to 
-        = link_to ("return to the page you were looking at before you started registering", session[:return_to]) + '?'
+  = render :partial => 'on_activation'
     
   - content_for :pagetitle do
-    Welcome!
+    Hello 
+    = current_reader.name
 
 - else
   %div.activation
