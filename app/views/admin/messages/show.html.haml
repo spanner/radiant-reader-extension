@@ -8,13 +8,15 @@
     Send message
 
   - if @message.function
-    %p.warning
-      This is the 
-      %strong
-        = @message.function 
-      message and will be sent out automatically when it is required.
+    - render_region :function do |function|
+      - function.function_description do
+        %p.warning
+          This is the 
+          %strong
+            = @message.function 
+          message and will be sent out automatically when it is required.
 
-  -else
+  - unless @message.function
     .delivery_form
       - form_for :message, @message, :url => deliver_admin_message_url(@message) do |f|
         - render_region :delivery do |delivery|
