@@ -28,6 +28,19 @@ describe PasswordResetsController do
         response.should be_success
         response.should render_template("create")
       end
+
+    end
+
+    describe "for an account not yet activated" do
+      before do
+        post :create, :email => 'inactive@spanner.org'
+        @reader = readers(:inactive)
+      end
+      
+      it "should redirect to the please-activate page" do
+        response.should be_redirect
+        response.should redirect_to(new_reader_activation_url)
+      end
     end
     
     describe "that we don't recognise" do

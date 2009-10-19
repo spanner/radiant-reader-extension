@@ -56,14 +56,15 @@ class Reader < ActiveRecord::Base
 
   [:activation, :invitation, :welcome, :password_reset].each do |function|
     define_method("send_#{function}_message".intern) {
-      send_functional_message(function)
+      send_functional_message(function.to_s)
     }
   end
 
   def send_functional_message(function)
     reset_perishable_token!
     message = Message.functional(function)
-    message.deliver_to(self) if message
+    raise StandardError, "No #{function} message could be found" unless message
+    message.deliver_to(self)
   end
 
   def generate_email_field_name

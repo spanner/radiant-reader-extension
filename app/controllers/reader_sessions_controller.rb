@@ -49,7 +49,7 @@ class ReaderSessionsController < ReaderActionController
 protected
 
   def default_loggedin_url
-    url_for(@reader_session.reader)
+    reader_url(@reader_session.reader)
   end
 
 end

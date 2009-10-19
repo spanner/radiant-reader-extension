@@ -23,6 +23,12 @@ class ReaderActionController < ApplicationController
     true if logged_in_user? && current_reader.admin?
   end
 
+  def permission_denied
+    session[:return_to] ||= request.referer
+    @title = flash[:error] || "Sorry: permission denied"
+    render
+  end
+
 protected
   
   # context-setters

@@ -14,7 +14,7 @@ class ReadersController < ReaderActionController
   def show
     @reader = Reader.find(params[:id])
     if @reader.inactive? && @reader == current_reader
-      render :action => 'activate'
+      redirect_to reader_activation_url(current_reader)
     end
   end
 
@@ -54,7 +54,7 @@ class ReadersController < ReaderActionController
       @reader.save!
       @reader.send_activation_message
       self.current_reader = @reader
-      render
+      redirect_to reader_activation_url(@reader.id)
     else
       render :action => 'new'
     end
@@ -69,62 +69,6 @@ class ReadersController < ReaderActionController
     else
       render :action => 'edit'
     end
-  end
-
-  # a proper rest fanatic would do this with a reader_activations controller
-  # and possibly even an activations class that remembers the cleartext password and time of invitation
-
-  def activate
-    if params[:activation_code].nil?
-      # probably redirected from registration page
-      render and return 
-    end
-
-    if params[:id].nil?
-      # shouldn't happen unless someone is trying addresses
-      flash[:error] = "Sorry: bad link. Please look again at your activation message."
-      render and return
-    end
-
-    #NB not using authlogic's find_using_perishable_token because I don't want the token to expire
-    @reader = Reader.find_by_id_and_perishable_token(params[:id], params[:activation_code])
-
-    if @reader
-      if @reader.activated?
-        flash[:notice] = "Hello #{@reader.name}! Your account is already active."
-        redirect_to url_for(@reader)
-        
-      else
-        @reader.activate!
-        self.current_reader = @reader
-        flash[:notice] = "Thank you! Your account has been activated."
-        render
-      end
-      
-    else
-      @error = "Sorry: the activation code was not correct. Please check the link in your email message. If it's broken over two lines you might need to put it back together."
-      flash[:error] = "Sorry: can't find you."
-    end
-  end
-  
-  def resend_activation
-    if @reader.activated?
-      flash[:notice] = "Hello #{@reader.name}! Your account is already active."
-    else
-      @reader.send_activation_message
-      flash[:notice] = "Activation message sent to #{@reader.email}."
-    end
-    redirect_to url_for(@reader)
-  end
-
-  def default_welcome_page(reader = current_reader)
-    reader.is_user? ? admin_pages_url : reader.homepage
-  end
-  
-  def permission_denied
-    session[:return_to] ||= request.referer
-    @title = flash[:error] || "Sorry: permission denied"
-    render
   end
   
 protected

@@ -11,11 +11,17 @@ class PasswordResetsController < ApplicationController
   end
   
   def create
-    @reader = Reader.find_by_email(params[:email])  
+    @reader = Reader.find_by_email(params[:email])
     if @reader
-      @reader.send_password_reset_message
-      flash[:notice] = "Password reset instructions have been emailed to you." 
-      render
+      if @reader.activated?
+        @reader.send_password_reset_message
+        flash[:notice] = "Password reset instructions have been emailed to you."
+        render
+      else
+        @reader.send_activation_message
+        flash[:notice] = "Account activation instructions have been emailed to you."
+        redirect_to new_reader_activation_url
+      end
     else  
       @error = flash[:error] = "Sorry. That email address is not known here."  
       render :action => :new  
