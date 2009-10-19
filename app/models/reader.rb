@@ -56,7 +56,7 @@ class Reader < ActiveRecord::Base
 
   [:activation, :invitation, :welcome, :password_reset].each do |function|
     define_method("send_#{function}_message".intern) {
-      send_functional_message(function.to_s)
+      send_functional_message(function)
     }
   end
 

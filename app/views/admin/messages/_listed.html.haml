@@ -2,7 +2,7 @@
   - render_region :tbody do |tbody|
     - tbody.subject_cell do
       %td.message
-        = link_to message.subject, admin_message_url(message), :class => message.function ? "functional" : "normal"
+        = link_to message.subject, admin_message_url(message), :class => message.has_function? ? "functional" : "normal"
         = render :partial => 'list_notes', :locals => {:message => message}
 
     - tbody.recipients_cell do

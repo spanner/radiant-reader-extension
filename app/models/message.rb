@@ -17,14 +17,10 @@ class Message < ActiveRecord::Base
   object_id_attr :filter, TextFilter
 
   default_scope :order => 'updated_at DESC, created_at DESC'
-  named_scope :for_function, lambda { |f| {:conditions => ["function = ?", f]} }
-  named_scope :administrative, { :conditions => "function IS NOT NULL" }
-  named_scope :ordinary, { :conditions => "function IS NULL" }
+  named_scope :for_function, lambda { |f| {:conditions => ["function_id = ?", f.to_s]} }
+  named_scope :administrative, { :conditions => "function_id IS NOT NULL" }
+  named_scope :ordinary, { :conditions => "function_id IS NULL" }
   named_scope :published, { :conditions => "status_id >= 100" }
-
-  def self.functional(function)
-    for_function(function).first
-  end
 
   def filtered_body
     filter.filter(body)
@@ -49,6 +45,19 @@ class Message < ActiveRecord::Base
   def preview(reader=nil)
     reader ||= possible_readers.first || Reader.find_or_create_for_user(created_by)
     ReaderNotifier.create_message(reader, self)
+  end
+  
+  def function
+    MessageFunction[self.function_id]
+  end
+  def function=(function)
+    self.function_id = MessageFunction[function].to_s
+  end
+  def self.functional(function)
+    for_function(MessageFunction[function]).first
+  end
+  def has_function?
+    !function.nil?
   end
 
   def status
