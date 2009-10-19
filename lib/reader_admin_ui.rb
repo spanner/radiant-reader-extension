@@ -20,7 +20,7 @@ module ReaderAdminUI
         returning OpenStruct.new do |reader|
           reader.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}
-            edit.form.concat %w{edit_name edit_email edit_username edit_password edit_description edit_status edit_notes}
+            edit.form.concat %w{edit_honorific edit_name edit_email edit_username edit_password edit_description edit_status edit_notes}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           reader.index = Radiant::AdminUI::RegionSet.new do |index|

@@ -2,8 +2,8 @@
   = render_region :form_top
   %table.fieldset{:cellpadding=>0, :cellspacing=>0, :border=>0}
     - render_region :form do |form|
-      - if Radiant::Config['reader.use_honorifics?']
-        - form.edit_honorific do
+      - form.edit_honorific do
+        - if Radiant::Config['reader.use_honorifics?']
           %tr
             %th.label
               = f.label :honorific, 'Title or rank', :class => 'optional'
