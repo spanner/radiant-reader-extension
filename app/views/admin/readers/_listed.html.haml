@@ -1,7 +1,7 @@
 %tr.node.level-1
   - render_region :tbody do |tbody|
     - tbody.title_cell do
-      %td.reader
+      %td{:class => reader.activated? ? 'reader activated' : 'reader inactive'}
         = link_to gravatar_for(reader, {:size => 24}, {:width => 24, :height => 24}), edit_admin_reader_url(reader)
         = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
         - unless reader.notes.blank?

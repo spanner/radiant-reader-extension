@@ -3,6 +3,10 @@
   padding: .5em;
 }
 
+#content table.index tr.node td.inactive {
+  opacity: 0.4;
+}
+
 #content table.index tr.node td.reader_description {
   padding: .5em;
 }
