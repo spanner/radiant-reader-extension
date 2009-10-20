@@ -140,3 +140,9 @@ ul.help code {
   font-size: 115%;
 }
 
+p.haserror {
+	border-left: 4px solid #c00;
+	margin-left: -16px;
+	padding-left: 12px;
+	color: #c00 !important;
+}
