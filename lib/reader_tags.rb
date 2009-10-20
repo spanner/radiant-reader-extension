@@ -45,7 +45,7 @@ module ReaderTags
     tag.expand
   end
   
-  [:name, :email, :description, :login].each do |field|
+  [:name, :forename, :email, :description, :login].each do |field|
     desc %{
       Only for use in email messages. Displays the #{field} field of the reader currently being emailed.
       <pre><code><r:recipient:#{field} /></code></pre>
@@ -188,7 +188,7 @@ module ReaderTags
     tag.expand if tag.locals.reader = Reader.current
   end
 
-  [:name, :email, :description, :login].each do |field|
+  [:name, :forename, :email, :description, :login].each do |field|
     desc %{
       Displays the #{field} field of the current reader.
       <pre><code><r:reader:#{field} /></code></pre>

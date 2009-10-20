@@ -36,6 +36,10 @@ class Reader < ActiveRecord::Base
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
 
+  def forename
+    read_attribute(:forename) || name.split(/\s/).first
+  end
+
   def activate!
     self.activated_at = Time.now.utc
     self.save!
