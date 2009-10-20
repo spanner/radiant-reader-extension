@@ -42,7 +42,7 @@ class ReaderExtension < Radiant::Extension
     ApplicationController.send :include, ControllerExtensions                     # hooks up reader authentication and layout-chooser
     ApplicationHelper.send :include, ReaderHelper                                 # display usefulness including error-wrapper
     Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
-    Page.send :include, MessageTags                                               # a few mailmerge-like radius tags for use in messages
+    Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
 
     UserActionObserver.instance.send :add_observer!, Reader 
     UserActionObserver.instance.send :add_observer!, Message

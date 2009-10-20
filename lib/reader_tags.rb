@@ -1,7 +1,10 @@
-module MessageTags
+module ReaderTags
   include Radiant::Taggable
   
   class TagError < StandardError; end
+
+
+  # I can see this causing problems: will change soon
 
   desc %{
     The root 'site' tag is not meant to be called directly. 
@@ -174,8 +177,6 @@ module MessageTags
 
 
 
-
-
   desc %{
     The root 'reader' tag is not meant to be called directly.
     All it does is summon a reader object so that its fields can be displayed with eg.
@@ -184,8 +185,17 @@ module MessageTags
     This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
   }
   tag 'reader' do |tag|
-    tag.locals.reader = current_reader
-    tag.expand if tag.locals.messages.any?
+    tag.expand if tag.locals.reader = Reader.current
+  end
+
+  [:name, :email, :description, :login].each do |field|
+    desc %{
+      Displays the #{field} field of the current reader.
+      <pre><code><r:reader:#{field} /></code></pre>
+    }
+    tag "reader:#{field}" do |tag|
+      tag.locals.reader.send(field)
+    end
   end
 
   desc %{

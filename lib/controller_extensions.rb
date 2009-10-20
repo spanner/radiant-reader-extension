@@ -36,6 +36,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     def current_reader_session
       return @current_reader_session if @current_reader_session.is_a?(ReaderSession)
       @current_reader_session = ReaderSession.find
+      Reader.current = @current_reader_session.record if @current_reader_session
       @current_reader_session
     end
 

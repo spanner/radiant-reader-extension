@@ -22,7 +22,8 @@ Tests are reasonably thorough. A lot of our code relies on this extension.
 
 ## Requirements
 
-Radiant 0.8.1 (we need the new config machinery), [share_layouts](http://github.com/radiant/radiant-share-layouts-extension) and the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+Radiant 0.8.1 (we need the new config machinery), [share_layouts](http://github.com/spanner/radiant-share-layouts-extension) (currently you need our version, which works with mailers too) and the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
+
 
 You also need three gems: authlogic, gravtastic and sanitize. They are declared in the extension so you should be able just to run
 

@@ -1,6 +1,6 @@
 .message
   %iframe.message_body{:src => preview_message_url(@message)}
 
-- content_for :title do
+- content_for :pagetitle do
   = @message.subject
   
