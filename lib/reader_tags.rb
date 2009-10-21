@@ -233,5 +233,38 @@ module ReaderTags
     end
     result
   end
+  
+  desc %{
+    Displays the standard block of controls: greeting, links to preferences, etc.
+    
+    <pre><code><r:reader:controls /></code></pre>
+  }
+  tag "reader:controls" do |tag|
+    links = [%{Hello #{tag.render('reader:name')}.}]
+    links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
+    links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
+    links << %{<a href="/admin">Site Admin</a>} if tag.locals.reader.is_user?
+    links << %{<a href="#{reader_logout_path}">Log out</a>}
+    links.join(%{<span class="separator"> | </span>})
+  end
+  
+  desc %{
+    Expands only if there is a reader and we are on an uncached page.
+    
+    <pre><code><r:if_reader><div id="controls"><r:reader:controls /></r:if_reader></code></pre>
+  }
+  tag "if_reader" do |tag|
+    tag.expand if Reader.current && !tag.locals.page.cache?
+  end
+  
+  desc %{
+    Expands only if there is no reader or we are not on an uncached page.
+    
+    <pre><code><r:unless_reader>Please log in</r:unless_reader></code></pre>
+  }
+  tag "unless_reader" do |tag|
+    tag.expand unless Reader.current && !tag.locals.page.cache?
+  end
+  
 
 end
