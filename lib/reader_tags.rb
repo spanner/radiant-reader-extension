@@ -240,11 +240,11 @@ module ReaderTags
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
-    links = [%{Hello #{tag.render('reader:name')}.}]
-    links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
-    links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
-    links << %{<a href="/admin">Site Admin</a>} if tag.locals.reader.is_user?
-    links << %{<a href="#{reader_logout_path}">Log out</a>}
+    links = [%{You are logged in as #{tag.render('reader:name')}. Not you? Please <a href="#{reader_logout_path}">log out</a><br />}]
+    links << %{<a href="#{edit_reader_path(tag.locals.reader)}">preferences</a>}
+    links << %{<a href="#{reader_path(tag.locals.reader)}">your page</a>}
+    links << %{<a href="/admin">site admin</a>} if tag.locals.reader.is_user?
+    links << %{<a href="#{reader_logout_path}">log out</a>}
     links.join(%{<span class="separator"> | </span>})
   end
   
