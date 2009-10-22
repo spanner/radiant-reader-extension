@@ -6,10 +6,10 @@ class MessagesDataset < Dataset::Base
   def load
     create_message "Normal"
     create_message "Filtered", :filter_id => 'Textile', :body => 'this is a *filtered* message'
-    create_message "Welcome", :filter_id => 'Textile', :body => 'Hi', :function => 'welcome'
-    create_message "Activation", :filter_id => 'Textile', :body => 'Hi?', :function => 'activation'
-    create_message "Invitation", :filter_id => 'Textile', :body => 'Hi!', :function => 'invitation'
-    create_message "Password", :filter_id => 'Textile', :body => 'Oh', :function => 'password_reset'
+    create_message "Welcome", :filter_id => 'Textile', :body => 'Hi', :function_id => 'welcome'
+    create_message "Activation", :filter_id => 'Textile', :body => 'Hi?', :function_id => 'activation'
+    create_message "Invitation", :filter_id => 'Textile', :body => 'Hi!', :function_id => 'invitation'
+    create_message "Password", :filter_id => 'Textile', :body => 'Oh', :function_id => 'password_reset'
     create_message "Taggy", :filter_id => 'Textile', :body => %{
 To <r:recipient:name />
 
