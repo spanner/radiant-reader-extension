@@ -50,9 +50,6 @@ class Message < ActiveRecord::Base
   def function
     MessageFunction[self.function_id]
   end
-  def function=(function)
-    self.function_id = MessageFunction[function].to_s
-  end
   def self.functional(function)
     for_function(MessageFunction[function]).first
   end
