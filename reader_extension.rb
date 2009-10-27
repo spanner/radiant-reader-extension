@@ -53,7 +53,6 @@ class ReaderExtension < Radiant::Extension
       admin.message = Radiant::AdminUI.load_default_message_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
-        admin.readers.index.add :top, "admin/shared/site_jumper"
       end
     end
     

@@ -22,7 +22,7 @@
           = form.label :status_id, "Status"
           = form.select :status_id, Status.find_all.map { |s| [s.name, s.id] }, {}
         - if admin?
-          - @message.function ||= MessageFunction[params[:function]]
+          - @message.function_id ||= params[:function]
           %p
             = form.label :function_id, "Function?"
             = form.select :function_id, MessageFunction.find_all.map { |f| [f.description, f.name] }, {:include_blank => true}
