@@ -1,10 +1,16 @@
 = render :partial => 'flasher'
 
 %div
-  %h1 
-    People
   #readers
     - @readers.each do |reader|
-      = link_to gravatar_for(reader, {:size => 64}, {:class => 'gravatar'}), reader_url(reader), {:title => reader.name}
+      = link_to gravatar_for(reader, {:size => 100}, {:class => 'big_gravatar'}), reader_url(reader), {:title => reader.name}
   %div.stretcher
     %p 
+
+- content_for :breadcrumbs do
+  = link_to 'Home', '/'
+  &gt;
+  People
+
+- content_for :pagetitle do
+  People
