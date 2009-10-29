@@ -6,7 +6,7 @@ class Reader < ActiveRecord::Base
   cattr_accessor :current
   default_scope :order => 'name ASC'
 
-  is_site_scoped if defined? ActiveRecord::SiteNotFound
+  is_site_scoped if respond_to? :is_site_scoped
 
   is_gravtastic :with => :email, :rating => 'PG', :size => 48
   acts_as_authentic do |config|
