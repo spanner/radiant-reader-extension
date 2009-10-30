@@ -4,7 +4,7 @@ class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
   cattr_accessor :user_columns
   cattr_accessor :current
-  default_scope :order => 'BINARY name ASC'
+  default_scope :order => 'name ASC'
 
   is_site_scoped if respond_to? :is_site_scoped
 
