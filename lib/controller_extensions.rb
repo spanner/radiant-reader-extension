@@ -41,6 +41,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader_session=(reader_session)
+      Rails.logger.warn "@@  current_reader_session= #{reader_session.inspect}"
       @current_reader_session = reader_session
     end
 
@@ -49,11 +50,16 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader=(reader)
+      Rails.logger.warn "@@  current_reader= #{reader.inspect}"
       if reader && reader.is_a?(Reader)
         current_reader_session = ReaderSession.create!(reader)
       else
         current_reader_session.destroy
       end
+    end
+    
+    def set_reader
+      Reader.current = current_reader
     end
 
     def store_location(location = request.request_uri)

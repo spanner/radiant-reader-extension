@@ -185,7 +185,6 @@ module ReaderTags
     This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
   }
   tag 'reader' do |tag|
-    Rails.logger.warn "@@  Reader.current is #{Reader.current.inspect} and current_reader is #{current_reader.inspect}"
     tag.expand if tag.locals.reader = Reader.current
   end
 
@@ -241,11 +240,11 @@ module ReaderTags
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
-    results = %{You are logged in as #{tag.render('reader:name')}. Not you? Please <a href="#{reader_logout_path}">log out</a>. }
+    welcome = %{You are logged in as #{tag.render('reader:name')}. Not you? Please <a href="#{reader_logout_path}">log out</a>.<br />}
     links = [%{<a href="#{edit_reader_path(tag.locals.reader)}">preferences</a>}]
     links << %{<a href="#{reader_path(tag.locals.reader)}">your page</a>}
     links << %{<a href="/admin">site admin</a>} if tag.locals.reader.is_user?
-    results + links.join(%{<span class="separator"> | </span>})
+    %{<div class="controls">} + welcome + links.join(%{<span class="separator"> | </span>}) + %{</div>}
   end
   
   desc %{

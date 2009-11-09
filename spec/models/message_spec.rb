@@ -54,7 +54,7 @@ describe Message do
     
     describe "but unsent" do
       it "should know to whom it can belong" do
-        @message.possible_readers.count.should == Reader.all.count
+        @message.possible_readers.count.should == Reader.active.count
       end
 
       it "should know to whom it does belong" do
@@ -89,7 +89,7 @@ describe Message do
       end
     
       it "should know to whom it has yet to be sent" do
-        @message.undelivered_readers.should == Reader.find(:all) - @message.recipients
+        @message.undelivered_readers.should == Reader.active - @message.recipients
       end
     
       it "should report itself delivered to that reader" do
