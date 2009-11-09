@@ -38,7 +38,7 @@ module ReaderAdminUI
           message.show = Radiant::AdminUI::RegionSet.new do |show|
             show.preview.concat %w{preview_headers preview_body}
             show.function.concat %w{function_description}
-            show.delivery.concat %w{deliver_all deliver_unsent deliver_selection choose_recipients buttons}
+            show.delivery.concat %w{deliver_all deliver_inactive deliver_unsent deliver_selection choose_recipients buttons}
           end
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form edit_footer}

@@ -36,6 +36,10 @@ class Reader < ActiveRecord::Base
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
   validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
 
+  named_scope :any
+  named_scope :active, :conditions => "activated_at IS NOT NULL"
+  named_scope :inactive, :conditions => "activated_at IS NULL"
+
   def forename
     read_attribute(:forename) || name.split(/\s/).first
   end
@@ -51,7 +55,7 @@ class Reader < ActiveRecord::Base
   end
 
   def inactive?
-    self.activated_at.nil? || self.activated_at > Time.now
+    self.activated_at.nil?
   end
 
   def disable_perishable_token_maintenance?

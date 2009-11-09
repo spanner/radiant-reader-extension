@@ -13,11 +13,13 @@ class Admin::MessagesController < Admin::ResourceController
   def deliver
     case params['delivery']
     when "all"
-      @readers = Reader.find(:all)
+      @readers = @message.possible_readers
+    when "inactive"
+      @readers = @message.inactive_readers
     when "unsent"
-      @readers = Reader.find(:all) - @message.recipients
+      @readers = @message.undelivered_readers
     when "selection"
-      @readers = Reader.find(params[:reader_ids])
+      @readers = @message.possible_readers.find(params[:reader_ids])
     else
       redirect_to admin_message_url(@message)
       return

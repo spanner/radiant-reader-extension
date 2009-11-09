@@ -12,15 +12,15 @@ module ReaderTags
     <pre><code><r:site:url /></code></pre>
   }
   tag 'site' do |tag|
-    raise TagError, "r:site only works in email" unless @mailer_vars
+    raise TagError, "r:site currently only works in email" unless @mailer_vars
     raise TagError, "no site" unless tag.locals.site = @mailer_vars[:@site]
     tag.expand
   end
   tag 'site:name' do |tag|
-    if defined?(Site) && tag.locals.site.is_a(Site)
-      tag.locals.site.title
+    if defined?(Site) && tag.locals.site.is_a?(Site)
+      tag.locals.site.name
     else
-      tag.locals.site[:title]
+      tag.locals.site[:name]
     end
   end
   tag 'site:url' do |tag|
@@ -185,6 +185,7 @@ module ReaderTags
     This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
   }
   tag 'reader' do |tag|
+    Rails.logger.warn "@@  Reader.current is #{Reader.current.inspect} and current_reader is #{current_reader.inspect}"
     tag.expand if tag.locals.reader = Reader.current
   end
 

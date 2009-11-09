@@ -21,7 +21,7 @@ class ReaderNotifier < ActionMailer::Base
       :sender => sender,
       :reader => reader,
       :site => site || {
-        :title => Radiant::Config['site.title'],
+        :name => Radiant::Config['site.name'],
         :url => Radiant::Config['site.url']
       }
     })

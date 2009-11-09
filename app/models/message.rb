@@ -25,13 +25,22 @@ class Message < ActiveRecord::Base
   def filtered_body
     filter.filter(body)
   end
-
+  
+  # has to return a named_scope for chainability
   def possible_readers
-    Reader.find(:all)
+    Reader.active
   end
 
   def undelivered_readers
     possible_readers - recipients
+  end
+
+  def inactive_readers
+    possible_readers.inactive
+  end
+
+  def active_readers
+    possible_readers.active
   end
 
   def delivered?
