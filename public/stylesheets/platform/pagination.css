@@ -1,0 +1,38 @@
+div.pagination {
+  margin: 30px 0;
+  font-family: helvetica, arial, sans-serif;
+  font-size: 85%;
+  text-align: center;
+  color: #cacac8;
+}
+
+div.pagination a, div.pagination span.current {
+  padding: 6px 8px 6px 6px;
+  border-right: 1px solid #DEDEDE;
+}
+
+div.pagination span.current {
+  font-weight: bold;
+  color: #4d4e53;
+}
+
+div.pagination a.next_page {
+  border: 0;
+}
+
+div.pagination span.separator{
+  visibility: hidden;
+}
+
+div.pagination span.summary {
+  display: block;
+  color: #cacac8;
+}
+
+div.pagination span.disabled {
+  color: #cacac8;
+}
+
+div.pagination span.pagination_summary {
+  display: block;
+}
