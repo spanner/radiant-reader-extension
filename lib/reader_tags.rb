@@ -185,7 +185,7 @@ module ReaderTags
     This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
   }
   tag 'reader' do |tag|
-    tag.expand if tag.locals.reader = Reader.current
+    tag.expand if !tag.locals.page.cache? && tag.locals.reader = Reader.current
   end
 
   [:name, :forename, :email, :description, :login].each do |field|
