@@ -18,7 +18,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     #   any layout it can find
   
     def layout_for(area = :reader)
-      if defined? Site && current_site && current_site.respond_to?(:layout_for)
+      layout = if defined? Site && current_site && current_site.respond_to?(:layout_for)
         current_site.layout_for(area)
       elsif area_layout = Radiant::Config["#{area}.layout"]
         area_layout
@@ -29,6 +29,8 @@ module ControllerExtensions    # for inclusion into ApplicationController
       elsif any_layout = Layout.find(:first)
         any_layout.name
       end
+      cached = Radiant::Config["#{area}.cached?"] || false
+      return layout, {:cached => cached}
     end
 
   protected
@@ -50,7 +52,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader=(reader)
-      Rails.logger.warn "@@  current_reader= #{reader.inspect}"
       if reader && reader.is_a?(Reader)
         current_reader_session = ReaderSession.create!(reader)
       else

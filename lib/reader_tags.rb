@@ -253,7 +253,7 @@ module ReaderTags
     <pre><code><r:if_reader><div id="controls"><r:reader:controls /></r:if_reader></code></pre>
   }
   tag "if_reader" do |tag|
-    tag.expand if Reader.current && !tag.locals.page.cache?
+    tag.expand if !tag.locals.page.cache? && tag.locals.reader = Reader.current
   end
   
   desc %{

@@ -56,7 +56,7 @@ protected
   end
 
   def require_reader
-    unless set_reader
+    unless set_reader     # set_reader is in ControllerExtension and sets Reader.current while checking for current_reader
       store_location
       respond_to do |format|
         format.html { redirect_to reader_login_url }

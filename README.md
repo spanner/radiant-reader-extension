@@ -10,9 +10,11 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
+* Configurable caching of reader-facing pages. Set eg `reader.cached?` or `forum.cached?` to true to enable caching for those areas. By default we do not cache reader-facing pages.
 
-Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
+* SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
+
+* Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
 
 ## Status
 
