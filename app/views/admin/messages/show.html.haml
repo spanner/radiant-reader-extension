@@ -41,10 +41,10 @@
             = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser', :disabled => @message.undelivered_readers.empty?
             %label{:for => "delivery_to_unsent", :class => @message.undelivered_readers.any? ? '' : 'disabled'}
               send to the
-              = @message.undelivered_readers.count
+              = @message.undelivered_readers.length
               = pluralize( @message.undelivered_readers.count, 'person')
               who 
-              = @message.undelivered_readers.count == 1 ? 'has' : 'have'
+              = @message.undelivered_readers.length == 1 ? 'has' : 'have'
               not yet received this message
 
         - delivery.deliver_selection do
