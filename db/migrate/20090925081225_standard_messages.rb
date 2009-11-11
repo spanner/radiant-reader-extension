@@ -54,7 +54,7 @@ class StandardMessages < ActiveRecord::Migration
     ))
     
     messages.push(Message.create(
-      :subject => 'You are invited to join the <r:site:title /> site',
+      :subject => 'You are invited!',
       :function => 'invitation',
       :filter_id => nil,
       :body => %{
