@@ -26,7 +26,7 @@ Tests are reasonably thorough. A lot of our code relies on this extension.
 
 Radiant 0.8.1 (we need the new config machinery), [share_layouts](http://github.com/spanner/radiant-share-layouts-extension) (currently you need our version, which works with mailers too) and the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension for the admin interface.
 
-You also need three gems: authlogic, gravtastic and sanitize. They are declared in the extension so you should be able just to run
+You also need four gems: authlogic, gravtastic, will_paginate and sanitize. They're declared in the extension so you should be able just to run
 
 	sudo rake gems:install
 
@@ -34,7 +34,7 @@ Sanitize uses nokogiri, which needs libxml2 and libxslt: you may need to go off 
 
 	gem 'authlogic'
 
-in your environment.rb: it has to load before anything calls `require ApplicationController`, and most radiant extensions will do that.
+in your environment.rb: it has to load before anything else calls `require ApplicationController`, and most radiant extensions will do that.
 
 ## Installation
 

@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "0.82"
+  version "0.83"
   description "Centralises reader/member/user registration and management tasks for the benefit of other extensions"
   url "http://spanner.org/radiant/reader"
   
@@ -33,6 +33,7 @@ class ReaderExtension < Radiant::Extension
     config.gem 'authlogic'
     config.gem 'gravtastic'
     config.gem 'rgrove-sanitize', :lib => 'sanitize'
+    config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
     config.extension 'share_layouts'
     config.extension 'submenu'
   end
