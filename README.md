@@ -46,26 +46,19 @@ The update task will install a /stylesheets/admin/reader.css that you can leave 
 
 ## Configuration
 
-Under multi_site Reader adds a few administrative columns to the site table: 
+Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view.
 
-* reader_layout determines the layout used to present reader pages and defaults to 'Main' or the first layout it finds in that site.
-* `mail_from_name` and `mail_from_address` determine from whom and where the administrative email sent to readers appear to come. They default to the name and email address of the owner of the site.
+In a single-site installation you will need these configuration lines:
 
-There are corresponding Radiant::Config entries for single-site installations:
-
-* reader.layout
+* reader.layout (should be the name of a radiant layout)
 * site.name
 * site.url
-* site.mail_from_name
-* site.mail_from_address
-	
-These are mostly used in email, but they are required.
 
 ## Layouts
 
 We use the share_layouts extension to wrap the layout of your public site around the pages produced by the reader extension. You can designate any layout as the 'reader layout': in a single-site installation put the name of the layout in a `reader.layout` config entry. In a multi-site installation you'll find a 'reader layout' dropdown on the 'edit site' page. Choose the one you want to use for each site.
 
-The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="title" />` too. There is also a `breadcrumbs` part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
+The layout of the layout is up to you: from our point of view all it has to do is call `<r:content />` at some point. Ideally it will call `<r:content part="pagetitle" />` too. There is also a `breadcrumbs` part if that's required. In many cases you can just use your existing site layout and the various forms and pages will drop into its usual compartments.
 
 ## Using readers in other extensions
 
@@ -73,7 +66,7 @@ The reader admin pages are properly registered with the AdminUI as collections o
 
 Most of your reader-facing controllers will want to inherit from `ReaderActionController`.
 
-Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions that will have some limiting effect.
+Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions it will have some limiting effect.
 
 ## See also
 
@@ -84,7 +77,7 @@ Marking a reader as untrusted does nothing here apart from making them go red, b
 
 ## Bugs and comments
 
-In [lighthouse](http://spanner.lighthouseapp.com/projects/26912-radiant-extensions), please, or for little things an email or github message is fine.
+[Github issues](http://github.com/spanner/radiant-reader-extension/issues), please, or for little things an email or github message is fine.
 
 ## Author and copyright
 
