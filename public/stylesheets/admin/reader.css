@@ -53,3 +53,15 @@
   margin: 0 0 0 40px;
 }
 
+p.haserror {
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #c00;
+  padding-left: 12px;
+  color: #c00; }
+  p.haserror input, p.haserror textarea {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c00; }
+  p.haserror label {
+    color: #c00; }
