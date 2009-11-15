@@ -29,8 +29,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
       elsif any_layout = Layout.find(:first)
         any_layout.name
       end
-      cached = Radiant::Config["#{area}.cached?"] || false
-      return layout, {:cached => cached}
+      return layout
     end
 
   protected
