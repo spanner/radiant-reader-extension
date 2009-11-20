@@ -53,7 +53,7 @@ describe ReadersController do
 
     it "should redirect to the please-activate page" do
       response.should be_redirect
-      response.should redirect_to(reader_activation_url(@reader.id))
+      response.should redirect_to(reader_activation_url)
     end
     
     describe "with the trap field filled in" do
