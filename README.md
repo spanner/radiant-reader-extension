@@ -10,6 +10,8 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
+* Other extensions can extend the reader registration/preferences form with `ReaderController.add_form_partial('this/_partial')`
+
 * Lots of little bugfixes thanks to radixhound
 
 * By default we don't cache reader-facing pages.

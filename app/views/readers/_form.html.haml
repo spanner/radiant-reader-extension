@@ -1,4 +1,3 @@
-
 - with_error_report(@reader.errors.on(:name)) do
   = f.label :name, 'Your name', :class => 'required'
   %span.formnote as you would like it to appear
@@ -70,4 +69,5 @@
       %br
   = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
-= render :partial, 'readers/extra_form'
+- @form_partials.each do |partial|
+  = render :partial => partial

@@ -10,7 +10,7 @@
   - unless @reader.errors.empty?
     %p.haserror
       %strong Sorry: there were problems.
-      Please check the form. The affected fields will be highlighted
+      Please check the form. The affected fields will be highlighted.
       
   - form_for :reader, :url => reader_url(@reader), :html => { :method => "put", :class => 'friendly'} do |f| 
     
@@ -22,7 +22,7 @@
       = f.password_field :current_password, :class => 'standard', :autocomplete => 'off'
       
     %p
-      Fields with bold headings are required and will cause grumbling if left blank.
+      Fields with bold headings are required and will cause grumbling if left blank:
       
     = render :partial => 'form', :locals => {:f => f}
     %p

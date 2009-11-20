@@ -37,7 +37,6 @@ module ReaderHelper
       def truncate_and_textilize(text, length=64)
         clean_textilize( truncate_words(text, length) )
       end
-      
     end
   end
 end
