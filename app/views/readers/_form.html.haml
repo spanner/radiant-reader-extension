@@ -62,7 +62,7 @@
   = f.password_field :password, :class => 'standard', :autocomplete => 'off'
 
 - with_error_report(@reader.errors.on(:password_confirmation)) do
-  = f.label :password_confirmation, "Confirm password", :class => @reader.new_record? ? 'required' : 'optional'
+  = f.label :password_confirmation, "Confirm #{'new ' unless @reader.new_record?}password", :class => @reader.new_record? ? 'required' : 'optional'
   - unless @reader.new_record?
     %span.formnote
       leave blank to keep present password

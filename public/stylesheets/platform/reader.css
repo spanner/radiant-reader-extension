@@ -7,6 +7,8 @@ div#controls {
 
 /***** friendly forms ********/
 
+form.friendly {
+  margin: 0 0 60px 0; }
 form.friendly p {
   margin: 1em 0 0 0; }
 form.friendly input.titular {
@@ -62,11 +64,14 @@ form.friendly label.required {
 
 /***** input validation and error reporting ********/
 
+p.errornote {
+  color: #d1005d;
+}
+
 p.haserror {
   border-left-width: 4px;
   border-left-style: solid;
   border-left-color: #d1005d;
-  margin-left: -16px;
   padding-left: 12px;
   color: #d1005d; }
   p.haserror input, p.haserror textarea {

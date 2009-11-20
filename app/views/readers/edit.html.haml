@@ -8,7 +8,7 @@
     First, just to make sure you're you, please enter your current password:
 
   - unless @reader.errors.empty?
-    %p.haserror
+    %p.errornote
       %strong Sorry: there were problems.
       Please check the form. The affected fields will be highlighted.
       
@@ -29,6 +29,7 @@
       = submit_tag "Update your account"
       or 
       = link_to 'cancel', request.referer
+
   %p
     = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
     If you would like a picture to appear next to your messages, give yourself a 

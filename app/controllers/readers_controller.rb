@@ -3,12 +3,12 @@ class ReadersController < ReaderActionController
   cattr_accessor :extended_form_partials
   
   before_filter :check_registration_allowed, :only => [:new, :create]
+  before_filter :initialize_form_partials, :only => [:new, :edit, :update, :create]
   before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :i_am_me, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
-  before_filter :initialize_form_partials, :only => [:new, :edit]
 
   def index
     @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
