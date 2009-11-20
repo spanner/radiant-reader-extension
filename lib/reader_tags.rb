@@ -235,18 +235,40 @@ module ReaderTags
   end
   
   desc %{
-    Displays the standard block of controls: greeting, links to preferences, etc.
+    Displays the standard reader_welcome block, but only if a reader is present. For a block that shows an invitation to non-logged-in
+    people, use @r:reader_welcome@
     
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
-    welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
-    links = []
-    links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
-    links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
-    links << %{<a href="/admin">Admin</a>} if tag.locals.reader.is_user?
-    links << %{<a href="#{reader_logout_path}">Log out</a>}
-    %{<div class="controls"><p>} + welcome + links.join(%{<span class="separator"> | </span>}) + %{</p></div>}
+    tag.render('reader_controls')
+  end
+  
+  desc %{
+    Displays the standard block of reader controls: greeting, links to preferences, etc.
+    If there is no reader, this will show a 'login or register' invitation, provided the reader.allow_registration? config entry is true. 
+    If you don't want that, use @r:reader:controls@ instead: being inside the reader tag it will only show when a reader is present.
+    
+    If this tag appears on a cached page, we return an empty @<div class="controls">@ into which you can drop whatever you like.
+    
+    <pre><code><r:reader_welcome /></code></pre>
+  }
+  tag "reader_welcome" do |tag|
+    if tag.locals.page.cache?
+      %{<div class="controls"></div>}
+    else
+      if tag.locals.reader = Reader.current
+        welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
+        links = []
+        links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
+        links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
+        links << %{<a href="/admin">Admin</a>} if tag.locals.reader.is_user?
+        links << %{<a href="#{reader_logout_path}">Log out</a>}
+        %{<div class="controls"><p>} + welcome + links.join(%{<span class="separator"> | </span>}) + %{</p></div>}
+      elsif Radiant::Config['reader.allow_registration?']
+        %{<div class="controls"><p><span class="greeting">Welcome!</span> To take part, please <a href="#{reader_login_path}">log in</a> or <a href="#{reader_register_path}">register</a>.</p></div>}
+      end
+    end
   end
   
   desc %{
