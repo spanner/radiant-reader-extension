@@ -1,12 +1,19 @@
 - @reader_session ||= ReaderSession.new
 - no_title ||= false
+- purpose ||= false
 
 .login_form
   - form_for @reader_session, :url => reader_session_path, :html => {:class => 'compact friendly'} do |f|
     
     - unless no_title
-      %h3.spacy
-        Please log in or
+      %h2
+        - if purpose
+          To 
+          = purpose + ','
+          please
+        - else
+          Please
+        log in or
         = link_to "register", new_reader_url
 
     - if @error
@@ -41,12 +48,11 @@
       = f.check_box :remember_me
       %label.paranthetical{:for => "reader_session_remember_me"}
         Remember me
-  - if Radiant::Config['reader.allow_registration?']
-    %p.quiet
+
+  %p.quiet
+    - if Radiant::Config['reader.allow_registration?']
       If you haven't already, you will need to 
       = link_to "register", new_reader_url
       before you can log in. It only takes a moment.
-
-  %p.quiet
     If you've forgotten your password, you can enter your email address to
     = link_to("set a new one", new_password_reset_url) + '.'
