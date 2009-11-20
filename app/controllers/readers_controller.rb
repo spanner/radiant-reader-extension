@@ -54,7 +54,7 @@ class ReadersController < ReaderActionController
       @reader.save!
       @reader.send_activation_message
       self.current_reader = @reader
-      redirect_to reader_activation_url(@reader.id)
+      redirect_to reader_activation_url
     else
       render :action => 'new'
     end
