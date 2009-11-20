@@ -10,7 +10,9 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-* Configurable caching of reader-facing pages. Set eg `reader.cached?` or `forum.cached?` to true to enable caching for those areas. By default we do not cache reader-facing pages.
+* Lots of little bugfixes thanks to radixhound
+
+* By default we don't cache reader-facing pages.
 
 * SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
 
