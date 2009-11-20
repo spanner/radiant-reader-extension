@@ -54,7 +54,7 @@
 - with_error_report(@reader.errors.on(:password)) do
   - label = @reader.new_record? ? 'Password' : 'Change password?'
   - cssclass = @reader.new_record? ? 'required' : 'optional'
-  - help = @reader.new_record? ? 'at least four characters, please' : 'leave blank to keep present password. if changing, at least four characters.'
+  - help = @reader.new_record? ? 'at least four characters, please' : 'leave blank to keep present password. If changing, at least four characters.'
   
   = f.label :password, label, :class => cssclass
   %span.formnote
@@ -69,3 +69,5 @@
       leave blank to keep present password
       %br
   = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
+
+= render :partial, 'readers/extra_form'

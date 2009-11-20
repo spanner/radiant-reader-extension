@@ -240,7 +240,7 @@ module ReaderTags
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
-    welcome = %{Hello #{tag.render('reader:name')}. }
+    welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
     links = []
     links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
     links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}

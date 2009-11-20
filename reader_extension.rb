@@ -24,6 +24,7 @@ class ReaderExtension < Radiant::Extension
     
     map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
     map.activate_me '/activate/:id/:activation_code', :controller => 'reader_activations', :action => 'update'
+    map.reader_register '/register', :controller => 'readers', :action => 'new'
     map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
     map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
     map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
