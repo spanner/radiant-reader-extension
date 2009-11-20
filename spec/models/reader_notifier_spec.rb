@@ -8,8 +8,8 @@ describe ReaderNotifier do
   end
     
   it "should have a radiant layout attribute" do
-    ReaderNotifier.read_inheritable_attribute('radiant_mailer_layout_name').should_not be_nil
-    ReaderNotifier.read_inheritable_attribute('radiant_mailer_layout_name').should be_kind_of(Proc)
+    ReaderNotifier.read_inheritable_attribute('default_radiant_mailer_layout_name').should_not be_nil
+    ReaderNotifier.read_inheritable_attribute('default_radiant_mailer_layout_name').should be_kind_of(Proc)
   end
 
   it "should render a supplied message" do

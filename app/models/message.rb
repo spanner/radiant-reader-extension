@@ -2,6 +2,7 @@ class Message < ActiveRecord::Base
 
   is_site_scoped if defined? ActiveRecord::SiteNotFound
 
+  belongs_to :layout
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
 
@@ -25,7 +26,7 @@ class Message < ActiveRecord::Base
   def filtered_body
     filter.filter(body)
   end
-  
+
   # has to return a named_scope for chainability
   def possible_readers
     Reader.active
