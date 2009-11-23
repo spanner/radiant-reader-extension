@@ -23,7 +23,7 @@
           %p
             = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser', :disabled => @message.possible_readers.empty?
             %label{:for => "delivery_to_all", :class => @message.possible_readers.any? ? '' : 'disabled'}
-              send to everyone
+              send to all
 
         - delivery.deliver_inactive do
           %p
@@ -31,7 +31,6 @@
             %label{:for => "delivery_to_inactive", :class => @message.inactive_readers.any? ? '' : 'disabled'}
               send to the 
               = @message.inactive_readers.count
-              = pluralize( @message.inactive_readers.count, 'person')
               who
               = @message.inactive_readers.count == 1 ? 'is' : 'are'
               not yet activated
@@ -42,7 +41,6 @@
             %label{:for => "delivery_to_unsent", :class => @message.undelivered_readers.any? ? '' : 'disabled'}
               send to the
               = @message.undelivered_readers.length
-              = pluralize( @message.undelivered_readers.count, 'person')
               who 
               = @message.undelivered_readers.length == 1 ? 'has' : 'have'
               not yet received this message
