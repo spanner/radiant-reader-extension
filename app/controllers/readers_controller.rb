@@ -4,8 +4,8 @@ class ReadersController < ReaderActionController
   
   before_filter :check_registration_allowed, :only => [:new, :create]
   before_filter :initialize_form_partials, :only => [:new, :edit, :update, :create]
-  before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :i_am_me, :only => [:show]
+  before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
@@ -77,7 +77,7 @@ class ReadersController < ReaderActionController
 protected
 
   def i_am_me
-    params[:id] = current_reader.id if params[:id] == 'me'
+    params[:id] = current_reader.id if params[:id] == 'me' && current_reader
   end
 
   def restrict_to_self
