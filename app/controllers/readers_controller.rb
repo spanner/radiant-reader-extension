@@ -32,8 +32,6 @@ class ReadersController < ReaderActionController
   end
   
   def edit
-    @reader = current_reader
-    flash[:error] = "You can't edit another person's preferences" if params[:id] && @reader.id != params[:id].to_i
   end
   
   def create
