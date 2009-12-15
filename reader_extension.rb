@@ -33,7 +33,7 @@ class ReaderExtension < Radiant::Extension
   extension_config do |config|
     config.gem 'authlogic'
     config.gem 'gravtastic'
-    config.gem 'rgrove-sanitize', :lib => 'sanitize'
+    config.gem 'sanitize', :source => 'http://gemcutter.org'
     config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
     config.extension 'share_layouts'
     config.extension 'submenu'
