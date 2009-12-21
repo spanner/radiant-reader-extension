@@ -24,7 +24,7 @@ module ReaderTags
     end
   end
   tag 'site:url' do |tag|
-    if defined?(Site) && tag.locals.site.is_a(Site)
+    if defined?(Site) && tag.locals.site.is_a?(Site)
       tag.locals.site.base_domain
     else
       tag.locals.site[:url]

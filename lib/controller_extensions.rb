@@ -42,7 +42,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader_session=(reader_session)
-      Rails.logger.warn "@@  current_reader_session= #{reader_session.inspect}"
       @current_reader_session = reader_session
     end
 

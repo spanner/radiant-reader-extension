@@ -3,7 +3,9 @@
 - purpose ||= false
 
 .login_form
-  - form_for @reader_session, :url => reader_session_path, :html => {:class => 'compact friendly'} do |f|
+  - cssclass = "compact friendly"
+  - cssclass << " inline" if @inline
+  - form_for @reader_session, :url => reader_session_path, :html => {:class => cssclass} do |f|
     
     - unless no_title
       %h2

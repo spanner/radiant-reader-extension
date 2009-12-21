@@ -60,7 +60,10 @@ protected
       store_location
       respond_to do |format|
         format.html { redirect_to reader_login_url }
-        format.js { render :partial => 'reader_sessions/login_form' }
+        format.js { 
+          @inline = true
+          render :partial => 'reader_sessions/login_form' 
+        }
       end
       return false
     end
