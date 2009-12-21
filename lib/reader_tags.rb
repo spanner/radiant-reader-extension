@@ -249,13 +249,13 @@ module ReaderTags
     If there is no reader, this will show a 'login or register' invitation, provided the reader.allow_registration? config entry is true. 
     If you don't want that, use @r:reader:controls@ instead: being inside the reader tag it will only show when a reader is present.
     
-    If this tag appears on a cached page, we return an empty @<div class="controls">@ into which you can drop whatever you like.
+    If this tag appears on a cached page, we return an empty @<div class="remote_controls">@ into which you can drop whatever you like.
     
     <pre><code><r:reader_welcome /></code></pre>
   }
   tag "reader_welcome" do |tag|
     if tag.locals.page.cache?
-      %{<div class="controls"></div>}
+      %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
         welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
@@ -270,7 +270,7 @@ module ReaderTags
       end
     end
   end
-  
+    
   desc %{
     Expands only if there is a reader and we are on an uncached page.
     

@@ -16,9 +16,20 @@ class ReadersController < ReaderActionController
 
   def show
     @reader = Reader.find(params[:id])
-    if @reader.inactive? && @reader == current_reader
-      redirect_to reader_activation_url(current_reader)
+    respond_to do |format|
+      format.html { 
+        if @reader.inactive? && @reader == current_reader
+          redirect_to reader_activation_url(current_reader)
+        else
+          render
+        end
+      }
+      format.js { 
+        @inline = true
+        render :partial => 'readers/controls'
+      }
     end
+    
   end
 
   def new

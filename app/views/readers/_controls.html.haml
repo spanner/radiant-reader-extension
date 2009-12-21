@@ -2,8 +2,8 @@
   - if current_reader
     - if current_reader.activated?
       %p
-        You're logged in as 
         %strong
+          Hello 
           = current_reader.name
         %br
         = link_to 'your page', reader_url(current_reader)
