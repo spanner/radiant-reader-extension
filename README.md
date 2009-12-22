@@ -50,13 +50,15 @@ The update task will install a /stylesheets/admin/reader.css that you can leave 
 
 ## Configuration
 
-Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view.
+If you want to allow public registration, set `reader.allow_registration?` to true in your configuration. If it is false, then reader accounts can only be created by the administrator.
 
-In a single-site installation you will need these configuration lines:
+Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view. In a single-site installation you will also need these configuration entries:
 
 * reader.layout (should be the name of a radiant layout)
 * site.name
 * site.url
+
+The latter two are used in email notifications.
 
 ## Layouts
 

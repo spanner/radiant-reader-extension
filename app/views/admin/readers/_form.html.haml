@@ -59,7 +59,7 @@
           %th.label
             = f.label :description, "Readers description", :class => 'optional'
           %td.field
-            ~ f.text_area "description", :size => '40x4', :class => "textarea" 
+            = f.text_area "description", :size => '40x4', :class => "textarea" 
           %td.help
             Optional.
       - form.edit_status do
