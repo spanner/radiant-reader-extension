@@ -88,10 +88,10 @@ describe ReadersController do
         response.should be_success
       end
       
-      it "should refuse to show the edit page for another reader" do 
+      it "should not show the edit page for another reader" do 
         get :edit, :id => reader_id(:visible)
         response.should be_success        
-        flash[:error].should =~ /another person/
+        flash[:error].should =~ /not allowed/
       end
 
       it "should not remove this reader" do 

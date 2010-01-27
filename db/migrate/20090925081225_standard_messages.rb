@@ -94,9 +94,10 @@ So you will want to change it in your <a href="<r:recipient:edit_url />">prefere
       }  
     ))
     
-    admin = User.find_by_admin(true)
-    messages.each do |message|
-      message.update_attribute(:created_by_id, admin.id)
+    if admin = User.find_by_admin(true)
+      messages.each do |message|
+        message.update_attribute(:created_by_id, admin.id)
+      end
     end
   end
 

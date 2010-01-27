@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Reader do
-  dataset :readers
+  dataset :messages
   dataset :reader_layouts
   activate_authlogic
   
