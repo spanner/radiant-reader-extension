@@ -16,11 +16,22 @@ class ReaderSessionsController < ReaderActionController
         @reader_session.reader.save(false)
       end
       respond_to do |format|
-        format.html { 
-          flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
-          redirect_back_or_to default_loggedin_url
+        format.html {
+          if @reader_session.reader.activated?
+            flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
+            redirect_back_or_to default_loggedin_url
+          else
+            flash[:notice] = "Hello #{@reader_session.reader.name}. Please activate your account."
+            redirect_to reader_activation_url
+          end
         }
-        format.js { redirect_back_with_format(:js) }
+        format.js { 
+          if @reader_session.reader.activated?
+            redirect_back_with_format(:js) 
+          else
+            render :partial => 'reader_activations/activation_required'
+          end
+        }
       end
       
     else
