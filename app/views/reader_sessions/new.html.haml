@@ -4,11 +4,25 @@
   %p
     You are currently logged in as
     %strong
+      = current_reader.name
+    - unless current_reader.activated?
+      but your account is not yet activated. Please check your email for our activation message. 
+    
+  - if current_reader.activated?
+    %p
+      If that's not you, or you want to log in with another account, please 
+      = link_to "log out", reader_logout_url
+  - else
+    %p
+      If you can't find the message, we can 
+      = link_to("send it again", new_reader_activation_url) + '.'
+    %p
+      If you're not
       = current_reader.name 
-    %br
-    If that's not you, or you want to log in with another account, please 
-    = link_to "log out", reader_logout_url
-
+      or you think you might have put the wrong email address in, please
+      = link_to "log out", reader_logout_url
+      and you will be able to register or log in normally.
+      
 - else
   - if flash[:explanation]
     %p

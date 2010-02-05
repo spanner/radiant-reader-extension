@@ -247,7 +247,7 @@ module ReaderTags
   desc %{
     Displays the standard block of reader controls: greeting, links to preferences, etc.
     If there is no reader, this will show a 'login or register' invitation, provided the reader.allow_registration? config entry is true. 
-    If you don't want that, use @r:reader:controls@ instead: being inside the reader tag it will only show when a reader is present.
+    If you don't want that, use @r:reader:controls@ instead: the reader: prefix means it will only show when a reader is present.
     
     If this tag appears on a cached page, we return an empty @<div class="remote_controls">@ into which you can drop whatever you like.
     
@@ -260,10 +260,14 @@ module ReaderTags
       if tag.locals.reader = Reader.current
         welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
         links = []
-        links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
-        links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
-        links << %{<a href="/admin">Admin</a>} if tag.locals.reader.is_user?
-        links << %{<a href="#{reader_logout_path}">Log out</a>}
+        if tag.locals.reader.activated?
+          links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
+          links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
+          links << %{<a href="/admin">Admin</a>} if tag.locals.reader.is_user?
+          links << %{<a href="#{reader_logout_path}">Log out</a>}
+        else
+          welcome << "Please check your email and activate your account."
+        end
         %{<div class="controls"><p>} + welcome + links.join(%{<span class="separator"> | </span>}) + %{</p></div>}
       elsif Radiant::Config['reader.allow_registration?']
         %{<div class="controls"><p><span class="greeting">Welcome!</span> To take part, please <a href="#{reader_login_path}">log in</a> or <a href="#{reader_register_path}">register</a>.</p></div>}
