@@ -19,7 +19,7 @@ class ReadersController < ReaderActionController
     respond_to do |format|
       format.html { 
         if @reader.inactive? && @reader == current_reader
-          redirect_to reader_activation_url(current_reader)
+          redirect_to reader_activation_url
         else
           render
         end
