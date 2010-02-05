@@ -241,7 +241,7 @@ module ReaderTags
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
-    tag.render('reader_controls')
+    tag.render('reader_welcome')
   end
   
   desc %{
