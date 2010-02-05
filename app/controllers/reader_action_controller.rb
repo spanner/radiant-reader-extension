@@ -5,10 +5,10 @@ class ReaderActionController < ApplicationController
   before_filter :set_reader_for_user
   before_filter :set_site_title
   
-  # reader session is required for modifying actions
+  # reader session is normally required for modifying actions
   before_filter :require_reader, :except => [:index, :show]
   
-  # reader information available but not required for non-modifying actions
+  # reader information available but not normally required for non-modifying actions
   before_filter :set_reader, :only => [:index, :show]
   
   radiant_layout { |controller| controller.layout_for :reader }
@@ -65,7 +65,20 @@ protected
           render :partial => 'reader_sessions/login_form' 
         }
       end
-      return false
+      false
+    end
+  end
+
+  def require_activated_reader
+    unless current_reader && current_reader.activated?
+      respond_to do |format|
+        format.html { redirect_to reader_activation_url }
+        format.js { 
+          @inline = true
+          render :partial => 'reader_activations/activation_required' 
+        }
+      end
+      false
     end
   end
 

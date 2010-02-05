@@ -1,6 +1,5 @@
 class ReaderSessionsController < ReaderActionController
 
-  no_login_required
   before_filter :require_reader, :only => :destroy
   radiant_layout { |controller| controller.layout_for :reader }
   
@@ -17,20 +16,11 @@ class ReaderSessionsController < ReaderActionController
       end
       respond_to do |format|
         format.html {
-          if @reader_session.reader.activated?
-            flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
-            redirect_back_or_to default_loggedin_url
-          else
-            flash[:notice] = "Hello #{@reader_session.reader.name}. Please activate your account."
-            redirect_to reader_activation_url
-          end
+          flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
+          redirect_back_or_to default_loggedin_url
         }
         format.js { 
-          if @reader_session.reader.activated?
-            redirect_back_with_format(:js) 
-          else
-            render :partial => 'reader_activations/activation_required'
-          end
+          redirect_back_with_format(:js) 
         }
       end
       
