@@ -1,34 +1,33 @@
 = render :partial => 'readers/flasher'
+= render :partial => 'login_form', :locals => {:no_title => true}
 
-- if current_reader
-  %p
-    You are currently logged in as
-    %strong
-      = current_reader.name
-    - unless current_reader.activated?
-      but your account is not yet activated. Please check your email for our activation message. 
+- content_for :introduction do
+  - if current_reader
+    %p
+      You are currently logged in as
+      %strong
+        = current_reader.name
+      - unless current_reader.activated?
+        but your account is not yet activated. Please check your email for our activation message. 
     
-  - if current_reader.activated?
-    %p
-      If that's not you, or you want to log in with another account, please 
-      = link_to "log out", reader_logout_url
+    - if current_reader.activated?
+      %p
+        If that's not you, or you want to log in with another account, please 
+        = link_to "log out", reader_logout_url
+    - else
+      %p
+        If you can't find the message, we can 
+        = link_to("send it again", new_reader_activation_url) + '.'
+      %p
+        If you're not
+        = current_reader.name 
+        or you think you might have put the wrong email address in, please
+        = link_to "log out", reader_logout_url
+        and you will be able to register or log in normally.
   - else
-    %p
-      If you can't find the message, we can 
-      = link_to("send it again", new_reader_activation_url) + '.'
-    %p
-      If you're not
-      = current_reader.name 
-      or you think you might have put the wrong email address in, please
-      = link_to "log out", reader_logout_url
-      and you will be able to register or log in normally.
-      
-- else
-  - if flash[:explanation]
-    %p
-      = flash[:explanation]
-      
-  = render :partial => 'login_form', :locals => {:no_title => true}
+    - if flash[:explanation]
+      %p
+        = flash[:explanation]
 
 - content_for :breadcrumbs do
   = link_to 'Readers', '/readers'
