@@ -34,7 +34,7 @@ class Reader < ActiveRecord::Base
 
   include RFC822
   validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
-  validates_length_of :name, :maximum => 100, :allow_nil => true, :message => '%d-character limit'
+  validates_length_of :name, :maximum => 100, :allow_nil => true
 
   named_scope :any
   named_scope :active, :conditions => "activated_at IS NOT NULL"
