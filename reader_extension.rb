@@ -78,6 +78,6 @@ class ReaderExtension < Radiant::Extension
   end
   
   def deactivate
-    admin.tabs.remove "Readers"
+    admin.tabs.remove "Readers" unless respond_to? :tab
   end
 end
