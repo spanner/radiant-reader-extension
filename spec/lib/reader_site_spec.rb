@@ -9,10 +9,6 @@ if defined? Site
       Site.reflect_on_association(:reader_layout).should_not be_nil
     end
     
-    it "should return no layout by default" do
-      sites(:mysite).layout_for(:reader).should be_nil
-    end
-    
     it "should be able to set its own layout" do
       site = sites(:mysite)
       site.reader_layout = layouts(:other)
