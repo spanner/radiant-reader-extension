@@ -3,6 +3,8 @@ module ControllerExtensions    # for inclusion into ApplicationController
   def self.included(base)
     
     base.class_eval do
+      before_filter :set_reader_for_user
+      before_filter :set_reader
       helper_method :current_reader_session, :current_reader, :current_reader=
     end
 
@@ -31,6 +33,12 @@ module ControllerExtensions    # for inclusion into ApplicationController
       end
     end
     
+    def set_reader_for_user
+      if current_user
+        current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
+      end
+    end
+
     def set_reader
       Reader.current = current_reader
     end

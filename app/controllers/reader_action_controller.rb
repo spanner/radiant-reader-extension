@@ -2,14 +2,10 @@ class ReaderActionController < ApplicationController
   helper_method :current_site, :current_site=, :logged_in?, :logged_in_user?, :logged_in_admin?
   
   no_login_required
-  before_filter :set_reader_for_user
   before_filter :set_site_title
   
   # reader session is normally required for modifying actions
   before_filter :require_reader, :except => [:index, :show]
-  
-  # reader information available but not normally required for non-modifying actions
-  before_filter :set_reader, :only => [:index, :show]
   
   radiant_layout { |controller| controller.layout_for :reader }
 
@@ -36,12 +32,6 @@ class ReaderActionController < ApplicationController
 protected
   
   # context-setters
-    
-  def set_reader_for_user
-    if current_user
-      current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
-    end
-  end
 
   def set_site_title
     if defined? Site && current_site
