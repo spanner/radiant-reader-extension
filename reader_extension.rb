@@ -1,42 +1,9 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "0.83"
+  version "0.9.0"
   description "Centralises reader/member/user registration and management tasks for the benefit of other extensions"
   url "http://spanner.org/radiant/reader"
-  
-  define_routes do |map|
-    
-    map.namespace :admin do |admin|
-      admin.resources :readers, :except => [:show]
-    end
-
-    map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
-      admin.resources :messages, :member => [:preview, :deliver]
-    end
-
-    map.resources :readers
-    map.resources :messages, :only => [:index, :show], :member => [:preview]
-
-    map.resource :reader_session
-    map.resource :reader_activation, :only => [:show, :new]
-    map.resource :password_reset
-    
-    map.repassword '/password_reset/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
-    map.activate_me '/activate/:id/:activation_code', :controller => 'reader_activations', :action => 'update'
-    map.reader_register '/register', :controller => 'readers', :action => 'new'
-    map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
-    map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
-    map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
-  end
-  
-  extension_config do |config|
-    config.gem 'authlogic'
-    config.gem 'gravtastic'
-    config.gem 'sanitize', :source => 'http://gemcutter.org'
-    config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
-    config.extension 'share_layouts'
-  end
   
   def activate
     Reader
@@ -71,10 +38,6 @@ class ReaderExtension < Radiant::Extension
         admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
       end
     end
-    
-    # ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag| 
-    #   "<span class='field_error'>#{html_tag}</span>" 
-    # end 
   end
   
   def deactivate

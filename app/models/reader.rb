@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'gravtastic'
 
 class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
