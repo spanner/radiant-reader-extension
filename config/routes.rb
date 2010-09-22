@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
     admin.resources :messages, :member => [:preview, :deliver]
+    admin.reader_settings 'settings', :controller => 'readers', :action => 'settings'
   end
 
   map.resources :readers

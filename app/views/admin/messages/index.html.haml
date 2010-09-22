@@ -1,28 +1,25 @@
 - include_stylesheet('admin/messages')
 = render_region :top 
 
-%h1
-  Messages
-
-%p
-  Click on a message to preview and edit it. Messages in red are administrative and sent out automatically when required. Messages in black are sent manually: on the preview page you can choose to whom.
-  
-%table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
-  %thead
-    %tr
-      - render_region :thead do |thead|
-        - thead.subject_header do
-          %th.message Subject
-        - thead.recipients_header do
-          %th.message_recipients Delivery status
-        - thead.modify_header do
-          %th.modify Modify
-  %tbody
-    - @messages.each do |message|
-      = render :partial => 'listed', :locals => {:message => message}
+#readers_table.outset      
+  %table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+    %thead
+      %tr
+        - render_region :thead do |thead|
+          - thead.subject_header do
+            %th.message Subject
+          - thead.recipients_header do
+            %th.message_recipients Delivery status
+          - thead.modify_header do
+            %th.modify Modify
+    %tbody
+      - @messages.each do |message|
+        = render :partial => 'listed', :locals => {:message => message}
       
-- render_region :bottom do |bottom|
-  - bottom.new_button do
-    - if admin?
-      %p
-        = link_to image('new-message', :alt => 'New Message'), new_admin_message_url, :title => "Create a new message"
+  - render_region :bottom do |bottom|
+    #actions
+      = pagination_for @messages
+      %ul
+        %li= link_to image('plus') + " " + "new reader", new_admin_reader_url
+        %li= link_to image('plus') + " " + "new message", new_admin_message_url
+        %li= link_to "reader settings", admin_reader_settings_url

@@ -1,4 +1,5 @@
 class Admin::MessagesController < Admin::ResourceController
+  paginate_models
 
   # ResourceController doesn't normally show
   skip_before_filter :load_model

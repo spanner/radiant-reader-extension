@@ -9,10 +9,9 @@ begin
     gem.authors = ["spanner"]
     gem.add_dependency "radiant", ">= 0.9.0"
     gem.add_dependency 'radiant-layouts-extension'
+    gem.add_dependency 'radiant-mailer_layouts-extension'
     gem.add_dependency 'authlogic'
-    gem.add_dependency 'gravtastic'
     gem.add_dependency 'sanitize'
-    gem.add_dependency 'will_paginate'
   end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. This is only required if you plan to package reader as a gem."

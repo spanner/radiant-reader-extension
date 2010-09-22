@@ -20,13 +20,13 @@ module ReaderAdminUI
         returning OpenStruct.new do |reader|
           reader.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}
-            edit.form.concat %w{edit_honorific edit_name edit_email edit_username edit_password edit_description edit_status edit_notes}
+            edit.form.concat %w{edit_name edit_email edit_username edit_password edit_description edit_notes}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           reader.index = Radiant::AdminUI::RegionSet.new do |index|
             index.thead.concat %w{title_header description_header modify_header}
             index.tbody.concat %w{title_cell description_cell modify_cell}
-            index.bottom.concat %w{new_button}
+            index.bottom.concat %w{buttons}
           end
           reader.remove = reader.index
           reader.new = reader.edit
@@ -48,7 +48,7 @@ module ReaderAdminUI
           message.index = Radiant::AdminUI::RegionSet.new do |index|
             index.thead.concat %w{subject_header recipients_header modify_header}
             index.tbody.concat %w{subject_cell recipients_cell modify_cell}
-            index.bottom.concat %w{new_button}
+            index.bottom.concat %w{buttons}
           end
           message.remove = message.index
           message.new = message.edit

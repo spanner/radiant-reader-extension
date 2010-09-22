@@ -1,3 +1,4 @@
+require 'authlogic'
 require 'digest/sha1'
 require 'gravtastic'
 

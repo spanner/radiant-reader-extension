@@ -1,92 +1,50 @@
-- if @reader.errors.any?
-  %p.haserror
-    %strong
-      Sorry: the reader could not be saved:
-    = @reader.errors.full_messages.to_sentence
-
 - form_for [:admin, @reader] do |f|
-  = render_region :form_top
-  %table.fieldset{:cellpadding=>0, :cellspacing=>0, :border=>0}
-    - render_region :form do |form|
-      - form.edit_honorific do
-        - if Radiant::Config['reader.use_honorifics?']
-          %tr
-            %th.label
-              = f.label :honorific, 'Title or rank', :class => 'optional'
-            %td.field
-              = f.text_field "honorific", :class => 'textbox', :maxlength => 100 
-            %td.help Optional.
-      - form.edit_name do
-        %tr
-          %th.label
-            = f.label :name
-          %td.field
-            = f.text_field "name", :class => 'textbox', :maxlength => 100 
-          %td.help Required.
-      - form.edit_email do
-        %tr
-          %th.label
-            = f.label :email, "Email", :class => 'required'
-          %td.field
-            = f.text_field "email", :class => 'textbox', :maxlength => 255
-          %td.help
-            Required and must be valid.
-      - form.edit_username do
-        %tr
-          %th.label
-            = f.label :login, 'Username'
-          %td.field
-            = f.text_field "login", :class => 'textbox', :maxlength => 40 
-          %td.help
-            Defaults to email address. Must be unique.
-      - form.edit_password do
-        %tr
-          %th.label
-            = f.label :password
-          %td.field
-            = f.password_field "password", :class => 'textbox', :value => '', :maxlength => 40
-          %td.help{:rowspan=>2}
-            At least 5 characters.
-            - unless @reader.new_record?
-              Leave password blank for it to remain unchanged.
-        %tr
-          %th.label
-            = f.label :password_confirmation, "Confirm Password"
-          %td.field
-            = f.password_field "password_confirmation", :class => 'textbox', :value => '', :maxlength => 40
-      - form.edit_description do
-        %tr
-          %th.label
-            = f.label :description, "Readers description", :class => 'optional'
-          %td.field
-            = f.text_area "description", :size => '40x4', :class => "textarea" 
-          %td.help
-            Optional.
-      - form.edit_status do
-        %tr
-          %th.label
-            = f.label :trusted, 'Trusted?'
-          %td.field{:style=>"text-align: left;"}
-            %span.checkbox
-              = f.check_box "trusted"
-          %td.help
-            True by default. Uncheck to limit a reader's actions on the site.
-      - form.edit_notes do
-        %tr
-          %th.label
-            = f.label :notes, "Admin notes", :class => 'optional'
-          %td.field
-            ~ f.text_area "notes", :size => '40x4', :class => "textarea" 
-          %td.help
-            Optional.
+  = hidden_field "reader", "lock_version"
+  
+  = render :partial => 'avatar' unless @reader.new_record?
+  
+  = render_region :form_top, :locals => {:f => f}
+  
+  - render_region :form, :locals => {:f => f} do |form|
+    - form.edit_name do
+      %p
+        = f.label :name, t('name') 
+        = f.text_field :name, :class => "textbox activate", :size => 32, :maxlength => 100 
+    
+    - form.edit_email do
+      %p
+        = f.label :email, t('email_address') , :class => "optional"
+        = f.text_field "email", :class => 'textbox', :size => 32, :maxlength => 255
 
-  - render_region :form_bottom do |form_bottom|
-    - form_bottom.edit_timestamp do
-      = updated_stamp @reader  
+    - form.edit_username do
+      %p
+        = f.label :login, t('username') , :class => "optional"
+        = f.text_field "login", :class => 'textbox', :size => 32, :maxlength => 255
+    
+    - form.edit_readername do
+      %p
+        = f.label :login, t('readername') 
+        = f.text_field "login", :class => "textbox", :size => 32, :maxlength => 40 
+    
+    - form.edit_password do
+      = render "password_fields", :f => f
+    
+    - form.edit_description do
+      %p
+        = f.label :description, "Self-description", :class => "optional"
+        ~ f.text_area "description", :size => "53x8", :class => "textarea"
+
+    - form.edit_notes do
+      %p
+        = f.label :notes, t('notes'), :class => "optional"
+        ~ f.text_area "notes", :size => "53x4", :class => "textarea"
+  
+  - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
     - form_bottom.edit_buttons do
       %p.buttons
         = save_model_button(@reader)
         = save_model_and_continue_editing_button(@reader)
-        or 
-        = link_to "Cancel", admin_readers_path
-          
+        = t('or')   
+        = link_to t('cancel'), admin_readers_path
+    - form_bottom.edit_timestamp do
+      = updated_stamp @reader

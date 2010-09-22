@@ -2,8 +2,14 @@ require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
   version "0.9.0"
-  description "Centralises reader/member/user registration and management tasks for the benefit of other extensions"
+  description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
+  
+  extension_config do |config|
+    config.gem 'authlogic'
+    config.gem 'sanitize'
+    config.gem 'will_paginate'
+  end
   
   def activate
     Reader
@@ -26,10 +32,11 @@ class ReaderExtension < Radiant::Extension
     
     if respond_to?(:tab)
       tab("Readers") do
-        add_item("Reader list", "/admin/readers")
-        add_item "Invite reader", "/admin/readers/new"
+        add_item("Readers", "/admin/readers")
         add_item "Messages", "/admin/readers/messages"
-        add_item "New message", "/admin/readers/messages/new"
+      end
+      tab("Settings") do
+        add_item("Reader settings", "/admin/readers/settings")
       end
     else
       admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]

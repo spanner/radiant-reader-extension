@@ -1,4 +1,6 @@
-- include_stylesheet('admin/reader')
+- @page_title = @reader.name + ' ' + t('account') + ' - ' + default_page_title
+- body_classes << 'edit_user'
+
 - render_region :main do |main|
   - main.edit_header do
     %h1 Edit Reader
