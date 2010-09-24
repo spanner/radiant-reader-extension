@@ -1,7 +1,10 @@
-- remote_form_for @setting, :url => admin_reader_setting_path(@setting), :update => @setting.key, :loading => "$('#{@setting.key}').addClassName('waiting');", :loaded => "$('#{@setting.key}').removeClassName('waiting');", :html => { :method => :put } do |f|
+- domkey = @setting.key.gsub('?', '_')
+- domid = "set_#{domkey}"
+
+- remote_form_for @setting, :url => admin_reader_setting_path(@setting), :update => domid, :loading => "$('#{domid}').addClassName('waiting');", :loaded => "$('#{domid}').removeClassName('waiting');", :html => { :method => :put } do |f|
   - if @setting.key =~ /\.layout$/
     = f.select :value, Layout.all.collect {|l| [ l.name, l.name ] }
   - else
     = f.text_field :value
   = f.submit 'save'
-  = link_to_remote 'cancel', {:url => admin_reader_setting_url(@setting.id), :method => 'get', :update => @setting.key, :loading => "$('#{@setting.key}').addClassName('waiting');", :loaded => "$('#{@setting.key}').removeClassName('waiting');"}, {:class => 'cancel'}
+  = link_to_remote 'cancel', {:url => admin_reader_setting_url(@setting.id), :method => 'get', :update => domid, :loading => "$('#{domid}').addClassName('waiting');", :loaded => "$('#{domid}').removeClassName('waiting');"}, {:class => 'cancel'}

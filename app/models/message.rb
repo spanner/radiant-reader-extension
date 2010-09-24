@@ -66,6 +66,9 @@ class Message < ActiveRecord::Base
   def has_function?
     !function.nil?
   end
+  def administrative?
+    has_function?
+  end
 
   def status
     Status.find(self.status_id)

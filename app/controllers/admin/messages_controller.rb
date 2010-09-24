@@ -49,7 +49,11 @@ protected
 
   # we normally want to redirect to :show for preview and delivery options
   def continue_url(options)
-    params[:continue] ? edit_admin_message_path(model.id) : admin_message_path(model.id)
+    if model.administrative?
+      admin_reader_settings_url
+    else
+      params[:continue] ? edit_admin_message_path(model.id) : admin_message_path(model.id)
+    end
   end
 
 end

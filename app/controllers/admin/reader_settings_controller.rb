@@ -24,7 +24,7 @@ class Admin::ReaderSettingsController < ApplicationController
   end
   
   def update
-    @setting.value = params[:radiant_config][:value]
+    @setting.value = params[:value] || params[:radiant_config][:value]
     @setting.save!
     respond_to do |format|
       format.html { render :action => 'show' }
