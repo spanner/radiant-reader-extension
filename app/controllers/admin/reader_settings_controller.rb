@@ -5,6 +5,10 @@ class Admin::ReaderSettingsController < ApplicationController
   # this will need to be extensible
   @@settable = ['reader.allow_registration?', 'reader.require_confirmation?', 'reader.layout', 'site.title', 'site.url', 'email.from_address', 'email.from_name']
 
+  def self.make_settable(*keys)
+    @@settable += keys
+  end
+
   def index
     
   end
@@ -41,14 +45,28 @@ private
   def get_setting
     @setting = Radiant::Config.find(params[:id])
     unless settable?(@setting.key)
-      flash[:error] = "Unknown key"
+      respond_to do |format|
+        format.html { 
+          flash['error'] = "Not settable"
+          redirect_to :action => 'index'
+        }
+        format.js { render :status => 403, :text => 'Not settable' }
+      end
+      return false
     end
   end
 
   def require_admin
     unless current_user.admin?
       flash[:error] = 'Only administrators can change reader settings'
-      redirect to :action => :index
+      respond_to do |format|
+        format.html { 
+          flash['error'] = "Admin required"
+          redirect_to :action => 'index'
+        }
+        format.js { render :status => 403, :text => 'Admin required' }
+      end
+      return false
     end
   end
   

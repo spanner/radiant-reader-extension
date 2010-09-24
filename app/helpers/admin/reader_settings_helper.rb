@@ -7,7 +7,7 @@ module Admin::ReaderSettingsHelper
     link_to_remote setting.value, 
       :url => edit_admin_reader_setting_url(setting.id), 
       :method => 'get', 
-      :update => containerid, 
+      :update => containerid,
       :loading => "$('#{containerid}').addClassName('waiting');", 
       :loaded => "$('#{containerid}').removeClassName('waiting');"
   end
