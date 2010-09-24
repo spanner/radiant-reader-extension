@@ -1,9 +1,11 @@
 %tr.node.level-1
   - render_region :tbody do |tbody|
     - tbody.title_cell do
-      %td{:class => reader.activated? ? 'reader activated' : 'reader inactive'}
+      %td{:class => reader.activated? ? 'name activated' : 'name inactive'}
         = link_to image_tag(gravatar_url(reader.email, :size=>"32px"), :class=>"avatar avatar_32x32", :width=>32, :height=>32, :alt=>""), edit_admin_reader_url(reader)
         = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
+        %span.info
+          = "(#{reader.login})"
         - unless reader.notes.blank?
           %p.admin_notes
             %strong

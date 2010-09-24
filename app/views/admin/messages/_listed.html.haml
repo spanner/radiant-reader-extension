@@ -3,7 +3,7 @@
     - tbody.subject_cell do
       %td.message
         = link_to message.subject, admin_message_url(message), :class => message.has_function? ? "functional" : "normal"
-        = render :partial => 'list_notes', :locals => {:message => message}
+        = render :partial => '/admin/messages/list_notes', :locals => {:message => message}
 
     - tbody.recipients_cell do
       %td.message_recipients

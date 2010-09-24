@@ -1,0 +1,98 @@
+- include_stylesheet('admin/reader')
+#settings_table.outset
+  %table#settings.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+    %thead
+      %tr
+        %th.bool
+        %th.setting Setting
+        %th.value Click to edit
+        %th.notes Notes
+    %tbody
+      - render_region :settings do |settings|
+        - settings.registration do
+          %tr
+            %td.bool.prominent
+              = check_box_tag :'reader.allow_registration?', 1, Radiant::Config['reader.allow_registration?'], :class => 'fancy'
+            %td.setting.prominent{:colspan => 2}
+              Allow visitors to register
+            %td.notes
+          %tr
+            %td.bool
+              = check_box_tag :'reader.allow_registration?', 1, Radiant::Config['reader.require_confirmation?'], :class => 'fancy'
+            %td.setting{:colspan => 2}
+              Require email confirmation
+            %td.notes
+              Highly recommended.
+          %tr
+            %td.bool
+            %td.setting
+              Layout for reader-admin pages
+            %td.value
+              %p{:id => 'reader.layout'}
+                = editable_setting('reader.layout')
+            %td.notes
+              The radiant layout that will be used to present reader-administration pages
+        - settings.site do
+          %tr
+            %td.bool
+            %td.setting
+              Site title
+            %td.value
+              %p{:id => 'site.title'}
+                = editable_setting('site.title')
+            %td.notes
+              This is the name by which forms and emails refer to your site
+          %tr
+            %td.bool
+            %td.setting
+              Site url
+            %td.value
+              %p{:id => 'site.url'}
+                = editable_setting('site.url')
+            %td.notes
+              This is the address we use to build links in emails
+
+        - settings.sender do
+          %tr
+            %td.bool
+            %td.setting
+              Email sender
+            %td.value
+              %p{:id => 'email.from_name'}
+                = editable_setting('email.from_name')
+            %td.notes
+              This is the name that automatic emails seem to come from
+          %tr
+            %td.bool
+            %td.setting
+              Email reply-to
+            %td.value
+              %p{:id => 'email.from_address'}
+                = editable_setting('email.from_address')
+            %td.notes
+              This is the address that automatic emails seem to come from
+
+#messages_table.outset      
+  %table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+    %thead
+      %tr
+        %th.bool
+        %th.message Administrative function
+        %th.message_subject Email message
+    %tbody
+      - render_region :messages do |messages|
+        - messages.administration do
+          - MessageFunction.find_all.each do |func|
+            - message = Message.for_function(func).shift
+            %tr
+              %td.bool
+              %td.message_purpose
+                = func.description
+              %td.message_subject
+                - if message
+                  = link_to message.subject, edit_admin_message_url(message)
+                - else
+                  = link_to image('plus') + " create #{func} message", new_admin_message_url(:function_id => func), :class => 'create'
+              
+
+

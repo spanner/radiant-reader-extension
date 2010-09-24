@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "0.9.0"
+  version "0.9.1"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   
@@ -23,8 +23,10 @@ class ReaderExtension < Radiant::Extension
     
     unless defined? admin.reader
       Radiant::AdminUI.send :include, ReaderAdminUI
+      Radiant::AdminUI.load_reader_extension_regions
       admin.reader = Radiant::AdminUI.load_default_reader_regions
       admin.message = Radiant::AdminUI.load_default_message_regions
+      admin.reader_setting = Radiant::AdminUI.load_default_reader_setting_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       end
@@ -34,15 +36,17 @@ class ReaderExtension < Radiant::Extension
       tab("Readers") do
         add_item("Readers", "/admin/readers")
         add_item "Messages", "/admin/readers/messages"
+        add_item("Settings", "/admin/readers/reader_settings")
       end
       tab("Settings") do
-        add_item("Reader settings", "/admin/readers/settings")
+        add_item("Reader", "/admin/readers/reader_settings")
       end
     else
       admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
       if admin.tabs['Readers'].respond_to?(:add_link)
         admin.tabs['Readers'].add_link('readers', '/admin/readers')
         admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
+        admin.tabs['Readers'].add_link('settings', '/admin/readers/settings')
       end
     end
   end

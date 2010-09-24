@@ -11,6 +11,12 @@ class Admin::MessagesController < Admin::ResourceController
     render :layout => false
   end
   
+  # administrative messages are listed in the reader settings view
+  # .ordinary messages are listed here
+  def load_models
+    self.models = paginated? ? model_class.ordinary.paginate(pagination_parameters) : model_class.ordinary
+  end
+  
   def deliver
     case params['delivery']
     when "all"

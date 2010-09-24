@@ -14,10 +14,6 @@ class Admin::ReadersController < Admin::ResourceController
     announce_saved
     response_for :create
   end
-    
-  def settings
-    load_models
-  end
 
 private
 
