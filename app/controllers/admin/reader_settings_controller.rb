@@ -1,5 +1,9 @@
 class Admin::ReaderSettingsController < ApplicationController
-  before_filter :require_admin
+  only_allow_access_to :show, :edit, :update,
+    :when => [:admin],
+    :denied_url => { :controller => 'admin/reader_settings', :action => 'index' },
+    :denied_message => 'You must have admin privileges to edit reader settings.'
+  
   before_filter :get_setting, :only => [:show, :edit, :update]
   cattr_accessor :settable
   # this will need to be extensible
@@ -51,20 +55,6 @@ private
           redirect_to :action => 'index'
         }
         format.js { render :status => 403, :text => 'Not settable' }
-      end
-      return false
-    end
-  end
-
-  def require_admin
-    unless current_user.admin?
-      flash[:error] = 'Only administrators can change reader settings'
-      respond_to do |format|
-        format.html { 
-          flash['error'] = "Admin required"
-          redirect_to :action => 'index'
-        }
-        format.js { render :status => 403, :text => 'Admin required' }
       end
       return false
     end
