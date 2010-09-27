@@ -7,7 +7,7 @@ class Admin::ReaderSettingsController < ApplicationController
   before_filter :get_setting, :only => [:show, :edit, :update]
   cattr_accessor :settable
   # this will need to be extensible
-  @@settable = ['reader.allow_registration?', 'reader.require_confirmation?', 'reader.layout', 'site.title', 'site.url', 'email.from_address', 'email.from_name']
+  @@settable = ['reader.allow_registration?', 'reader.require_confirmation?', 'reader.layout', 'site.title', 'site.url', 'reader.email_from_name', 'reader.email_from_address']
 
   def self.make_settable(*keys)
     @@settable += keys
