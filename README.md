@@ -10,17 +10,11 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-* Compatible with 0.9 functionally, if not quite cosmetically
+* New configuration interface
 
-* Other extensions can extend the reader registration/preferences form with `ReaderController.add_form_partial('this/_partial')`
+* Provisionally updated for 0.9, but still being tweaked and tested: not definitely stable yet
 
-* Lots of little bugfixes thanks to radixhound
-
-* By default we don't cache reader-facing pages.
-
-* SQLite compatibility fixes thanks to [elivz](http://github.com/elivz)
-
-* Brought into line with the latest version of our [multi_site](http://github.com/spanner/radiant-multi_site-extension): should now work seamlessly with or without sites. Also now makes use of the [submenu](https://github.com/spanner/radiant-submenu-extension/tree) and I've tweaked the routing so as to allow other extensions to work within the /admin/readers/ space.
+* Message-management is getting simpler but not fully worked-through yet
 
 ## Status
 

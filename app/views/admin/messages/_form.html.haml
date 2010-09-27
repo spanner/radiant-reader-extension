@@ -2,6 +2,9 @@
 
 .form-area
   - render_region :form do |formpart|
+    - if admin? && params[:function]
+      - @message.function_id ||= params[:function]
+      - form.hidden_field :function_id
 
     - formpart.edit_subject do
       %p.title
@@ -16,19 +19,8 @@
     - formpart.edit_filter_and_status do
       .row
         %p.filter
-          = form.label :layout_id, "Layout"
-          = form.select :layout_id, Layout.find(:all).map { |s| [s.name, s.id] }, :include_blank => true
-        %p.filter
           = form.label :filter_id, "Filter?"
           = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
-        %p
-          = form.label :status_id, "Status"
-          = form.select :status_id, Status.find_all.map { |s| [s.name, s.id] }, {}
-        - if admin?
-          - @message.function_id ||= params[:function]
-          %p
-            = form.label :function_id, "Function?"
-            = form.select :function_id, MessageFunction.find_all.map { |f| [f.description, f.name] }, {:include_blank => true}
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
