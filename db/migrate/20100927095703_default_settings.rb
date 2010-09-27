@@ -6,6 +6,7 @@ class DefaultSettings < ActiveRecord::Migration
     Radiant::Config['site.title'] ||= 'Your site name here'
     Radiant::Config['reader.mail_from_name'] ||= "Administrator"
     Radiant::Config['reader.mail_from_address'] ||= "admin@example.com"
+    Radiant::Config['reader.layout'] ||= 'undefined'
   end
 
   def self.down
