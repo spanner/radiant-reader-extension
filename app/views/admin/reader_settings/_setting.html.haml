@@ -1,11 +1,17 @@
 - if setting || key
   - setting ||= Radiant::Config.find_by_key(key)
-  - label ||= setting.key
-  - domkey = setting.key.gsub('?', '_')
+  - if setting
+    - label ||= setting.key
+    - domkey = setting.key.gsub('?', '_')
 
-  - if setting.key.ends_with?("?")
-    %p{:id => "set_#{domkey}", :class => setting.value.to_s}
-      = checkbox_for_setting(setting, label)
-  - else 
-    %p{:id => "set_#{domkey}"}
-      = editable_setting(setting)
+    - if setting.key.ends_with?("?")
+      %p{:id => "set_#{domkey}", :class => setting.value.to_s}
+        = checkbox_for_setting(setting, label)
+    - else 
+      %p{:id => "set_#{domkey}"}
+        = editable_setting(setting)
+  - else
+    %p.haserror
+      %strong
+        = key
+      is not defined.
