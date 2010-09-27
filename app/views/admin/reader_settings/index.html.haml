@@ -50,7 +50,7 @@
               %p
                 Email sender
             %td.value
-              = render :partial => 'setting', :locals => {:key => 'email.from_name'}
+              = render :partial => 'setting', :locals => {:key => 'reader.mail_from_name'}
             %td.notes
               This is the name that automatic emails seem to come from
           %tr
@@ -58,7 +58,7 @@
               %p
                 Email reply-to
             %td.value
-              = render :partial => 'setting', :locals => {:key => 'email.from_address'}
+              = render :partial => 'setting', :locals => {:key => 'reader.mail_from_address'}
             %td.notes
               This is the address that automatic emails seem to come from
 
