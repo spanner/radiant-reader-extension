@@ -4,13 +4,23 @@ class Admin::ReaderSettingsController < ApplicationController
     :denied_url => { :controller => 'admin/reader_settings', :action => 'index' },
     :denied_message => 'You must have admin privileges to edit reader settings.'
   
+  before_filter :default_settings
   before_filter :get_setting, :only => [:show, :edit, :update]
+  
   cattr_accessor :settable
   # this will need to be extensible
-  @@settable = ['reader.allow_registration?', 'reader.require_confirmation?', 'reader.layout', 'site.title', 'site.url', 'reader.mail_from_name', 'reader.mail_from_address']
+  @@settable = {
+    'reader.allow_registration?' => true,
+    'reader.require_confirmation?' => true,
+    'reader.layout' => '',
+    'site.title' => 'Site Title',
+    'site.url' => 'Site URL', 
+    'reader.mail_from_name' => 'Sender', 
+    'reader.mail_from_address' => 'sender@example.com'
+  }
 
-  def self.make_settable(*keys)
-    @@settable += keys
+  def self.make_settable(settings)
+    @@settable.merge! settings
   end
 
   def index
@@ -43,7 +53,15 @@ class Admin::ReaderSettingsController < ApplicationController
 private
 
   def settable?(key)
-    self.class.settable.include?(key)
+    self.class.settable.keys.include?(key)
+  end
+
+  # temporarily while I do this properly in radiant
+  
+  def default_settings
+    self.class.settable.each do |k, v|
+      Radiant::Config[k] ||= v
+    end
   end
 
   def get_setting
