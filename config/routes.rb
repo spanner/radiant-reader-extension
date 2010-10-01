@@ -4,12 +4,11 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
-    admin.resources :messages, :member => [:preview, :deliver]
+    admin.resources :messages
     admin.resources :reader_settings, :except => [:destroy]
   end
 
   map.resources :readers
-  map.resources :messages, :only => [:index, :show], :member => [:preview]
   map.resource :reader_session
   map.resource :reader_activation, :only => [:show, :new]
   map.resource :password_reset

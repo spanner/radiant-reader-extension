@@ -1,4 +1,4 @@
-- include_stylesheet('admin/messages')
+- include_stylesheet('admin/reader')
 
 = render_region :top 
 - render_region :main do |main|
@@ -6,8 +6,6 @@
   - main.edit_header do
     %h1 
       Edit message
-    %p
-      Press the 'save' button below to see how your message will look when laid out and addressed to someone, and to choose to whom it should be sent.
 
   - main.edit_form do
     - form_for :message, @message, :url => admin_message_url(@message), :html => {:id => 'message_form', :method => 'put'} do |f|

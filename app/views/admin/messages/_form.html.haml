@@ -12,15 +12,13 @@
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
 
     - formpart.edit_body do
-      %p.body
-        = form.label :body, "Message Body"
-        = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
-
-    - formpart.edit_filter_and_status do
-      .row
-        %p.filter
-          = form.label :filter_id, "Filter?"
-          = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
+      %div.body
+        %p
+          %span.filter
+            = form.label :filter_id, "Filter:"
+            = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
+          = form.label :body, "Message Body"
+          = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
