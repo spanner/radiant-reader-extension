@@ -2,14 +2,12 @@
 
 .form-area
   - render_region :form do |formpart|
-    - if admin? && params[:function]
-      - @message.function_id ||= params[:function]
-      - form.hidden_field :function_id
-
     - formpart.edit_subject do
       %p.title
         = form.label :subject, "Message Subject"
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
+        - if @message.new_record?
+          = form.hidden_field :function_id
 
     - formpart.edit_body do
       %div.body

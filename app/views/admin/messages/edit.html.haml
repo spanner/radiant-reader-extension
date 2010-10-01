@@ -5,7 +5,8 @@
 
   - main.edit_header do
     %h1 
-      Edit message
+      Edit
+      = render :partial => 'message_description'
 
   - main.edit_form do
     - form_for :message, @message, :url => admin_message_url(@message), :html => {:id => 'message_form', :method => 'put'} do |f|

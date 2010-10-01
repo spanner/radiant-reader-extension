@@ -30,7 +30,7 @@ class MessageFunction
   @@functions = [
     MessageFunction.new('welcome', 'Welcome'),
     MessageFunction.new('invitation', 'Invitation' ),
-    MessageFunction.new('password_reset', 'Password reset instructions'),
+    MessageFunction.new('password_reset', 'Password instructions'),
     MessageFunction.new('activation', 'Activation instructions')
   ]
 

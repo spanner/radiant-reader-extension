@@ -2,14 +2,21 @@
   - setting ||= Radiant::Config.find_by_key(key)
   - if setting
     - label ||= setting.key
+    - notes ||= nil
     - domkey = setting.key.gsub('?', '_')
+    - containerid = "set_#{domkey}"
 
     - if setting.key.ends_with?("?")
-      %p{:id => "set_#{domkey}", :class => setting.value.to_s}
-        = checkbox_for_setting(setting, label)
+      %p.ruled
+        %span{:id => containerid, :class => "checkbox #{setting.value.to_s}"}
+          = checkbox_for_setting(setting, label)
+
     - else 
-      %p{:id => "set_#{domkey}"}
-        = editable_setting(setting)
+      %p.ruled
+        %label= label
+        %span.inplace{:id => containerid}
+          = editable_setting(setting)
+    
   - else
     %p.haserror
       %strong

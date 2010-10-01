@@ -12,7 +12,7 @@ class Admin::ReaderSettingsController < ApplicationController
   @@settable = {
     'reader.allow_registration?' => true,
     'reader.require_confirmation?' => true,
-    'reader.layout' => '',
+    'reader.layout' => 'unset',
     'site.title' => 'Site Title',
     'site.url' => 'Site URL', 
     'reader.mail_from_name' => 'Sender', 
@@ -42,7 +42,18 @@ class Admin::ReaderSettingsController < ApplicationController
   end
   
   def update
-    @setting.value = params[:value] || params[:radiant_config][:value]
+    Rails.logger.warn "<<  #{@setting.key} is #{@setting.value.inspect}"
+    
+    value = params[:value] || params[:radiant_config][:value]
+    
+    if @setting.boolean?
+      @setting.value = (value == 'false' ? false : true)
+    else
+      @setting.value = value
+    end
+    
+    Rails.logger.warn ">>  and now #{@setting.key} is #{@setting.value.inspect}"
+    
     @setting.save!
     respond_to do |format|
       format.html { render :action => 'show' }
@@ -60,7 +71,7 @@ private
   
   def default_settings
     self.class.settable.each do |k, v|
-      Radiant::Config[k] ||= v
+      Radiant::Config[k] = v if Radiant::Config[k].nil?
     end
   end
 

@@ -1,81 +1,95 @@
 @import compass
 
-table
-  position: relative
-  width: 100%
-  td
-    padding: 2px 5px
-    vertical-align: top
-    line-height: 1.3
-  td.setting, th.setting
-    width: 25%
+#content 
+  form
     p
-      margin: 0
-      padding-left: 30px
-      label
-        margin-left: -30px
-        padding-left: 30px
-        background:
-          image: none
-          repeat: no-repeat
-          position: 4px center
-      &.true
+      span.filter
+        float: right
+        width: 400px
+        text-align: right
         label
-          color: #393
-          background-image: url(/images/admin/chk_on.png)
-      &.false
+          display: inline
+    div.body
+      padding: 12px 20px 20px
+      background: image_url('admin/vertical_tan_gradient.png') top left repeat-x #f5f1e2
+      +box-shadow(rgba(0,0,0,0.15), 2px, 2px, 3px)
+      p
+        margin-top: 0
         label
-          color: #999
-          background-image: url(/images/admin/chk_off.png)
-      &.waiting
-        label
-          color: #ccc
-          background-image: url(/images/admin/spinner.gif)
-      input
-        position: absolute
-        left: -999px
-  td.value, th.value
-    width: 35%
-    p
-      margin: 0
-      background:
-        repeat: no-repeat
-        position: 10px center
-      &.waiting
-        background-image: url(/images/admin/spinner.gif)
-        text-indent: -999px
-      a
-        font-weight: bold
-        font-size: 115%
-        &.cancel
-          font-weight: normal
-          font-size: 75%
-          color: #999
-      input.config
-        padding: 4px
-        color: #ccc
-        border: 1px solid #999
-  td.notes, th.notes, td.message_body, th.message_body
-    width: 40%
-    color: #666
-    font-size: 75%
-  td.message_purpose, th.message_purpose
-    width: 25%
-  td.message_subject, th.message_subject
-    width: 35%
-    a
-      font-weight: bold
+          color: #333
+          text-shadow: none
+      textarea
+        border: 1px solid #ccc
+        
+  ul.help
+    list-style: square
+    padding-left: 40px
+    color: #ccc
+    font-size: 85%
+    code
+      color: white
       font-size: 115%
-  td.prominent
-    font-size: 200%
-    font-weight: bold
-    padding: 2px 10px
-  td
+
+#reader_settings
+  label
+    padding-left: 25px
+
+#message_settings
+  label
+    margin-right: 50px
+
+.box
+  span.inplace
     a
-      text-decoration: none
       color: black
       &:hover
         color: #06c
         text-decoration: underline
-    a.create
-      color: #3b3
+    form
+      display: inline
+    padding-left: 25px
+    background:
+      image: none
+      repeat: no-repeat
+      position: left center
+    &.waiting
+      background-image: url(/images/admin/spinner.gif)
+      a
+        color: #666
+      form
+        opacity: 0.2
+  span.checkbox
+    label
+      width: auto
+    margin: 0
+    label
+      padding-left: 25px
+      background:
+        image: none
+        repeat: no-repeat
+        position: left center
+      cursor: pointer
+    &.true
+      label
+        color: #393
+        background-image: url(/images/admin/chk_on.png)
+    &.false
+      label
+        color: #666
+        background-image: url(/images/admin/chk_off.png)
+    &.waiting
+      label
+        color: #999
+        background-image: url(/images/admin/spinner.gif)
+    input
+      position: absolute
+      left: -999px
+  a
+    text-decoration: none
+  a.create
+    color: #393
+  span.notes
+    display: block
+    margin-left: 25px
+    font-size: 85%
+    color: #555
