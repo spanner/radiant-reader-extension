@@ -14,11 +14,11 @@ The purpose of this extension is to provide a common core that supports other vi
 
 * Provisionally updated for 0.9, but still being tweaked and tested: not definitely stable yet
 
-* Message-management is getting simpler but not fully worked-through yet
+* I'm about to start cleaning out the messaging interface. Some of its extra clutter will be moved into a newsletter extension so that here we can concentrate on making administrative messages easy to edit.
 
 ## Status
 
-Compatible with radiant 0.9, with some rough edges in the appearance.
+Compatible with radiant 0.9 but currently undergoing some renovation.
 
 Tests are thorough. A lot of our work relies on this extension.
 
@@ -26,11 +26,11 @@ Tests are thorough. A lot of our work relies on this extension.
 
 Radiant 0.8.1 (we need the new config machinery) or 0.9. [share_layouts](http://github.com/spanner/radiant-share-layouts-extension) (currently you need our version, which works with ActionMailer too). If you're on 0.8.1 you will probably want the  [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension too.
 
-You also need four gems: authlogic, gravtastic, will_paginate and sanitize. They're declared in the extension so you should be able just to run
+You also need three gems (in addition to those that radiant requires): authlogic, gravtastic and sanitize. They're declared in the extension so you should be able just to run
 
 	sudo rake gems:install
 
-Sanitize uses nokogiri, which needs libxml2 and libxslt: you may need to go off and install those first. It is very likely that you will also need to put
+Sanitize uses nokogiri, which needs libxml2 and libxslt: you may need to go off and install those first. You will also need to put
 
 	gem 'authlogic'
 

@@ -5,7 +5,7 @@ class ReaderActivationsController < ReaderActionController
   before_filter :authenticate_reader, :only => [:update]
   before_filter :check_reader_inactive
   
-  radiant_layout { |controller| controller.layout_for :reader }
+  radiant_layout { |controller| Radiant::Config['reader.layout'] }
 
   # this is just fake REST: we're actually working on the reader, not an activation object, but in a usefully restricted way:
   # .show sends out an activation message if we can identify the current reader

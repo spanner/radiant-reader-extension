@@ -7,7 +7,7 @@ class ReaderActionController < ApplicationController
   # reader session is normally required for modifying actions
   before_filter :require_reader, :except => [:index, :show]
   
-  radiant_layout { |controller| controller.layout_for :reader }
+  radiant_layout { |controller| Radiant::Config['reader.layout'] }
 
   # authorisation helpers
 

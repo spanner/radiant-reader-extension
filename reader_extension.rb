@@ -46,7 +46,7 @@ class ReaderExtension < Radiant::Extension
       if admin.tabs['Readers'].respond_to?(:add_link)
         admin.tabs['Readers'].add_link('readers', '/admin/readers')
         admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
-        admin.tabs['Readers'].add_link('settings', '/admin/readers/settings')
+        admin.tabs['Readers'].add_link('settings', '/admin/readers/reader_settings')
       end
     end
   end

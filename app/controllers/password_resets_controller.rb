@@ -4,7 +4,7 @@ class PasswordResetsController < ApplicationController
 
   no_login_required 
   before_filter :get_reader, :only => [:edit, :update]
-  radiant_layout { |controller| controller.layout_for :reader }
+  radiant_layout { |controller| Radiant::Config['reader.layout'] }
   
   def new
     render

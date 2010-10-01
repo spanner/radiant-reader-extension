@@ -29,7 +29,7 @@ describe ReaderActivationsController do
   describe "with an incorrect activation" do
     before do
       @newreader = readers(:inactive)
-      put :update, :email => @newreader.email, :activation_code => 'down perishcope'
+      put :update, :id => @newreader.id, :activation_code => 'down perishcope'
     end
     
     it "should render the please-activate page" do
