@@ -25,7 +25,7 @@ class ReaderActionController < ApplicationController
 
   def permission_denied
     session[:return_to] ||= request.referer
-    @title = flash[:error] || "Sorry: permission denied"
+    @title = flash[:error] || t('permission_denied')
     render
   end
 
@@ -75,7 +75,7 @@ protected
   def require_no_reader
     if set_reader
       store_location
-      flash[:notice] = "Please log out first"
+      flash[:notice] = 'please_log_out'
       redirect_back_or_to url_for(current_reader)
       return false
     end

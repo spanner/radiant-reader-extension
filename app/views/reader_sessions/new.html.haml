@@ -2,37 +2,39 @@
 
 - if current_reader
   %p
-    You are currently logged in as
+    = t('logged_in_as')
     %strong
       = current_reader.name
     - unless current_reader.activated?
-      but your account is not yet activated. Please check your email for our activation message. 
+      = t('but_not_active')
     
   - if current_reader.activated?
     %p
-      If that's not you, or you want to log in with another account, please 
-      = link_to "log out", reader_logout_url
+      =t('if_not_you')
+      = link_to t("log_out"), reader_logout_url
   - else
     %p
-      If you can't find the message, we can 
-      = link_to("send it again", new_reader_activation_url) + '.'
+      =t('if_cant_find')
+      = link_to(t("send_it_again"), new_reader_activation_url) + '.'
     %p
-      If you're not
-      = current_reader.name 
-      or you think you might have put the wrong email address in, please
+      =t('if_not_you')
+      =t('or')
+      =t('wrong_email')
+      =t('please')
       = link_to "log out", reader_logout_url
-      and you will be able to register or log in normally.
+      =t('and_try_again')
       
 - else
   - if flash[:explanation]
     %p
-      = flash[:explanation]
+      = t(flash[:explanation])
       
   = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do
-  = link_to 'Readers', '/readers'
-  &gt; Log in
+  = link_to t('readers'), '/readers'
+  &gt; 
+  = t("log_in")
 
-- content_for :pagetitle do
-  Log in
+- content_for :title do
+  = t('log_in')

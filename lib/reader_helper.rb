@@ -3,13 +3,6 @@ module ReaderHelper
   def self.included(base)
 
     base.module_eval do
-
-      # wraps the block in a p with the right class and shows the errors nicely, if there are any
-
-      def with_error_report(errors, &block)
-        render({:layout => 'wrappers/field_errors', :locals => {:errors => errors}}, {}, &block)
-      end
-  
       def clean_textilize(text)
         Sanitize.clean(textilize(text), Sanitize::Config::RELAXED)
       end

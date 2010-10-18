@@ -10,50 +10,44 @@
     - unless no_title
       %h2
         - if purpose
-          = purpose + ','
-          please
+          = t(purpose) + ','
+          = t('please')
         - else
-          Please
-        log in or
-        = link_to "register", new_reader_url
+          = t('please')
+        = t('log_in')
+        - if Radiant::Config['reader.allow_registration?']
+          = t('or')
+          = link_to t('register'), new_reader_url
 
     - if @error
       %p.haserror
-        Sorry: we don't recognise that combination of username and password.
+        = t('login_unknown')
         %br
-        If you've forgotten your password we can always 
-        = link_to 'make you a new one', repassword_url
+        = link_to t('forgotten_password'), new_password_reset_url
 
     %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
       %label{:for => "reader_session_login"}
-        Username
+        = t('username').titlecase
       %br
       = f.text_field :login, :class => 'login' 
-      - if @reader_session.errors.on(:login)
-        %br
-        This
-        = @reader_session.errors.on(:login).to_a.to_sentence
         
     %p{ :class => @reader_session.errors.on(:password) ? 'haserror' : '' }
       %label{:for => "reader_session_password"}
-        Password
+        = t('password').titlecase
       %br
       = f.password_field :password, :class => 'login'
-      - if @reader_session.errors.on(:password)
-        %br
-        This
-        = @reader_session.errors.on(:password).to_a.to_sentence
 
     %p.buttons
       = f.submit ' Log in '
       = f.check_box :remember_me
       %label.paranthetical{:for => "reader_session_remember_me"}
-        Remember me
+        = t('remember_me')
 
-  %p.quiet
+  %ul.quiet
     - if Radiant::Config['reader.allow_registration?']
-      If you haven't already, you will need to 
-      = link_to "register", new_reader_url
-      before you can log in. It only takes a moment.
-    If you've forgotten your password, you can enter your email address to
-    = link_to("set a new one", new_password_reset_url) + '.'
+      %li
+        = link_to "registration".titlecase, new_reader_url
+        = t('is_free_and_quick')
+      %li
+        = link_to "forgotten_password".titlecase, new_password_reset_url
+      

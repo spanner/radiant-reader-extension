@@ -3,15 +3,14 @@ module ReaderAdminUI
  def self.included(base)
    base.class_eval do
 
-      attr_accessor :reader, :message, :reader_setting
+      attr_accessor :reader, :message, :reader_configuration
       alias_method :readers, :reader
       alias_method :messages, :message
-      alias_method :reader_settings, :reader_setting
 
       def load_reader_extension_regions
         reader = load_default_reader_regions
         message = load_default_message_regions
-        reader_setting = load_default_reader_setting_regions
+        reader_configuration = load_default_reader_configuration_regions
       end
 
       def load_default_regions_with_reader
@@ -39,11 +38,16 @@ module ReaderAdminUI
         end
       end
 
-      def load_default_reader_setting_regions
-        returning OpenStruct.new do |reader_settings|
-          reader_settings.index = Radiant::AdminUI::RegionSet.new do |index|
-            index.settings.concat %w{registration site sender}
-            index.messages.concat %w{administration}
+      def load_default_reader_configuration_regions
+        returning OpenStruct.new do |reader_configuration|
+          reader_configuration.show = Radiant::AdminUI::RegionSet.new do |show|
+            show.settings.concat %w{registration sender}
+            show.messages.concat %w{administration}
+          end
+          reader_configuration.edit = Radiant::AdminUI::RegionSet.new do |edit|
+            edit.main.concat %w{edit_header edit_form}
+            edit.form.concat %w{edit_registration edit_sender}
+            edit.form_bottom.concat %w{edit_buttons}
           end
         end
       end

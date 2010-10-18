@@ -2,27 +2,27 @@
 
 %div.preferences_form
   %p
-    Hello 
-    = link_to "#{@reader.name}.", reader_url(@reader)
-    You can use this form to change your preferences and enter a bit more information about yourself.
-    First, just to make sure you're you, please enter your current password:
+    = t("hello")
+    = link_to(@reader.name, reader_url(@reader)) + '.'
+    = t('preferences_intro')
+    = t('enter_own_password')
 
   - unless @reader.errors.empty?
     %p.errornote
-      %strong Sorry: there were problems.
-      Please check the form. The affected fields will be highlighted.
+      %strong 
+        = t('sorry').titlecase
+        = t('form_problem') + '.'
       
   - form_for :reader, :url => reader_url(@reader), :html => { :method => "put", :class => 'friendly'} do |f| 
     
     - with_error_report(@reader.errors.on(:current_password)) do
       = f.label :current_password, "Current password", :class => 'required'
       %span.formnote
-        can't remember?
-        = link_to "Make a new one", new_password_reset_url
+        = link_to t('forgotten_password'), new_password_reset_url
       = f.password_field :current_password, :class => 'standard', :autocomplete => 'off'
       
     %p
-      Fields with bold headings are required and will cause grumbling if left blank:
+      = t('bold_required')
       
     = render :partial => 'form', :locals => {:f => f}
     %p
@@ -31,17 +31,15 @@
       = link_to 'cancel', request.referer
 
   %p
-    = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://www.gravatar.com/signup', :target => '_blank'
-    If you would like a picture to appear next to your messages, give yourself a 
-    = link_to "gravatar.", "http://www.gravatar.com/signup", :target => '_blank'
-    This is what appears for you at the moment.
-
+    = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://gravatar.com/site/login'
+    = link_to t('change_gravatar'), "http://gravatar.com/site/login/"
+    
 - content_for :breadcrumbs do 
-  = link_to 'Home', '/'
+  = link_to t('home').titlecase, '/'
   &gt;
-  = link_to 'You', '/readers/me'
+  = link_to t('you').titlecase, '/readers/me'
   &gt;
-  Revise your account
+  = t('account_settings')
 
-- content_for :pagetitle do 
-  Revise your account
+- content_for :title do 
+  = t('account_settings')

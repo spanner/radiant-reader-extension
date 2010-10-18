@@ -2,40 +2,41 @@
 
 %div.register_form
   %p
-    If you've already done this, you should only need to
-    = link_to "log in.", reader_login_url
-    Otherwise, please take a moment to register an account. 
-    Only the fields labelled in bold are required: the rest you can fill in later if you prefer.
+    = t('please_register')
+    = t('already_registered')
+    = link_to t('log_in') + '.', reader_login_url
 
   - unless @reader.errors.empty?
     %p.errornote
-      %strong Sorry: there were problems.
-      Please check the form. The affected fields will be highlighted like this.
+      %strong 
+        = t('sorry').titlecase
+        = t('form_problem') + '.'
       
   - form_for :reader, :url => readers_url, :html => {:class => 'friendly'} do |f|
     = render :partial => 'form', :locals => {:f => f}
     %p
-      = submit_tag "Register"
+      = submit_tag t("register")
       or 
-      = link_to 'cancel', request.referer
+      = link_to t('cancel'), request.referer
 
   %h3
-    notes
+    = t('notes').titlecase
 
   %ul.friendly
     %li
-      When you press the 'register' button we will send a confirmation email to the address you enter above. 
-      Click on a link in that message, and you're in.
+      = t('confirming_email')
     %li
-      If you would like a picture to appear next to your messages, give yourself a 
-      = link_to "gravatar.", "http://www.gravatar.com"
-    %li
-      Please make sure you're happy with our 
-      = link_to "terms and conditions", "/terms"
+      = t('getting_gravatar')
+      = link_to "gravatar.com" + '.', "http://www.gravatar.com"
+    - if Radiant::Config['reader.terms_url']
+      %li
+        = t('please_read_our')
+        = link_to t("terms_and_conditions"), Radiant::Config['reader.terms_url']
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
-  &gt; Register
+  = link_to t('home').titlecase, '/'
+  &gt; 
+  = t('register').titlecase
 
-- content_for :pagetitle do
-  Register here
+- content_for :title do
+  = t('new_account').titlecase

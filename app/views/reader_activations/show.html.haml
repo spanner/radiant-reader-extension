@@ -1,41 +1,32 @@
 = render :partial => 'readers/flasher'
 
 - if current_reader && current_reader.activated?
-
   %p
-    Thank you very much for persevering with the registration process. Your account is now active.
+    = t("activation_complete")
 
-  = render :partial => 'on_activation'
+  - if session[:return_to]
+    %p 
+      = link_to (t("return_to_page"), session[:return_to]) + '?'
     
-  - content_for :pagetitle do
-    Hello 
+  - content_for :title do
+    = t('hello').titlecase
     = current_reader.name
 
 - else
   %div.activation
+    - if @error
+      %p.errornotice
+        = t(@error)
     %p
-      - if current_reader
-        Thank you for registering. Now please check your email. We have sent a message to 
-        %strong
-          = current_reader.email
-        containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
-        = link_to("send it again", new_reader_activation_url) + '.'
-      - else
-        Please check your email. You should have received a message containing a link that will automatically activate your account and log you in. If you can't find the message, we can 
-        = link_to("send it again", new_password_reset_url) + ':'
-        just put your email address in the password reminder form, and if your account has not been activated you'll receive another activation message.
+      = t('thanks_and_activation_instructions')
+      = link_to("resend_activation", new_reader_activation_url) + '.'
+      - unless current_reader
+        = t('enter_email_for_reminder')
 
-    - if Radiant::Config['reader.allow_registration?']
-      %p
-        If you think you might have put the wrong email address in, the easiest thing to do is 
-        = link_to 'register again', new_reader_url
-        with the right one. The failed registration attempt will be purged after a week or so.
-
-  - content_for :pagetitle do
-    Activation message sent
+  - content_for :title do
+    = t('activation_sent')
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
+  = link_to t('Home'), '/'
   &gt;
-  Activate your account
-
+  = t('activate_account')

@@ -10,11 +10,9 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
+* internationalized in beta branch (that currently requires the `preconfiguration` branch of radiant)
 * New configuration interface
-
-* Provisionally updated for 0.9, but still being tweaked and tested: not definitely stable yet
-
-* I'm about to start cleaning out the messaging interface. Some of its extra clutter will be moved into a newsletter extension so that here we can concentrate on making administrative messages easy to edit.
+* Message simplified: now purely administrative. A newsletter extension will follow with more elaborate sending options
 
 ## Status
 

@@ -1,31 +1,30 @@
 - include_stylesheet 'reader'
 
 %p
-  Please enter your email address below. If we recognise it, we'll send you a message with a confirmation link (or if your account is not yet active, we'll send the activation message again).
+  =t('password_reset_instructions')
   %strong
-    Your password will not change until you fill in that form,
-  so only you can complete this process.
+    =t('password_reset_reassurance')
   
 - if @error
   %p.haserror
-    = @error
+    = t(@error)
 
 .password_form
-
   - email = current_reader.email if current_reader
   - form_tag password_reset_path, :class => 'friendly' do
     %p
       %label{:for => "email"}
-        Email address
+        = t('your_email')
       %br
       = text_field_tag 'email', email, :class => 'titular'
 
     %p
-      = submit_tag 'send me instructions'
+      = submit_tag t('send_reset_button')
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
-  &gt; Reset password
+  = link_to t('home').titlecase, '/'
+  &gt; 
+  = t('reset_password').titlecase
 
-- content_for :pagetitle do
-  Reset your password
+- content_for :title do
+  = t('reset_password').titlecase

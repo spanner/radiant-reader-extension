@@ -26,7 +26,7 @@ class ReaderExtension < Radiant::Extension
       Radiant::AdminUI.load_reader_extension_regions
       admin.reader = Radiant::AdminUI.load_default_reader_regions
       admin.message = Radiant::AdminUI.load_default_message_regions
-      admin.reader_setting = Radiant::AdminUI.load_default_reader_setting_regions
+      admin.reader_configuration = Radiant::AdminUI.load_default_reader_configuration_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       end
@@ -35,16 +35,16 @@ class ReaderExtension < Radiant::Extension
     if respond_to?(:tab)
       tab("Readers") do
         add_item("Readers", "/admin/readers")
-        add_item("Settings", "/admin/readers/reader_settings")
+        add_item("Settings", "/admin/readers/reader_configuration")
       end
       tab("Settings") do
-        add_item("Reader", "/admin/readers/reader_settings")
+        add_item("Reader", "/admin/readers/reader_configuration")
       end
     else
       admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
       if admin.tabs['Readers'].respond_to?(:add_link)
         admin.tabs['Readers'].add_link('readers', '/admin/readers')
-        admin.tabs['Readers'].add_link('settings', '/admin/readers/reader_settings')
+        admin.tabs['Readers'].add_link('settings', '/admin/readers/reader_configuration')
       end
     end
   end

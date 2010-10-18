@@ -3,14 +3,12 @@
 %div
   #readers
     - @readers.each do |reader|
-      = link_to gravatar_for(reader, {:size => 100}, {:class => 'big_gravatar'}), reader_url(reader), {:title => reader.name}
-  %div.stretcher
-    %p 
+      = link_to gravatar_for(reader, {:size => 100}, {:class => 'big gravatar'}), reader_url(reader), {:title => reader.name}
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
+  = link_to t('home').titlecase, '/'
   &gt;
-  People
+  = t('people').titlecase
 
-- content_for :pagetitle do
-  People
+- content_for :title do
+  = t('people').titlecase

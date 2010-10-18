@@ -4,29 +4,32 @@
   - if @reader == current_reader
     %p.system_message
       %strong
-        Hello 
+        =t('hello').titlecase
         = @reader.name + '.'
-      This is the page that other (logged-in) site visitors will see when they click on your name. You can change the text that appears here by 
-      = link_to "editing your preferences", edit_reader_url(@reader)
-      and you can change the picture by 
-      = link_to "giving yourself a gravatar.", "http://gravatar.com/signup"
+      = t('this_is_your_page')
+    %ul.actions
+      %li
+        = link_to t('edit_profile'), edit_reader_url(@reader)
+      %li
+        = link_to t('change_gravatar'), "http://gravatar.com/site/login/"
 
   = gravatar_for(@reader, {:size => 128}, {:class => 'big_gravatar'})
 
   - if @reader.description.blank?
-    %p No description available.
+    %p 
+     = t('no_description')
   - else
     = clean_textilize @reader.description
 
   = render :partial => 'contributions'
       
 - content_for :breadhead do
-  = link_to 'People', '/readers'
+  = link_to t('people').titlecase, '/readers'
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
+  = link_to t('home').titlecase, '/'
   &gt;
-  = link_to 'People', '/readers'
+  = link_to t('people').titlecase, '/readers'
   &gt;
   = @reader.name
 

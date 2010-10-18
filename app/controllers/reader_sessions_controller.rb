@@ -16,7 +16,7 @@ class ReaderSessionsController < ReaderActionController
       end
       respond_to do |format|
         format.html {
-          flash[:notice] = "Hello #{@reader_session.reader.name}. Welcome back."
+          flash[:notice] = t('hello').titlecase + " #{@reader_session.reader.name}. " + t('welcome_back')
           redirect_back_or_to default_loggedin_url
         }
         format.js { 
@@ -27,7 +27,7 @@ class ReaderSessionsController < ReaderActionController
     else
       respond_to do |format|
         format.html { 
-          flash[:error] = "Sorry: that combination of login and password is not known here."
+          flash[:error] = 'login_unknown'
           render :action => :new 
         }
         format.js { render :action => :new, :layout => false }
@@ -43,7 +43,7 @@ class ReaderSessionsController < ReaderActionController
       session['user_id'] = nil
       current_user = nil
     end
-    flash[:notice] = "You are logged out. Bye!"
+    flash[:notice] = 'logout_message'
     redirect_back_or_to reader_login_url
   end
   

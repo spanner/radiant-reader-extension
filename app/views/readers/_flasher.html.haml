@@ -1,6 +1,6 @@
 - if flash[:notice]
   .notice
-    %p= flash[:notice]
+    %p= t(flash[:notice])
 - if flash[:error]
   .error
-    %p= flash[:error]
+    %p= t(flash[:error])
