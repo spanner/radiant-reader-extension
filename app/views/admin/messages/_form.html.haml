@@ -8,7 +8,6 @@
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
         - if @message.new_record?
           = form.hidden_field :function_id
-          = form.hidden_field :group_id
 
     - formpart.edit_body do
       %div.body
@@ -18,6 +17,8 @@
             = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
           = form.label :body, "Message Body"
           = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
+
+      = render_region :body_bottom, :locals => {:form => form}
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
