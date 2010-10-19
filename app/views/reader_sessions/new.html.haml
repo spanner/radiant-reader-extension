@@ -32,9 +32,9 @@
   = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do
-  = link_to t('readers'), '/readers'
+  = link_to t('home').titlecase, '/' 
   &gt; 
-  = t("log_in")
+  = t('log_in').titlecase
 
 - content_for :title do
   = t('log_in')

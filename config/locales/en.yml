@@ -144,4 +144,4 @@ en:
   really_delete_reader: "Are you sure you want to remove the reader %{name}? This cannot be undone."
   never_sent: 'never sent'
   for: 'for'
-  
+  home: 'home'

@@ -10,19 +10,18 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-* internationalized in beta branch (that currently requires the `preconfiguration` branch of radiant)
+* **currently requires the `preconfiguration` branch of radiant**
+* public interface internationalized
 * New configuration interface
-* Message simplified: now purely administrative. A newsletter extension will follow with more elaborate sending options
+* Messaging much simplified: now intended to be purely administrative.
 
 ## Status
 
-Compatible with radiant 0.9 but currently undergoing some renovation.
-
-Tests are thorough. A lot of our work relies on this extension.
+Compatible with radiant 0.9.2, which isn't out yet. You can use the preconfiguration branch of radiant edge to try this out. Expect changes.
 
 ## Requirements
 
-Radiant 0.8.1 (we need the new config machinery) or 0.9. [share_layouts](http://github.com/spanner/radiant-share-layouts-extension) (currently you need our version, which works with ActionMailer too). If you're on 0.8.1 you will probably want the  [submenu](https://github.com/spanner/radiant-submenu-extension/tree) extension too.
+Radiant 0.9.2. The [layouts](http://github.com/squaretalent/radiant-layouts-extension) and [mailer_layouts](http://github.com/spanner/radiant-mailer_layouts-extension) extensions.
 
 You also need three gems (in addition to those that radiant requires): authlogic, gravtastic and sanitize. They're declared in the extension so you should be able just to run
 
@@ -36,15 +35,22 @@ in your environment.rb before you can migrate anything. Authlogic has to load be
 
 ## Installation
 
+As a gem:
+
+	gem install 'radiant_reader_extension'
+	
+or for more control:
+
 	git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
+
+and then:
+
 	rake radiant:extensions:reader:migrate
 	rake radiant:extensions:reader:update
 
-The update task will install a /stylesheets/admin/reader.css that you can leave alone and a /stylesheets/reader.css that you should call from your reader layout (see below) and will want to improve upon. There is also a very thin /javascripts/reader.js: all it does is fade notifications. The forum extension has a lot more javascripts for you to deplore.
-
 ## Configuration
 
-If you want to allow public registration, set `reader.allow_registration?` to true in your configuration. If it is false, then reader accounts can only be created by the administrator.
+If you want to allow public registration, set `reader.allow_registration?` to true. If it is false, then reader accounts can only be created by the administrator.
 
 Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view. In a single-site installation you will also need these configuration entries:
 
