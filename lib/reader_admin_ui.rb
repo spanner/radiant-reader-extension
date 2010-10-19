@@ -8,9 +8,9 @@ module ReaderAdminUI
       alias_method :messages, :message
 
       def load_reader_extension_regions
-        reader = load_default_reader_regions
-        message = load_default_message_regions
-        reader_configuration = load_default_reader_configuration_regions
+        @reader = load_default_reader_regions
+        @message = load_default_message_regions
+        @reader_configuration = load_default_reader_configuration_regions
       end
 
       def load_default_regions_with_reader

@@ -24,9 +24,6 @@ class ReaderExtension < Radiant::Extension
     unless defined? admin.reader
       Radiant::AdminUI.send :include, ReaderAdminUI
       Radiant::AdminUI.load_reader_extension_regions
-      admin.reader = Radiant::AdminUI.load_default_reader_regions
-      admin.message = Radiant::AdminUI.load_default_message_regions
-      admin.reader_configuration = Radiant::AdminUI.load_default_reader_configuration_regions
       if defined? admin.sites
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       end
