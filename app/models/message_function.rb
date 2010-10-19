@@ -14,6 +14,10 @@ class MessageFunction
     @name
   end
   
+  def humanize
+    to_s.gsub('_', ' ')
+  end
+  
   def self.[](value)
     return if value.blank?
     @@functions.find { |function| function.symbol == value.to_s.downcase.intern }

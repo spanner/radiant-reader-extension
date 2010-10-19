@@ -1,5 +1,69 @@
 @import compass
 
+/* index page
+
+#messages_table
+  td.message_sent
+    color: #666
+    font-size: 80%
+  td.name
+    span.function
+      color: #c00
+      font-size: 80%
+      font-weight: normal
+      a
+        color: #06c
+        font-size: 80%
+        font-weight: normal
+        
+/* show and send page
+
+div#preview
+  float: left
+  width: 65%
+  +box-shadow
+  background-color: white
+  .message_header
+    padding: 10px
+    overflow: hidden
+    background-color: #eee
+    color: #333
+    font-size: 80%
+    line-height: 1.5
+    ul
+      margin: 0
+      padding: 6px 14px
+      list-style-type: none
+      li.subject
+        font-size: 1.6em
+        margin-top: 6px
+      li.mime-version, li.content-type
+        display: none
+  .message_body
+    iframe.message_body
+      width: 99%
+      height: 520px
+      margin: 0
+      border: 0
+      overflow: auto
+    
+  div.preview_controls
+    height: 24px
+    p
+      margin: 2px 14px
+      text-align: right
+    a
+      text-decoration: none
+      color: #c00
+      
+div#deliver
+  position: relative
+  float: left
+  width: 27%
+  margin-left: 2%
+
+/* edit pages
+
 #content 
   form
     p
@@ -9,23 +73,14 @@
         text-align: right
         label
           display: inline
-    div.body
-      padding: 12px 20px 20px
-      background: image_url('admin/vertical_tan_gradient.png') top left repeat-x #f5f1e2
-      +box-shadow(rgba(0,0,0,0.15), 2px, 2px, 3px)
-      p
-        margin-top: 0
-        label
-          color: #333
-          text-shadow: none
       textarea
-        border: 1px solid #ccc
-        
-  ul.help
-    list-style: square
-    padding-left: 40px
-    color: #ccc
-    font-size: 85%
-    code
-      color: white
-      font-size: 115%
+        width: 100%
+
+ul.help
+  list-style: square
+  color: #666
+  font-size: 85%
+  code
+    color: #c00
+    font-size: 115%
+

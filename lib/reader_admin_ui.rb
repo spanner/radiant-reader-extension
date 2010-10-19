@@ -59,6 +59,17 @@ module ReaderAdminUI
             edit.form.concat %w{edit_subject edit_body}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
+          message.index = Radiant::AdminUI::RegionSet.new do |index|
+            index.thead.concat %w{subject_header sent_header modify_header}
+            index.tbody.concat %w{subject_cell sent_cell modify_cell}
+            index.bottom.concat %w{buttons}
+          end
+          message.show = Radiant::AdminUI::RegionSet.new do |show|
+            show.header.concat %w{title}
+            show.preview.concat %w{headers body buttons}
+            show.delivery.concat %w{function options}
+            show.footer.concat %w{notes}
+          end
           message.new = message.edit
         end
       end

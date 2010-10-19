@@ -35,11 +35,11 @@
   - render_region :messages do |messages|
     - messages.administration do
       - MessageFunction.find_all.each do |func|
-        - message = Message.for_function(func).shift
+        - message = Message.functional(func)
         %p.ruled
           %label= func.description
           - if message
-            = link_to message.subject, edit_admin_message_url(message)
+            = link_to message.subject, admin_message_url(message)
           - else
             = link_to image('plus') + " create message", new_admin_message_url(:function => func), :class => 'create'
 

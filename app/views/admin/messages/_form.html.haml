@@ -8,6 +8,7 @@
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
         - if @message.new_record?
           = form.hidden_field :function_id
+          = form.hidden_field :group_id
 
     - formpart.edit_body do
       %div.body
@@ -26,4 +27,4 @@
       = save_model_button(@message)
       = save_model_and_continue_editing_button(@message)
       or
-      = link_to "cancel", admin_messages_url
+      = link_to "cancel", admin_reader_configuration_url

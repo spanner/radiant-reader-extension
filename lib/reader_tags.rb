@@ -96,7 +96,7 @@ module ReaderTags
     <pre><code><r:recipient:repassword_url /></code></pre>
   }
   tag "recipient:repassword_url" do |tag|
-    repassword_url(tag.locals.recipient, :confirmation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
+    new_password_reset_url(tag.locals.recipient, :confirmation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
   end
 
   desc %{
@@ -106,18 +106,23 @@ module ReaderTags
   }
   tag 'sender' do |tag|
     raise TagError, "r:sender only works in email" unless @mailer_vars
-    raise TagError, "no sender" unless tag.locals.sender = @mailer_vars[:@sender]
     tag.expand
   end
 
-  [:name, :email].each do |field|
-    desc %{
-      Only for use in email messages. Displays the #{field} field of the user sending the current message.
-      <pre><code><r:sender:#{field} /></code></pre>
-    }
-    tag "sender:#{field}" do |tag|
-      tag.locals.sender.send(field)
-    end
+  desc %{
+    Only for use in email messages. Displays the name of the email-sender (which is probably configured in `email.name`)
+    <pre><code><r:sender:name /></code></pre>
+  }
+  tag "sender:name" do |tag|
+    @mailer_vars['sender']
+  end
+
+  desc %{
+    Only for use in email messages. Displays the address of the email-sender (which is probably configured in `email.address`)
+    <pre><code><r:sender:address /></code></pre>
+  }
+  tag "sender:address" do |tag|
+    @mailer_vars['reply_to']
   end
 
   # and for referring to messages on pages

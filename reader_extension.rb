@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "0.9.2"
+  version "1.0.0"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   
@@ -35,6 +35,7 @@ class ReaderExtension < Radiant::Extension
     if respond_to?(:tab)
       tab("Readers") do
         add_item("Readers", "/admin/readers")
+        add_item("Messages", "/admin/readers/messages")
         add_item("Settings", "/admin/readers/reader_configuration")
       end
       tab("Settings") do
@@ -44,6 +45,7 @@ class ReaderExtension < Radiant::Extension
       admin.tabs.add "Readers", "/admin/readers", :after => "Layouts", :visibility => [:all]
       if admin.tabs['Readers'].respond_to?(:add_link)
         admin.tabs['Readers'].add_link('readers', '/admin/readers')
+        admin.tabs['Readers'].add_link('messages', '/admin/readers/messages')
         admin.tabs['Readers'].add_link('settings', '/admin/readers/reader_configuration')
       end
     end

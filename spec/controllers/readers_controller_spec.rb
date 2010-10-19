@@ -91,7 +91,7 @@ describe ReadersController do
       it "should not show the edit page for another reader" do 
         get :edit, :id => reader_id(:visible)
         response.should be_success        
-        flash[:error].should =~ /not allowed/
+        flash[:error].should =~ /cannot_edit_others/
       end
 
       it "should not remove this reader" do 
