@@ -164,7 +164,7 @@ module ReaderTags
     <pre><code><r:message:url /></code></pre>
   }
   tag "message:url" do |tag|
-    message_path(tag.locals.message)
+    preview_message_path(tag.locals.message)
   end
 
   desc %{
@@ -179,8 +179,6 @@ module ReaderTags
     text = tag.double? ? tag.expand : tag.render('message:subject')
     %{<a href="#{tag.render('message:url')}"#{attributes}>#{text}</a>}
   end
-
-
 
   desc %{
     The root 'reader' tag is not meant to be called directly.

@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :readers
+  map.resources :messages, :only => [:index, :show], :member => [:preview]
   map.resource :reader_session
   map.resource :reader_activation, :only => [:show, :new]
   map.resource :password_reset

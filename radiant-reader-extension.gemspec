@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "0.9.2"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-10-04}
+  s.date = %q{2010-10-19}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -21,14 +21,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "app/controllers/admin/messages_controller.rb",
-     "app/controllers/admin/reader_settings_controller.rb",
+     "app/controllers/admin/reader_configuration_controller.rb",
      "app/controllers/admin/readers_controller.rb",
      "app/controllers/password_resets_controller.rb",
      "app/controllers/reader_action_controller.rb",
      "app/controllers/reader_activations_controller.rb",
      "app/controllers/reader_sessions_controller.rb",
      "app/controllers/readers_controller.rb",
-     "app/helpers/admin/reader_settings_helper.rb",
      "app/models/message.rb",
      "app/models/message_function.rb",
      "app/models/message_reader.rb",
@@ -37,17 +36,17 @@ Gem::Specification.new do |s|
      "app/models/reader_session.rb",
      "app/views/admin/messages/_form.html.haml",
      "app/views/admin/messages/_help.html.haml",
+     "app/views/admin/messages/_list_function.haml",
      "app/views/admin/messages/_message_description.html.haml",
      "app/views/admin/messages/edit.html.haml",
+     "app/views/admin/messages/index.haml",
      "app/views/admin/messages/new.html.haml",
-     "app/views/admin/reader_settings/_setting.html.haml",
-     "app/views/admin/reader_settings/edit.html.haml",
-     "app/views/admin/reader_settings/index.html.haml",
-     "app/views/admin/reader_settings/show.html.haml",
+     "app/views/admin/messages/preview.html.haml",
+     "app/views/admin/messages/show.html.haml",
+     "app/views/admin/reader_configuration/edit.html.haml",
+     "app/views/admin/reader_configuration/show.html.haml",
      "app/views/admin/readers/_avatar.html.haml",
      "app/views/admin/readers/_form.html.haml",
-     "app/views/admin/readers/_list_head.html.haml",
-     "app/views/admin/readers/_listed.html.haml",
      "app/views/admin/readers/_password_fields.html.haml",
      "app/views/admin/readers/edit.html.haml",
      "app/views/admin/readers/index.html.haml",
@@ -57,8 +56,6 @@ Gem::Specification.new do |s|
      "app/views/password_resets/create.html.haml",
      "app/views/password_resets/edit.html.haml",
      "app/views/password_resets/new.html.haml",
-     "app/views/reader_activations/_activation_required.html.haml",
-     "app/views/reader_activations/_on_activation.html.haml",
      "app/views/reader_activations/show.html.haml",
      "app/views/reader_notifier/message.html.haml",
      "app/views/reader_sessions/_login_form.html.haml",
@@ -68,16 +65,15 @@ Gem::Specification.new do |s|
      "app/views/readers/_extra_controls.html.haml",
      "app/views/readers/_flasher.html.haml",
      "app/views/readers/_form.html.haml",
-     "app/views/readers/create.html.haml",
      "app/views/readers/edit.html.haml",
      "app/views/readers/index.html.haml",
      "app/views/readers/login.html.haml",
      "app/views/readers/new.html.haml",
      "app/views/readers/permission_denied.html.haml",
      "app/views/readers/show.html.haml",
-     "app/views/wrappers/_field_errors.html.haml",
+     "config/initializers/radiant_config.rb",
+     "config/locales/en.yml",
      "config/routes.rb",
-     "config/settings.rb",
      "db/migrate/001_create_readers.rb",
      "db/migrate/002_extend_sites.rb",
      "db/migrate/003_reader_honorifics.rb",
@@ -97,6 +93,7 @@ Gem::Specification.new do |s|
      "db/migrate/20100922152338_lock_versions.rb",
      "db/migrate/20100927095703_default_settings.rb",
      "db/migrate/20101004074945_unlock_version.rb",
+     "db/migrate/20101019094714_message_sent_date.rb",
      "lib/config_extensions.rb",
      "lib/controller_extensions.rb",
      "lib/reader_admin_ui.rb",
@@ -105,12 +102,9 @@ Gem::Specification.new do |s|
      "lib/reader_tags.rb",
      "lib/rfc822.rb",
      "lib/tasks/reader_extension_tasks.rake",
-     "pkg/radiant-reader-extension-0.9.0.gem",
      "public/images/admin/chk_off.png",
      "public/images/admin/chk_on.png",
-     "public/images/admin/new-message.png",
-     "public/images/admin/new-reader.png",
-     "public/javascripts/admin/messages.js",
+     "public/images/admin/delta.png",
      "public/stylesheets/sass/admin/reader.sass",
      "radiant-reader-extension.gemspec",
      "reader_extension.rb",
