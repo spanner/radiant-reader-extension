@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "1.0.1"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-10-20}
+  s.date = %q{2010-11-01}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -108,7 +108,9 @@ Gem::Specification.new do |s|
      "public/images/admin/chk_off.png",
      "public/images/admin/chk_on.png",
      "public/images/admin/delta.png",
+     "public/stylesheets/sass/_reader_constants.sass",
      "public/stylesheets/sass/admin/reader.sass",
+     "public/stylesheets/sass/reader.sass",
      "radiant-reader-extension.gemspec",
      "reader_extension.rb",
      "spec/controllers/admin/messages_controller_spec.rb",
