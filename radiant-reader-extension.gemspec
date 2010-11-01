@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-10-19}
+  s.date = %q{2010-10-20}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "app/controllers/admin/messages_controller.rb",
      "app/controllers/admin/reader_configuration_controller.rb",
      "app/controllers/admin/readers_controller.rb",
+     "app/controllers/messages_controller.rb",
      "app/controllers/password_resets_controller.rb",
      "app/controllers/reader_action_controller.rb",
      "app/controllers/reader_activations_controller.rb",
@@ -53,6 +54,8 @@ Gem::Specification.new do |s|
      "app/views/admin/readers/new.html.haml",
      "app/views/admin/readers/remove.html.haml",
      "app/views/admin/sites/_choose_reader_layout.html.haml",
+     "app/views/messages/preview.html.haml",
+     "app/views/messages/show.html.haml",
      "app/views/password_resets/create.html.haml",
      "app/views/password_resets/edit.html.haml",
      "app/views/password_resets/new.html.haml",

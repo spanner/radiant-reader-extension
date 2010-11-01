@@ -28,7 +28,7 @@ class ReaderExtension < Radiant::Extension
         admin.sites.edit.add :form, "admin/sites/choose_reader_layout", :after => "edit_homepage"
       end
     end
-    
+        
     if respond_to?(:tab)
       tab("Readers") do
         add_item("Readers", "/admin/readers")

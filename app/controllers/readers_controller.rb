@@ -33,7 +33,7 @@ class ReadersController < ReaderActionController
 
   def new
     if current_reader
-      flash[:error] = "You're already logged in!"
+      flash[:error] = t('already_logged_in')
       redirect_to url_for(current_reader) and return
     end
     @reader = Reader.new
@@ -49,7 +49,7 @@ class ReadersController < ReaderActionController
     @reader.clear_password = params[:reader][:password]
 
     unless @reader.email.blank?
-      flash[:error] = 'please_avoid_spam_trap'
+      flash[:error] = t('please_avoid_spam_trap')
       @reader.email = ''
       @reader.errors.add(:trap, "must_be_empty")
       render :action => 'new' and return

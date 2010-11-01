@@ -49,7 +49,11 @@ protected
     unless set_reader     # set_reader is in ControllerExtension and sets Reader.current while checking for current_reader
       store_location
       respond_to do |format|
-        format.html { redirect_to reader_login_url }
+        format.html {
+          flash[:explanation] = t('reader_required')
+          flash[:notice] = t('please_log_in')
+          redirect_to reader_login_url 
+        }
         format.js { 
           @inline = true
           render :partial => 'reader_sessions/login_form' 
@@ -58,11 +62,14 @@ protected
       false
     end
   end
-
+  
   def require_activated_reader
     unless current_reader && current_reader.activated?
       respond_to do |format|
-        format.html { redirect_to reader_activation_url }
+        format.html { 
+          flash[:explanation] = t('activation_required')
+          redirect_to reader_activation_url 
+        }
         format.js { 
           @inline = true
           render :partial => 'reader_activations/activation_required' 
@@ -75,10 +82,10 @@ protected
   def require_no_reader
     if set_reader
       store_location
-      flash[:notice] = 'please_log_out'
+      flash[:notice] = t('please_log_out')
       redirect_back_or_to url_for(current_reader)
       return false
     end
   end
-
+  
 end

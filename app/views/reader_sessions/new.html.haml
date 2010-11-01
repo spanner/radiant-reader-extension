@@ -1,4 +1,5 @@
-= render :partial => 'readers/flasher'
+- content_for :signals do
+  = render :partial => 'readers/flasher'
 
 - if current_reader
   %p
@@ -27,7 +28,7 @@
 - else
   - if flash[:explanation]
     %p
-      = t(flash[:explanation])
+      = flash[:explanation]
       
   = render :partial => 'login_form', :locals => {:no_title => true}
 
@@ -37,4 +38,4 @@
   = t('log_in').titlecase
 
 - content_for :title do
-  = t('log_in')
+  = t('please_log_in').titlecase
