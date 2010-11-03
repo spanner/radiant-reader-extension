@@ -41,7 +41,7 @@ module ReaderAdminUI
       def load_default_reader_configuration_regions
         returning OpenStruct.new do |reader_configuration|
           reader_configuration.show = Radiant::AdminUI::RegionSet.new do |show|
-            show.settings.concat %w{registration sender}
+            show.settings.concat %w{administration}
             show.messages.concat %w{administration}
           end
           reader_configuration.edit = Radiant::AdminUI::RegionSet.new do |edit|

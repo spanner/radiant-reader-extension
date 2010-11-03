@@ -51,7 +51,7 @@ class ReadersController < ReaderActionController
     unless @reader.email.blank?
       flash[:error] = t('please_avoid_spam_trap')
       @reader.email = ''
-      @reader.errors.add(:trap, "must_be_empty")
+      @reader.errors.add(:trap, t("must_be_empty"))
       render :action => 'new' and return
     end
 
@@ -75,7 +75,7 @@ class ReadersController < ReaderActionController
     @reader.attributes = params[:reader]
     @reader.clear_password = params[:reader][:password] if params[:reader][:password]
     if @reader.save
-      flash[:notice] = 'account_updated'
+      flash[:notice] = t('account_updated')
       redirect_to url_for(@reader)
     else
       render :action => 'edit'
@@ -89,7 +89,7 @@ protected
   end
 
   def restrict_to_self
-    flash[:error] = "cannot_edit_others" if params[:id] && params[:id] != current_reader.id
+    flash[:error] = t("cannot_edit_others") if params[:id] && params[:id] != current_reader.id
     @reader = current_reader
   end
   
@@ -100,19 +100,19 @@ protected
     @reader.attributes = params[:reader]
     @reader.valid?
     
-    flash[:error] = 'password_incorrect'
+    flash[:error] = t('password_incorrect')
     @reader.errors.add(:current_password, "not_correct")
     render :action => 'edit' and return false
   end
   
   def no_removing
-    flash[:error] = 'cannot_delete_readers'
+    flash[:error] = t('cannot_delete_readers')
     redirect_to admin_readers_url
   end
   
   def check_registration_allowed
     unless Radiant::Config['reader.allow_registration?']
-      flash[:error] = "registration_disallowed"
+      flash[:error] = t("registration_disallowed")
       redirect_to reader_login_url
       false
     end

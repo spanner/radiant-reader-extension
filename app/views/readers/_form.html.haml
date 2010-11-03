@@ -35,11 +35,12 @@
     %br
     = f.text_field :email, :class => 'standard'
 
-%p
-  = f.label :description, t('your_description'), :class => 'optional'
-  %span.formnote= t('description_notes')
-  %br
-  = f.text_area :description, :class => 'standard', :rows => 8
+- if Radiant::Config['reader.use_description?']
+  %p
+    = f.label :description, t('your_description'), :class => 'optional'
+    %span.formnote= t('description_notes')
+    %br
+    = f.text_area :description, :class => 'standard', :rows => 8
 
 %p
   = f.label :login, t('login_name'), :class => 'optional'

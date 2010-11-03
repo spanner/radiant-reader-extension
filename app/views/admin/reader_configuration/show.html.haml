@@ -1,14 +1,13 @@
 - body_classes << "reversed"
 - include_stylesheet('admin/reader')
 
-#reader_settings.box
-  %h3
-    .actions
-      = button_to t("edit"), edit_admin_reader_configuration_url, :method => :get
-    =t("reader_admin")
-  
-  - render_region :settings do |settings|
-    - settings.registration do
+- render_region :settings do |settings|
+  - settings.administration do
+    #reader_settings.box
+      %h3
+        .actions
+          = button_to t("edit"), edit_admin_reader_configuration_url, :method => :get
+        =t("reader_admin")
       %p.ruled
         = show_config 'reader.allow_registration?'
       %p.ruled
@@ -17,8 +16,6 @@
         = show_config 'reader.use_honorifics?'
       %p.ruled
         = show_config 'reader.layout'
-
-    - settings.sender do
       %p.ruled
         = show_config 'email.name'
       %p.ruled
@@ -28,12 +25,12 @@
       %p.ruled
         = show_config 'email.layout'
 
-#message_settings.box
-  %h4
-    =t("reader_emails")
+- render_region :messages do |messages|
+  - messages.administration do
+    #message_settings.box
+      %h3
+        =t("reader_emails")
   
-  - render_region :messages do |messages|
-    - messages.administration do
       - MessageFunction.find_all.each do |func|
         - message = Message.functional(func)
         %p.ruled
