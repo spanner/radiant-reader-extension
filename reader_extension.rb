@@ -9,6 +9,7 @@ class ReaderExtension < Radiant::Extension
     config.gem 'authlogic'
     config.gem 'sanitize'
     config.gem 'will_paginate'
+    config.gem 'gravtastic'
   end
   
   def activate
