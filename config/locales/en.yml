@@ -5,6 +5,8 @@ en:
   activate_account: "Activate your account"
   activation_complete: "Thank you very much for persevering with the registration process. Your account is now active."
   activation_message_sent: "Account activation instructions have been emailed to you."
+  activation_required_header: "Please check your email"
+  activation_required_explanation: "You should have received a confirmation message containing a link that will activate your account."
   activation_sent: "Activation message sent"
   already_active: "Your account is already active."
   already_logged_in: "You're already logged in!"
@@ -50,6 +52,7 @@ en:
   honorific: "Title or rank"
   honorific_notes: ""
   invitation_message: "Invitation message"
+  invite_description: '<a href="%{url}">Edit your preferences to put some text about yourself here.'
   if_cant_find: "If you can't find the message, we can"
   if_mistake_see_admin: "If this is a mistake, please talk to the site administrator about your account."
   is_free_and_quick: " is free and only takes a moment"

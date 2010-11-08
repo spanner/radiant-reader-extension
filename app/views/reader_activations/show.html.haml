@@ -16,7 +16,7 @@
   %div.activation
     - if @error
       %p.errornotice
-        = t(@error)
+        = @error
     %p
       = t('thanks_and_activation_instructions')
       = link_to("resend_activation", new_reader_activation_url) + '.'
