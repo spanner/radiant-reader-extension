@@ -1,4 +1,5 @@
 class ReaderSessionsController < ReaderActionController
+  helper :reader
 
   before_filter :require_reader, :only => :destroy
   radiant_layout { |controller| Radiant::Config['reader.layout'] }

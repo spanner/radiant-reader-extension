@@ -1,4 +1,5 @@
 class MessagesController < ReaderActionController
+  helper :reader
 
   before_filter :require_reader
   before_filter :get_messages, :only => [:index]

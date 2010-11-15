@@ -1,4 +1,5 @@
 class PasswordResetsController < ApplicationController
+  helper :reader
 
   # rest gone mad! but it works, and keeps the processes well-defined.
 

@@ -1,4 +1,6 @@
 class ReadersController < ReaderActionController
+  helper :reader
+  
   @@extended_form_partials = []
   cattr_accessor :extended_form_partials
   

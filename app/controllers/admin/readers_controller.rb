@@ -1,4 +1,5 @@
 class Admin::ReadersController < Admin::ResourceController
+  helper :reader
   paginate_models
   before_filter :redirect_to_user, :only => :edit
 

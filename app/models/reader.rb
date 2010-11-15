@@ -1,6 +1,5 @@
 require 'authlogic'
 require 'digest/sha1'
-require 'gravtastic'
 
 class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
@@ -9,9 +8,6 @@ class Reader < ActiveRecord::Base
   default_scope :order => 'name ASC'
 
   is_site_scoped if respond_to? :is_site_scoped
-
-  include Gravtastic
-  gravtastic :with => :email, :rating => 'PG', :size => 48
 
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site

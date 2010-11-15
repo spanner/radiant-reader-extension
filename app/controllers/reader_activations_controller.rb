@@ -1,4 +1,5 @@
 class ReaderActivationsController < ReaderActionController
+  helper :reader
 
   no_login_required
   skip_before_filter :require_reader

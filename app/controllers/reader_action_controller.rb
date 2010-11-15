@@ -1,4 +1,5 @@
 class ReaderActionController < ApplicationController
+  helper :reader
   helper_method :current_site, :current_site=, :logged_in?, :logged_in_user?, :logged_in_admin?
   
   no_login_required
