@@ -93,6 +93,7 @@ en:
   reader_admin: "Reader administration"
   reader_emails: "Administrative messages"
   reader: 'Reader'
+  reader_logged_in_as: "You are logged in as %{name}."
   readers: 'Readers'
   register: "register"
   registration: "registration"
