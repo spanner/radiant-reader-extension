@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "1.1.1"
+  version "1.1.2"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   
@@ -9,16 +9,14 @@ class ReaderExtension < Radiant::Extension
     config.gem 'authlogic'
     config.gem 'sanitize'
     config.gem 'will_paginate'
-    config.gem 'gravtastic'
   end
   
   def activate
     Reader
     ApplicationController.send :include, ControllerExtensions                     # hooks up reader authentication and layout-chooser
-    ApplicationHelper.send :include, ReaderHelper                                 # display usefulness including error-wrapper
+    ApplicationHelper.send :include, ReaderHelper                                 # display usefulness included generally so as to be available in sitecontroller
     Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
     Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
-    Radiant::Config.send :include, ConfigExtensions                                # .boolean?
     UserActionObserver.instance.send :add_observer!, Reader 
     UserActionObserver.instance.send :add_observer!, Message
     

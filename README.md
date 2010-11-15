@@ -10,10 +10,10 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-* **currently requires the `preconfiguration` branch of radiant**
-* public interface internationalized
-* New configuration interface
-* Messaging much simplified: now intended to be purely administrative.
+* everything updated for 0.9.x
+* public interface internationalized;
+* Uses the new configuration interface;
+* Messaging much simplified and now intended to be purely administrative.
 
 ## Status
 
@@ -21,7 +21,7 @@ Compatible with radiant 0.9.2, which isn't out yet. You can use the preconfigura
 
 ## Requirements
 
-Radiant 0.9.2. The [layouts](http://github.com/squaretalent/radiant-layouts-extension) and [mailer_layouts](http://github.com/spanner/radiant-mailer_layouts-extension) extensions.
+Radiant 0.9.2 (or currently, edge). The [layouts](http://github.com/squaretalent/radiant-layouts-extension) and [mailer_layouts](http://github.com/spanner/radiant-mailer_layouts-extension) extensions.
 
 You also need three gems (in addition to those that radiant requires): authlogic, gravtastic and sanitize. They're declared in the extension so you should be able just to run
 
