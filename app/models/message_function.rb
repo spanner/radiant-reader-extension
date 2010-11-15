@@ -14,6 +14,10 @@ class MessageFunction
     @name
   end
   
+  def humanize
+    to_s.gsub('_', ' ')
+  end
+  
   def self.[](value)
     return if value.blank?
     @@functions.find { |function| function.symbol == value.to_s.downcase.intern }
@@ -30,7 +34,7 @@ class MessageFunction
   @@functions = [
     MessageFunction.new('welcome', 'Welcome'),
     MessageFunction.new('invitation', 'Invitation' ),
-    MessageFunction.new('password_reset', 'Password reset instructions'),
+    MessageFunction.new('password_reset', 'Password instructions'),
     MessageFunction.new('activation', 'Activation instructions')
   ]
 

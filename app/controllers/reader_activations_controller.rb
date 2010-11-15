@@ -5,9 +5,9 @@ class ReaderActivationsController < ReaderActionController
   before_filter :authenticate_reader, :only => [:update]
   before_filter :check_reader_inactive
   
-  radiant_layout { |controller| controller.layout_for :reader }
+  radiant_layout { |controller| Radiant::Config['reader.layout'] }
 
-  # this is just fake REST: we're actually working on the reader, not an activation object, but in a usefully restricted way:
+  # this is just fake REST: we're actually working on the reader, not an activation object.
   # .show sends out an activation message if we can identify the current reader
   # .update activates the reader, if the token is correct
 
@@ -19,7 +19,7 @@ class ReaderActivationsController < ReaderActionController
     if current_reader
       @reader = current_reader
       @reader.send_activation_message
-      flash[:notice] = "Account activation instructions have been emailed to you."
+      flash[:notice] = "activation_message_sent"
     end
     render :action => 'show'
   end
@@ -28,12 +28,11 @@ class ReaderActivationsController < ReaderActionController
     if @reader
       @reader.activate!
       self.current_reader = @reader
-      flash[:notice] = "Thank you! Your account has been activated."
+      flash[:notice] = "thanks_activated"
       redirect_back_or_to default_activated_url
-      
     else
-      @error = "Sorry: something was wrong in that link. Please check your email message."
-      flash[:error] = "Activation failed."
+      @error = "please_check_message"
+      flash[:error] = "activation_failed."
       render :action => 'show'
     end
   end
@@ -47,7 +46,7 @@ protected
 
   def check_reader_inactive
     if @reader && @reader.activated?
-      flash[:notice] = "Hello #{@reader.name}! Your account is already active."
+      flash[:notice] = t('hello').titlecase + " #{@reader.name}! " + t('already_active')
       redirect_back_or_to default_activated_url
       false
     end

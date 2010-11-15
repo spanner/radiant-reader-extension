@@ -1,0 +1,42 @@
+- include_stylesheet('admin/reader')
+= render_region :top 
+
+#messages_table.outset      
+  %table#messages.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+    %thead
+      %tr
+        - render_region :thead do |thead|
+          - thead.subject_header do
+            %th.message Subject
+          - thead.sent_header do
+            %th.message_sent Delivery status
+          - thead.modify_header do
+            %th.modify Modify
+    %tbody
+      - @messages.each do |message|
+        %tr
+          - render_region :tbody do |tbody|
+            - tbody.subject_cell do
+              %td.name
+                = link_to message.subject, admin_message_url(message), :class => message.has_function? ? "functional" : "normal"
+                = render :partial => '/admin/messages/list_function', :locals => {:message => message}
+
+            - tbody.sent_cell do
+              %td.message_sent
+                %p
+                  - if message.sent_at
+                    = t('last_sent')
+                    = l(message.sent_at, :format => :short)
+                  - else
+                    = t('never_sent')
+            - tbody.modify_cell do
+              %td.actions
+                = link_to( image('delta') + ' ' + t('edit_message'), edit_admin_message_url(message), :class => "action" )
+                = link_to( image('minus') + ' ' + t('delete_message'), admin_message_url(message), {:method => :delete, :class => "action", :confirm => t('really_delete_message', :title => message.subject)})
+
+  - render_region :bottom do |bottom|
+    - bottom.buttons do
+      #actions
+        = pagination_for @messages
+        %ul
+          %li= link_to image('plus') + " " + "new message", new_admin_message_url

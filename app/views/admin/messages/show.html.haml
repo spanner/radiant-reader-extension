@@ -1,74 +1,16 @@
-- include_stylesheet('admin/messages')
-- include_javascript('admin/messages')
+- include_stylesheet('admin/reader')
+- body_classes << "reversed"
 
 = render_region :top 
 
-.delivery
-  %h1
-    Send message
+- render_region :header do |header|
+  - header.title do
+    %h1
+      = t('preview_and_send_message')
 
-  - if @message.function
-    - render_region :function do |function|
-      - function.function_description do
-        %p.warning
-          This is the 
-          %strong
-            = @message.function 
-          message and would normally be sent out automatically.
-
-  .delivery_form
-    - form_for :message, @message, :url => deliver_admin_message_url(@message) do |f|
-      - render_region :delivery do |delivery|
-        - delivery.deliver_all do
-          %p
-            = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :class => 'delivery_chooser', :disabled => @message.possible_readers.empty?
-            %label{:for => "delivery_to_all", :class => @message.possible_readers.any? ? '' : 'disabled'}
-              send to all
-
-        - delivery.deliver_inactive do
-          %p
-            = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :class => 'delivery_chooser', :disabled => @message.inactive_readers.empty?
-            %label{:for => "delivery_to_inactive", :class => @message.inactive_readers.any? ? '' : 'disabled'}
-              send to the 
-              = @message.inactive_readers.count
-              who
-              = @message.inactive_readers.count == 1 ? 'is' : 'are'
-              not yet activated
-
-        - delivery.deliver_unsent do
-          %p
-            = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :class => 'delivery_chooser', :disabled => @message.undelivered_readers.empty?
-            %label{:for => "delivery_to_unsent", :class => @message.undelivered_readers.any? ? '' : 'disabled'}
-              send to the
-              = @message.undelivered_readers.length
-              who 
-              = @message.undelivered_readers.length == 1 ? 'has' : 'have'
-              not yet received this message
-
-        - delivery.deliver_selection do
-          %p
-            = radio_button_tag 'delivery', 'selection', false, :id => 'delivery_to_selection', :class => 'delivery_chooser', :disabled => @message.possible_readers.empty?
-            %label{:for => "delivery_to_selection", :class => @message.possible_readers.any? ? '' : 'disabled'}
-              send to selected people...
-
-        - delivery.choose_recipients do
-          %ol#select_readers
-            - @message.possible_readers.each do |reader|
-              %li{:class => @message.delivered_to?(reader) ? "sent" : "unsent"}
-                = check_box_tag "reader_ids[]", reader.id, false, :id => "reader_#{reader.id}"
-                %label{:for => "reader_#{reader.id}"}
-                  = reader.name
-
-        - delivery.buttons do
-          %p.buttons
-            = submit_tag "send message", :disable_with => "Please wait..."
-      
-.preview
-  %h1
-    Preview message
-
+#preview
   - render_region :preview do |preview|
-    - preview.preview_headers do
+    - preview.headers do
       .message_header
         %ul
           - @message.preview.each_header do |name, value|
@@ -77,9 +19,54 @@
               %strong
                 = value
 
-    - preview.preview_body do
-      %iframe.message_body{:src => preview_admin_message_url(@message)}
+    - preview.body do
+      .message_body
+        %iframe.message_body{:src => preview_admin_message_url(@message)}
+
+    - preview.buttons do
       .preview_controls
         %p
-          = link_to "edit message", edit_admin_message_url(@message)
+          = link_to t('edit_message'), edit_admin_message_url(@message)
 
+#deliver
+  - render_region :delivery do |delivery|
+    - delivery.function do
+      - if @message.administrative?
+        %p
+          = t("#{@message.function}_sent_automatically")
+        %ul
+          %li
+            = link_to t('edit_message').titlecase, edit_admin_message_url(@message)
+          %li
+            - if @message.group
+              = link_to @message.group.name + ' ' + t('group_page'), admin_group_url(@message.group)
+            - else
+              = link_to t('reader_configuration_page').titlecase, admin_reader_configuration_url
+ 
+    - delivery.options do
+      - unless @message.administrative?
+        - form_for :message, @message, :url => deliver_admin_message_url(@message), :html => {"data-onsubmit_status"=>"Sending email messages&#8230;"} do |f|
+          %h3
+            = t("send_to").titlecase + ":"
+          %p
+            = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :disabled => @message.possible_readers.empty?
+            %label.checkbox{:for => 'delivery_to_all', :class => @message.possible_readers.empty? ? 'disabled' : ''} 
+              = t('everyone')
+              = t('count_people', :count => @message.possible_readers.count)
+          %p
+            = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :disabled => @message.inactive_readers.empty?
+            %label.checkbox{:for => 'delivery_to_inactive', :class => @message.inactive_readers.empty? ? 'disabled' : ''} 
+              = t('everyone_inactive')
+              = t('count_people', :count => @message.inactive_readers.count)
+          %p
+            = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :disabled => @message.undelivered_readers.empty?
+            %label.checkbox{:for => 'delivery_to_unsent', :class => @message.undelivered_readers.empty? ? 'disabled' : ''} 
+              = t('everyone_unsent')
+              = t('count_people', :count => @message.undelivered_readers.count)
+
+          %p.buttons
+            = submit_tag t('send_message')
+            = t('or')
+            = link_to t('cancel'), @message.group ? admin_group_url(@message.group) : admin_messages_url
+            
+    

@@ -19,8 +19,8 @@ class Message < ActiveRecord::Base
 
   default_scope :order => 'updated_at DESC, created_at DESC'
   named_scope :for_function, lambda { |f| {:conditions => ["function_id = ?", f.to_s]} }
-  named_scope :administrative, { :conditions => "function_id IS NOT NULL" }
-  named_scope :ordinary, { :conditions => "function_id IS NULL" }
+  named_scope :administrative, { :conditions => "function_id IS NOT NULL AND NOT function_id = ''" }
+  named_scope :ordinary, { :conditions => "function_id = '' OR function_id IS NULL" }
   named_scope :published, { :conditions => "status_id >= 100" }
 
   def filtered_body

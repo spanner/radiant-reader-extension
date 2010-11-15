@@ -4,10 +4,41 @@
 #readers_table.outset      
   %table#readers.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
     %thead
-      = render :partial => 'list_head'
+      %thead
+        %tr
+          - render_region :thead do |thead|
+            - thead.title_header do
+              %th.reader Name / Login
+            - thead.description_header do
+              %th.reader_description Self-description
+            - thead.modify_header do
+              %th.modify Modify
+              
     %tbody
       - @readers.each do |reader|
-        = render :partial => 'listed', :locals => {:reader => reader}
+        %tr
+          - render_region :tbody do |tbody|
+            - tbody.title_cell do
+              %td{:class => reader.activated? ? 'name activated' : 'name inactive'}
+                = link_to gravatar_for(reader, {:size => 32}, {:class => 'avatar avatar_32x32'}), edit_admin_reader_url(reader)
+                = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
+                %span.info
+                  = "(#{reader.login})"
+                - unless reader.notes.blank?
+                  %p.admin_notes
+                    %strong
+                      note:
+                    = reader.notes
+
+            - tbody.description_cell do
+              %td.reader_description
+                = truncate_and_textilize(reader.description, 24)
+
+            - tbody.modify_cell do
+              %td.actions
+                - if admin?
+                  = link_to(image('minus') + ' ' + t('delete_reader'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('really_delete_reader', :name => reader.name))
+        
       
   - render_region :bottom do |bottom|
     - bottom.buttons do
@@ -15,4 +46,3 @@
         = pagination_for @readers
         %ul
           %li= link_to image('plus') + " " + "new reader", new_admin_reader_url
-          %li= link_to image('plus') + " " + "new message", new_admin_message_url

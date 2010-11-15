@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "0.9.0"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-09-14}
+  s.date = %q{2010-11-01}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "app/controllers/admin/messages_controller.rb",
+     "app/controllers/admin/reader_configuration_controller.rb",
      "app/controllers/admin/readers_controller.rb",
      "app/controllers/messages_controller.rb",
      "app/controllers/password_resets_controller.rb",
@@ -36,16 +37,18 @@ Gem::Specification.new do |s|
      "app/models/reader_session.rb",
      "app/views/admin/messages/_form.html.haml",
      "app/views/admin/messages/_help.html.haml",
-     "app/views/admin/messages/_list_notes.html.haml",
-     "app/views/admin/messages/_listed.html.haml",
+     "app/views/admin/messages/_list_function.haml",
+     "app/views/admin/messages/_message_description.html.haml",
      "app/views/admin/messages/edit.html.haml",
-     "app/views/admin/messages/index.html.haml",
+     "app/views/admin/messages/index.haml",
      "app/views/admin/messages/new.html.haml",
      "app/views/admin/messages/preview.html.haml",
      "app/views/admin/messages/show.html.haml",
+     "app/views/admin/reader_configuration/edit.html.haml",
+     "app/views/admin/reader_configuration/show.html.haml",
+     "app/views/admin/readers/_avatar.html.haml",
      "app/views/admin/readers/_form.html.haml",
-     "app/views/admin/readers/_list_head.html.haml",
-     "app/views/admin/readers/_listed.html.haml",
+     "app/views/admin/readers/_password_fields.html.haml",
      "app/views/admin/readers/edit.html.haml",
      "app/views/admin/readers/index.html.haml",
      "app/views/admin/readers/new.html.haml",
@@ -56,8 +59,6 @@ Gem::Specification.new do |s|
      "app/views/password_resets/create.html.haml",
      "app/views/password_resets/edit.html.haml",
      "app/views/password_resets/new.html.haml",
-     "app/views/reader_activations/_activation_required.html.haml",
-     "app/views/reader_activations/_on_activation.html.haml",
      "app/views/reader_activations/show.html.haml",
      "app/views/reader_notifier/message.html.haml",
      "app/views/reader_sessions/_login_form.html.haml",
@@ -67,14 +68,14 @@ Gem::Specification.new do |s|
      "app/views/readers/_extra_controls.html.haml",
      "app/views/readers/_flasher.html.haml",
      "app/views/readers/_form.html.haml",
-     "app/views/readers/create.html.haml",
      "app/views/readers/edit.html.haml",
      "app/views/readers/index.html.haml",
      "app/views/readers/login.html.haml",
      "app/views/readers/new.html.haml",
      "app/views/readers/permission_denied.html.haml",
      "app/views/readers/show.html.haml",
-     "app/views/wrappers/_field_errors.html.haml",
+     "config/initializers/radiant_config.rb",
+     "config/locales/en.yml",
      "config/routes.rb",
      "db/migrate/001_create_readers.rb",
      "db/migrate/002_extend_sites.rb",
@@ -92,6 +93,11 @@ Gem::Specification.new do |s|
      "db/migrate/20091020135152_contacts.rb",
      "db/migrate/20091111090819_ensure_functional_messages_visible.rb",
      "db/migrate/20091119092936_messages_have_layout.rb",
+     "db/migrate/20100922152338_lock_versions.rb",
+     "db/migrate/20100927095703_default_settings.rb",
+     "db/migrate/20101004074945_unlock_version.rb",
+     "db/migrate/20101019094714_message_sent_date.rb",
+     "lib/config_extensions.rb",
      "lib/controller_extensions.rb",
      "lib/reader_admin_ui.rb",
      "lib/reader_helper.rb",
@@ -99,16 +105,13 @@ Gem::Specification.new do |s|
      "lib/reader_tags.rb",
      "lib/rfc822.rb",
      "lib/tasks/reader_extension_tasks.rake",
-     "public/images/admin/new-message.png",
-     "public/images/admin/new-reader.png",
-     "public/javascripts/admin/messages.js",
-     "public/javascripts/platform/core.js",
-     "public/javascripts/platform/mootools-more.js",
-     "public/javascripts/platform/mootools.js",
-     "public/stylesheets/admin/messages.css",
-     "public/stylesheets/admin/reader.css",
-     "public/stylesheets/platform/pagination.css",
-     "public/stylesheets/platform/reader.css",
+     "public/images/admin/chk_off.png",
+     "public/images/admin/chk_on.png",
+     "public/images/admin/delta.png",
+     "public/stylesheets/sass/_reader_constants.sass",
+     "public/stylesheets/sass/admin/reader.sass",
+     "public/stylesheets/sass/reader.sass",
+     "radiant-reader-extension.gemspec",
      "reader_extension.rb",
      "spec/controllers/admin/messages_controller_spec.rb",
      "spec/controllers/admin/readers_controller_spec.rb",
@@ -159,25 +162,22 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<radiant>, [">= 0.9.0"])
       s.add_runtime_dependency(%q<radiant-layouts-extension>, [">= 0"])
+      s.add_runtime_dependency(%q<radiant-mailer_layouts-extension>, [">= 0"])
       s.add_runtime_dependency(%q<authlogic>, [">= 0"])
-      s.add_runtime_dependency(%q<gravtastic>, [">= 0"])
       s.add_runtime_dependency(%q<sanitize>, [">= 0"])
-      s.add_runtime_dependency(%q<will_paginate>, [">= 0"])
     else
       s.add_dependency(%q<radiant>, [">= 0.9.0"])
       s.add_dependency(%q<radiant-layouts-extension>, [">= 0"])
+      s.add_dependency(%q<radiant-mailer_layouts-extension>, [">= 0"])
       s.add_dependency(%q<authlogic>, [">= 0"])
-      s.add_dependency(%q<gravtastic>, [">= 0"])
       s.add_dependency(%q<sanitize>, [">= 0"])
-      s.add_dependency(%q<will_paginate>, [">= 0"])
     end
   else
     s.add_dependency(%q<radiant>, [">= 0.9.0"])
     s.add_dependency(%q<radiant-layouts-extension>, [">= 0"])
+    s.add_dependency(%q<radiant-mailer_layouts-extension>, [">= 0"])
     s.add_dependency(%q<authlogic>, [">= 0"])
-    s.add_dependency(%q<gravtastic>, [">= 0"])
     s.add_dependency(%q<sanitize>, [">= 0"])
-    s.add_dependency(%q<will_paginate>, [">= 0"])
   end
 end
 

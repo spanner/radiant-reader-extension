@@ -2,25 +2,23 @@
 
 .form-area
   - render_region :form do |formpart|
-    - if admin? && params[:function]
-      - @message.function_id ||= params[:function]
-      - form.hidden_field :function_id
-
     - formpart.edit_subject do
       %p.title
         = form.label :subject, "Message Subject"
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
+        - if @message.new_record?
+          = form.hidden_field :function_id
 
     - formpart.edit_body do
-      %p.body
-        = form.label :body, "Message Body"
-        = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
+      %div.body
+        %p
+          %span.filter
+            = form.label :filter_id, "Filter:"
+            = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
+          = form.label :body, "Message Body"
+          = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
-    - formpart.edit_filter_and_status do
-      .row
-        %p.filter
-          = form.label :filter_id, "Filter?"
-          = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
+      = render_region :body_bottom, :locals => {:form => form}
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
@@ -30,4 +28,4 @@
       = save_model_button(@message)
       = save_model_and_continue_editing_button(@message)
       or
-      = link_to "cancel", admin_messages_url
+      = link_to "cancel", admin_reader_configuration_url

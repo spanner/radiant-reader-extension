@@ -1,5 +1,4 @@
 - form_for [:admin, @reader] do |f|
-  = hidden_field "reader", "lock_version"
   
   = render :partial => 'avatar' unless @reader.new_record?
   
@@ -39,6 +38,8 @@
         = f.label :notes, t('notes'), :class => "optional"
         ~ f.text_area "notes", :size => "53x4", :class => "textarea"
   
+  = render_region :form_additions, :locals => {:f => f}
+
   - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
     - form_bottom.edit_buttons do
       %p.buttons

@@ -1,0 +1,43 @@
+- body_classes << "reversed"
+- include_stylesheet('admin/reader')
+
+- render_region :settings do |settings|
+  - settings.administration do
+    #reader_settings.box
+      %h3
+        .actions
+          = button_to t("edit"), edit_admin_reader_configuration_url, :method => :get
+        =t("reader_admin")
+      %p.ruled
+        = show_config 'reader.allow_registration?'
+      %p.ruled
+        = show_config 'reader.require_confirmation?'
+      %p.ruled
+        = show_config 'reader.use_honorifics?'
+      %p.ruled
+        = show_config 'reader.layout'
+      %p.ruled
+        = show_config 'email.name'
+      %p.ruled
+        = show_config 'email.address', :class => 'uri'
+      %p.ruled
+        = show_config 'email.prefix'
+      %p.ruled
+        = show_config 'email.layout'
+
+- render_region :messages do |messages|
+  - messages.administration do
+    #message_settings.box
+      %h3
+        =t("reader_emails")
+  
+      - MessageFunction.find_all.each do |func|
+        - message = Message.functional(func)
+        %p.ruled
+          %label= func.description
+          - if message
+            = link_to message.subject, admin_message_url(message)
+          - else
+            = link_to image('plus') + " create message", new_admin_message_url(:function => func), :class => 'create'
+
+

@@ -1,13 +1,10 @@
 %p
-  Thank you. A message has been sent to 
-  %strong
-    = params[:email]
-  containing the instructions for setting a new password. 
-  Remember, it hasn't changed yet and won't until you follow the instructions in the message.
+  = t('reset_message_instructions')
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
-  &gt; Reset password
+  = link_to t('home').titlecase, '/'
+  &gt; 
+  = t('reset_password')
 
-- content_for :pagetitle do
-  Reset message sent
+- content_for :title do
+  = t('reset_message_sent')

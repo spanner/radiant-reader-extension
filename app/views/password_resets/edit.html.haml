@@ -3,69 +3,65 @@
 
     %p
       %strong
-        Hello
+        = t('hello')
         = @reader.name + '.'
-      Thank you for persevering with the authorization process. 
-      %br
-      Please enter and confirm the new password you would like to use. It must be at least four characters long, nothing obvious or typical and ideally a mixture of numbers and letters.
-
+      = t('new_password_instructions')
 
     - form_for @reader, :url => password_reset_path, :method => :put, :html => {:class => 'friendly', :autocomplete => "off"} do |f|
 
       - if @reader.errors.any?
-        %p.haserror
-          %strong
-            Sorry: there was a problem.
-          = @reader.errors.full_messages.to_sentence
+        %p.errornote
+          %strong 
+            = t('sorry').titlecase
+            = t('form_problem') + '.'
 
       = hidden_field_tag :id, params[:id]
       = hidden_field_tag :confirmation_code, @reader.perishable_token
 
-      %p{:class => @reader.errors.any? ? 'haserror' : ''}
-        = f.label :password, "New password", :class => 'required'
+      %p
+        = f.label :password, t('new_password'), :class => 'required'
+        %span.formnote= t('password_notes')
         %br
         = f.password_field :password, :class => 'titular'
 
-      %p{:class => @reader.errors.any? ? 'haserror' : ''}
-        = f.label :password_confirmation, "Repeat for confirmation", :class => 'required'
+      %p
+        = f.label :password_confirmation, t('repeat_password'), :class => 'required'
         %br
         = f.password_field :password_confirmation, :class => 'titular'
       %p
         = f.submit "Update my password and log me in"
         
       %p
-        Your password hasn't changed yet, so if you've just remembered it you can still
-        = link_to "log in.", reader_login_url
+        = t('password_not_yet_changed')
 
-      - content_for :pagetitle do
-        Change my password
+      - content_for :title do
+        = t('change_password')
 
   - else 
 
-    %p.haserror
-      Sorry: the system can't find you. That link must have been garbled somewhere along the line. 
-      Please paste the 20-character confirmation code into the box below and we'll try again.
+    %p.errornote
+      = t('sorry_reset_not_found')
       
     - form_tag edit_password_reset_path, :method => 'GET', :class => 'friendly', :autocomplete => "off" do
       = hidden_field_tag :id, params[:id]
       %p
         %label{:for => "confirmation_code"}
-          confirmation code
+          = t('confirmation_code')
         %br
         = text_field_tag 'confirmation_code', '', :class => 'titular'
 
       %p
-        = submit_tag 'try again'
+        = submit_tag t('continue')
     
-    %p
-      The confirmation code only works for ten minutes, but you can always 
-      = link_to "enter your email address again", new_password_reset_url
-      and we'll send a new one.
+    %ul.actions
+      %li
+        = link_to t("restart_password_change"), new_password_reset_url
       
-    - content_for :pagetitle do
-      Please enter confirmation code
+    - content_for :title do
+      = t('enter_code')
       
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
-  &gt; Reset password
+  = link_to t('home').titlecase, '/'
+  &gt; 
+  = t('reset_password')
 

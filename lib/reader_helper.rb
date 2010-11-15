@@ -3,13 +3,12 @@ module ReaderHelper
   def self.included(base)
 
     base.module_eval do
-
-      # wraps the block in a p with the right class and shows the errors nicely, if there are any
-
-      def with_error_report(errors, &block)
-        render({:layout => 'wrappers/field_errors', :locals => {:errors => errors}}, {}, &block)
+      def gravatar_for(reader, gravatar_options={}, img_options ={})
+        size = gravatar_options[:size]
+        img_options[:size] = "#{size}x#{size}" if size
+        image_tag reader.gravatar_url(gravatar_options), img_options
       end
-  
+
       def clean_textilize(text)
         Sanitize.clean(textilize(text), Sanitize::Config::RELAXED)
       end

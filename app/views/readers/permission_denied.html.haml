@@ -2,22 +2,26 @@
 
 %div.apologetic
   %p.haserror
-    You don't have permission to see the page you just requested. 
+    = t('page_permission_denied')
+
     - if current_reader
-      Please talk to the site administrator about your account.
+      = t('if_mistake_see_admin')
+
+      - content_for :title do
+        = t('sorry_access_denied')
+      
     - else
-      Please log in.
+      = t('please_log_in') + '.'
+
+      - content_for :title do
+        = t('please_log_in')
 
   - unless current_reader
     = render :partial => 'reader_sessions/login_form'
 
 - content_for :breadcrumbs do
-  = link_to 'Home', '/'
+  = link_to t('home').titlecase, '/'
   &gt;
-  = link_to 'Readers', '/readers'
-  &gt;
-  Permission Denied
+  = t('access_denied')
 
-- content_for :pagetitle do
-  = @title
 

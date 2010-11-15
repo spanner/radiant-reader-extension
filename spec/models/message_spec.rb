@@ -40,9 +40,8 @@ describe Message do
 
     it "should render a fake sending" do
       @preview.should be_kind_of(TMail::Mail)
-      @preview.from.should == [messages(:taggy).created_by.email]
+      @preview.from.should == ["admin@www.example.com"]
       @preview.subject.should == messages(:taggy).subject
-      @preview.body.should =~ /From #{messages(:taggy).created_by.name}/
     end
   end
   

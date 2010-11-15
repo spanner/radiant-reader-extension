@@ -8,14 +8,13 @@ describe ReaderNotifier do
   end
     
   it "should have a radiant layout attribute" do
-    ReaderNotifier.read_inheritable_attribute('default_radiant_mailer_layout_name').should_not be_nil
-    ReaderNotifier.read_inheritable_attribute('default_radiant_mailer_layout_name').should be_kind_of(Proc)
+    ReaderNotifier.read_inheritable_attribute(:default_layout).should_not be_nil
   end
 
   it "should render a supplied message" do
     message = ReaderNotifier.create_message(readers(:normal), messages(:normal))
     message.to.should == [readers(:normal).email]
-    message.from.should == [users(:existing).email]
+    message.from.should == ["admin@www.example.com"]
     message.body.should =~ /#{messages(:normal).filtered_body}/
     message.content_type.should == 'text/html'
   end
@@ -29,7 +28,6 @@ describe ReaderNotifier do
     message = ReaderNotifier.create_message(readers(:normal), messages(:taggy))
     message.body.should =~ /<title>#{messages(:taggy).subject}<\/title>/
     message.body.should =~ /To #{readers(:normal).name}/
-    message.body.should =~ /From #{users(:existing).name}/
   end
   
 end

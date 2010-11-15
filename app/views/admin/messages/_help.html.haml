@@ -5,10 +5,20 @@
 %ul.help
   %li
     %code &lt;r:sender:name /&gt;
-    is the name of the person who created the message
+    is the name configured in 
+    %em
+      reader.mail_from_name:
+    currently 
+    %strong
+      = "'#{Radiant::Config['reader.mail_from_name']}'."
   %li
     %code &lt;r:sender:email /&gt;
-    is the email address of the person who created the message (which will also be the from: address)
+    is the address configured in 
+    %em
+      reader.mail_from_address:
+    currently 
+    %strong
+    = "'#{Radiant::Config['reader.mail_from_address']}'."
   %li
     %code &lt;r:recipient:name /&gt; 
   %li
@@ -17,7 +27,7 @@
     %code &lt;r:recipient:login /&gt;
   %li
     %code &lt;r:recipient:password /&gt; 
-    only works for new accounts: after login we forget the unencrypted password
+    only works in welcome messages: after first login we forget the unencrypted password
   %li
     %code &lt;r:recipient:url /&gt;
     is the address of the page about this person

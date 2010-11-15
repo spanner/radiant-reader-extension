@@ -1,0 +1,41 @@
+- body_classes << "reversed"
+
+- render_region :main do |main|
+  - main.edit_header do
+    %h1 Reader configuration
+
+  - main.edit_form do
+    - form_for :config, :url => admin_reader_configuration_url, :html => {"data-onsubmit_status"=>"Saving changes&#8230;", :method => :put} do |f|
+      = render_region :form_top
+      - render_region :form do |form|
+        - form.edit_registration do
+          %fieldset
+            %h3 
+              = t('registration').titlecase
+            %p
+              = edit_config('reader.allow_registration?')
+            %p
+              = edit_config('reader.require_confirmation?')
+            %p
+              = edit_config('reader.use_honorifics?')
+            %p
+              = edit_config('reader.layout')
+  
+        - form.edit_sender do
+          %fieldset
+            %h3 Administrative email
+            %p
+              = edit_config('email.name')
+            %p
+              = edit_config('email.address')
+            %p
+              = edit_config('email.prefix')
+            %p
+              = edit_config('email.layout')
+      
+      - render_region :form_bottom do |form_bottom|
+        - form_bottom.edit_buttons do
+          %p.buttons
+            %input.button{:type=>"submit", :value=>"Save Changes"}/
+            or
+            = link_to "Cancel", admin_reader_configuration_url

@@ -1,0 +1,86 @@
+@import compass
+
+/* index page
+
+#messages_table
+  td.message_sent
+    color: #666
+    font-size: 80%
+  td.name
+    span.function
+      color: #c00
+      font-size: 80%
+      font-weight: normal
+      a
+        color: #06c
+        font-size: 80%
+        font-weight: normal
+        
+/* show and send page
+
+div#preview
+  float: left
+  width: 65%
+  +box-shadow
+  background-color: white
+  .message_header
+    padding: 10px
+    overflow: hidden
+    background-color: #eee
+    color: #333
+    font-size: 80%
+    line-height: 1.5
+    ul
+      margin: 0
+      padding: 6px 14px
+      list-style-type: none
+      li.subject
+        font-size: 1.6em
+        margin-top: 6px
+      li.mime-version, li.content-type
+        display: none
+  .message_body
+    iframe.message_body
+      width: 99%
+      height: 520px
+      margin: 0
+      border: 0
+      overflow: auto
+    
+  div.preview_controls
+    height: 24px
+    p
+      margin: 2px 14px
+      text-align: right
+    a
+      text-decoration: none
+      color: #c00
+      
+div#deliver
+  position: relative
+  float: left
+  width: 27%
+  margin-left: 2%
+
+/* edit pages
+
+#content 
+  form
+    p
+      span.filter
+        float: right
+        width: 400px
+        text-align: right
+        label
+          display: inline
+      textarea
+        width: 100%
+
+ul.help
+  list-style: square
+  color: #666
+  font-size: 85%
+  code
+    color: #c00
+    font-size: 115%
+

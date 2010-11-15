@@ -1,72 +1,67 @@
-- with_error_report(@reader.errors.on(:name)) do
-  = f.label :name, 'Your name', :class => 'required'
-  %span.formnote as you would like it to appear
+%p
+  = f.label :name, t('your_name'), :class => 'required'
+  %span.formnote= t('name_notes')
   %br
   = f.text_field :name, :class => 'standard'
 
 - if Radiant::Config['reader.use_honorifics?']
-  - with_error_report(@reader.errors.on(:honorific)) do
-    = f.label :honorific, 'Title or rank', :class => 'optional'
-    %span.formnote as you would like us to display it when you are credited
+  %p
+    = f.label :honorific, t(:honorific), :class => 'optional'
+    %span.formnote= t('honorific_notes')
     %br
     = f.text_field :honorific, :class => 'standard'
 
 - if @reader.new_record? && @email_field
 
-  - with_error_report(@reader.errors.on(:email)) do
-    = f.label @email_field, 'Your email address', :class => 'required'
-    %span.formnote this has to work
+  %p
+    = f.label @email_field, t('your_email'), :class => 'required'
+    %span.formnote= t('email_notes')
     %br
     = text_field_tag @email_field, params[@email_field] || @reader.email, :id => "reader_#{@email_field}", :class => 'standard'
 
   .innocuous
     - with_error_report(@reader.errors.on(:trap)) do
       %label{ :for => 'reader_email', :class => 'required' }
-        Don't fill this in!
-      %span.formnote
-        it's a spam trap and you weren't supposed to see it
+        = t("dont_fill")
+      %span.formnote= t('spam_trap')
       %br
       = text_field_tag 'reader_email', '', :name => 'reader[email]', :class => 'standard'
 
 - else
 
-  - with_error_report(@reader.errors.on(:email)) do
-    = f.label :email, 'Your email address', :class => 'required'
+  %p
+    = f.label :email, t('your_email'), :class => 'required'
+    %span.formnote= t('email_notes')
     %br
     = f.text_field :email, :class => 'standard'
 
-- with_error_report(@reader.errors.on(:description)) do
-  = f.label :description, 'A little about yourself', :class => 'optional'
-  %span.formnote 
-    you can fill this in later. 
-    Textile formatting 
-    is allowed.
-  %br
-  = f.text_area :description, :class => 'standard', :rows => 8
+- if Radiant::Config['reader.use_description?']
+  %p
+    = f.label :description, t('your_description'), :class => 'optional'
+    %span.formnote= t('description_notes')
+    %br
+    = f.text_area :description, :class => 'standard', :rows => 8
 
-- with_error_report(@reader.errors.on(:login)) do
-  = f.label :login, 'Login username', :class => 'optional'
-  %span.formnote leave blank to use your email address
+%p
+  = f.label :login, t('login_name'), :class => 'optional'
+  %span.formnote= t('login_notes')
   %br
   = f.text_field :login, :class => 'standard'
 
-- with_error_report(@reader.errors.on(:password)) do
-  - label = @reader.new_record? ? 'Password' : 'Change password?'
+%p
+  - label = @reader.new_record? ? t('password') : t('change_password')
   - cssclass = @reader.new_record? ? 'required' : 'optional'
-  - help = @reader.new_record? ? 'at least four characters, please' : 'leave blank to keep present password. If changing, at least four characters.'
-  
   = f.label :password, label, :class => cssclass
-  %span.formnote
-    = help
-    %br
+  %span.formnote= @reader.new_record? ? t('password_notes') : t('existing_password_notes')
+  %br
   = f.password_field :password, :class => 'standard', :autocomplete => 'off'
 
-- with_error_report(@reader.errors.on(:password_confirmation)) do
-  = f.label :password_confirmation, "Confirm #{'new ' unless @reader.new_record?}password", :class => @reader.new_record? ? 'required' : 'optional'
-  - unless @reader.new_record?
-    %span.formnote
-      leave blank to keep present password
-      %br
+%p
+  - label = @reader.new_record? ? t('confirm_password') : t('confirm_new_password')
+  - cssclass = @reader.new_record? ? 'required' : 'optional'
+  = f.label :password_confirmation, label, :class => cssclass
+  %span.formnote= t('existing_password_notes')
+  %br
   = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
 - @form_partials.each do |partial|
