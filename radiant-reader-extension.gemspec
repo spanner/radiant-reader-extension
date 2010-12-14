@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "1.1.0"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-11-01}
+  s.date = %q{2010-11-15}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -59,6 +59,7 @@ Gem::Specification.new do |s|
      "app/views/password_resets/create.html.haml",
      "app/views/password_resets/edit.html.haml",
      "app/views/password_resets/new.html.haml",
+     "app/views/reader_activations/_activation_required.haml",
      "app/views/reader_activations/show.html.haml",
      "app/views/reader_notifier/message.html.haml",
      "app/views/reader_sessions/_login_form.html.haml",
@@ -94,13 +95,10 @@ Gem::Specification.new do |s|
      "db/migrate/20091111090819_ensure_functional_messages_visible.rb",
      "db/migrate/20091119092936_messages_have_layout.rb",
      "db/migrate/20100922152338_lock_versions.rb",
-     "db/migrate/20100927095703_default_settings.rb",
      "db/migrate/20101004074945_unlock_version.rb",
      "db/migrate/20101019094714_message_sent_date.rb",
-     "lib/config_extensions.rb",
      "lib/controller_extensions.rb",
      "lib/reader_admin_ui.rb",
-     "lib/reader_helper.rb",
      "lib/reader_site.rb",
      "lib/reader_tags.rb",
      "lib/rfc822.rb",
