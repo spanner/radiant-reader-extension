@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-reader-extension}
-  s.version = "1.2.0"
+  s.version = "1.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["spanner"]
-  s.date = %q{2010-11-15}
+  s.date = %q{2010-12-14}
   s.description = %q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
   s.email = %q{will@spanner.org}
   s.extra_rdoc_files = [
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
      "app/controllers/reader_activations_controller.rb",
      "app/controllers/reader_sessions_controller.rb",
      "app/controllers/readers_controller.rb",
+     "app/helpers/reader_helper.rb",
      "app/models/message.rb",
      "app/models/message_function.rb",
      "app/models/message_reader.rb",
