@@ -17,7 +17,7 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Status
 
-Compatible with radiant 0.9.2, which isn't out yet. You can use the preconfiguration branch of radiant edge to try this out. Expect changes.
+Compatible with radiant 0.9.2, which isn't out yet. You can use radiant edge to try this out. Expect small changes in support of the new forum and group releases. Multi-site compatibility fixes are likely too.
 
 ## Requirements
 
@@ -31,7 +31,7 @@ Sanitize uses nokogiri, which needs libxml2 and libxslt: you may need to go off 
 
 	gem 'authlogic'
 
-in your environment.rb before you can migrate anything. Authlogic has to load before anything else calls `require ApplicationController`.
+in your environment.rb before you can migrate anything. Authlogic has to load before _anything_ else requires `ApplicationController`.
 
 ## Installation
 
@@ -50,15 +50,7 @@ and then:
 
 ## Configuration
 
-If you want to allow public registration, set `reader.allow_registration?` to true. If it is false, then reader accounts can only be created by the administrator.
-
-Under multi_site Reader adds a `reader_layout` column to the site table and a layout-chooser to the site-edit view. In a single-site installation you will also need these configuration entries:
-
-* reader.layout (should be the name of a radiant layout)
-* site.name
-* site.url
-
-The latter two are used in email notifications.
+All the main configuration settings can now be managed through the 'readers' configuration pane.
 
 ## Layouts
 

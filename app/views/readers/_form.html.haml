@@ -21,10 +21,10 @@
 
   .innocuous
     %p
-      =f.label :email, t("dont_fill"), :class => 'required' }
+      =f.label :email, t("dont_fill"), :class => 'required'
       %span.formnote= t('spam_trap')
       %br
-      = f.text_field :email, '', :class => 'standard'
+      = f.text_field :email, :class => 'standard'
 
 - else
   %p
