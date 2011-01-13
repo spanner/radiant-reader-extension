@@ -58,14 +58,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
       redirect_to address + ".#{format}"    # nasty! but necessary for inline login.
     end
 
-    def render_page_or_feed(template_name = action_name)
-      respond_to do |format|
-        format.html { render :action => template_name }
-        format.rss  { render :action => template_name, :layout => 'feed' }
-        format.js  { render :action => template_name, :layout => false }
-      end
-    end
-
   end
 end
 

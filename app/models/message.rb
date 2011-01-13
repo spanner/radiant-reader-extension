@@ -1,6 +1,6 @@
 class Message < ActiveRecord::Base
 
-  is_site_scoped if defined? ActiveRecord::SiteNotFound
+  has_site if respond_to? :has_site
 
   belongs_to :layout
   belongs_to :created_by, :class_name => 'User'
@@ -33,7 +33,7 @@ class Message < ActiveRecord::Base
   end
 
   def undelivered_readers
-    possible_readers - recipients
+    possible_readers.except(recipients)
   end
 
   def inactive_readers

@@ -38,10 +38,7 @@
           %li
             = link_to t('edit_message').titlecase, edit_admin_message_url(@message)
           %li
-            - if @message.group
-              = link_to @message.group.name + ' ' + t('group_page'), admin_group_url(@message.group)
-            - else
-              = link_to t('reader_configuration_page').titlecase, admin_reader_configuration_url
+            = link_to t('reader_configuration_page').titlecase, admin_reader_configuration_url
  
     - delivery.options do
       - unless @message.administrative?
@@ -67,6 +64,6 @@
           %p.buttons
             = submit_tag t('send_message')
             = t('or')
-            = link_to t('cancel'), @message.group ? admin_group_url(@message.group) : admin_messages_url
+            = link_to t('cancel'), admin_messages_url
             
     

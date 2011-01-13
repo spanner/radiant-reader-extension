@@ -6,7 +6,7 @@
 
   - if session[:return_to]
     %p 
-      = link_to (t("return_to_page"), session[:return_to]) + '?'
+      = link_to t("return_to_page"), session[:return_to]
     
   - content_for :title do
     = t('hello').titlecase

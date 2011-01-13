@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "1.2.1"
+  version "1.2.3"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   

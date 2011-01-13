@@ -7,7 +7,7 @@ class Reader < ActiveRecord::Base
   cattr_accessor :current
   default_scope :order => 'name ASC'
 
-  is_site_scoped if respond_to? :is_site_scoped
+  has_site if respond_to? :has_site
 
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
@@ -39,6 +39,10 @@ class Reader < ActiveRecord::Base
   named_scope :any
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
+  named_scope :except, lambda { |readers|
+    readers = [readers].flatten
+    { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", readers.map(&:id)] }
+  }
 
   def forename
     read_attribute(:forename) || name.split(/\s/).first

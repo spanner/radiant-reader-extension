@@ -20,15 +20,13 @@
     = text_field_tag @email_field, params[@email_field] || @reader.email, :id => "reader_#{@email_field}", :class => 'standard'
 
   .innocuous
-    - with_error_report(@reader.errors.on(:trap)) do
-      %label{ :for => 'reader_email', :class => 'required' }
-        = t("dont_fill")
+    %p
+      =f.label :email, t("dont_fill"), :class => 'required' }
       %span.formnote= t('spam_trap')
       %br
-      = text_field_tag 'reader_email', '', :name => 'reader[email]', :class => 'standard'
+      = f.text_field :email, '', :class => 'standard'
 
 - else
-
   %p
     = f.label :email, t('your_email'), :class => 'required'
     %span.formnote= t('email_notes')
