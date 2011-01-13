@@ -94,6 +94,7 @@ en:
   reader_emails: "Administrative messages"
   reader: 'Reader'
   reader_logged_in_as: "You are logged in as %{name}."
+  reader_saved: "Reader saved"
   readers: 'Readers'
   register: "register"
   registration: "registration"
