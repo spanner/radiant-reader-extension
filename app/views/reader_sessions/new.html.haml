@@ -1,36 +1,36 @@
-- content_for :signals do
-  = render :partial => 'readers/flasher'
+= render :partial => 'readers/standard_parts'
 
-- if current_reader
-  %p
-    = t('reader_logged_in_as')
-    %strong
-      = current_reader.name
-    - unless current_reader.activated?
-      = t('but_not_active')
+- content_for :login do
+  - if current_reader
+    %p
+      = t('reader_logged_in_as')
+      %strong
+        = current_reader.name
+      - unless current_reader.activated?
+        = t('but_not_active')
     
-  - if current_reader.activated?
-    %p
-      =t('if_not_you')
-      = link_to t("log_out"), reader_logout_url
+    - if current_reader.activated?
+      %p
+        =t('if_not_you')
+        = link_to t("log_out"), reader_logout_url
+    - else
+      %p
+        =t('if_cant_find')
+        = link_to(t("send_it_again"), new_reader_activation_url) + '.'
+      %p
+        =t('if_not_you')
+        =t('or')
+        =t('wrong_email')
+        =t('please')
+        = link_to "log out", reader_logout_url
+        =t('and_try_again')
+      
   - else
-    %p
-      =t('if_cant_find')
-      = link_to(t("send_it_again"), new_reader_activation_url) + '.'
-    %p
-      =t('if_not_you')
-      =t('or')
-      =t('wrong_email')
-      =t('please')
-      = link_to "log out", reader_logout_url
-      =t('and_try_again')
+    - if @message
+      %p
+        = @message
       
-- else
-  - if flash[:explanation]
-    %p
-      = flash[:explanation]
-      
-  = render :partial => 'login_form', :locals => {:no_title => true}
+    = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do
   = link_to t('home').titlecase, '/' 
@@ -39,3 +39,7 @@
 
 - content_for :title do
   = t('please_log_in').titlecase
+
+
+
+= yield :login

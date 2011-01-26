@@ -1,9 +1,29 @@
-= render :partial => 'flasher'
+= render :partial => 'readers/standard_parts'
 
-%div
+- content_for :introduction do
+  =t('readers_introduction')
+  
+- content_for :list do
   #readers
-    - @readers.each do |reader|
-      = link_to gravatar_for(reader, {:size => 100}, {:class => 'big gravatar'}), reader_url(reader), {:title => reader.name}
+    - if @readers.size > 1
+      - columns = [@readers[0..@readers.size/2], @readers[@readers.size/2+1..@readers.size]]
+    - else
+      - columns = [@readers]
+    - columns.each do |readers|
+      %div.column
+        - readers.each do |reader|
+          .reader
+            %h2
+              = link_to standard_gravatar_for(reader), reader_url(reader), {:title => reader.name}
+              = link_to reader.name, reader_url(reader)
+            %p.context
+              = t("joined_on")
+              = l(reader.created_at, :format => :date) + '.'
+              - @index_partials.each do |partial|
+                = render :partial => partial, :locals => {:reader => reader}
+
+- content_for :pagination do
+  = pagination_and_summary_for(@readers, t('person'))
 
 - content_for :breadcrumbs do
   = link_to t('home').titlecase, '/'
@@ -12,3 +32,8 @@
 
 - content_for :title do
   = t('people').titlecase
+
+
+= yield :pagination if @readers.previous_page
+= yield :list
+= yield :pagination if @readers.next_page

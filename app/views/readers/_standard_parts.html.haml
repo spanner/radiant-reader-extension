@@ -1,0 +1,33 @@
+- add_reader_js '/javascripts/reader.js'
+- add_reader_css '/stylesheets/reader.css'
+
+- content_for :section_navigation do
+  = link_to t('navigation.readers'), readers_url, :class => 'section'
+  - if current_reader
+    = link_to t('navigation.profile'), reader_profile_url
+    = link_to t('navigation.preferences'), reader_account_url
+    - unless current_reader.activated?
+      = link_to t('navigation.activate'), new_reader_activation_url
+    = link_to t('navigation.logout'), reader_logout_url
+  - else
+    = link_to t('log_in'), reader_login_url
+  - if Radiant::Config['reader.help_url']
+    = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']
+
+- content_for :controls do
+  = render :partial => 'readers/controls'
+
+- content_for :signals do
+  = render :partial => 'readers/flasher'
+
+- content_for :reader_css do
+  - reader_css_paths.each do |path|
+    %link{:rel => 'stylesheet', :href => path, :type => 'text/css'}
+
+- content_for :reader_js do
+  - reader_js_paths.each do |path|
+    %script{:src => path, :type => 'text/javascript'}
+
+- content_for :person do
+  - if @reader
+    = standard_gravatar_for(@reader)

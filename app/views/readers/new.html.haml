@@ -1,27 +1,20 @@
-= render :partial => 'flasher'
+= render :partial => 'readers/standard_parts'
 
-%div.register_form
+- content_for :person do
+  = standard_gravatar_for(@reader)
+
+- content_for :introduction do
   %p
     = t('please_register')
     = t('already_registered')
     = link_to t('log_in') + '.', reader_login_url
 
-  - unless @reader.errors.empty?
-    %p.errornote
-      %strong 
-        = t('sorry').titlecase
-        = t('form_problem') + '.'
-      
-  - form_for :reader, :url => readers_url, :html => {:class => 'friendly'} do |f|
-    = render :partial => 'form', :locals => {:f => f}
-    %p
-      = submit_tag t("register")
-      or 
-      = link_to t('cancel'), request.referer
+- content_for :form do
+  = render :partial => 'form', :locals => {:f => f}
 
+- content_for :notes do
   %h3
     = t('notes').titlecase
-
   %ul.friendly
     %li
       = t('confirming_email')
@@ -40,3 +33,8 @@
 
 - content_for :title do
   = t('new_account').titlecase
+
+
+
+= yield :form
+= yield :notes

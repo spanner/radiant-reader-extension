@@ -1,6 +1,5 @@
 class ReaderNotifier < ActionMailer::Base
 
-  # this sets a default that will be overridden by the layout association of each message as it is sent out
   radiant_layout lambda { Radiant::Config['email.layout'] || 'email'}
   
   def message(reader, message, sender=nil)

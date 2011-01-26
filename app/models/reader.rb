@@ -24,7 +24,8 @@ class Reader < ActiveRecord::Base
   has_many :messages, :through => :message_readers
 
   attr_accessor :current_password   # used for authentication on update
-
+  attr_accessor :email_field        # used in blocking spam registrations
+  
   before_save :set_login
   before_update :update_user
 
@@ -79,21 +80,21 @@ class Reader < ActiveRecord::Base
     message.deliver_to(self)
   end
 
-  def generate_email_field_name
-    generate_password(32)
-  end
-
   def generate_password(length=12)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
     Array.new(length, '').collect{chars[rand(chars.size)]}.join
   end
 
+  def generate_email_field_name
+    self.email_field = generate_password(32)
+  end
+
   def is_user?
-    self.user ? true : false
+    !!self.user
   end
 
   def is_admin?
-    self.user && self.user.admin? ? true : false
+    is_user? && self.user.admin?
   end
 
   def self.find_or_create_for_user(user)

@@ -1,66 +1,96 @@
-%p
-  = f.label :name, t('your_name'), :class => 'required'
-  %span.formnote= t('name_notes')
-  %br
-  = f.text_field :name, :class => 'standard'
+- reader ||= @reader
+- check_password ||= false
 
-- if Radiant::Config['reader.use_honorifics?']
-  %p
-    = f.label :honorific, t(:honorific), :class => 'optional'
-    %span.formnote= t('honorific_notes')
-    %br
-    = f.text_field :honorific, :class => 'standard'
-
-- if @reader.new_record? && @email_field
-
-  %p
-    = f.label @email_field, t('your_email'), :class => 'required'
-    %span.formnote= t('email_notes')
-    %br
-    = text_field_tag @email_field, params[@email_field] || @reader.email, :id => "reader_#{@email_field}", :class => 'standard'
-
-  .innocuous
+- form_for :reader, reader, :html => { :method => "put", :class => 'friendly'} do |f| 
+  - unless @reader.errors.empty?
+    %p.errornote
+      %strong 
+        = t('sorry').titlecase
+        = t('form_problem') + '.'
+  - else
     %p
-      =f.label :email, t("dont_fill"), :class => 'required'
-      %span.formnote= t('spam_trap')
+      = t('bold_required')
+
+  %p
+    = f.label :name, t('your_name'), :class => 'required'
+    %span.formnote= t('name_notes')
+    %br
+    = f.text_field :name, :class => 'standard'
+
+  - if Radiant::Config['reader.use_honorifics?']
+    %p
+      = f.label :honorific, t(:honorific), :class => 'optional'
+      %span.formnote= t('honorific_notes')
+      %br
+      = f.text_field :honorific, :class => 'standard'
+
+  - if reader.new_record? && reader.email_field
+    %p
+      = f.label reader.email_field, t('label.reader.email'), :class => 'required'
+      %span.formnote= t('email_notes')
+      %br
+      = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
+    .innocuous
+      %p
+        =f.label :email, t("dont_fill"), :class => 'required'
+        %br
+        = f.text_field :email, :class => 'standard'
+        %span.formnote= t('spam_trap')
+
+  - else
+    %p
+      = f.label :email, t('your_email'), :class => 'required'
       %br
       = f.text_field :email, :class => 'standard'
+      %span.formnote= t('email_notes')
 
-- else
   %p
-    = f.label :email, t('your_email'), :class => 'required'
-    %span.formnote= t('email_notes')
+    = f.label :login, t('login_name'), :class => 'optional'
     %br
-    = f.text_field :email, :class => 'standard'
+    = f.text_field :login, :class => 'standard'
+    %span.formnote= t('login_notes')
 
-- if Radiant::Config['reader.use_description?']
+  - if reader.new_record?
+    %p
+      = f.label :password, t('password'), :class => 'required'
+      %br
+      = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+      %span.formnote= t('password_notes')
+
+    %p
+      = f.label :password_confirmation, t('confirm_password'), :class => 'required'
+      %br
+      = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
+
+  - else 
+    .display_password
+      %p
+        = f.label :password, t('password').titlecase, :class => 'optional'
+        %span.password
+          &bull;&bull;&bull;&bull;&bull;
+          = link_to t('change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
+    .new_password.hidden
+      %p
+        = f.label :password, t('new_password'), :class => 'required'
+        %br
+        = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+        %span.formnote= t('new_password_notes')
+      %p
+        = f.label :password_confirmation, t('confirm_new_password'), :class => 'required'
+        %br
+        = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
+    
+  - if Radiant::Config['reader.use_description?']
+    %p
+      = f.label :description, t('your_description'), :class => 'optional'
+      %br
+      = f.text_area :description, :class => 'standard', :rows => 8
+      %span.formnote= t('description_notes')
+
+  - @edit_partials.each do |partial|
+    = render :partial => partial, :locals => {:reader => @reader}
+
   %p
-    = f.label :description, t('your_description'), :class => 'optional'
-    %span.formnote= t('description_notes')
-    %br
-    = f.text_area :description, :class => 'standard', :rows => 8
-
-%p
-  = f.label :login, t('login_name'), :class => 'optional'
-  %span.formnote= t('login_notes')
-  %br
-  = f.text_field :login, :class => 'standard'
-
-%p
-  - label = @reader.new_record? ? t('password') : t('change_password')
-  - cssclass = @reader.new_record? ? 'required' : 'optional'
-  = f.label :password, label, :class => cssclass
-  %span.formnote= @reader.new_record? ? t('password_notes') : t('existing_password_notes')
-  %br
-  = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-
-%p
-  - label = @reader.new_record? ? t('confirm_password') : t('confirm_new_password')
-  - cssclass = @reader.new_record? ? 'required' : 'optional'
-  = f.label :password_confirmation, label, :class => cssclass
-  %span.formnote= t('existing_password_notes')
-  %br
-  = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
-
-- @form_partials.each do |partial|
-  = render :partial => partial
+    = submit_tag reader.new_record? ? t('create_account') : t("update_account")
+    or 
+    = link_to 'cancel', request.referer

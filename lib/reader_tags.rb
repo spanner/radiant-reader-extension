@@ -96,7 +96,7 @@ module ReaderTags
     <pre><code><r:recipient:repassword_url /></code></pre>
   }
   tag "recipient:repassword_url" do |tag|
-    new_password_reset_url(tag.locals.recipient, :confirmation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
+    repassword_me_url(tag.locals.recipient, :confirmation_code => tag.locals.recipient.perishable_token, :host => @mailer_vars[:@host])
   end
 
   desc %{

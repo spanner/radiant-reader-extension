@@ -1,38 +1,27 @@
-= render :partial => 'flasher'
+= render :partial => 'readers/standard_parts'
 
-%div.reader_show
-  - if @reader == current_reader
-    %p.system_message
-      %strong
-        =t('hello').titlecase
-        = @reader.name + '.'
-      = t('this_is_your_page')
-    %ul.actions
-      %li
-        = link_to t('edit_profile'), edit_reader_url(@reader)
-      %li
-        = link_to t('change_gravatar'), "http://gravatar.com/site/login/"
-
-  = gravatar_for(@reader, {:size => 128}, {:class => 'big_gravatar'})
-
+- content_for :description do
   - if @reader.description.blank?
     %p 
       = t('no_description')
   - else
     = clean_textilize @reader.description
 
-  = render :partial => 'contributions'
-      
+  - @show_partials.each do |partial|
+    = render :partial => partial, :locals => {:reader => @reader}
+
 - content_for :breadhead do
-  = link_to t('people').titlecase, '/readers'
+  = link_to t('readers').titlecase + t('separator'), readers_url
+  = yield :parent
+
+- content_for :title do
+  = @reader.name
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/'
-  &gt;
-  = link_to t('people').titlecase, '/readers'
-  &gt;
-  = @reader.name
+  = yield :breadhead
+  = t('separator')
+  = yield :title
 
-- content_for :pagetitle do
-  = @reader.name
 
+
+= yield :description

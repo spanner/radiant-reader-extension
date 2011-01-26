@@ -17,8 +17,8 @@ en:
   cancel: "cancel"
   cannot_delete_readers: "To delete readers, please log in as an administrator"
   cannot_edit_others: "You are not allowed to edit other people's accounts."
-  change_gravatar: "change your gravatar image"
-  change_password: "Change my password"
+  change_gravatar: "change gravatar image"
+  change_password: "Change your password"
   config:
     reader:
       allow_registration?: "Allow registration"
@@ -56,6 +56,16 @@ en:
   if_cant_find: "If you can't find the message, we can"
   if_mistake_see_admin: "If this is a mistake, please talk to the site administrator about your account."
   is_free_and_quick: " is free and only takes a moment"
+  joined_on: "Joined on"
+  label:
+    reader:
+      name: "Your name"
+      honorific: "Title"
+      login: "Login username"
+      email: "Email address"
+      password: "Password"
+      repeat_password: "Confirm password"
+      current_password: "Current password"
   log_in: 'log in'
   log_out: "log out"
   login_name: "Login name"
@@ -64,6 +74,13 @@ en:
   logout_message: "You are logged out. Bye!"
   must_be_empty: "must be empty"
   name_notes: "as you would like it to appear on the site"
+  navigation:
+    activate: "Activate account"
+    readers: "People"
+    preferences: "Preferences"
+    profile: "Your profile"
+    login: "Log in"
+    logout: "Log out"
   new_account: "Register"
   new_password: "New password"
   new_password_instructions: "Please enter and confirm the new password you would like to use. It must be at least four characters long, nothing obvious or typical and ideally a mixture of numbers and letters."
@@ -74,7 +91,7 @@ en:
   password: "password"
   password_incorrect: "Sorry. Wrong password."
   password_mismatch: "Passwords don't match! Please try again."
-  password_not_yet_changed: "Your password hasn't changed yet, so if you've just remembered it you can still log in as usual."
+  password_not_yet_changed: "Your password hasn't changed yet, so if you've just remembered it please <a href='%{url}'>log in as usual</a>."
   password_notes: "at least four characters, please"
   password_reset_instructions: "Please enter your email address below. If we recognise it, we'll send you a message with a confirmation link (or if your account is not yet active, we'll send the activation message again)."
   password_reset_reassurance: "Your password will not change until you fill in that form, so only you can complete this process."
@@ -95,14 +112,14 @@ en:
   reader: 'Reader'
   reader_logged_in_as: "You are logged in as %{name}."
   reader_saved: "Reader saved"
-  readers: 'Readers'
+  readers: 'People'
   register: "register"
   registration: "registration"
   registration_disallowed: "Sorry. This site does not allow visitors to register"
   remember_me: "remember me"
   resend_activation: "resent activation messages"
   reset_message_instructions: "Thank you. A message has been sent containing the instructions for setting a new password. Remember it hasn't changed yet and won't until you follow the instructions in the message. If you remember your old password, you can just carry on using it and ignore the reset message."
-  reset_message_sent: "Password-reset instructions have been emailed to you."
+  reset_message_sent: "Password-reset instructions have been emailed to you"
   reset_not_found: "Password-reset code not found"
   sorry_reset_not_found: "Sorry: the system can't find you. That link must have been garbled somewhere along the line. Please paste the 20-character confirmation code into the box below and we'll try again."
   reset_password: "Reset your password"
@@ -110,6 +127,7 @@ en:
   return_to_page: "return to the page you were looking at before you started registering"
   send_it_again: "send it again"
   send_reset_button: "send me instructions"
+  set_new_password: "set new password"
   sorry: "sorry"
   sorry_access_denied: "Sorry: access denied"
   spam_trap: "it's a spam trap and shouldn't be visible"
@@ -117,6 +135,9 @@ en:
   thanks_activated: "Thank you! Your account has been activated."
   thanks_and_activation_instructions: "Thank you for registering. Now please check your email. We have sent a message containing a link that will automatically activate your account and log you in."
   this_is_your_page: "This is the page that other (logged-in) site visitors will see when they click on your name."
+  time:
+    formats:
+      date: "%B %e, %Y"
   username: "username"
   welcome_back: "Welcome back"
   welcome_message: "Welcome message"
@@ -150,3 +171,5 @@ en:
   for: 'for'
   home: 'home'
   reader_required: "Sorry: this part of the site requires an account."
+  update_account: "Save changes"
+  create_account: "Register"

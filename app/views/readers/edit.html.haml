@@ -1,37 +1,15 @@
-= render :partial => 'flasher'
+= render :partial => 'readers/standard_parts'
 
-%div.preferences_form
+- content_for :introduction do
   %p
-    = t("hello")
+    = t("hello").titlecase
     = link_to(@reader.name, reader_url(@reader)) + '.'
     = t('preferences_intro')
-    = t('enter_own_password')
 
-  - unless @reader.errors.empty?
-    %p.errornote
-      %strong 
-        = t('sorry').titlecase
-        = t('form_problem') + '.'
-      
-  - form_for :reader, :url => reader_url(@reader), :html => { :method => "put", :class => 'friendly'} do |f| 
-    
-    %p
-      = f.label :current_password, "Current password", :class => 'required'
-      %span.formnote
-        = link_to t('forgotten_password'), new_password_reset_url
-      = f.password_field :current_password, :class => 'standard', :autocomplete => 'off'
-      
-    %p
-      = t('bold_required')
-      
-    = render :partial => 'form', :locals => {:f => f}
-    %p
-      = submit_tag "Update your account"
-      or 
-      = link_to 'cancel', request.referer
-
+- content_for :form do
+  = render :partial => 'form', :locals => {:reader => @reader}
   %p
-    = link_to gravatar_for(@reader, {:size => 60}, {:class => 'gravatar'}), 'http://gravatar.com/site/login'
+    = standard_gravatar_for(@reader, 'http://gravatar.com/site/login')
     = link_to t('change_gravatar'), "http://gravatar.com/site/login/"
     
 - content_for :breadcrumbs do 
@@ -42,4 +20,8 @@
   = t('account_settings')
 
 - content_for :title do 
-  = t('account')
+  = t('account_settings')
+    
+
+
+= yield :form

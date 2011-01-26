@@ -1,19 +1,18 @@
 class ReadersController < ReaderActionController
   helper :reader
   
-  @@extended_form_partials = []
-  cattr_accessor :extended_form_partials
+  cattr_accessor :edit_partials, :show_partials, :index_partials
   
   before_filter :check_registration_allowed, :only => [:new, :create]
-  before_filter :initialize_form_partials, :only => [:new, :edit, :update, :create]
-  before_filter :i_am_me, :only => [:show]
+  before_filter :initialize_partials
+  before_filter :i_am_me, :only => [:show, :edit]
   before_filter :require_reader, :except => [:index, :new, :create, :activate]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
 
   def index
-    @readers = Reader.paginate(:page => params[:page], :order => 'readers.created_at desc')
+    @readers = Reader.all.paginate(pagination_parameters.merge(:per_page => 60))
   end
 
   def show
@@ -40,7 +39,7 @@ class ReadersController < ReaderActionController
     end
     @reader = Reader.new
     session[:return_to] = request.referer
-    session[:email_field] = @email_field = @reader.generate_email_field_name
+    session[:email_field] = @reader.generate_email_field_name
   end
   
   def edit
@@ -87,7 +86,7 @@ class ReadersController < ReaderActionController
 protected
 
   def i_am_me
-    params[:id] = current_reader.id if params[:id] == 'me' && current_reader
+    params[:id] = current_reader.id if current_reader && params[:id] == 'me'
   end
 
   def restrict_to_self
@@ -120,13 +119,26 @@ protected
     end
   end
   
-  def self.add_form_partial(path)
-    extended_form_partials.push(path)
+  def self.add_edit_partial(path)
+    @@edit_partials ||= []
+    edit_partials.push(path)
+  end
+
+  def self.add_show_partial(path)
+    @@show_partials ||= []
+    show_partials.push(path)
+  end
+
+  def self.add_index_partial(path)
+    @@index_partials ||= []
+    index_partials.push(path)
   end
 
 private
-  def initialize_form_partials
-    @form_partials = extended_form_partials
+  def initialize_partials
+    @show_partials = show_partials
+    @edit_partials = edit_partials
+    @index_partials = index_partials
   end
 
 end

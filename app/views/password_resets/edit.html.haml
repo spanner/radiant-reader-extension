@@ -1,12 +1,7 @@
-.mainform
+- render :partial => 'readers/standard_parts'
+
+- content_for :form do
   - if @reader
-
-    %p
-      %strong
-        = t('hello')
-        = @reader.name + '.'
-      = t('new_password_instructions')
-
     - form_for @reader, :url => password_reset_path, :method => :put, :html => {:class => 'friendly', :autocomplete => "off"} do |f|
 
       - if @reader.errors.any?
@@ -20,28 +15,20 @@
 
       %p
         = f.label :password, t('new_password'), :class => 'required'
-        %span.formnote= t('password_notes')
         %br
         = f.password_field :password, :class => 'titular'
 
       %p
-        = f.label :password_confirmation, t('repeat_password'), :class => 'required'
+        = f.label :password_confirmation, t('confirm_password'), :class => 'required'
         %br
         = f.password_field :password_confirmation, :class => 'titular'
       %p
-        = f.submit "Update my password and log me in"
+        = f.submit t('set_new_password')
         
       %p
-        = t('password_not_yet_changed')
-
-      - content_for :title do
-        = t('change_password')
+        = t('password_not_yet_changed', :url => reader_login_url)
 
   - else 
-
-    %p.errornote
-      = t('sorry_reset_not_found')
-      
     - form_tag edit_password_reset_path, :method => 'GET', :class => 'friendly', :autocomplete => "off" do
       = hidden_field_tag :id, params[:id]
       %p
@@ -57,11 +44,27 @@
       %li
         = link_to t("restart_password_change"), new_password_reset_url
       
-    - content_for :title do
-      = t('enter_code')
-      
+- content_for :title do
+  - if @reader
+    = t('change_password')
+  - else
+    = t('enter_code')
+
+- content_for :introduction do
+  - if @reader
+    %p
+      %strong
+        = t('hello').titlecase
+        = @reader.name + '!'
+      = t('new_password_instructions')
+  - else
+    %p.errornote
+      = t('sorry_reset_not_found')
+    
+
 - content_for :breadcrumbs do
   = link_to t('home').titlecase, '/'
   &gt; 
   = t('reset_password')
 
+= yield :form

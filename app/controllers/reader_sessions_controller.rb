@@ -45,7 +45,7 @@ class ReaderSessionsController < ReaderActionController
       current_user = nil
     end
     flash[:notice] = t('logout_message')
-    redirect_back_or_to reader_login_url
+    redirect_to reader_login_url
   end
   
 protected

@@ -20,7 +20,7 @@ class ReaderActivationsController < ReaderActionController
     if current_reader
       @reader = current_reader
       @reader.send_activation_message
-      flash[:notice] = "activation_message_sent"
+      flash[:notice] = t("activation_message_sent")
     end
     render :action => 'show'
   end
@@ -29,11 +29,11 @@ class ReaderActivationsController < ReaderActionController
     if @reader
       @reader.activate!
       self.current_reader = @reader
-      flash[:notice] = "thanks_activated"
+      flash[:notice] = t("thanks_activated")
       redirect_back_or_to default_activated_url
     else
-      @error = "please_check_message"
-      flash[:error] = "activation_failed."
+      @error = t("please_check_message")
+      flash[:error] = t("activation_failed")
       render :action => 'show'
     end
   end
