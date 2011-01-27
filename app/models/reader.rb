@@ -40,6 +40,7 @@ class Reader < ActiveRecord::Base
   named_scope :any
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
+  named_scope :imported, :conditions => "old_id IS NOT NULL"
   named_scope :except, lambda { |readers|
     readers = [readers].flatten
     { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", readers.map(&:id)] }
