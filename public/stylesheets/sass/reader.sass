@@ -1,136 +1,91 @@
-@import reader_constants.sass
+@import compass/css3
 
-/*** friendly forms *******
+$dark: #4d4e53        / cool grey 11
+$mid: #8c8d8e         / cool grey 8
+$pale: #afafaf        / cool grey 6
+$paler: #bdbdbd       / cool grey 4
+$verypale: #d6d6d4    / cool grey 2
+$accent = #d1005d     / rubine red
 
-form.friendly
-  margin: 0 0 60px 0
-  p
-    margin: 1em 0 0 0
-  input.titular
-    clear: both
-    width: 95%
-    font-family: Georgia,Palatino,Sylfaen,"Times New Roman", Times, serif
-    font-size: 1.2em
-    line-height: 1
-    color: #4d4e53
-    border-width: 1px
-    border-style: solid
-    border-color: #cacac8
-    padding: 5px
-    font-size: 200%
-  textarea, select
-    width: 95%
-    font-family: Georgia,Palatino,Sylfaen,"Times New Roman", Times, serif
-    font-size: 1.2em
-    line-height: 1
-    color: #4d4e53
-    border-width: 1px
-    border-style: solid
-    border-color: #cacac8
-    padding: 5px
-  input
-    &.standard
-      width: 95%
-      font-family: Georgia,Palatino,Sylfaen,"Times New Roman", Times, serif
-      font-size: 1.2em
-      line-height: 1
-      color: #4d4e53
-      border-width: 1px
-      border-style: solid
-      border-color: #cacac8
-      padding: 5px
-    &.login
-      width: 50%
-      font-family: Georgia,Palatino,Sylfaen,"Times New Roman", Times, serif
-      font-size: 1.2em
-      line-height: 1
-      color: #4d4e53
-      border-width: 1px
-      border-style: solid
-      border-color: #cacac8
-      padding: 5px
-  textarea
-    color: #559dc4
-    line-height: 1.4
-  span.formnote
-    font-family: helvetica, arial, sans-serif
-    font-size: 0.8em
-    line-height: 1.4
-    color: #cacac8
-  div.error-with-field
-    display: inline
-  small.error
-    display: none
-  p.context
-    margin: 0
-  div.innocuous
-    display: none
-  label.required
-    font-weight: bold
-
-/***** input validation and error reporting *******
-
-p
-  &.errornote
-    color: #d1005d
-  &.haserror
-    border-left-width: 4px
-    border-left-style: solid
-    border-left-color: #d1005d
-    padding-left: 12px
-    color: #d1005d
-    input, textarea
-      border-width: 1px
-      border-style: solid
-      border-color: #d1005d
-    label
-      color: #d1005d
-
-ul.friendly
-  list-style: square
+=functional
   font-family: helvetica, arial, sans-serif
-  font-size: 0.8em
-  line-height: 1.4
-  color: #4d4e53
-  padding-left: 0
-  margin-top: 0
-
-h2.inviting, a.inviting
-  display: block
-  font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif
+  font-weight: normal
+=strong
+  +functional
   font-weight: bold
-  font-size: 1.6em
-  margin-bottom: 0
-  margin-top: 50px
+=small
+  +functional
+  font-size: 80%
 
-/***** gravatars and other useful things *******
+
+div#readers
+  .reader
+    margin-bottom: 1em
+  h2
+    line-height: 1
+    margin: 0
+  
+div.activation_required
+  color: $accent
+
+p.administrative
+  font-family: helvetica,arial,sans-serif
+  color: $pale
 
 img.gravatar
-  float: left
-  margin: 0 10px 3px 0
   +box-shadow
   border: 3px solid white
   &.thumbnail
     margin: 2px 10px 10px 0
   &.big
     margin: 8px 10px 4px 0
+  &.tiny
+    margin: 0 6px 4px 0
+    border: 1px solid white
 
-/*** system messages and controls *******
-
-.notice, .error
-  position: absolute
-  width: 250px
-  right: 10px
-  +border-radius
-  +box-shadow
-  color: white
-  margin: 0
-  padding: 0.75em
-
-.notice
-  background-color: #00cc33
-  border: 3px solid #7fe699
-
-.error
-  background-color: #cc0000
-  border: 3px solid #ff0071
+form.friendly
+  margin: 0 0 60px 0
+  p
+    margin: 1em 0 0 0
+  input.titular
+    width: 95%
+    font-size: 200%
+  textarea, select
+    width: 95%
+  textarea
+    height: 400px
+  input.standard
+    width: 95%
+  input.login
+    width: 50%
+  span.formnote
+    color: $mid
+  label
+    &.required
+      font-weight: bold
+  span.password
+    display: block
+    width: 95%
+    padding: 5px 
+    font-size: 1.2
+    line-height: 1.2
+    color: $pale
+    border: 1px solid $pale
+  span.error-with-field
+    input, select
+      border: 1px solid red
+      color: red
+    span.error
+      line-height: 1.4
+      background-color: $accent
+      color: white
+      padding: 3px 6px
+      margin: -5px 0 0 6px
+      cursor: pointer
+      +border-radius
+      +box-shadow
+      a.closer
+        margin-left: 10px
+        color: white
+        text-decoration: none
+    

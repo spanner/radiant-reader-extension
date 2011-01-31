@@ -13,21 +13,21 @@
 
   %p
     = f.label :name, t('your_name'), :class => 'required'
-    %span.formnote= t('name_notes')
     %br
     = f.text_field :name, :class => 'standard'
+    %span.formnote= t('form_notes.name')
 
   - if Radiant::Config['reader.use_honorifics?']
     %p
       = f.label :honorific, t(:honorific), :class => 'optional'
-      %span.formnote= t('honorific_notes')
+      %span.formnote= t('form_notes.honorific')
       %br
       = f.text_field :honorific, :class => 'standard'
 
   - if reader.new_record? && reader.email_field
     %p
       = f.label reader.email_field, t('label.reader.email'), :class => 'required'
-      %span.formnote= t('email_notes')
+      %span.formnote= t('form_notes.email')
       %br
       = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
     .innocuous
@@ -42,20 +42,20 @@
       = f.label :email, t('your_email'), :class => 'required'
       %br
       = f.text_field :email, :class => 'standard'
-      %span.formnote= t('email_notes')
+      %span.formnote= t('form_notes.email')
 
   %p
     = f.label :login, t('login_name'), :class => 'optional'
     %br
     = f.text_field :login, :class => 'standard'
-    %span.formnote= t('login_notes')
+    %span.formnote= t('form_notes.login')
 
   - if reader.new_record?
     %p
       = f.label :password, t('password'), :class => 'required'
       %br
       = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-      %span.formnote= t('password_notes')
+      %span.formnote= t('form_notes.new_password')
 
     %p
       = f.label :password_confirmation, t('confirm_password'), :class => 'required'
@@ -68,13 +68,14 @@
         = f.label :password, t('password').titlecase, :class => 'optional'
         %span.password
           &bull;&bull;&bull;&bull;&bull;
-          = link_to t('change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
+        %span.formnote= link_to t('change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
+          
     .new_password.hidden
       %p
         = f.label :password, t('new_password'), :class => 'required'
         %br
         = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-        %span.formnote= t('new_password_notes')
+        %span.formnote= t('form_notes.new_password')
       %p
         = f.label :password_confirmation, t('confirm_new_password'), :class => 'required'
         %br
@@ -85,7 +86,7 @@
       = f.label :description, t('your_description'), :class => 'optional'
       %br
       = f.text_area :description, :class => 'standard', :rows => 8
-      %span.formnote= t('description_notes')
+      %span.formnote= t('form_notes.description')
 
   - @edit_partials.each do |partial|
     = render :partial => partial, :locals => {:reader => @reader}
