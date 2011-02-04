@@ -4,13 +4,14 @@ module ReaderHelper
   def standard_gravatar_for(reader=nil, url=nil)
     size = Radiant::Config['forum.gravatar_size'] || 40
     url ||= reader_url(reader)
-    gravatar = gravatar_for(reader, {:size => size, :default => "#{request.protocol}#{request.host_with_port}/images/furniture/no_gravatar.png"}, {:class => 'gravatar offset', :width => size, :height => size})
+    gravatar = gravatar_for(reader, {:size => size}, {:class => 'gravatar offset', :width => size, :height => size})
     link_to gravatar, url
   end
 
   def gravatar_for(reader=nil, gravatar_options={}, img_options ={})
-    size = gravatar_options[:size]
-    img_options[:size] ||= "#{size}x#{size}" if size
+    size = gravatar_options[:size] || 40
+    img_options[:size] ||= "#{size}x#{size}"
+    gravatar_options[:default] ||= "#{request.protocol}#{request.host_with_port}/images/furniture/no_gravatar.png"
     img_options[:alt] ||= reader.name if reader
     if reader.nil? || reader.email.blank?
       image_tag gravatar_options[:default], img_options

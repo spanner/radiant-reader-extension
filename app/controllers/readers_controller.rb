@@ -43,6 +43,7 @@ class ReadersController < ReaderActionController
   end
   
   def edit
+    expires_now
   end
   
   def create
