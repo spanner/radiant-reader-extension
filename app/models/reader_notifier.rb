@@ -5,7 +5,7 @@ class ReaderNotifier < ActionMailer::Base
   def message(reader, message, sender=nil)
     site = reader.site if reader.respond_to?(:site)
     prefix = site ? site.abbreviation : Radiant::Config['email.prefix']
-    host = site ? site.base_domain : Radiant::Config['site.domain'] || 'www.example.com'
+    host = site ? site.base_domain : Radiant::Config['site.host'] || 'www.example.com'
     default_url_options[:host] = host
     sender = Radiant::Config['email.name'] || "sender_not_configured"
     sender_address = Radiant::Config['email.address'] || "admin@#{host}"
@@ -27,8 +27,8 @@ class ReaderNotifier < ActionMailer::Base
       :reply_to => sender_address,
       :reader => reader,
       :site => site || {
-        :name => Radiant::Config['site.title'],
-        :url => Radiant::Config['site.domain']
+        :name => Radiant::Config['site.name'],
+        :url => Radiant::Config['site.host']
       }
     })
   end
