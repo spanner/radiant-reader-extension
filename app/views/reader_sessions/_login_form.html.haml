@@ -43,11 +43,11 @@
       %label.paranthetical{:for => "reader_session_remember_me"}
         = t('remember_me')
 
-  %ul.quiet
+  %ul
     - if Radiant::Config['reader.allow_registration?']
       %li
         = link_to "registration".titlecase, new_reader_url
         = t('is_free_and_quick')
     %li
-      = link_to t("forgotten_password").titlecase, new_password_reset_url
+      = link_to t("forgotten_password"), new_password_reset_url
       

@@ -17,6 +17,28 @@ $accent = #d1005d     / rubine red
   +functional
   font-size: 80%
 
+.error, .notice
+  position: absolute
+  width: 300px
+  top: 50px
+  right: 50px
+  +border-radius
+  +box-shadow
+  color: white
+  padding: 1px 1em
+  a.closer
+    display: block
+    position: absolute
+    top: 5px
+    right: 5px
+    color: white
+    font-weight: bold
+.notice
+  background-color: #b2e5b2
+  color: #060
+.error
+  background-color: #f3c2c2
+  color: #770000
 
 div#readers
   .reader
@@ -47,6 +69,9 @@ form.friendly
   margin: 0 0 60px 0
   p
     margin: 1em 0 0 0
+  input.login
+    width: 95%
+    font-size: 140%
   input.titular
     width: 95%
     font-size: 200%
@@ -56,8 +81,6 @@ form.friendly
     height: 400px
   input.standard
     width: 95%
-  input.login
-    width: 50%
   span.formnote
     color: $mid
   label

@@ -5,7 +5,18 @@ class ReaderSessionsController < ReaderActionController
   radiant_layout { |controller| Radiant::Config['reader.layout'] }
   
   def new
-    @reader_session = ReaderSession.new
+    if current_reader
+      if current_reader.activated?
+        cookies[:error] = t('already_logged_in')
+        redirect_to reader_url(current_reader)
+      else
+        cookies[:error] = t('account_requires_activation')
+        redirect_to reader_activation_url
+      end
+    else
+      @reader_session = ReaderSession.new
+      expires_now
+    end
   end
   
   def create

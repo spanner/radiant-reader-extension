@@ -3,22 +3,9 @@
 
 - content_for :section_navigation do
   = link_to t('navigation.readers'), readers_url, :class => 'section'
-  - if current_reader
-    = link_to t('navigation.profile'), reader_profile_url
-    = link_to t('navigation.preferences'), reader_account_url
-    - unless current_reader.activated?
-      = link_to t('navigation.activate'), new_reader_activation_url
-    = link_to t('navigation.logout'), reader_logout_url
-  - else
-    = link_to t('log_in'), reader_login_url
+  = link_to t('navigation.preferences'), reader_account_url
   - if Radiant::Config['reader.help_url']
     = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']
-
-- content_for :controls do
-  = render :partial => 'readers/controls'
-
-- content_for :signals do
-  = render :partial => 'readers/flasher'
 
 - content_for :reader_css do
   - reader_css_paths.each do |path|
