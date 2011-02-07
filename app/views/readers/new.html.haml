@@ -3,7 +3,6 @@
 - content_for :introduction do
   %p
     = t('please_register')
-    = link_to t('log_in') + '.', reader_login_url
 
 - content_for :form do
   = render :partial => 'form'

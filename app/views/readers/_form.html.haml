@@ -3,10 +3,10 @@
 
 - form_for reader, :html => {:class => 'friendly'} do |f| 
   - unless @reader.errors.empty?
-    %p.errornote
-      %strong 
-        = t('sorry').titlecase
-        = t('form_problem') + '.'
+    %p.has_error
+      = t('sorry').titlecase
+      = t('form_problem') + '.'
+      = t('affected_fields_highlighted')
   - else
     %p
       = t('bold_required')

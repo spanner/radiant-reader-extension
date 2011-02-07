@@ -13,6 +13,7 @@ class ReaderActivationsController < ReaderActionController
   # .update activates the reader, if the token is correct
 
   def show
+    expires_now
     render
   end
   
@@ -22,6 +23,7 @@ class ReaderActivationsController < ReaderActionController
       @reader.send_activation_message
       flash[:notice] = t("activation_message_sent")
     end
+    expires_now
     render :action => 'show'
   end
   
@@ -34,6 +36,7 @@ class ReaderActivationsController < ReaderActionController
     else
       @error = t("please_check_message")
       flash[:error] = t("activation_failed")
+      expires_now
       render :action => 'show'
     end
   end

@@ -19,7 +19,7 @@
         = @error
     %p
       = t('thanks_and_activation_instructions')
-      = link_to("resend_activation", new_reader_activation_url) + '.'
+      = link_to(t("resend_activation"), new_reader_activation_url) + '.'
       - unless current_reader
         = t('enter_email_for_reminder')
 
