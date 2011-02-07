@@ -1,16 +1,12 @@
 = render :partial => 'readers/standard_parts'
 
-- content_for :person do
-  = standard_gravatar_for(@reader)
-
 - content_for :introduction do
   %p
     = t('please_register')
-    = t('already_registered')
     = link_to t('log_in') + '.', reader_login_url
 
 - content_for :form do
-  = render :partial => 'form', :locals => {:f => f}
+  = render :partial => 'form'
 
 - content_for :notes do
   %h3

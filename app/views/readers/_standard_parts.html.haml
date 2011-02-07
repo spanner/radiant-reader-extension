@@ -3,7 +3,7 @@
 
 - content_for :section_navigation do
   = link_to t('navigation.readers'), readers_url, :class => 'section'
-  = link_to t('navigation.preferences'), reader_account_url
+  = link_to t('navigation.your_account'), reader_account_url
   - if Radiant::Config['reader.help_url']
     = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']
 
@@ -16,5 +16,5 @@
     %script{:src => path, :type => 'text/javascript'}
 
 - content_for :person do
-  - if @reader
+  - if @reader && !@reader.new_record?
     = standard_gravatar_for(@reader)

@@ -1,7 +1,7 @@
 - reader ||= @reader
 - check_password ||= false
 
-- form_for :reader, reader, :html => { :method => "put", :class => 'friendly'} do |f| 
+- form_for reader, :html => {:class => 'friendly'} do |f| 
   - unless @reader.errors.empty?
     %p.errornote
       %strong 
@@ -20,16 +20,16 @@
   - if Radiant::Config['reader.use_honorifics?']
     %p
       = f.label :honorific, t(:honorific), :class => 'optional'
-      %span.formnote= t('form_notes.honorific')
       %br
       = f.text_field :honorific, :class => 'standard'
+      %span.formnote= t('form_notes.honorific')
 
   - if reader.new_record? && reader.email_field
     %p
       = f.label reader.email_field, t('label.reader.email'), :class => 'required'
-      %span.formnote= t('form_notes.email')
       %br
       = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
+      %span.formnote= t('form_notes.email')
     .innocuous
       %p
         =f.label :email, t("dont_fill"), :class => 'required'
