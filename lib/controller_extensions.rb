@@ -53,8 +53,10 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def redirect_back_with_format(format = 'html')
+      Rails.logger.warn "<<< redirect_back_with_format. session[:return_to] is #{session[:return_to].inspect}"
       address = session[:return_to]
-      raise StandardError, "Can't add format to an already formatted url: #{address}" unless File.extname(address).blank?
+      previous_format = File.extname(address)
+      raise StandardError, "Can't add format to an already formatted url: #{address}" unless previous_format.blank? || previous_format == format
       redirect_to address + ".#{format}"    # nasty! but necessary for inline login.
     end
 

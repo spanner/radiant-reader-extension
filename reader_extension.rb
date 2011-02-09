@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "1.3.3"
+  version "1.3.4"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   
@@ -17,8 +17,6 @@ class ReaderExtension < Radiant::Extension
     Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
     UserActionObserver.instance.send :add_observer!, Reader 
     UserActionObserver.instance.send :add_observer!, Message
-    
-    
     
     unless defined? admin.reader
       Radiant::AdminUI.send :include, ReaderAdminUI

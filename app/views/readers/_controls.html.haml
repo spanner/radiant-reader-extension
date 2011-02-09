@@ -1,25 +1,13 @@
-%div#reader_links
-  - if current_reader
-    - if current_reader.activated?
-      %p
-        %strong
-          Hello 
-          = current_reader.name
-        %br
-        = link_to 'your page', reader_url(current_reader)
-        |
-        = link_to 'preferences', edit_reader_url(current_reader)
-        |
-        - if current_reader.is_user?
-          = link_to 'admin', admin_pages_url
-          |
-        = link_to 'log out', reader_logout_url
-    -else
-      %p 
-        please check your email for an activation message
-  - else
-    %p
-      To take part, please 
-      = link_to 'log in', reader_login_url
-      or
-      = link_to 'register', new_reader_url
+- if !current_reader
+  = link_to t('navigation.log_in'), reader_login_url
+  = link_to t('navigation.register'), new_reader_url
+- elsif !current_reader.activated?
+  = link_to t('navigation.activate'), reader_activation_url
+- else
+  = link_to t('navigation.profile'), reader_profile_url
+  = link_to t('navigation.account'), reader_account_url
+  - if current_reader.is_user?
+    = link_to t('navigation.admin'), admin_pages_url
+  = link_to t('navigation.log_out'), reader_logout_url
+
+

@@ -6,7 +6,7 @@ class ReadersController < ReaderActionController
   before_filter :check_registration_allowed, :only => [:new, :create]
   before_filter :initialize_partials
   before_filter :i_am_me, :only => [:show, :edit]
-  before_filter :require_reader, :except => [:index, :new, :create, :activate]
+  before_filter :require_reader, :except => [:new, :create, :activate]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
@@ -17,19 +17,6 @@ class ReadersController < ReaderActionController
 
   def show
     @reader = Reader.find(params[:id])
-    respond_to do |format|
-      format.html { 
-        if @reader.inactive? && @reader == current_reader
-          redirect_to reader_activation_url
-        else
-          render
-        end
-      }
-      format.js { 
-        @inline = true
-        render :partial => 'readers/controls'
-      }
-    end
   end
 
   def new

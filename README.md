@@ -17,6 +17,7 @@ Right now we are **not compatible with multi_site or the sites extension**: that
 * public interface internationalized;
 * Uses the new configuration interface;
 * Messaging much simplified and now intended to be purely administrative.
+* ajaxable status panel returned by `reader_session_url`
 
 ## Status
 

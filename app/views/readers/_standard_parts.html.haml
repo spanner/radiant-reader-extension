@@ -1,11 +1,8 @@
-- add_reader_js '/javascripts/reader.js'
-- add_reader_css '/stylesheets/reader.css'
+- content_for :reader_css do
+  %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheets/reader.css', :media => 'all'}
 
-- content_for :section_navigation do
-  = link_to t('navigation.readers'), readers_url, :class => 'section'
-  = link_to t('navigation.your_account'), reader_account_url
-  - if Radiant::Config['reader.help_url']
-    = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']
+- content_for :reader_js do
+  %script{:src => '/javascripts/reader.js', :type => 'text/javascript'}
 
 - content_for :reader_css do
   - reader_css_paths.each do |path|
@@ -18,3 +15,9 @@
 - content_for :person do
   - if @reader && !@reader.new_record?
     = standard_gravatar_for(@reader)
+  
+- content_for :section_navigation do
+  = link_to t('navigation.readers'), readers_url, :class => 'section'
+  = link_to t('navigation.loading'), reader_session_url, :class => "remotecontent"
+  - if Radiant::Config['reader.help_url']
+    = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']

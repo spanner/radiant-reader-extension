@@ -4,6 +4,24 @@ class ReaderSessionsController < ReaderActionController
   before_filter :require_reader, :only => :destroy
   radiant_layout { |controller| Radiant::Config['reader.layout'] }
   
+  def show
+    @reader = current_reader
+    respond_to do |format|
+      format.html { 
+        if !@reader
+          redirect_to reader_login_url
+        elsif @reader.inactive?
+          redirect_to reader_activation_url
+        else
+          redirect_to reader_profile_url
+        end
+      }
+      format.js {
+        render :partial => 'readers/controls', :layout => false
+      }
+    end
+  end
+  
   def new
     if current_reader
       if current_reader.activated?
@@ -32,7 +50,7 @@ class ReaderSessionsController < ReaderActionController
           redirect_back_or_to default_loggedin_url
         }
         format.js { 
-          redirect_back_with_format(:js) 
+          redirect_back_with_format(:js)
         }
       end
       
@@ -42,7 +60,9 @@ class ReaderSessionsController < ReaderActionController
           flash[:error] = t('login_unknown')
           render :action => :new 
         }
-        format.js { render :action => :new, :layout => false }
+        format.js { 
+          render :action => :new, :layout => false 
+        }
       end
     end
   end
