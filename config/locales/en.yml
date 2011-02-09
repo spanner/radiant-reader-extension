@@ -82,7 +82,7 @@ en:
   logout_message: "You are logged out. Bye!"
   must_be_empty: "must be empty"
   navigation:
-    account: "Account"
+    account: "Your account"
     activate: "Activate account"
     admin: "Admin"
     readers: "People"
@@ -90,7 +90,8 @@ en:
     profile: "Profile"
     log_in: "Log in"
     log_out: "Log out"
-    loading: "loading"
+    loading: "Loading..."
+    register: "Register"
     your_account: "Your account"
   new_account: "Create an account"
   new_password: "New password"
