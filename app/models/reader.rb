@@ -26,11 +26,10 @@ class Reader < ActiveRecord::Base
   attr_accessor :current_password   # used for authentication on update
   attr_accessor :email_field        # used in blocking spam registrations
   
-  before_save :set_login
   before_update :update_user
 
   validates_presence_of :name, :email, :message => 'is required'
-  validates_uniqueness_of :login, :message => "is already in use here"
+  validates_uniqueness_of :login, :message => "is already in use here", :allow_blank => true
   validate :email_must_not_be_in_use
 
   include RFC822
@@ -89,13 +88,8 @@ class Reader < ActiveRecord::Base
     message.deliver_to(self)
   end
 
-  def generate_password(length=12)
-    chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
-    Array.new(length, '').collect{chars[rand(chars.size)]}.join
-  end
-
   def generate_email_field_name
-    self.email_field = generate_password(32)
+    self.email_field = Authlogic::Random.friendly_token
   end
 
   def is_user?
@@ -122,37 +116,37 @@ class Reader < ActiveRecord::Base
     reader
   end
 
-  protected
+  def create_password!
+    self.clear_password = self.randomize_password # randomize_password is provided by authlogic
+    self.save! unless self.new_record?
+    self.clear_password
+  end
 
-    def set_login
-      self.login = self.email if self.login.blank?
+private
+
+  def email_must_not_be_in_use
+    reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
+    user = User.find_by_email(self.email)
+    if user && user != self.user
+      errors.add(:email, "belongs to an author already known here")
+    elsif reader && reader != self
+      errors.add(:email, "is already registered here")
+    else
+      return true
     end
+    return false
+  end
 
-  private
+  def validate_length_of_password?
+    new_record? or not password.to_s.empty?
+  end
 
-    def email_must_not_be_in_use
-      reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
-      user = User.find_by_email(self.email)
-      if user && user != self.user
-        errors.add(:email, "belongs to an author here")
-      elsif reader && reader != self
-        errors.add(:email, "is already registered here")
-      else
-        return true
-      end
-      return false
+  def update_user
+    if self.user
+      user_columns.each { |att| self.user.send("#{att.to_s}=", send(att)) if send("#{att.to_s}_changed?") }
+      self.user.password_confirmation = password_confirmation if password_changed?
+      self.user.save! if self.user.changed?
     end
-
-    def validate_length_of_password?
-      new_record? or not password.to_s.empty?
-    end
-
-    def update_user
-      if self.user
-        user_columns.each { |att| self.user.send("#{att.to_s}=", send(att)) if send("#{att.to_s}_changed?") }
-        self.user.password_confirmation = password_confirmation if password_changed?
-        self.user.save! if self.user.changed?
-      end
-    end
+  end
 
 end
