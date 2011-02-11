@@ -50,6 +50,10 @@ class Reader < ActiveRecord::Base
     end
   }
 
+  def self.find_by_login_or_email(login_or_email)
+    reader = find(:first, :conditions => ["login = ? OR email = ?", login_or_email, login_or_email])
+  end
+
   def forename
     read_attribute(:forename) || name.split(/\s/).first
   end

@@ -27,7 +27,7 @@
 
     %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
       %label{:for => "reader_session_login"}
-        = t('username').titlecase
+        = t('login_or_email')
       %br
       = f.text_field :login, :class => 'login' 
         

@@ -51,15 +51,15 @@
               = t('everyone')
               = t('count_people', :count => @message.possible_readers.count)
           %p
-            = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :disabled => @message.inactive_readers.empty?
-            %label.checkbox{:for => 'delivery_to_inactive', :class => @message.inactive_readers.empty? ? 'disabled' : ''} 
-              = t('everyone_inactive')
-              = t('count_people', :count => @message.inactive_readers.count)
-          %p
             = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :disabled => @message.undelivered_readers.empty?
             %label.checkbox{:for => 'delivery_to_unsent', :class => @message.undelivered_readers.empty? ? 'disabled' : ''} 
               = t('everyone_unsent')
               = t('count_people', :count => @message.undelivered_readers.count)
+          %p
+            = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :disabled => @message.inactive_readers.empty?
+            %label.checkbox{:for => 'delivery_to_inactive', :class => @message.inactive_readers.empty? ? 'disabled' : ''} 
+              = t('everyone_inactive')
+              = t('count_people', :count => @message.inactive_readers.count)
 
           %p.buttons
             = submit_tag t('send_message')
