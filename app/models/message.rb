@@ -33,7 +33,11 @@ class Message < ActiveRecord::Base
   end
 
   def undelivered_readers
-    possible_readers.except(recipients)
+    if recipients.any?
+      possible_readers.except(recipients)
+    else
+      recipients
+    end
   end
 
   def inactive_readers

@@ -43,7 +43,11 @@ class Reader < ActiveRecord::Base
   named_scope :imported, :conditions => "old_id IS NOT NULL"
   named_scope :except, lambda { |readers|
     readers = [readers].flatten
-    { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", readers.map(&:id)] }
+    if readers.any?
+      { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", readers.map(&:id)] }
+    else
+      { }
+    end
   }
 
   def forename
