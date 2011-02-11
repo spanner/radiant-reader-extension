@@ -41,10 +41,6 @@ describe ReadersController do
       @reader.email.should == 'registrant@spanner.org'
     end
 
-    it "should have defaulted to email address as login" do
-      @reader.login.should == @reader.email
-    end
-    
     if defined? Site
       it "should have assigned the new reader to the current site" do
         @reader.site.should == sites(:test)

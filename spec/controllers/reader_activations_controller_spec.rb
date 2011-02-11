@@ -21,8 +21,9 @@ describe ReaderActivationsController do
       @reader.activated_at.should be_close((Time.now).utc, 1.minute)
     end
 
-    it "should redirect to a confirmation page" do
-      response.should be_redirect
+    it "should show the show page" do
+      response.should be_success
+      response.should render_template("show")
     end
   end
 
@@ -32,13 +33,13 @@ describe ReaderActivationsController do
       put :update, :id => @newreader.id, :activation_code => 'down perishcope'
     end
     
-    it "should render the please-activate page" do
+    it "should render the show page" do
       response.should be_success
       response.should render_template("show")
     end
 
-    it "should flash an error" do
-      flash[:error].should_not be_nil
+    it "should not flash an error" do
+      flash[:error].should be_nil
     end
   end
 

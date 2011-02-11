@@ -10,6 +10,7 @@ en:
   activation_required_explanation: "You should have received a confirmation message containing a link that will activate your account."
   activation_sent: "Activation message sent"
   affected_fields_highlighted: "The affected fields are highlighted below."
+  all_deliveries_failed: "All deliveries failed"
   already_active: "Your account is already active."
   already_logged_in: "You're already logged in!"
   already_registered: "If you've already registered, you should only need to"
@@ -82,6 +83,7 @@ en:
   login_or_email: "Login name or email address"
   login_unknown: "Sorry: we don't recognise that combination of username and password."
   logout_message: "You are logged out. Bye!"
+  message_delivered: "Message delivered"
   must_be_empty: "must be empty"
   navigation:
     account: "Your account"
@@ -141,6 +143,7 @@ en:
   send_it_again: "send it again"
   send_reset_button: "send me instructions"
   set_new_password: "set new password"
+  some_deliveries_failed: "Some deliveries failed"
   sorry: "sorry"
   sorry_access_denied: "Sorry: access denied"
   spam_trap: "it's a spam trap and shouldn't be visible"

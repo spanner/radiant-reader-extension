@@ -31,14 +31,11 @@ class ReaderActivationsController < ReaderActionController
     if @reader
       @reader.activate!
       self.current_reader = @reader
-      flash[:notice] = t("thanks_activated")
-      redirect_back_or_to default_activated_url
     else
       @error = t("please_check_message")
-      flash[:error] = t("activation_failed")
-      expires_now
-      render :action => 'show'
     end
+    expires_now
+    render :action => 'show'
   end
 
 protected

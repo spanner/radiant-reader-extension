@@ -47,9 +47,18 @@ module ControllerExtensions    # for inclusion into ApplicationController
       session[:return_to] = location
     end
 
+    def redirect_back
+      if session[:return_to]
+        redirect_to session[:return_to]
+        session[:return_to] = nil
+        true
+      else
+        false
+      end
+    end
+
     def redirect_back_or_to(default)
-      redirect_to(session[:return_to] || default)
-      session[:return_to] = nil
+      redirect_back or redirect_to(default)
     end
 
     def redirect_back_with_format(format = 'html')
