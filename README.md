@@ -23,6 +23,10 @@ Right now we are **not compatible with multi_site or the sites extension**: that
 
 Compatible with radiant 0.9.2, which isn't out yet. You can use radiant edge to try this out. Expect small changes in support of the new forum and group releases. Multi-site compatibility fixes are likely too.
 
+## Note on internationalisation and customisation
+
+The locale strings here are generally defined in a functional rather than grammatical way. That is, they have labels like `activation_required_explanation` rather than being assembled out of smaller units. This is partly because for flexibility of translation, but also because it gives you an easy way to change the text on functional pages like reader-preferences and registration forms.
+
 ## Requirements
 
 Radiant 0.9.2 (or currently, edge). The [layouts](http://github.com/squaretalent/radiant-layouts-extension) and [mailer_layouts](http://github.com/spanner/radiant-mailer_layouts-extension) extensions.

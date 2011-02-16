@@ -57,7 +57,6 @@ class ReaderSessionsController < ReaderActionController
     else
       respond_to do |format|
         format.html { 
-          flash[:error] = t('login_unknown')
           render :action => :new 
         }
         format.js { 
@@ -75,7 +74,6 @@ class ReaderSessionsController < ReaderActionController
       session['user_id'] = nil
       current_user = nil
     end
-    flash[:notice] = t('logout_message')
     redirect_to reader_login_url
   end
   

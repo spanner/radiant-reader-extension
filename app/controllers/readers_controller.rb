@@ -12,7 +12,7 @@ class ReadersController < ReaderActionController
   before_filter :require_password, :only => [:update]
 
   def index
-    @readers = Reader.all.paginate(pagination_parameters.merge(:per_page => 60))
+    @readers = Reader.active.paginate(pagination_parameters.merge(:per_page => 60))
   end
 
   def show
