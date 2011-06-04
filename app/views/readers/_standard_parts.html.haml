@@ -18,6 +18,6 @@
   
 - content_for :section_navigation do
   = link_to t('navigation.readers'), readers_url, :class => 'section'
-  = link_to t('navigation.loading'), reader_session_url, :class => "remotecontent"
+  = render :partial => 'readers/controls'
   - if Radiant::Config['reader.help_url']
     = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']

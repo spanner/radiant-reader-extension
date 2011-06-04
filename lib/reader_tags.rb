@@ -295,16 +295,5 @@ module ReaderTags
   tag "unless_reader" do |tag|
     tag.expand unless Reader.current && !tag.locals.page.cache?
   end
-  
-  # work in progress
-  tag "truncated" do |tag|
-    limit = tag.attr['limit'] || 64
-    omission = tag.attr['omission'] || '&hellip;'
-    content = tag.expand
-    
-    Rails.logger.warn "!! truncating #{content} to #{limit}#{omission}"
-    
-    truncate_words(content, limit, omission)
-  end
 
 end

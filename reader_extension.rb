@@ -1,7 +1,7 @@
 require_dependency 'application_controller'
 
 class ReaderExtension < Radiant::Extension
-  version "1.3.12"
+  version "1.3.13"
   description "Provides reader/member/user registration and management functions"
   url "http://spanner.org/radiant/reader"
   
@@ -22,7 +22,7 @@ class ReaderExtension < Radiant::Extension
       Radiant::AdminUI.send :include, ReaderAdminUI
       Radiant::AdminUI.load_reader_extension_regions
     end
-        
+            
     if respond_to?(:tab)
       tab("Readers") do
         add_item("Readers", "/admin/readers")

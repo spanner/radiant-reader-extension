@@ -45,7 +45,7 @@
 		  var url = self.attr('href');
 		  if (url) {
   		  self.addClass('waiting');
-        $.get(url, function (result) { self.replaceWith($(result)); });
+        $.get(url, function (result) { self.replaceWith($(result)); }, 'html');
 		  }
 		});
 		return this;
