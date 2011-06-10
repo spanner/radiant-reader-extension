@@ -1,0 +1,7 @@
+%p
+  %label{:for=>"reader_groups"} Groups
+  - Group.find(:all).each do |group|
+    %span.checkbox
+      = check_box_tag "reader[group_ids][]", group.id, @reader.is_in?(group), :id => "reader_group_#{group.id}"
+      %label.checkbox{:for => "reader_group_#{group.id}"}
+        = group.name

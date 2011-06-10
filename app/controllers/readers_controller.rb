@@ -10,6 +10,7 @@ class ReadersController < ReaderActionController
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :require_password, :only => [:update]
+  before_filter :ensure_groups_subscribable, :only => [:update, :create]
 
   def index
     @readers = Reader.active.paginate(pagination_parameters.merge(:per_page => 60))
@@ -127,6 +128,17 @@ private
     @show_partials = show_partials
     @edit_partials = edit_partials
     @index_partials = index_partials
+  end
+
+  def ensure_groups_subscribable
+    if params[:reader] && params[:reader][:group_ids]
+      params[:reader][:group_ids].each do |g|
+        raise ActiveRecord::RecordNotFound unless Group.find(g).public?
+      end
+    end
+    true
+  rescue ActiveRecord::RecordNotFound
+    false
   end
 
 end

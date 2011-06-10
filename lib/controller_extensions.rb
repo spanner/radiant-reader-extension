@@ -35,7 +35,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     
     def set_reader_for_user
       if current_user
-        current_reader_session = ReaderSession.create!(Reader.find_or_create_for_user(current_user))
+        current_reader_session = ReaderSession.create!(Reader.for_user(current_user))
       end
     end
 

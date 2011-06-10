@@ -23,6 +23,10 @@ class Reader < ActiveRecord::Base
   has_many :message_readers
   has_many :messages, :through => :message_readers
 
+  has_many :memberships
+  has_many :groups, :through => :memberships
+  accepts_nested_attributes_for :memberships
+
   attr_accessor :current_password   # used for authentication on update
   attr_accessor :email_field        # used in blocking spam registrations
   
@@ -49,8 +53,33 @@ class Reader < ActiveRecord::Base
     end
   }
 
+  named_scope :in_groups, lambda { |groups| 
+    {
+      :select => "readers.*",
+      :joins => "INNER JOIN memberships as mm on mm.reader_id = readers.id", 
+      :conditions => ["mm.group_id IN (#{groups.map{'?'}.join(',')})", *groups.map{|g| g.is_a?(Group) ? g.id : g}],
+      :group => "mm.reader_id"
+    }
+  }
+
   def self.find_by_login_or_email(login_or_email)
     reader = find(:first, :conditions => ["login = ? OR email = ?", login_or_email, login_or_email])
+  end
+  
+  def self.for_user(user)
+    if user.respond_to?(:site) && site = Page.current_site
+      reader = self.find_or_create_by_site_id_and_user_id(site.id, user.id)
+    else
+      reader = self.find_or_create_by_user_id(user.id)
+    end
+    if reader.new_record?
+      user_columns.each { |att| reader.send("#{att.to_s}=", user.send(att)) }
+      reader.crypted_password = user.password
+      reader.password_salt = user.salt
+      reader.activated_at = reader.created_at
+      reader.save(false)
+    end
+    reader
   end
 
   def forename
@@ -60,7 +89,8 @@ class Reader < ActiveRecord::Base
   def activate!
     self.activated_at = Time.now.utc
     self.save!
-    self.send_welcome_message
+    send_welcome_message
+    send_group_welcomes
   end
 
   def activated?
@@ -81,9 +111,9 @@ class Reader < ActiveRecord::Base
     }
   end
 
-  def send_functional_message(function)
+  def send_functional_message(function, group=nil)
     reset_perishable_token!
-    message = Message.functional(function)
+    message = Message.functional(function, group)   # returns the standard functional message if no group is supplied, or no group message exists
     raise StandardError, "No #{function} message could be found" unless message
     message.deliver_to(self)
   end
@@ -100,28 +130,36 @@ class Reader < ActiveRecord::Base
     is_user? && self.user.admin?
   end
 
-  def self.find_or_create_for_user(user)
-    if user.respond_to?(:site) && site = Page.current_site
-      reader = self.find_or_create_by_site_id_and_user_id(site.id, user.id)
-    else
-      reader = self.find_or_create_by_user_id(user.id)
-    end
-    if reader.new_record?
-      user_columns.each { |att| reader.send("#{att.to_s}=", user.send(att)) }
-      reader.crypted_password = user.password
-      reader.password_salt = user.salt
-      reader.activated_at = reader.created_at
-      reader.save(false)
-    end
-    reader
-  end
-
   def create_password!
     self.clear_password = self.randomize_password # randomize_password is provided by authlogic
     self.save! unless self.new_record?
     self.clear_password
   end
 
+  def find_homepage
+    if homegroup = groups.with_home_page.first
+      homegroup.homepage
+    end
+  end
+
+  def can_see? (this)
+    permitted_groups = this.permitted_groups
+    permitted_groups.empty? or in_any_of_these_groups?(permitted_groups)
+  end
+    
+  def in_any_of_these_groups? (grouplist)
+    (grouplist & groups).any?
+  end
+
+  def is_in? (group)
+    groups.include?(group)
+  end
+  
+  # has_group? is ambiguous: with no argument it means 'is this reader grouped at all?'.
+  def has_group?(group=nil)
+    group.nil? ? groups.any? : is_in?(group)
+  end
+  
 private
 
   def email_must_not_be_in_use
@@ -147,6 +185,14 @@ private
       self.user.password_confirmation = password_confirmation if password_changed?
       self.user.save! if self.user.changed?
     end
+  end
+  
+  def send_group_welcomes
+    groups.each { |g| g.send_welcome_to(self) }
+  end
+
+  def send_group_invitation_message(group=nil)
+    send_functional_message('invitation', group)
   end
 
 end

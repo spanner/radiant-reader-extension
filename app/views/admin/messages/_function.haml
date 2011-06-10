@@ -1,0 +1,31 @@
+- if @message.administrative?
+  %p
+    - if @message.group
+      = t("group_#{@message.function}")
+      = t("sent_to_group")
+    - elsif @message.groups.any?
+      = t("group_#{@message.function}")
+      = t("sent_to_these_groups")
+      %ul
+        - @message.groups.each do |group|
+          %li= link_to group.name, admin_group_url(group)
+    - else
+      = t("#{@message.function}_sent_automatically")
+  %ul
+    %li
+      = link_to t('edit_message').titlecase, edit_admin_message_url(@message)
+    %li
+      - if @message.group
+        = link_to @message.group.name + ' ' + t('group_page'), admin_group_url(@message.group)
+      - else
+        = link_to t('reader_configuration_page').titlecase, admin_reader_configuration_url
+
+- if @message.group
+  %p
+    = t("belongs_to_group", :name => @message.group.name)
+- elsif @message.groups.any?
+  %p
+    = t("belongs_to_these_groups")
+  %ul
+    - @message.groups.each do |group|
+      %li= link_to group.name, admin_group_url(group)

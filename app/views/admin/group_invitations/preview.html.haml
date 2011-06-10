@@ -1,0 +1,58 @@
+- include_stylesheet('admin/reader_group')
+
+%h1 
+  = t('check_invitation_list', :name => @group.name)
+
+- form_for :group, @group, :url => admin_group_group_invitations_url(@group), :html => {:id => 'confirmation_form', :method => 'post'} do
+  %p
+    = t('invitation_preview_instructions')
+
+  %table#import
+    %thead
+      %tr
+        %th
+        - if Radiant::Config['reader.use_honorifics?']
+          %th= t('honorific')
+        %th= t('full_name')
+        %th= t('email')
+        %th= t('optional_login')
+        %th= t('optional_phone')
+    %tbody
+      - i = 0
+      - @readers.each do |reader| 
+        - if reader.new_record?
+          %tr.import
+            %td
+              = check_box_tag "import_reader[]", i, reader.valid?
+            - if Radiant::Config['reader.use_honorifics?']
+              %td 
+                = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific)
+            %td 
+              = text_field_tag "reader_#{i}[name]", reader.name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name)
+            %td 
+              = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email)
+            %td 
+              = text_field_tag "reader_#{i}[login]", reader.login, :class => "preview#{ ' with_error' if reader.errors.on(:login)}", :title => reader.errors.on(:login)
+            %td 
+              = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone)
+        - else
+          %tr.invite
+            %td
+              = check_box_tag "invite_reader[]", reader.id, {:checked => true}
+            - if Radiant::Config['reader.use_honorifics?']
+              %td
+                = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[name]", reader.name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[login]", reader.login, :class => "preview#{ ' with_error' if reader.errors.on(:login)}", :title => reader.errors.on(:login), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone)
+        - i = i + 1
+
+  %p.buttons
+    = submit_tag 'Invite these people into the group', :name => 'confirm', :class => 'button'
+    or 
+    = link_to 'start again', new_admin_group_group_invitation_url(@group)

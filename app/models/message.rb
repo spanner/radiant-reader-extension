@@ -1,13 +1,11 @@
 class Message < ActiveRecord::Base
 
+  has_groups
   has_site if respond_to? :has_site
 
   belongs_to :layout
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
-
-  has_many :message_readers
-  has_many :readers, :through => :message_readers
 
   has_many :deliveries, :class_name => 'MessageReader', :conditions => ["message_readers.sent_at IS NOT NULL and message_readers.sent_at <= ?", Time.now.to_s(:db)]
   has_many :recipients, :through => :deliveries, :source => :reader
@@ -29,7 +27,7 @@ class Message < ActiveRecord::Base
 
   # has to return a named_scope for chainability
   def possible_readers
-    Reader.active
+    groups.any? ? Reader.in_groups(groups) : Reader.scoped({})
   end
 
   def undelivered_readers
@@ -57,15 +55,20 @@ class Message < ActiveRecord::Base
   end
 
   def preview(reader=nil)
-    reader ||= possible_readers.first || Reader.find_or_create_for_user(created_by)
+    reader ||= possible_readers.first || Reader.for_user(created_by)
     ReaderNotifier.create_message(reader, self)
   end
   
   def function
     MessageFunction[self.function_id]
   end
-  def self.functional(function)
-    for_function(MessageFunction[function]).first
+  def self.functional(function, group=nil)
+    messages = for_function(function)
+    if group
+      messages.belonging_to(group).first
+    else
+      messages.ungrouped.first
+    end
   end
   def has_function?
     !function.nil?

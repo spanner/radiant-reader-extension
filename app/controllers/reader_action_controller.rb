@@ -59,6 +59,14 @@ class ReaderActionController < ApplicationController
     @title = flash[:error] || t('permission_denied')
     render
   end
+  
+  def default_welcome_url(reader)
+    if page = reader.find_homepage
+      page.url
+    else
+      reader_url(reader)  #TODO make this interesting
+    end
+  end
 
 protected
   

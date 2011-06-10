@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ReaderNotifier do
-  dataset :readers, :reader_layouts, :messages
+  dataset :readers
   
   before do
     Radiant::Config['email.layout'] = 'email'

@@ -1,12 +1,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Reader do
-  dataset :messages
-  dataset :reader_layouts
+  dataset :readers
   activate_authlogic
   
   before do
     @existing_reader = readers(:normal)
+  end
+  
+  it "should have some groups" do
+    reader = readers(:normal)
+    reader.groups.any?.should be_true
+    reader.groups.size.should == 2
   end
   
   describe "on validation" do
@@ -62,7 +67,7 @@ describe Reader do
   
   describe "on create_for_user" do
     it "should return the existing reader if there is one" do
-      reader = Reader.find_or_create_for_user(users(:existing))
+      reader = Reader.for_user(users(:existing))
       reader.should == readers(:user)
       reader.is_user?.should be_true
       reader.is_admin?.should be_false
@@ -70,7 +75,7 @@ describe Reader do
 
     it "should create a matching reader if necessary" do
       user = users(:admin)
-      reader = Reader.find_or_create_for_user(user)
+      reader = Reader.for_user(user)
       [:name, :email, :login, :created_at, :notes].each do |att|
         reader.send(att).should == user.send(att)
       end

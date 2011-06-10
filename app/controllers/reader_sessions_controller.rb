@@ -47,7 +47,7 @@ class ReaderSessionsController < ReaderActionController
       respond_to do |format|
         format.html {
           flash[:notice] = t('hello').titlecase + " #{@reader_session.reader.name}. " + t('welcome_back')
-          redirect_back_or_to default_loggedin_url
+          redirect_back_or_to default_welcome_url(@reader_session.reader)
         }
         format.js { 
           redirect_back_with_format(:js)
@@ -75,12 +75,6 @@ class ReaderSessionsController < ReaderActionController
       current_user = nil
     end
     redirect_to reader_login_url
-  end
-  
-protected
-
-  def default_loggedin_url
-    reader_url(@reader_session.reader)
   end
 
 end

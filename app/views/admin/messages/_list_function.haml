@@ -1,3 +1,7 @@
-- if message.has_function?
-  %span.function
+%span.function
+  - if message.administrative?
     = message.function.description
+    - if message.group
+      = t('for')
+  - if message.group
+    = link_to message.group.name, admin_group_url(message.group)

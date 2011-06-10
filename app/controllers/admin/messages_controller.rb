@@ -3,6 +3,7 @@ class Admin::MessagesController < Admin::ResourceController
   skip_before_filter :load_model
   before_filter :load_model, :except => :index    # we want the filter to run before :show too
   before_filter :set_function, :only => :new
+  before_filter :get_group, :only => :new
 
   # here :show is the preview/send page
   def show
@@ -57,4 +58,8 @@ protected
     end
   end
   
+  def get_group
+    model.group = Group.find(params[:group_id]) if params[:group_id]
+  end
+
 end

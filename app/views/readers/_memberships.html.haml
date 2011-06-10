@@ -1,0 +1,11 @@
+- if Group.subscribable.any?
+  %h3
+    = t('subscriptions').titlecase
+  %p
+    - Group.subscribable.each do |group|
+      = check_box_tag "reader[group_ids][]", group.id, @reader.is_in?(group), :id => "reader_group_#{group.id}"
+      %label{:for => "reader_group_#{group.id}"}
+        = group.name
+      %span.formnote
+        = group.invitation
+      %br

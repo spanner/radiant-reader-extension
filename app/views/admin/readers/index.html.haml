@@ -37,7 +37,10 @@
             - tbody.modify_cell do
               %td.actions
                 - if admin?
-                  = link_to(image('minus') + ' ' + t('delete_reader'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('really_delete_reader', :name => reader.name))
+                  - if reader.is_user?
+                    %span.action.disabled= image('minus_disabled') + ' ' + t('remove')
+                  - else
+                    = link_to(image('minus') + ' ' + t('delete_reader'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('really_delete_reader', :name => reader.name))
         
       
   - render_region :bottom do |bottom|

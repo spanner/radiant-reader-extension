@@ -1,0 +1,7 @@
+- include_stylesheet('admin/reader_group')
+
+- render_region :main do |main|
+  - main.edit_header do
+    %h1 New group
+  - main.edit_form do
+    = render :partial => "form"

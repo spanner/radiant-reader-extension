@@ -1,0 +1,31 @@
+- include_stylesheet('admin/group')
+%h1 Remove Group
+
+%p 
+  Are you sure you want to
+  %strong.warning 
+    remove permanently
+  the group 
+  = h @group.name
+  ?
+
+%p 
+  The group has 
+  = @group.readers.count
+  = pluralize(@group.readers.count, 'member')
+  and
+  = @group.pages.count
+  = pluralize(@group.pages.count, 'page')
+  \. The pages and readers will not be deleted - just dissociated from one another - and removing the group association from those pages may make them visible to everyone.
+
+%table#groups.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+  %thead
+    = render :partial => 'list_head'
+  %tbody
+    = render :partial => 'listed', :locals => {:group => @group}
+
+- form_for [:admin, @group], :html => { :method => 'delete' } do
+  %p.buttons
+    %input.button{:type=>"submit", :value=>"Delete Group"}/
+    or
+    = link_to 'Cancel', admin_groups_url

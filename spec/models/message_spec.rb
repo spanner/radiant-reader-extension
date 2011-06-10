@@ -1,10 +1,18 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Message do
-  dataset :messages
+  dataset :readers
   
   before do
 
+  end
+  
+  it "should have a groups association" do
+    Message.reflect_on_association(:groups).should_not be_nil
+  end
+  
+  it "should normally list only the ungrouped messages" do
+    Message.visible.count.should == 7
   end
   
   describe "on validation" do
@@ -45,21 +53,18 @@ describe Message do
     end
   end
   
-  describe "with a reader association" do
+  describe "on delivery" do
     before do
       @message = messages(:normal)
-      @message.readers << readers(:normal)
     end
     
-    describe "but unsent" do
+    describe "previously unsent" do
       it "should know to whom it can belong" do
-        @message.possible_readers.count.should == Reader.active.count
+        @message.possible_readers.count.should == Reader.count
+        @message.active_readers.count.should == Reader.active.count
+        @message.inactive_readers.count.should == Reader.inactive.count
       end
 
-      it "should know to whom it does belong" do
-        @message.readers.include?(readers(:normal)).should be_true
-      end
-    
       it "should report itself unsent to anyone" do
         @message.delivered?.should be_false
       end
@@ -76,7 +81,6 @@ describe Message do
     describe "already sent to one reader" do
       before do
         seem_to_send(messages(:normal), readers(:normal))
-        @message.readers << readers(:visible)
       end
       
       it "should report itself delivered" do
@@ -88,7 +92,7 @@ describe Message do
       end
     
       it "should know to whom it has yet to be sent" do
-        @message.undelivered_readers.should == Reader.active - @message.recipients
+        @message.undelivered_readers.should =~ Reader.all - @message.recipients
       end
     
       it "should report itself delivered to that reader" do
@@ -96,13 +100,34 @@ describe Message do
       end
 
       it "should report itself not yet sent to other readers" do
-        @message.readers.include?(readers(:visible)).should be_true
         @message.delivered_to?(readers(:visible)).should be_false
       end
-
     end
-    
-    
+
+    describe "with a group" do
+      it "should report itself visible to a reader who is a group member" do
+        messages(:grouped).visible_to?(readers(:normal)).should be_true
+      end
+      it "should report itself invisible to a reader who is not a group member" do
+        messages(:grouped).visible_to?(readers(:ungrouped)).should be_false
+      end
+      it "should list only group members as possible readers" do
+        messages(:grouped).possible_readers.include?(readers(:normal)).should be_true
+        messages(:grouped).possible_readers.include?(readers(:ungrouped)).should be_false
+      end
+    end
+
+    describe "without a group" do
+      it "should report itself visible to everyone" do
+        messages(:normal).visible_to?(readers(:normal)).should be_true
+        messages(:normal).visible_to?(readers(:ungrouped)).should be_true
+      end
+
+      it "should list all readers as possible readers" do
+        messages(:normal).possible_readers.include?(readers(:normal)).should be_true
+        messages(:normal).possible_readers.include?(readers(:ungrouped)).should be_true
+      end
+    end
   end
-  
+
 end

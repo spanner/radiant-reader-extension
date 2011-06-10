@@ -1,8 +1,4 @@
 class MessagesDataset < Dataset::Base
-  datasets = [:readers, :users]
-  datasets << :reader_sites if defined? Site
-  uses *datasets
-
   def load
     create_message "Normal"
     create_message "Filtered", :filter_id => 'Textile', :body => 'this is a *filtered* message'
@@ -17,6 +13,7 @@ Ying Tong Iddle I Po.
 
 From <r:sender:name />
     }
+    create_message "Grouped"
   end
   
   helpers do

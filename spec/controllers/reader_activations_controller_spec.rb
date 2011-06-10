@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe ReaderActivationsController do
-  dataset :messages
+  dataset :readers
   
   before do
     controller.stub!(:request).and_return(request)

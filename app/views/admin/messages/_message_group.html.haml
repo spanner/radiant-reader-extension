@@ -1,0 +1,5 @@
+%h1 group_id
+
+- fields_for @message do |f|
+  - if @message.new_record? && @message.group
+    = f.hidden_field :group_id

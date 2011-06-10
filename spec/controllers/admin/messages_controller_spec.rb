@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/../../spec_helper"
 
 describe Admin::MessagesController do
-  dataset :messages
+  dataset :readers
   
   it "should be a ResourceController" do
     controller.should be_kind_of(Admin::ResourceController)

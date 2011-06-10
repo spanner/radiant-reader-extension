@@ -48,13 +48,9 @@ protected
   def check_reader_inactive
     if @reader && @reader.activated?
       flash[:notice] = t('hello').titlecase + " #{@reader.name}! " + t('already_active')
-      redirect_back_or_to default_activated_url
+      redirect_back_or_to default_welcome_url(@reader)
       false
     end
-  end
-
-  def default_activated_url
-    reader_url(@reader)
   end
 
 end

@@ -23,6 +23,7 @@ class ReaderNotifier < ActionMailer::Base
       :host => host,
       :title => message.subject,
       :message => message.filtered_body,
+      :group => message.group,
       :sender => sender,
       :reply_to => sender_address,
       :reader => reader,

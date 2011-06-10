@@ -1,0 +1,26 @@
+- form_for [:admin, @group] do |f|
+  .form-area
+    = render_region :form_top
+    = hidden_field 'group', 'lock_version'
+
+    - render_region :form do |form|
+      - form.edit_group do
+        #group
+          %p.title
+            = f.label :name
+            = f.text_field 'name', :maxlength => 100, :class => "textbox"
+          %p.description
+            = f.label :description
+            = f.text_area 'description'
+          %p.homepage
+            = f.label :homepage_id, "Group home page:"
+            = choose_page 'group', 'homepage_id', {:selected =>@group.homepage_id}
+
+      - form.edit_timestamp do
+        = updated_stamp @group  
+      - form.edit_buttons do
+        %p.buttons
+          = save_model_button @group
+          = save_model_and_continue_editing_button @group
+          or
+          = link_to "Cancel", admin_groups_url

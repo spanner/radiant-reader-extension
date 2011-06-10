@@ -3,13 +3,15 @@ module ReaderAdminUI
  def self.included(base)
    base.class_eval do
 
-      attr_accessor :reader, :message, :reader_configuration
+      attr_accessor :reader, :message, :group, :reader_configuration
       alias_method :readers, :reader
       alias_method :messages, :message
+      alias_method :groups, :group
 
       def load_reader_extension_regions
         @reader = load_default_reader_regions
         @message = load_default_message_regions
+        @group = load_default_group_regions
         @reader_configuration = load_default_reader_configuration_regions
       end
 
@@ -22,10 +24,10 @@ module ReaderAdminUI
     protected
 
       def load_default_reader_regions
-        returning OpenStruct.new do |reader|
+        OpenStruct.new.tap do |reader|
           reader.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}
-            edit.form.concat %w{edit_name edit_email edit_username edit_password edit_description edit_notes}
+            edit.form.concat %w{edit_name edit_email edit_username edit_password reader_groups edit_description edit_notes}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           reader.index = Radiant::AdminUI::RegionSet.new do |index|
@@ -39,7 +41,7 @@ module ReaderAdminUI
       end
 
       def load_default_reader_configuration_regions
-        returning OpenStruct.new do |reader_configuration|
+        OpenStruct.new.tap do |reader_configuration|
           reader_configuration.show = Radiant::AdminUI::RegionSet.new do |show|
             show.settings.concat %w{administration}
             show.messages.concat %w{administration}
@@ -53,10 +55,10 @@ module ReaderAdminUI
       end
 
       def load_default_message_regions
-        returning OpenStruct.new do |message|
+        OpenStruct.new.tap do |message|
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form edit_footer}
-            edit.form.concat %w{edit_subject edit_body}
+            edit.form.concat %w{edit_subject edit_body edit_group}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           message.index = Radiant::AdminUI::RegionSet.new do |index|
@@ -71,6 +73,27 @@ module ReaderAdminUI
             show.footer.concat %w{notes}
           end
           message.new = message.edit
+        end
+      end
+
+      def load_default_group_regions
+        OpenStruct.new.tap do |group|
+          group.edit = Radiant::AdminUI::RegionSet.new do |edit|
+            edit.main.concat %w{edit_header edit_form}
+            edit.form.concat %w{edit_group edit_timestamp edit_buttons}
+          end
+          group.show = Radiant::AdminUI::RegionSet.new do |show|
+            show.header.concat %w{title}
+            show.main.concat %w{messages pages members}
+            show.footer.concat %w{notes javascript}
+          end
+          group.index = Radiant::AdminUI::RegionSet.new do |index|
+            index.thead.concat %w{name_header home_header members_header pages_header modify_header}
+            index.tbody.concat %w{name_cell home_cell members_cell pages_cell modify_cell}
+            index.bottom.concat %w{buttons}
+          end
+          group.remove = group.index
+          group.new = group.edit
         end
       end
     end

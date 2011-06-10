@@ -1,0 +1,9 @@
+- unless message.function.blank?
+  %small.function
+    = message.function
+- if message.group
+  %small.group
+    for 
+    = link_to message.group.name, admin_group_url(message.group)
+    
+    

@@ -1,0 +1,16 @@
+%tr.node{:id => "page-#{page.id}", :class =>"level-#{level}"}
+  - render_region :page, :locals => {:page => page, :level => level} do |node|
+    - node.title_column do
+      %td.page{:style => "padding-left: #{(level * 22) + 4}px"}
+        %span.w1
+          = image('page', :class => "icon", :alt => 'page-icon', :title => '')
+          %span.title
+            = link_to page.title, edit_admin_page_url(page)
+    - node.add_child_column do
+      %td.add-child
+        = link_to image('add-child', :alt => 'add child'), new_admin_page_child_url(page)
+    - node.remove_column do
+      %td.remove
+        = link_to image('remove', :alt => 'remove page'), remove_admin_page_url(page)
+- page.children.each do |child|
+  = render :partial => 'admin/pages/listed', :locals => {:page => child, :level => level+1}

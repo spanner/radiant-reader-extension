@@ -1,0 +1,74 @@
+- include_stylesheet 'admin/reader_group'
+- body_classes << "reversed"
+
+- render_region :header do |header|
+  - header.title do
+    %h1
+      = t('group').titlecase + ":"
+      = @group.name
+
+- render_region :main do |main|
+  - main.messages do
+    #group_messages.box
+      .actions
+        = link_to image('plus') + ' ' + t("create_new_message"), new_admin_group_message_url(@group), :class => 'action create'
+      %h3
+        =t('admin_messages').titlecase
+      - ['welcome', 'invitation'].each do |func|
+        - message = Message.functional(func, @group)
+        %p.ruled
+          %label 
+            = t("#{func}_message")
+          - if message
+            %strong
+              = link_to message.subject, admin_message_url(message)
+          - else
+            = link_to image('plus') + ' ' + t("create_#{func}"), new_admin_group_message_url(@group, :function => func), :class => 'action create'
+      %h4
+        =t('other_messages').titlecase
+      - @group.messages.ordinary.each do |message|
+        %p.ruled
+          = link_to message.subject, admin_message_url(message)
+          %span.sent
+            - if message.sent_at
+              = t('last_sent')
+              = l(message.sent_at, :format => :short)
+        
+  - main.pages do
+    #group_pages.box
+      %h3
+        =t('private_pages').titlecase
+      %ul
+        - page = Page.respond_to?(:homepage) ? Page.homepage : Page.find_by_parent_id(nil)
+        %div{:id => "page_holder_#{page.id}"}
+          = render :partial => 'admin/permissions/page', :object => page
+
+  - main.members do
+    #group_people.box
+      .actions
+        = link_to image('plus') + ' ' + t('add_members'), new_admin_group_group_invitation_url(@group), :class => 'action'
+      %h3
+        =t('group_members').titlecase
+      - readers = Reader.find(:all)
+      - total = readers.count
+      - column_length = (readers.count-1) / 2
+      - columns = [readers[0..column_length], readers[column_length+1..readers.count]]
+      - columns.each do |column|
+        %ul.column
+          - column.each do |reader|
+            %div{:id => "reader_holder_#{reader.id}"}
+              = render :partial => 'admin/memberships/reader', :object => reader
+
+- render_region :footer do |footer|
+  - footer.notes do
+    #footnotes
+      %p
+        = t('private_page_explanation')
+
+  - footer.javascript do
+    :javascript
+      var h1 = $('group_pages').getHeight();
+      var h2 = $('group_people').getHeight();
+      var h = (h1 > h2) ? h1 : h2
+      $('group_people').setStyle({'height': h + 'px'});
+      $('group_pages').setStyle({'height': h + 'px'});

@@ -1,0 +1,9 @@
+- reader ||= @reader
+- group ||= @group
+
+- if membership = group.membership_for(reader)
+  %li{:class => "fake_checkbox checked", :id => "reader_#{reader.id}"}
+    = link_to_remote reader.name, :url => admin_group_membership_url(group, membership), :method => 'delete', :loading => "$('reader_#{reader.id}').addClassName('waiting')", :update => "reader_holder_#{reader.id}"
+- else
+  %li{:class => "fake_checkbox unchecked", :id => "reader_#{reader.id}"}
+    = link_to_remote reader.name, :url => admin_group_memberships_url(group, :reader_id => reader.id), :loading => "$('reader_#{reader.id}').addClassName('waiting')", :update => "reader_holder_#{reader.id}"

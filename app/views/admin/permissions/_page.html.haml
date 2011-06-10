@@ -1,0 +1,24 @@
+- page ||= @page
+- group ||= @group
+
+- liclass = 'loose'
+- liclass = 'attached' if page.has_group?(group)
+- liclass = 'inherited' if page.group_is_inherited?(group)
+
+- if permission = group.permission_for(page)
+  %li{:class => "fake_checkbox checked", :id => "page_#{page.id}"}
+    = link_to_remote page.title, :url => admin_group_permission_url(group, permission), :method => 'delete', :loading => "$('page_#{page.id}').addClassName('waiting')", :update => "page_holder_#{page.id}"
+
+- elsif page.has_inherited_group?(group)
+  %li{:class => "fake_checkbox inherited", :id => "page_#{page.id}"}
+    = page.title
+
+- else
+  %li{:class => "fake_checkbox unchecked", :id => "page_#{page.id}"}
+    = link_to_remote page.title, :url => admin_group_permissions_url(group, :page_id => page.id), :loading => "$('page_#{page.id}').addClassName('waiting')", :update => "page_holder_#{page.id}"
+
+- if page.children.any?
+  %ul
+    - page.children.each do |child|
+      %div{:id => "page_holder_#{child.id}"}
+        = render :partial => 'admin/permissions/page', :object => child
