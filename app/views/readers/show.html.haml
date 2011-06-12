@@ -3,7 +3,7 @@
 - content_for :description do
   - if @reader.description.blank?
     %p 
-      = t('no_description')
+      = t('reader_extension.no_description')
   - else
     = clean_textilize @reader.description
 
@@ -11,7 +11,7 @@
     = render :partial => partial, :locals => {:reader => @reader}
 
 - content_for :breadhead do
-  = link_to t('readers').titlecase + t('separator'), readers_url
+  = link_to t('reader_extension.readers').titlecase + t('reader_extension.separator'), readers_url
   = yield :parent
 
 - content_for :title do
@@ -19,7 +19,7 @@
 
 - content_for :breadcrumbs do
   = yield :breadhead
-  = t('separator')
+  = t('reader_extension.separator')
   = yield :title
 
 

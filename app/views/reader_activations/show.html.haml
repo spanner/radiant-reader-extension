@@ -3,11 +3,11 @@
 -content_for :instructions do
   - if current_reader && current_reader.activated?
     %p
-      = t("activation_complete")
+      = t("reader_extension.activation_complete")
 
     - if session[:return_to]
       %p 
-        = link_to t("return_to_page"), session[:return_to]
+        = link_to t("reader_extension.return_to_page"), session[:return_to]
 
   - else
     %div.activation
@@ -15,22 +15,22 @@
         %p.errornotice
           = @error
       %p
-        = t('thanks_and_activation_instructions')
+        = t('reader_extension.thanks_and_activation_instructions')
 
       %p
-        = link_to(t("resend_activation"), new_reader_activation_url) + '.'
+        = link_to(t("reader_extension.resend_activation"), new_reader_activation_url) + '.'
 
 - content_for :breadcrumbs do
-  = link_to t('Home'), '/'
+  = link_to t('reader_extension.Home'), '/'
   &gt;
-  = t('activate_account')
+  = t('reader_extension.activate_account')
 
 - content_for :title do
   - if current_reader && current_reader.activated?
-    = t('hello').titlecase
+    = t('reader_extension.hello').titlecase
     = current_reader.name
   - else
-    = t('activation_sent')
+    = t('reader_extension.activation_sent')
 
 
 

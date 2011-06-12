@@ -1,22 +1,22 @@
 - include_stylesheet('admin/reader_group')
 
 %h1 
-  = t('check_invitation_list', :name => @group.name)
+  = t('reader_extension.check_invitation_list', :name => @group.name)
 
 - form_for :group, @group, :url => admin_group_group_invitations_url(@group), :html => {:id => 'confirmation_form', :method => 'post'} do
   %p
-    = t('invitation_preview_instructions')
+    = t('reader_extension.invitation_preview_instructions')
 
   %table#import
     %thead
       %tr
         %th
         - if Radiant::Config['reader.use_honorifics?']
-          %th= t('honorific')
-        %th= t('full_name')
-        %th= t('email')
-        %th= t('optional_login')
-        %th= t('optional_phone')
+          %th= t('reader_extension.honorific')
+        %th= t('reader_extension.full_name')
+        %th= t('reader_extension.email')
+        %th= t('reader_extension.optional_login')
+        %th= t('reader_extension.optional_phone')
     %tbody
       - i = 0
       - @readers.each do |reader| 

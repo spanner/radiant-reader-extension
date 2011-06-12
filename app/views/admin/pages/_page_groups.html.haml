@@ -1,10 +1,10 @@
 .set
   %p
-    = t('allowed_groups')
+    = t('reader_extension.allowed_groups')
     - Group.find(:all).each do |group|
       = check_box_tag "page[group_ids][]", group.id, @page.has_inherited_group?(group), :id => "page_group_#{group.id}", :disabled => @page.group_is_inherited?(group)
       - if @page.group_is_inherited?(group)
-        %label.checkbox{:for => "page_group_#{group.id}", :class => 'disabled', :title => t('inherited_group')}
+        %label.checkbox{:for => "page_group_#{group.id}", :class => 'disabled', :title => t('reader_extension.inherited_group')}
           = group.name
       - else
         %label.checkbox{:for => "page_group_#{group.id}"}

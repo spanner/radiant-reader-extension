@@ -11,29 +11,29 @@
       %h2
         - if purpose
           = purpose + ','
-          = t('please')
+          = t('reader_extension.please')
         - else
-          = t('please').titlecase
-        = t('log_in')
+          = t('reader_extension.please').titlecase
+        = t('reader_extension.log_in')
         - if Radiant::Config['reader.allow_registration?']
-          = t('or')
-          = link_to t('register'), new_reader_url
+          = t('reader_extension.or')
+          = link_to t('reader_extension.register'), new_reader_url
 
     - if @error
       %p.haserror
-        = t('login_unknown')
+        = t('reader_extension.login_unknown')
         %br
-        = link_to t('forgotten_password'), new_password_reset_url
+        = link_to t('reader_extension.forgotten_password'), new_password_reset_url
 
     %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
       %label{:for => "reader_session_login"}
-        = t('login_or_email')
+        = t('reader_extension.login_or_email')
       %br
       = f.text_field :login, :class => 'login' 
         
     %p{ :class => @reader_session.errors.on(:password) ? 'haserror' : '' }
       %label{:for => "reader_session_password"}
-        = t('password').titlecase
+        = t('reader_extension.password').titlecase
       %br
       = f.password_field :password, :class => 'login'
 
@@ -41,13 +41,13 @@
       = f.submit ' Log in '
       = f.check_box :remember_me
       %label.paranthetical{:for => "reader_session_remember_me"}
-        = t('remember_me')
+        = t('reader_extension.remember_me')
 
   %ul
     - if Radiant::Config['reader.allow_registration?']
       %li
         = link_to "registration".titlecase, new_reader_url
-        = t('is_free_and_quick')
+        = t('reader_extension.is_free_and_quick')
     %li
-      = link_to t("forgotten_password"), new_password_reset_url
+      = link_to t("reader_extension.forgotten_password"), new_password_reset_url
       

@@ -7,64 +7,64 @@
       - if @reader.errors.any?
         %p.errornote
           %strong 
-            = t('sorry').titlecase
-            = t('form_problem') + '.'
+            = t('reader_extension.sorry').titlecase
+            = t('reader_extension.form_problem') + '.'
 
       = hidden_field_tag :id, params[:id]
       = hidden_field_tag :confirmation_code, @reader.perishable_token
 
       %p
-        = f.label :password, t('new_password'), :class => 'required'
+        = f.label :password, t('reader_extension.new_password'), :class => 'required'
         %br
         = f.password_field :password, :class => 'titular'
 
       %p
-        = f.label :password_confirmation, t('confirm_password'), :class => 'required'
+        = f.label :password_confirmation, t('reader_extension.confirm_password'), :class => 'required'
         %br
         = f.password_field :password_confirmation, :class => 'titular'
       %p
-        = f.submit t('set_new_password')
+        = f.submit t('reader_extension.set_new_password')
         
       %p
-        = t('password_not_yet_changed', :url => reader_login_url)
+        = t('reader_extension.password_not_yet_changed', :url => reader_login_url)
 
   - else 
     - form_tag edit_password_reset_path, :method => 'GET', :class => 'friendly', :autocomplete => "off" do
       = hidden_field_tag :id, params[:id]
       %p
         %label{:for => "confirmation_code"}
-          = t('confirmation_code')
+          = t('reader_extension.confirmation_code')
         %br
         = text_field_tag 'confirmation_code', '', :class => 'titular'
 
       %p
-        = submit_tag t('continue')
+        = submit_tag t('reader_extension.continue')
     
     %ul.actions
       %li
-        = link_to t("restart_password_change"), new_password_reset_url
+        = link_to t("reader_extension.restart_password_change"), new_password_reset_url
       
 - content_for :title do
   - if @reader
-    = t('change_password')
+    = t('reader_extension.change_password')
   - else
-    = t('enter_code')
+    = t('reader_extension.enter_code')
 
 - content_for :introduction do
   - if @reader
     %p
       %strong
-        = t('hello').titlecase
+        = t('reader_extension.hello').titlecase
         = @reader.name + '!'
-      = t('new_password_instructions')
+      = t('reader_extension.new_password_instructions')
   - else
     %p.errornote
-      = t('sorry_reset_not_found')
+      = t('reader_extension.sorry_reset_not_found')
     
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/'
+  = link_to t('reader_extension.home').titlecase, '/'
   &gt; 
-  = t('reset_password')
+  = t('reader_extension.reset_password')
 
 = yield :form

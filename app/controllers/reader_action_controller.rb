@@ -56,7 +56,7 @@ class ReaderActionController < ApplicationController
 
   def permission_denied
     session[:return_to] ||= request.referer
-    @title = flash[:error] || t('permission_denied')
+    @title = flash[:error] || t('reader_extension.permission_denied')
     render
   end
   
@@ -89,8 +89,8 @@ protected
       store_location
       respond_to do |format|
         format.html {
-          flash[:explanation] = t('reader_required')
-          flash[:notice] = t('please_log_in')
+          flash[:explanation] = t('reader_extension.reader_required')
+          flash[:notice] = t('reader_extension.please_log_in')
           redirect_to reader_login_url 
         }
         format.js { 
@@ -106,7 +106,7 @@ protected
     unless current_reader && current_reader.activated?
       respond_to do |format|
         format.html { 
-          flash[:explanation] = t('activation_required')
+          flash[:explanation] = t('reader_extension.activation_required')
           redirect_to reader_activation_url 
         }
         format.js { 
@@ -121,7 +121,7 @@ protected
   def require_no_reader
     if set_reader
       store_location
-      flash[:notice] = t('please_log_out')
+      flash[:notice] = t('reader_extension.please_log_out')
       redirect_back_or_to url_for(current_reader)
       return false
     end

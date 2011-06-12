@@ -4,40 +4,40 @@
 - render_region :header do |header|
   - header.title do
     %h1
-      = t('group').titlecase + ":"
+      = t('reader_extension.group').titlecase + ":"
       = @group.name
 
 - render_region :main do |main|
   - main.messages do
     #group_messages.box
       .actions
-        = link_to image('plus') + ' ' + t("create_new_message"), new_admin_group_message_url(@group), :class => 'action create'
+        = link_to image('plus') + ' ' + t("reader_extension.create_new_message"), new_admin_group_message_url(@group), :class => 'action create'
       %h3
-        =t('admin_messages').titlecase
+        =t('reader_extension.admin_messages').titlecase
       - ['welcome', 'invitation'].each do |func|
         - message = Message.functional(func, @group)
         %p.ruled
           %label 
-            = t("#{func}_message")
+            = t("reader_extension.#{func}_message")
           - if message
             %strong
               = link_to message.subject, admin_message_url(message)
           - else
-            = link_to image('plus') + ' ' + t("create_#{func}"), new_admin_group_message_url(@group, :function => func), :class => 'action create'
+            = link_to image('plus') + ' ' + t("reader_extension.create_#{func}"), new_admin_group_message_url(@group, :function => func), :class => 'action create'
       %h4
-        =t('other_messages').titlecase
+        =t('reader_extension.other_messages').titlecase
       - @group.messages.ordinary.each do |message|
         %p.ruled
           = link_to message.subject, admin_message_url(message)
           %span.sent
             - if message.sent_at
-              = t('last_sent')
+              = t('reader_extension.last_sent')
               = l(message.sent_at, :format => :short)
         
   - main.pages do
     #group_pages.box
       %h3
-        =t('private_pages').titlecase
+        =t('reader_extension.private_pages').titlecase
       %ul
         - page = Page.respond_to?(:homepage) ? Page.homepage : Page.find_by_parent_id(nil)
         %div{:id => "page_holder_#{page.id}"}
@@ -46,9 +46,9 @@
   - main.members do
     #group_people.box
       .actions
-        = link_to image('plus') + ' ' + t('add_members'), new_admin_group_group_invitation_url(@group), :class => 'action'
+        = link_to image('plus') + ' ' + t('reader_extension.add_members'), new_admin_group_group_invitation_url(@group), :class => 'action'
       %h3
-        =t('group_members').titlecase
+        =t('reader_extension.group_members').titlecase
       - readers = Reader.find(:all)
       - total = readers.count
       - column_length = (readers.count-1) / 2
@@ -63,7 +63,7 @@
   - footer.notes do
     #footnotes
       %p
-        = t('private_page_explanation')
+        = t('reader_extension.private_page_explanation')
 
   - footer.javascript do
     :javascript

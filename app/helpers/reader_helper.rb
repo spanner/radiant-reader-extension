@@ -60,17 +60,17 @@ module ReaderHelper
   def pagination_summary(list, name='')
     total = list.total_entries
     if list.empty?
-      %{#{t('no')} #{name.pluralize}}
+      %{#{t('reader_extension.no')} #{name.pluralize}}
     else      
       name ||= t(list.first.class.to_s.underscore.gsub('_', ' '))
       if total == 1
-        %{#{t('showing')} #{t('one')} #{name}}
+        %{#{t('reader_extension.showing')} #{t('reader_extension.one')} #{name}}
       elsif list.current_page == 1 && total < list.per_page
-        %{#{t('all')} #{total} #{name.pluralize}}
+        %{#{t('reader_extension.all')} #{total} #{name.pluralize}}
       else
         start = list.offset + 1
         finish = ((list.offset + list.per_page) < list.total_entries) ? list.offset + list.per_page : list.total_entries
-        %{#{start} #{t('to')} #{finish} #{t('of')} #{total} #{name.pluralize}}
+        %{#{start} #{t('reader_extension.to')} #{finish} #{t('reader_extension.of')} #{total} #{name.pluralize}}
       end
     end
   end

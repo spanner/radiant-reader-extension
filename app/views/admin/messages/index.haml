@@ -25,14 +25,14 @@
               %td.message_sent
                 %p
                   - if message.sent_at
-                    = t('last_sent')
+                    = t('reader_extension.last_sent')
                     = l(message.sent_at, :format => :short)
                   - else
-                    = t('never_sent')
+                    = t('reader_extension.never_sent')
             - tbody.modify_cell do
               %td.actions
-                = link_to( image('delta') + ' ' + t('edit_message'), edit_admin_message_url(message), :class => "action" )
-                = link_to( image('minus') + ' ' + t('delete_message'), admin_message_url(message), {:method => :delete, :class => "action", :confirm => t('really_delete_message', :title => message.subject)})
+                = link_to( image('delta') + ' ' + t('reader_extension.edit_message'), edit_admin_message_url(message), :class => "action" )
+                = link_to( image('minus') + ' ' + t('reader_extension.delete_message'), admin_message_url(message), {:method => :delete, :class => "action", :confirm => t('reader_extension.really_delete_message', :title => message.subject)})
 
   - render_region :bottom do |bottom|
     - bottom.buttons do

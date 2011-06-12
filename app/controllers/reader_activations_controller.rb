@@ -21,7 +21,7 @@ class ReaderActivationsController < ReaderActionController
     if current_reader
       @reader = current_reader
       @reader.send_activation_message
-      flash[:notice] = t("activation_message_sent")
+      flash[:notice] = t("reader_extension.activation_message_sent")
     end
     expires_now
     render :action => 'show'
@@ -32,7 +32,7 @@ class ReaderActivationsController < ReaderActionController
       @reader.activate!
       self.current_reader = @reader
     else
-      @error = t("please_check_message")
+      @error = t("reader_extension.please_check_message")
     end
     expires_now
     render :action => 'show'
@@ -47,7 +47,7 @@ protected
 
   def check_reader_inactive
     if @reader && @reader.activated?
-      flash[:notice] = t('hello').titlecase + " #{@reader.name}! " + t('already_active')
+      flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader.name}! " + t('reader_extension.already_active')
       redirect_back_or_to default_welcome_url(@reader)
       false
     end

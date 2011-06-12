@@ -6,17 +6,17 @@
       = @message
   - else
     %p
-      = t('log_in_or_register')
+      = t('reader_extension.log_in_or_register')
   
   = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/' 
+  = link_to t('reader_extension.home').titlecase, '/' 
   &gt; 
-  = t('log_in').titlecase
+  = t('reader_extension.log_in').titlecase
 
 - content_for :title do
-  = t('please_log_in').titlecase
+  = t('reader_extension.please_log_in').titlecase
 
 
 

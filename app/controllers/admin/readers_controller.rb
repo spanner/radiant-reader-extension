@@ -12,7 +12,7 @@ class Admin::ReadersController < Admin::ResourceController
     model.update_attributes!(params[:reader])
     model.clear_password = params[:reader][:password] if params[:reader] && params[:reader][:password]      # condition is so that radiant tests pass
     model.send_invitation_message
-    flash[:notice] = t('reader_saved')
+    flash[:notice] = t('reader_extension.reader_saved')
     response_for :create
   end
 

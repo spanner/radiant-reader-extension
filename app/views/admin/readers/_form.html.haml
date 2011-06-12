@@ -7,22 +7,22 @@
   - render_region :form, :locals => {:f => f} do |form|
     - form.edit_name do
       %p
-        = f.label :name, t('name') 
+        = f.label :name, t('reader_extension.name') 
         = f.text_field :name, :class => "textbox activate", :size => 32, :maxlength => 100 
     
     - form.edit_email do
       %p
-        = f.label :email, t('email_address') , :class => "optional"
+        = f.label :email, t('reader_extension.email_address') , :class => "optional"
         = f.text_field "email", :class => 'textbox', :size => 32, :maxlength => 255
 
     - form.edit_username do
       %p
-        = f.label :login, t('username') , :class => "optional"
+        = f.label :login, t('reader_extension.username') , :class => "optional"
         = f.text_field "login", :class => 'textbox', :size => 32, :maxlength => 255
     
     - form.edit_readername do
       %p
-        = f.label :login, t('readername') 
+        = f.label :login, t('reader_extension.readername') 
         = f.text_field "login", :class => "textbox", :size => 32, :maxlength => 40 
     
     - form.edit_password do
@@ -35,7 +35,7 @@
 
     - form.edit_notes do
       %p
-        = f.label :notes, t('notes'), :class => "optional"
+        = f.label :notes, t('reader_extension.notes'), :class => "optional"
         ~ f.text_area "notes", :size => "53x4", :class => "textarea"
   
   = render_region :form_additions, :locals => {:f => f}
@@ -45,7 +45,7 @@
       %p.buttons
         = save_model_button(@reader)
         = save_model_and_continue_editing_button(@reader)
-        = t('or')   
-        = link_to t('cancel'), admin_readers_path
+        = t('reader_extension.or')   
+        = link_to t('reader_extension.cancel'), admin_readers_path
     - form_bottom.edit_timestamp do
       = updated_stamp @reader

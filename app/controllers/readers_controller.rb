@@ -22,7 +22,7 @@ class ReadersController < ReaderActionController
 
   def new
     if current_reader
-      flash[:error] = t('already_logged_in')
+      flash[:error] = t('reader_extension.already_logged_in')
       redirect_to url_for(current_reader) and return
     end
     @reader = Reader.new
@@ -39,9 +39,9 @@ class ReadersController < ReaderActionController
     @reader.clear_password = params[:reader][:password]
 
     unless @reader.email.blank?
-      flash[:error] = t('please_avoid_spam_trap')
+      flash[:error] = t('reader_extension.please_avoid_spam_trap')
       @reader.email = ''
-      @reader.errors.add(:trap, t("must_be_empty"))
+      @reader.errors.add(:trap, t("reader_extension.must_be_empty"))
       render :action => 'new' and return
     end
 
@@ -65,7 +65,7 @@ class ReadersController < ReaderActionController
     @reader.attributes = params[:reader]
     @reader.clear_password = params[:reader][:password] if params[:reader][:password]
     if @reader.save
-      flash[:notice] = t('account_updated')
+      flash[:notice] = t('reader_extension.account_updated')
       redirect_to url_for(@reader)
     else
       render :action => 'edit'
@@ -79,7 +79,7 @@ protected
   end
 
   def restrict_to_self
-    flash[:error] = t("cannot_edit_others") if params[:id] && params[:id] != current_reader.id
+    flash[:error] = t("reader_extension.cannot_edit_others") if params[:id] && params[:id] != current_reader.id
     @reader = current_reader
   end
   
@@ -90,19 +90,19 @@ protected
     @reader.attributes = params[:reader]
     @reader.valid?
     
-    flash[:error] = t('password_incorrect')
+    flash[:error] = t('reader_extension.password_incorrect')
     @reader.errors.add(:current_password, "not_correct")
     render :action => 'edit' and return false
   end
   
   def no_removing
-    flash[:error] = t('cannot_delete_readers')
+    flash[:error] = t('reader_extension.cannot_delete_readers')
     redirect_to admin_readers_url
   end
   
   def check_registration_allowed
     unless Radiant::Config['reader.allow_registration?']
-      flash[:error] = t("registration_disallowed")
+      flash[:error] = t("reader_extension.registration_disallowed")
       redirect_to reader_login_url
       false
     end

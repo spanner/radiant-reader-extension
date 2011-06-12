@@ -2,32 +2,32 @@
 
 - content_for :introduction do
   %p
-    = t('please_register')
+    = t('reader_extension.please_register')
 
 - content_for :form do
   = render :partial => 'form'
 
 - content_for :notes do
   %h3
-    = t('notes').titlecase
+    = t('reader_extension.notes').titlecase
   %ul.friendly
     %li
-      = t('confirming_email')
+      = t('reader_extension.confirming_email')
     %li
-      = t('getting_gravatar')
+      = t('reader_extension.getting_gravatar')
       = link_to "gravatar.com" + '.', "http://www.gravatar.com"
     - if Radiant::Config['reader.terms_url']
       %li
-        = t('please_read_our')
-        = link_to t("terms_and_conditions"), Radiant::Config['reader.terms_url']
+        = t('reader_extension.please_read_our')
+        = link_to t("reader_extension.terms_and_conditions"), Radiant::Config['reader.terms_url']
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/'
+  = link_to t('reader_extension.home').titlecase, '/'
   &gt; 
-  = t('register').titlecase
+  = t('reader_extension.register').titlecase
 
 - content_for :title do
-  = t('new_account').titlecase
+  = t('reader_extension.new_account').titlecase
 
 
 

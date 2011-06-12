@@ -2,26 +2,26 @@
 
 %div.apologetic
   %p.haserror
-    = t('page_permission_denied')
+    = t('reader_extension.page_permission_denied')
 
     - if current_reader
-      = t('if_mistake_see_admin')
+      = t('reader_extension.if_mistake_see_admin')
 
       - content_for :title do
-        = t('sorry_access_denied')
+        = t('reader_extension.sorry_access_denied')
       
     - else
-      = t('please_log_in') + '.'
+      = t('reader_extension.please_log_in') + '.'
 
       - content_for :title do
-        = t('please_log_in')
+        = t('reader_extension.please_log_in')
 
   - unless current_reader
     = render :partial => 'reader_sessions/login_form'
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/'
+  = link_to t('reader_extension.home').titlecase, '/'
   &gt;
-  = t('access_denied')
+  = t('reader_extension.access_denied')
 
 

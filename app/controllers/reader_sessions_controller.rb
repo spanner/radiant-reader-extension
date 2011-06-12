@@ -25,10 +25,10 @@ class ReaderSessionsController < ReaderActionController
   def new
     if current_reader
       if current_reader.activated?
-        cookies[:error] = t('already_logged_in')
+        cookies[:error] = t('reader_extension.already_logged_in')
         redirect_to reader_url(current_reader)
       else
-        cookies[:error] = t('account_requires_activation')
+        cookies[:error] = t('reader_extension.account_requires_activation')
         redirect_to reader_activation_url
       end
     else
@@ -46,7 +46,7 @@ class ReaderSessionsController < ReaderActionController
       end
       respond_to do |format|
         format.html {
-          flash[:notice] = t('hello').titlecase + " #{@reader_session.reader.name}. " + t('welcome_back')
+          flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
           redirect_back_or_to default_welcome_url(@reader_session.reader)
         }
         format.js { 

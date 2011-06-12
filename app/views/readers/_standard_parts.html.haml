@@ -17,7 +17,7 @@
     = standard_gravatar_for(@reader)
   
 - content_for :section_navigation do
-  = link_to t('navigation.readers'), readers_url, :class => 'section'
+  = link_to t('reader_extension.navigation.readers'), readers_url, :class => 'section'
   = render :partial => 'readers/controls'
   - if Radiant::Config['reader.help_url']
-    = link_to t('navigation.reader_help'), Radiant::Config['reader.help_url']
+    = link_to t('reader_extension.navigation.reader_help'), Radiant::Config['reader.help_url']

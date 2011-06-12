@@ -1,7 +1,7 @@
 - include_stylesheet('admin/reader_group')
 
 %h1 
-  = t('invite_into_group', :name => @group.name)
+  = t('reader_extension.invite_into_group', :name => @group.name)
 
 - if message = @group.messages.for_function('invitation').first
 
@@ -22,10 +22,10 @@
         = link_to "Cancel", admin_group_url(@group)
 
   %p 
-    = t('invitation_instructions')
+    = t('reader_extension.invitation_instructions')
 
 - else
   %p
-    = t('no_invitation_message')
-    = link_to image('plus') + ' ' + t("create_invitation_message"), new_admin_group_message_url(@group, :function => 'invitation'), :class => "action"
+    = t('reader_extension.no_invitation_message')
+    = link_to image('plus') + ' ' + t("reader_extension.create_invitation_message"), new_admin_group_message_url(@group, :function => 'invitation'), :class => "action"
   

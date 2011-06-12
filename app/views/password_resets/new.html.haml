@@ -1,9 +1,9 @@
 - include_stylesheet 'reader'
 
 %p
-  =t('password_reset_instructions')
+  =t('reader_extension.password_reset_instructions')
   %strong
-    =t('password_reset_reassurance')
+    =t('reader_extension.password_reset_reassurance')
   
 - if @error
   %p.haserror
@@ -14,17 +14,17 @@
   - form_tag password_reset_path, :class => 'friendly' do
     %p
       %label{:for => "email"}
-        = t('your_email')
+        = t('reader_extension.your_email')
       %br
       = text_field_tag 'email', email, :class => 'titular'
 
     %p
-      = submit_tag t('send_reset_button')
+      = submit_tag t('reader_extension.send_reset_button')
 
 - content_for :breadcrumbs do
-  = link_to t('home').titlecase, '/'
+  = link_to t('reader_extension.home').titlecase, '/'
   &gt; 
-  = t('reset_password').titlecase
+  = t('reader_extension.reset_password').titlecase
 
 - content_for :title do
-  = t('reset_password').titlecase
+  = t('reader_extension.reset_password').titlecase
