@@ -1,3 +1,3 @@
-module RadiantClippedExtension
+module RadiantReaderExtension
   VERSION = '2.0.0.rc1'
 end
