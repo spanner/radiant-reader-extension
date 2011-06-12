@@ -43,5 +43,4 @@ describe Group do
     group.pages.any?.should be_true
     group.pages.size.should == 2
   end
-
 end

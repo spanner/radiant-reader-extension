@@ -20,15 +20,8 @@ module GroupedModel
         end
         
         def self.visible
-          visible_to(nil)
+          ungrouped
         end
-        
-        unless instance_methods.include? 'visible_to?'
-          def visible_to?(reader)
-            return true
-          end
-        end
-        alias_method_chain :visible_to?, :groups
       }
       
       has_many :permissions, :as => :permitted
@@ -36,11 +29,10 @@ module GroupedModel
       Group.define_retrieval_methods(self.to_s)
 
       named_scope :visible_to, lambda { |reader| 
-        if reader.nil? || reader.groups.empty?
-          conditions = "pp.group_id IS NULL"
-        else
+        conditions = "pp.group_id IS NULL"
+        if reader && reader.groups.any?
           ids = reader.group_ids
-          conditions = reader.nil? ? "pp.group_id IS NULL" : ["pp.group_id IS NULL OR pp.group_id IN(#{ids.map{"?"}.join(',')})", *ids]
+          conditions = ["#{conditions} OR pp.group_id IS NULL OR pp.group_id IN(#{ids.map{"?"}.join(',')})", *ids]
         end
         {
           :joins => "LEFT OUTER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'",
@@ -94,8 +86,8 @@ module GroupedModel
       groups
     end
 
-    def visible_to_with_groups?(reader)
-      return false unless visible_to_without_groups?(reader)
+    def visible_to?(reader)
+      Rails.logger.warn "grouped_model#visible_to?"
       return true if self.permitted_groups.empty?
       return false if reader.nil?
       return true if reader.is_admin?
