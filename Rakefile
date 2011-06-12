@@ -1,22 +1,3 @@
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "radiant-reader-extension"
-    gem.summary = %Q{User-services extension for Radiant CMS}
-    gem.description = %Q{Centralises reader/member/user registration and management tasks for the benefit of other extensions}
-    gem.email = "will@spanner.org"
-    gem.homepage = "http://github.com/spanner/radiant-reader-extension"
-    gem.authors = ["spanner"]
-    gem.add_dependency "radiant", ">= 0.9.0"
-    gem.add_dependency 'radiant-layouts-extension'
-    gem.add_dependency 'radiant-mailer_layouts-extension'
-    gem.add_dependency 'authlogic'
-    gem.add_dependency 'sanitize'
-  end
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. This is only required if you plan to package reader as a gem."
-end
-
 # In rails 1.2, plugins aren't available in the path until they're loaded.
 # Check to see if the rspec plugin is installed first and require
 # it if it is.  If not, use the gem version.
