@@ -1,7 +1,8 @@
 = render :partial => 'readers/standard_parts'
 
 - content_for :introduction do
-  =t('reader_extension.readers_introduction')
+  %p
+    =t('reader_extension.readers_introduction')
   
 - content_for :list do
   #readers
@@ -19,8 +20,6 @@
             %p.context
               = t("reader_extension.joined_on")
               = l(reader.created_at, :format => :date) + '.'
-              - @index_partials.each do |partial|
-                = render :partial => partial, :locals => {:reader => reader}
 
 - content_for :pagination do
   = pagination_and_summary_for(@readers, t('reader_extension.person'))

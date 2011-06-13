@@ -131,6 +131,7 @@ en:
     reader_logged_in_as: "You are logged in as %{name}."
     reader_saved: "Reader saved"
     readers: 'People'
+    readers_introduction: "This is a list of everyone who has joined the site. It's only visible to logged-in users."
     register: "register"
     registration: "registration"
     registration_disallowed: "Sorry. This site does not allow visitors to register"
@@ -155,9 +156,6 @@ en:
     thanks_activated: "Thank you! Your account has been activated."
     thanks_and_activation_instructions: "Thank you for registering. Now please check your email. We have sent a message containing a link that will automatically activate your account and log you in."
     this_is_your_page: "This is the page that other (logged-in) site visitors will see when they click on your name."
-    time:
-      formats:
-        date: "%B %e, %Y"
     username: "username"
     welcome_back: "Welcome back"
     welcome_message: "Welcome message"
@@ -194,3 +192,6 @@ en:
     update_account: "Save changes"
     create_account: "Register"
     separator: " &raquo; "
+  time:
+    formats:
+      date: "%B %e, %Y"
