@@ -5,6 +5,7 @@ en:
       require_confirmation?: "Confirm email addresses"
       use_honorifics?: "Use honorifics"
       layout: "Layout for forms"
+      get_profile?: "As for profile text"
     email:
       name: "Message sender"
       address: "Message reply-to"
@@ -162,7 +163,7 @@ en:
     welcome_message: "Welcome message"
     wrong_email: "you think you might have put the wrong email address in,"
     'yes': "yes"
-    your_description: "A little about yourself"
+    your_description: "Some text for your profile page"
     your_email: "Your email address"
     your_name: "Your name"
     count_people: 
@@ -192,3 +193,4 @@ en:
     reader_required: "Sorry: this part of the site requires an account."
     update_account: "Save changes"
     create_account: "Register"
+    separator: " &raquo; "

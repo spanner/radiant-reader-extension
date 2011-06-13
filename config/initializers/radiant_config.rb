@@ -3,6 +3,7 @@ Radiant.config do |config|
     reader.define 'allow_registration?', :default => true
     reader.define 'require_confirmation?', :default => true
     reader.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => false
+    reader.define 'get_profile?', :default => true
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

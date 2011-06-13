@@ -7,6 +7,8 @@
     = t('reader_extension.preferences_intro')
 
 - content_for :form do
+  %pre
+    = @reader.errors.full_messages
   = render :partial => 'form', :locals => {:reader => @reader}
   %p
     = standard_gravatar_for(@reader, 'http://gravatar.com/site/login')

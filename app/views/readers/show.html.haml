@@ -11,10 +11,11 @@
     = render :partial => partial, :locals => {:reader => @reader}
 
 - content_for :breadhead do
-  = link_to t('reader_extension.readers').titlecase + t('reader_extension.separator'), readers_url
-  = yield :parent
+  = link_to t('reader_extension.readers').titlecase, readers_url
+  = t('reader_extension.separator')
 
 - content_for :title do
+  = gravatar_for(@reader,  {:size => 128}, {:class => 'gravatar big right', :width => 128, :height => 128})
   = @reader.name
 
 - content_for :breadcrumbs do

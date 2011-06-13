@@ -7,9 +7,9 @@ class ReadersController < ReaderActionController
   before_filter :initialize_partials
   before_filter :i_am_me, :only => [:show, :edit]
   before_filter :require_reader, :except => [:new, :create, :activate]
+  before_filter :default_to_self, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
-  before_filter :require_password, :only => [:update]
   before_filter :ensure_groups_subscribable, :only => [:update, :create]
 
   def index
@@ -78,6 +78,10 @@ protected
     params[:id] = current_reader.id if current_reader && params[:id] == 'me'
   end
 
+  def default_to_self
+    params[:id] ||= current_reader.id
+  end
+  
   def restrict_to_self
     flash[:error] = t("reader_extension.cannot_edit_others") if params[:id] && params[:id] != current_reader.id
     @reader = current_reader

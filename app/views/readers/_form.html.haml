@@ -81,15 +81,12 @@
         %br
         = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
     
-  - if Radiant::Config['reader.use_description?']
+  - if Radiant::Config['reader.get_profile?']
     %p
       = f.label :description, t('reader_extension.your_description'), :class => 'optional'
       %br
       = f.text_area :description, :class => 'standard', :rows => 8
       %span.formnote= t('reader_extension.form_notes.description')
-
-  - @edit_partials.each do |partial|
-    = render :partial => partial, :locals => {:reader => @reader}
 
   %p
     = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
