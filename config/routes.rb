@@ -18,8 +18,8 @@ ActionController::Routing::Routes.draw do |map|
   map.repassword_me 'repassword/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
   map.reader_register '/register', :controller => 'readers', :action => 'new'
   map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
-  map.reader_account '/account', :controller => 'readers', :action => 'edit'
-  map.reader_profile '/profile', :controller => 'readers', :action => 'show'
+  map.reader_account '/account', :controller => 'readers', :action => 'edit', :id => 'me'
+  map.reader_profile '/profile', :controller => 'readers', :action => 'show', :id => 'me'
   map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
   map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
 end

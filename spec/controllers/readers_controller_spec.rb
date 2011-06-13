@@ -78,7 +78,15 @@ describe ReadersController do
         rsession = ReaderSession.create!(readers(:normal))
         # controller.stub!(:current_reader_session).and_return(rsession)
       end
-  
+      
+      it "should route '/account' to my account" do
+        params_from(:get, '/account').should == {:controller => 'readers', :action => 'edit', :id => 'me'}
+      end
+      
+      it "should route '/profile' to my account" do
+        params_from(:get, '/profile').should == {:controller => 'readers', :action => 'show', :id => 'me'}
+      end
+      
       it "should consent to show another reader page" do 
         get :show, :id => reader_id(:visible)
         response.should be_success

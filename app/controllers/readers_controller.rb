@@ -2,6 +2,7 @@ class ReadersController < ReaderActionController
   helper :reader
   
   cattr_accessor :edit_partials, :show_partials, :index_partials
+  @@edit_partials, @@show_partials, @@index_partials = [], [], []
   
   before_filter :check_registration_allowed, :only => [:new, :create]
   before_filter :initialize_partials
@@ -113,17 +114,14 @@ protected
   end
   
   def self.add_edit_partial(path)
-    @@edit_partials ||= []
     edit_partials.push(path)
   end
 
   def self.add_show_partial(path)
-    @@show_partials ||= []
     show_partials.push(path)
   end
 
   def self.add_index_partial(path)
-    @@index_partials ||= []
     index_partials.push(path)
   end
 
