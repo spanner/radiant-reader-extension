@@ -17,9 +17,7 @@ describe ReadersController do
       response.should render_template("new")
     end
     
-    it "should generate a secret email field name" do
-      
-    end
+    it "should generate a secret email field name"
   end
   
   describe "with a registration" do
@@ -39,12 +37,6 @@ describe ReadersController do
 
     it "should have deobfuscated the email field" do
       @reader.email.should == 'registrant@spanner.org'
-    end
-
-    if defined? Site
-      it "should have assigned the new reader to the current site" do
-        @reader.site.should == sites(:test)
-      end
     end
 
     it "should redirect to the please-activate page" do
@@ -79,6 +71,14 @@ describe ReadersController do
         # controller.stub!(:current_reader_session).and_return(rsession)
       end
   
+      it "should route '/account' to my account" do
+        params_from(:get, '/account').should == {:controller => 'readers', :action => 'edit'}
+      end
+
+      it "should route '/profile' to my account" do
+        params_from(:get, '/profile').should == {:controller => 'readers', :action => 'show'}
+      end
+
       it "should consent to show another reader page" do 
         get :show, :id => reader_id(:visible)
         response.should be_success
@@ -123,9 +123,9 @@ describe ReadersController do
       login_as_reader(:normal)
     end
 
-    describe "that includes the correct password" do
+    describe "that is valid" do
       before do
-        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name", :current_password => 'password'}}
+        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}}
         @reader = readers(:normal)
       end
       
@@ -138,22 +138,6 @@ describe ReadersController do
         response.should redirect_to(reader_url(@reader))
       end
       
-    end
-
-    describe "that does not include the correct password" do
-      before do
-        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}, :current_password => 'wrongo'}
-        @reader = readers(:normal)
-      end
-
-      it "should not update the reader" do 
-        @reader.name.should == 'Normal'
-      end
-
-      it "should re-render the edit form" do 
-        response.should be_success
-        response.should render_template("edit")
-      end
     end
 
     describe "that does not validate" do

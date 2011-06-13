@@ -32,7 +32,7 @@
 
             - tbody.description_cell do
               %td.reader_description
-                = truncate_and_textilize(reader.description, 24)
+                = truncate_words(scrub(reader.description), 24)
 
             - tbody.modify_cell do
               %td.actions
