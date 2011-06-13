@@ -11,7 +11,7 @@ class ReaderExtension < Radiant::Extension
     config.gem 'sanitize'
   end
   
-  migrate_from 'ReaderGroup', 20110214101339
+  migrate_from 'Reader Group', 20110214101339
   
   def activate
     Reader

@@ -1,2 +1,2 @@
-module RadiantClippedExtension
+module RadiantReaderExtension
 end
