@@ -113,7 +113,7 @@ en:
         repeat_password: "Confirm password"
         current_password: "Current password"
     log_in: 'log in'
-    log_in_or_register: "To use this part of the site you need to be logged in. It's easy to get an account: if you have received an invitation, please follow the instructions in that message. Otherwise, please <a href='/register'>register here</a>. It only takes a moment."
+    log_in_or_register: "Please log in here. If you haven't already, you will need to <a href='/register'>register</a> first."
     log_out: "log out"
     login_name: "Login name"
     login_or_email: "Login name or email address"

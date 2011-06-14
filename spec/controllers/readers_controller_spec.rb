@@ -28,31 +28,61 @@ describe ReadersController do
       Authlogic::Random.should_receive(:friendly_token).at_least(:once).and_return("hello_dolly")
       get :new
       newreader.email_field.should == "hello_dolly"
+      session[:email_field].should == "hello_dolly"
     end
   end
   
   describe "with a registration" do
     before do
-      session[:email_field] = @email_field = 'randomstring'
-      post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "password"}, :randomstring => 'registrant@spanner.org'
-      @reader = Reader.find_by_name('registering user')
+      @newreader = Reader.new
+      Reader.stub!(:new).and_return(@newreader)
+      @newreader.perishable_token = "gibberish"
+      @newreader.stub!(:reset_perishable_token!).and_return("gibberish")
     end
     
-    it "should create a new reader" do
-      @reader.should_not be_nil
-    end
+    describe "that validates" do
+      before do
+        post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "password"}, :gibberish => 'registrant@spanner.org'
+      end
+      it "should create a new reader" do
+        @newreader.new_record?.should be_false
+      end
 
-    it "should set the current reader" do
-      controller.send(:current_reader).should == @reader
-    end
+      it "should set the current reader" do
+        controller.send(:current_reader).should == @newreader
+      end
 
-    it "should have deobfuscated the email field" do
-      @reader.email.should == 'registrant@spanner.org'
-    end
+      it "should have deobfuscated the email field" do
+        @newreader.email.should == 'registrant@spanner.org'
+      end
 
-    it "should redirect to the please-activate page" do
-      response.should be_redirect
-      response.should redirect_to(reader_activation_url)
+      it "should redirect to the please-activate page" do
+        response.should be_redirect
+        response.should redirect_to(reader_activation_url)
+      end
+    end
+    describe "that does not validate" do
+      before do
+        post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "passwrd"}, :gibberish => 'registrant@spanner.org'
+      end
+      
+      it "should not create the user" do
+        @newreader.new_record?.should be_true
+      end
+
+      it "should not set the current reader" do
+        controller.send(:current_reader).should be_nil
+      end
+
+      it "should return to the registration form" do
+        response.should be_success
+        response.should render_template('new')
+      end
+      
+      it "should set validation error messages" do
+        @newreader.errors.should_not be_empty
+        @newreader.errors.on(:password).should_not be_empty
+      end
     end
     
     describe "with the trap field filled in" do

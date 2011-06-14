@@ -57,6 +57,7 @@ class ReadersController < ReaderActionController
       self.current_reader = @reader
       redirect_to reader_activation_url
     else
+      @reader.email_field = session[:email_field]
       render :action => 'new'
     end
   end
