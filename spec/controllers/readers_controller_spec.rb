@@ -11,13 +11,24 @@ describe ReadersController do
   end
     
   describe "with a get to new" do
+    before do
+      @reader = Reader.new
+      Reader.stub!(:new).and_return(@reader)
+    end
+    
     it "should render the registration screen" do
       get :new
       response.should be_success
       response.should render_template("new")
     end
     
-    it "should generate a secret email field name"
+    it "should generate a secret email field name" do
+      newreader = Reader.new
+      Reader.stub!(:new).and_return(newreader)
+      Authlogic::Random.should_receive(:friendly_token).at_least(:once).and_return("hello_dolly")
+      get :new
+      newreader.email_field.should == "hello_dolly"
+    end
   end
   
   describe "with a registration" do
