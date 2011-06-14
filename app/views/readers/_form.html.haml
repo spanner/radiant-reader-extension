@@ -12,14 +12,14 @@
       = t('reader_extension.bold_required')
 
   %p
-    = f.label :name, t('reader_extension.your_name'), :class => 'required'
+    = f.label :name, nil, :class => 'required'
     %br
     = f.text_field :name, :class => 'standard'
     %span.formnote= t('reader_extension.form_notes.name')
 
   - if Radiant::Config['reader.use_honorifics?']
     %p
-      = f.label :honorific, t(:honorific), :class => 'optional'
+      = f.label :honorific, nil, :class => 'optional'
       %br
       = f.text_field :honorific, :class => 'standard'
       %span.formnote= t('reader_extension.form_notes.honorific')
@@ -32,40 +32,40 @@
       %span.formnote= t('reader_extension.form_notes.email')
     .innocuous
       %p
-        =f.label :email, t("reader_extension.dont_fill"), :class => 'required'
+        =f.label :email, nil, :class => 'required'
         %br
         = f.text_field :email, :class => 'standard'
         %span.formnote= t('reader_extension.spam_trap')
 
   - else
     %p
-      = f.label :email, t('reader_extension.your_email'), :class => 'required'
+      = f.label :email, nil, :class => 'required'
       %br
       = f.text_field :email, :class => 'standard'
       %span.formnote= t('reader_extension.form_notes.email')
 
   %p
-    = f.label :login, t('reader_extension.login_name'), :class => 'optional'
+    = f.label :login, nil, :class => 'optional'
     %br
     = f.text_field :login, :class => 'standard'
     %span.formnote= t('reader_extension.form_notes.login')
 
   - if reader.new_record?
     %p
-      = f.label :password, t('reader_extension.password'), :class => 'required'
+      = f.label :password, nil, :class => 'required'
       %br
       = f.password_field :password, :class => 'standard', :autocomplete => 'off'
       %span.formnote= t('reader_extension.form_notes.new_password')
 
     %p
-      = f.label :password_confirmation, t('reader_extension.confirm_password'), :class => 'required'
+      = f.label :password_confirmation, nil, :class => 'required'
       %br
       = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
   - else 
     .display_password
       %p
-        = f.label :password, t('reader_extension.password').titlecase, :class => 'optional'
+        = f.label :password, nil, :class => 'optional'
         %span.password
           &bull;&bull;&bull;&bull;&bull;
         %span.formnote= link_to t('reader_extension.change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
@@ -83,7 +83,7 @@
     
   - if Radiant::Config['reader.get_profile?']
     %p
-      = f.label :description, t('reader_extension.your_description'), :class => 'optional'
+      = f.label :description, nil, :class => 'optional'
       %br
       = f.text_area :description, :class => 'standard', :rows => 8
       %span.formnote= t('reader_extension.form_notes.description')

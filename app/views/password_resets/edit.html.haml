@@ -1,5 +1,3 @@
-- render :partial => 'readers/standard_parts'
-
 - content_for :form do
   - if @reader
     - form_for @reader, :url => password_reset_path, :method => :put, :html => {:class => 'friendly', :autocomplete => "off"} do |f|
@@ -51,20 +49,23 @@
     = t('reader_extension.enter_code')
 
 - content_for :introduction do
-  - if @reader
-    %p
-      %strong
-        = t('reader_extension.hello').titlecase
-        = @reader.name + '!'
-      = t('reader_extension.new_password_instructions')
-  - else
-    %p.errornote
-      = t('reader_extension.sorry_reset_not_found')
+  %div.introduction
+    - if @reader
+      %p
+        %strong
+          = t('reader_extension.hello').titlecase
+          = @reader.name + '!'
+        = t('reader_extension.new_password_instructions')
+    - else
+      %p.errornote
+        = t('reader_extension.sorry_reset_not_found')
     
-
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/'
   &gt; 
   = t('reader_extension.reset_password')
 
-= yield :form
+- content_for :body do
+  = yield :form
+  
+= render :partial => 'shared/standard_reader_parts'

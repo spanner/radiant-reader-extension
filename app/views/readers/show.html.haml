@@ -1,4 +1,3 @@
-= render :partial => 'readers/standard_parts'
 
 - content_for :description do
   - if @reader.description.blank?
@@ -23,6 +22,7 @@
   = t('reader_extension.separator')
   = yield :title
 
+- content_for :body do
+  = yield :description
 
-
-= yield :description
+= render :partial => 'shared/standard_reader_parts'

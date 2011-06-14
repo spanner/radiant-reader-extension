@@ -38,9 +38,9 @@
               %td.actions
                 - if admin?
                   - if reader.is_user?
-                    %span.action.disabled= image('minus_disabled') + ' ' + t('reader_extension.remove')
+                    %span.action.disabled= image('minus_disabled') + ' ' + t('remove')
                   - else
-                    = link_to(image('minus') + ' ' + t('reader_extension.delete_reader'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('reader_extension.really_delete_reader', :name => reader.name))
+                    = link_to(image('minus') + ' ' + t('remove'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('reader_extension.really_delete_reader', :name => reader.name))
         
       
   - render_region :bottom do |bottom|

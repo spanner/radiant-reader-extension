@@ -5,41 +5,39 @@ class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
   cattr_accessor :user_columns
   cattr_accessor :current
-  default_scope :order => 'name ASC'
-
-  has_site if respond_to? :has_site
+  attr_accessor :email_field        # used in blocking spam registrations
 
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
     config.transition_from_restful_authentication = true
     config.validate_email_field = false
     config.validate_login_field = false
+    config.validate_password_field = false
   end
 
   belongs_to :user
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
-
   has_many :message_readers
   has_many :messages, :through => :message_readers
-
   has_many :memberships
   has_many :groups, :through => :memberships
   accepts_nested_attributes_for :memberships
 
-  attr_accessor :current_password   # used for authentication on update
-  attr_accessor :email_field        # used in blocking spam registrations
-  
   before_update :update_user
 
-  validates_presence_of :name, :email, :message => 'is required'
-  validates_uniqueness_of :login, :message => "is already in use here", :allow_blank => true
+  validates_presence_of :name, :email
+  validates_length_of :name, :maximum => 100, :allow_nil => true
+  validates_length_of :password, :minimum => 6, :allow_nil => false, :unless => :existing_reader_keeping_password?
+  validates_format_of :password, :with => /\W/, :unless => :existing_reader_keeping_password?
+  validates_confirmation_of :password, :unless => :existing_reader_keeping_password?
+  validates_uniqueness_of :login, :allow_blank => true
   validate :email_must_not_be_in_use
 
   include RFC822
-  validates_format_of :email, :with => RFC822_valid, :message => 'appears not to be an email address'
-  validates_length_of :name, :maximum => 100, :allow_nil => true
+  validates_format_of :email, :with => RFC822_valid
 
+  default_scope :order => 'name ASC'
   named_scope :any
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
@@ -166,17 +164,17 @@ private
     reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
     user = User.find_by_email(self.email)
     if user && user != self.user
-      errors.add(:email, "belongs to an author already known here")
+      setting.errors.add :value, :taken_by_author
     elsif reader && reader != self
-      errors.add(:email, "is already registered here")
+      setting.errors.add :value, :taken
     else
       return true
     end
     return false
   end
 
-  def validate_length_of_password?
-    new_record? or not password.to_s.empty?
+  def existing_reader_keeping_password?
+    !new_record? && !password_changed? && !password_confirmation_changed?
   end
 
   def update_user

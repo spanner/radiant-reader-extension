@@ -15,3 +15,12 @@
 
 - content_for :controls do
   = render :partial => 'readers/controls'
+
+- content_for :signals do
+  = render :partial => 'readers/flasher'
+
+- content_for :header do
+  .header
+    %h1.title
+      = yield :title
+  

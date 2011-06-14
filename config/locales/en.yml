@@ -1,4 +1,34 @@
 en:
+  activerecord:
+    attributes:
+      reader:
+        description: "Text for your profile page"
+        email: "Email address"
+        honorific: "Title or rank"
+        login: "Login username (optional)"
+        name: "Your name"
+        password: "Password"
+        password_confirmation: "Confirm password"
+    errors:
+      models:
+        reader:
+          attributes:
+            name:
+              blank: "please enter a name"
+              too_long: "this is too long: 100 characters max"
+            email:
+              blank: "please enter your email address"
+              invalid: "this doesn't look like an email address"
+              taken: "this address is already registered here"
+              taken_by_author: "this address belongs to an author here. You don't need to register here: just log in to admin."
+            login:
+              taken: "this login is already in use here"
+            password:
+              too_short: "this must have at least six characters"
+              invalid: "this must include at least one non-letter"
+            password_confirmation:
+              
+          
   config:
     reader:
       allow_registration?: "Allow registration"
@@ -11,6 +41,11 @@ en:
       address: "Message reply-to"
       prefix: "Subject prefix"
       layout: "Email layout"
+  reader: "reader"
+  readers: "Readers"
+  groups: "Groups"
+  messages: "Messages"
+  settings: "Settings"
   reader_extension:
     access_denied: "Access denied"
     account_settings: "Account settings"
@@ -28,7 +63,7 @@ en:
     already_logged_in: "You're already logged in!"
     already_registered: "If you've already registered, you should only need to"
     and_try_again: "and try again."
-    bold_required: "Fields with bold headings are required and will cause grumbling if left blank:"
+    bold_required: "Fields with bold headings are required and will cause grumbling if left blank."
     but_not_active: 'but your account is not yet activated. Please check your email for our activation message.'
     cancel: "cancel"
     cannot_delete_readers: "To delete readers, please log in as an administrator"
@@ -47,7 +82,6 @@ en:
     email_unknown: "Sorry. That email address is not known here."
     enter_code: "Please enter confirmation code"
     enter_email_for_reminder: "enter your email address and we will send the message again"
-    enter_own_password: "First, just to make sure you're you, please enter your current password:"
     everyone_in_group: "Everyone in the group"
     forgotten_password: "Forgotten your password?"
     form_notes:
@@ -56,7 +90,7 @@ en:
       existing_password: "leave blank to keep present password. If changing, at least four characters."
       login: "you can always use your email address instead"
       name: "this is how you will be credited on the site"
-      new_password: "at least four characters, please"
+      new_password: "at least six characters, please, and with at least one non-letter character"
       honorific: "this is prepended to your name when you are credited"
     form_problem: "there was a problem with the form"
     getting_gravatar: "If you would like a picture to appear next to your messages, give yourself a gravatar at"
@@ -100,14 +134,14 @@ en:
       loading: "Loading..."
       register: "Register"
       your_account: "Preferences"
-    new_account: "Create an account"
+    new_account: "Register here"
     new_password: "New password"
     new_password_instructions: "Please enter and confirm the new password you would like to use. It must be at least four characters long, nothing obvious or typical and ideally a mixture of numbers and letters."
     'no': "no"
     no_description: "No description available"
     notes: "notes"
     page_permission_denied: "You don't have permission to see the page that you have requested."
-    password: "password"
+    password: "Password"
     password_incorrect: "Sorry. Wrong password."
     password_mismatch: "Passwords don't match! Please try again."
     password_not_yet_changed: "Your password hasn't changed yet, so if you've just remembered it please <a href='%{url}'>log in as usual</a>."

@@ -1,5 +1,3 @@
-= render :partial => 'readers/standard_parts'
-
 - content_for :introduction do
   %p
     = t("reader_extension.hello").titlecase
@@ -24,6 +22,7 @@
 - content_for :title do 
   = t('reader_extension.account_settings')
     
-
-
-= yield :form
+- content_for :body do
+  = yield :form
+  
+= render :partial => 'shared/standard_reader_parts'

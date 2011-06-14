@@ -1,11 +1,12 @@
 require 'sanitize'
+require "sanitize/config/generous"
 
 module ReaderHelper
   def standard_gravatar_for(reader=nil, url=nil)
     size = Radiant::Config['forum.gravatar_size'] || 40
     url ||= reader_url(reader)
     gravatar = gravatar_for(reader, {:size => size}, {:class => 'gravatar offset', :width => size, :height => size})
-    link_to gravatar, url
+    content_tag(:div, link_to(gravatar, url), :class => "speaker")
   end
 
   def gravatar_for(reader=nil, gravatar_options={}, img_options ={})
@@ -30,7 +31,7 @@ module ReaderHelper
   end
 
   def clean(text)
-    Sanitize.clean(textilize(text), Sanitize::Config::RELAXED)
+    Sanitize.clean(textilize(text), Sanitize::Config::GENEROUS)
   end
 
   def truncate_words(text='', length=24, omission="...")

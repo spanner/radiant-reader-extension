@@ -46,7 +46,6 @@ class ReadersController < ReaderActionController
     end
 
     unless @email_field = session[:email_field]
-      p "email bork"
       flash[:error] = 'please_use_form'
       redirect_to new_reader_url and return
     end
@@ -58,8 +57,6 @@ class ReadersController < ReaderActionController
       self.current_reader = @reader
       redirect_to reader_activation_url
     else
-      p "reader invalid: #{@reader.errors.full_messages}"
-      
       render :action => 'new'
     end
   end

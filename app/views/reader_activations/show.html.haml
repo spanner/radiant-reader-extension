@@ -1,5 +1,3 @@
-= render :partial => 'readers/standard_parts'
-
 -content_for :instructions do
   - if current_reader && current_reader.activated?
     %p
@@ -32,6 +30,7 @@
   - else
     = t('reader_extension.activation_sent')
 
-
-
-= yield :instructions
+- content_for :body do
+  = yield :instructions
+  
+= render :partial => 'shared/standard_reader_parts'
