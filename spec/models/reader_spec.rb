@@ -16,7 +16,7 @@ describe Reader do
   
   describe "on validation" do
     before do
-      @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
+      @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
       @reader.should be_valid
     end
     
@@ -52,7 +52,7 @@ describe Reader do
   
   describe "on creation" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'password', :password_confirmation => 'password'
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
     end
       
     it 'should await activation' do
@@ -111,16 +111,16 @@ describe Reader do
     
     it "should update the user's credentials" do
       reader = readers(:user)
-      reader.password = reader.password_confirmation = 'blotto'
+      reader.password = reader.password_confirmation = 'bl0tto'
       reader.save!
-      ReaderSession.new(:login => reader.login, :password => 'blotto').should be_valid
-      reader.user.authenticated?('blotto').should be_true
+      ReaderSession.new(:login => reader.login, :password => 'bl0tto').should be_valid
+      reader.user.authenticated?('bl0tto').should be_true
     end
   end
   
   describe "on activation" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'another_login', :password => 'password', :password_confirmation => 'password', :trusted => 1
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'another_login', :password => 'passw0rd', :password_confirmation => 'passw0rd', :trusted => 1
     end
     
     it 'should be retrieved by id and activation code' do
@@ -141,12 +141,12 @@ describe Reader do
   
   describe "on login" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'hoohaa', :password_confirmation => 'hoohaa'
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'h00haa', :password_confirmation => 'h00haa'
       @reader.activate!
     end
     
     it 'should authenticate' do
-      ReaderSession.new(:login => 'test', :password => 'hoohaa').should be_valid
+      ReaderSession.new(:login => 'test', :password => 'h00haa').should be_valid
     end
   
     it 'should not authenticate with bad password' do

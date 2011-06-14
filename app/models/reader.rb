@@ -29,7 +29,7 @@ class Reader < ActiveRecord::Base
   validates_presence_of :name, :email
   validates_length_of :name, :maximum => 100, :allow_nil => true
   validates_length_of :password, :minimum => 6, :allow_nil => false, :unless => :existing_reader_keeping_password?
-  validates_format_of :password, :with => /\W/, :unless => :existing_reader_keeping_password?
+  # validates_format_of :password, :with => /[^A-Za-z]/, :unless => :existing_reader_keeping_password?  # we have to match radiant so that users can log in both ways
   validates_confirmation_of :password, :unless => :existing_reader_keeping_password?
   validates_uniqueness_of :login, :allow_blank => true
   validate :email_must_not_be_in_use
@@ -164,9 +164,9 @@ private
     reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
     user = User.find_by_email(self.email)
     if user && user != self.user
-      setting.errors.add :value, :taken_by_author
+      errors.add :value, :taken_by_author
     elsif reader && reader != self
-      setting.errors.add :value, :taken
+      errors.add :value, :taken
     else
       return true
     end
@@ -174,7 +174,7 @@ private
   end
 
   def existing_reader_keeping_password?
-    !new_record? && !password_changed? && !password_confirmation_changed?
+    !new_record? && !password_changed?
   end
 
   def update_user

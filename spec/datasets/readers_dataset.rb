@@ -80,8 +80,8 @@ From <r:sender:name />
         :login => "#{symbol}@spanner.org",
         :activated_at => Time.now - 1.week,
         :password_salt => "golly",
-        :password => 'password',
-        :password_confirmation => 'password'
+        :password => 'passw0rd',
+        :password_confirmation => 'passw0rd'
       }
       attributes[:site] = sites(:test) if defined? Site
       attributes
