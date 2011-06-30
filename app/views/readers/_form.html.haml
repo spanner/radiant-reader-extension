@@ -2,6 +2,8 @@
 - check_password ||= false
 
 - form_for reader, :html => {:class => 'friendly'} do |f| 
+  %input{:type => :hidden, :name => :authentication_type, :value => :user}
+
   - unless @reader.errors.empty?
     %p.has_error
       = t('reader_extension.sorry').titlecase

@@ -150,6 +150,7 @@ en:
     password_updated_notice: "Thank you. Your password has been updated and you are now logged in."
     people: "people"
     permission_denied: "Permission denied"
+    permitted_groups: "Permitted groups"
     please: "please"
     please_avoid_spam_trap: "Please don't fill in the spam trap field"
     please_check_message: "Sorry: something was wrong in that link. Please check your email message and make sure it is giving you the whole address."

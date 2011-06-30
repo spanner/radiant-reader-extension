@@ -27,11 +27,12 @@ Gem::Specification.new do |s|
 
     config.gem 'radiant-reader-extension', :version => '~> #{RadiantReaderExtension::VERSION}'
 
-  and please remember to enable ActionMailer in your radiant config.
+  and please remember to enable ActionMailer in your project's config/environment.rb.
   }
 
   s.add_dependency 'radiant-layouts-extension', "~> 0.9.1"
   s.add_dependency 'radiant-mailer_layouts-extension', "~> 0.1.1"
   s.add_dependency 'authlogic', "~> 2.1.6"
+  s.add_dependency 'authlogic-connect', "~> 0.0.6"
   s.add_dependency 'sanitize', "~> 2.0.1"
 end

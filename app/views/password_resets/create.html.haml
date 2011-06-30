@@ -1,7 +1,7 @@
 - content_for :title do
   = t('reader_extension.reset_message_sent')
 
-- content_for :body do
+- content_for :instructions do
   %p
     = t('reader_extension.reset_message_instructions')
 
@@ -11,3 +11,5 @@
     = t('reader_extension.reset_password')
   
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :instructions

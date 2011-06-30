@@ -6,6 +6,7 @@
   - cssclass = "compact friendly"
   - cssclass << " inline" if @inline
   - form_for @reader_session, :url => reader_session_path, :html => {:class => cssclass} do |f|
+    %input{:type => :hidden, :name => :authentication_type, :value => :session}
     
     - unless no_title
       %h2

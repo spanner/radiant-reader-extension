@@ -21,8 +21,7 @@
 
 - content_for :title do 
   = t('reader_extension.account_settings')
-    
-- content_for :body do
-  = yield :form
-  
+
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :form

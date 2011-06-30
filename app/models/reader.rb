@@ -127,6 +127,12 @@ class Reader < ActiveRecord::Base
   def is_admin?
     is_user? && self.user.admin?
   end
+  
+  # This is going to get more useful soon
+  # for now I'm just establishing the interface
+  def is_overseer?
+    is_admin?
+  end
 
   def create_password!
     self.clear_password = self.randomize_password # randomize_password is provided by authlogic

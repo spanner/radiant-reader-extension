@@ -6,7 +6,7 @@
 - content_for :title do
   = t('reader_extension.reset_password').titlecase
 
-- content_for :body do
+- content_for :form do
   %p
     =t('reader_extension.password_reset_instructions')
     %strong
@@ -29,3 +29,5 @@
         = submit_tag t('reader_extension.send_reset_button')
   
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :form

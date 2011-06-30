@@ -39,12 +39,12 @@ class ReaderSessionsController < ReaderActionController
   
   def create
     @reader_session = ReaderSession.new(params[:reader_session])
-    if @reader_session.save
-      if @reader_session.reader.activated? && @reader_session.reader.clear_password        
-        @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login
-        @reader_session.reader.save(false)
-      end
-      respond_to do |format|
+    @reader_session.save do |success|
+      if success
+        if @reader_session.reader.activated? && @reader_session.reader.clear_password        
+          @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login
+          @reader_session.reader.save(false)
+        end
         format.html {
           flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
           redirect_back_or_to default_welcome_url(@reader_session.reader)
@@ -52,16 +52,11 @@ class ReaderSessionsController < ReaderActionController
         format.js { 
           redirect_back_with_format(:js)
         }
-      end
-      
-    else
-      respond_to do |format|
-        format.html { 
-          render :action => :new 
-        }
-        format.js { 
-          render :action => :new, :layout => false 
-        }
+      else
+        respond_to do |format|
+          format.html { render :action => :new }
+          format.js { render :action => :new, :layout => false }
+        end
       end
     end
   end

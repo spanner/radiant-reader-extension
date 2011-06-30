@@ -7,7 +7,11 @@ class ReaderExtension < Radiant::Extension
   url "http://spanner.org/radiant/reader"
   
   extension_config do |config|
-    config.gem 'authlogic'
+    config.gem "json"
+    config.gem "authlogic"
+    config.gem "oauth"
+    config.gem "oauth2"
+    config.gem "authlogic-connect"
     config.gem 'sanitize'
   end
   
@@ -29,7 +33,7 @@ class ReaderExtension < Radiant::Extension
       Radiant::AdminUI.load_reader_extension_regions
     end
     
-    admin.page.edit.add :parts_bottom, "page_groups"
+    admin.page.edit.add :layout, "page_groups"
     
     tab("Readers") do
       add_item("Readers", "/admin/readers")

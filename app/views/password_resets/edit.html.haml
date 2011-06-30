@@ -65,7 +65,6 @@
   &gt; 
   = t('reader_extension.reset_password')
 
-- content_for :body do
-  = yield :form
-  
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :form

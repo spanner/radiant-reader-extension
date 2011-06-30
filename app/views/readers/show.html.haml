@@ -4,7 +4,7 @@
     %p 
       = t('reader_extension.no_description')
   - else
-    = clean @reader.description
+    = clean_html @reader.description
 
   - @show_partials.each do |partial|
     = render :partial => partial, :locals => {:reader => @reader}

@@ -26,11 +26,11 @@ module ReaderHelper
     link_to home_page.title, home_page.url, options
   end
 
-  def scrub(text)
+  def scrub_html(text)
     Sanitize.clean(textilize(text))
   end
 
-  def clean(text)
+  def clean_html(text)
     Sanitize.clean(textilize(text), Sanitize::Config::GENEROUS)
   end
 

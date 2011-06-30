@@ -29,8 +29,7 @@
     = current_reader.name
   - else
     = t('reader_extension.activation_sent')
-
-- content_for :body do
-  = yield :instructions
   
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :instructions

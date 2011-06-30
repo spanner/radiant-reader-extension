@@ -16,7 +16,6 @@
 - content_for :title do
   = t('reader_extension.please_log_in').titlecase
 
-- content_for :body do
-  = yield :login
-  
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :login
