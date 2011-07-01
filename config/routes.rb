@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
     admin.resources :messages, :member => [:preview, :deliver]
+    admin.resources :groups, :has_many => [:memberships, :permissions, :group_invitations, :messages]
     admin.resource :reader_configuration, :controller => 'reader_configuration'
   end
 
@@ -10,6 +11,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :readers
   map.resources :messages, :only => [:index, :show], :member => [:preview]
+  map.resources :groups, :only => [] do |group|
+    group.resources :messages, :only => [:index, :show], :member => [:preview]
+  end
+
   map.resource :reader_session
   map.resource :reader_activation, :only => [:show, :new]
   map.resource :password_reset
