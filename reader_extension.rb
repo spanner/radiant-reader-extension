@@ -7,22 +7,17 @@ class ReaderExtension < Radiant::Extension
   url "http://spanner.org/radiant/reader"
   
   extension_config do |config|
-    config.gem "json"
     config.gem "authlogic"
-    config.gem "oauth"
-    config.gem "oauth2"
-    config.gem "authlogic-connect"
     config.gem 'sanitize'
   end
   
   migrate_from 'Reader Group', 20110214101339
   
   def activate
-    Reader
-    ActiveRecord::Base.send :include, GroupedModel                                    # has_group mechanism for any model that can belong_to a group
+    ActiveRecord::Base.send :include, GroupedModel                                # has_group mechanism for any model that can belong_to a group
     ApplicationController.send :include, ControllerExtensions                     # hooks up reader authentication and layout-chooser
-    SiteController.send :include, SiteControllerExtensions                            # access control based on group membership
-    Page.send :include, GroupedPage                                                   # group associations and visibility decisions
+    SiteController.send :include, SiteControllerExtensions                        # access control based on group membership
+    Page.send :include, GroupedPage                                               # group associations and visibility decisions
     Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
     Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
     UserActionObserver.instance.send :add_observer!, Reader 

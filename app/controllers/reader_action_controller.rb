@@ -3,9 +3,6 @@ class ReaderActionController < ApplicationController
 
   helper :reader
   helper_method :current_site, :current_site=, :logged_in?, :logged_in_user?, :logged_in_admin?
-
-  attr_accessor :css, :js
-  helper_method :reader_css_paths, :reader_js_paths, :add_reader_js, :add_reader_css
   
   no_login_required
   before_filter :set_site_title
@@ -15,31 +12,6 @@ class ReaderActionController < ApplicationController
   
   radiant_layout { |controller| Radiant::Config['reader.layout'] }
 
-  # allow reader-based extensions to contribute to the public interface
-  # these methods can be called from any view
-
-  def add_reader_css(path)
-    @css ||= []
-    @css << path
-  end
-
-  def add_reader_js(path)
-    @js ||= []
-    @js << path
-  end
-
-  # these methods are called from :reader_css and :reader_js page parts defined in view/readers/_standard_parts
-
-  def reader_css_paths
-    @css ||= []
-    @css.uniq
-  end
-  
-  def reader_js_paths
-    @js ||= []
-    @js.uniq
-  end
-  
   # authorisation helpers
 
   def logged_in?

@@ -14,7 +14,6 @@
   = t('reader_extension.separator')
 
 - content_for :title do
-  = gravatar_for(@reader,  {:size => 128}, {:class => 'gravatar big right', :width => 128, :height => 128})
   = @reader.name
 
 - content_for :breadcrumbs do
@@ -22,7 +21,6 @@
   = t('reader_extension.separator')
   = yield :title
 
-- content_for :body do
-  = yield :description
-
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :description

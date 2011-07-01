@@ -1,9 +1,3 @@
-- content_for :reader_css do
-  %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheets/reader.css', :media => 'all'}
-
-- content_for :reader_js do
-  %script{:src => '/javascripts/reader.js', :type => 'text/javascript'}
-
 - content_for :person do
   - if @reader && !@reader.new_record?
     = standard_gravatar_for(@reader)
@@ -18,4 +12,3 @@
 
 - content_for :signals do
   = render :partial => 'readers/flasher'
-

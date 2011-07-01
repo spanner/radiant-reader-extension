@@ -10,9 +10,9 @@ The purpose of this extension is to provide a common core that supports other vi
 
 ## Latest
 
-This version requires edge radiant, or radiant 0.9.2 when it becomes available. We are using a lot of the new configuration and sheets code.
+This version requires edge radiant, or radiant 1 when it becomes available. We are using a lot of the new configuration and sheets code.
 
-Right now we are **not compatible with multi_site or the sites extension**: that's mostly because neither is radiant edge: it will all be sorted out in time for the release of 0.9.2, which isn't far away.
+Right now we are **not compatible with multi_site or the sites extension**: that's mostly because neither is radiant edge: it will all be sorted out in time for the release of v1, which isn't far away.
 
 * public interface internationalized;
 * Uses the new configuration interface;

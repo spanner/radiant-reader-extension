@@ -30,9 +30,9 @@
 - content_for :title do
   = t('reader_extension.people').titlecase
 
-- content_for :body do
-  = yield :pagination if @readers.previous_page
-  = yield :list
-  = yield :pagination if @readers.next_page
-
 = render :partial => 'shared/standard_reader_parts'
+
+= yield :pagination if @readers.previous_page
+= yield :list
+= yield :pagination if @readers.next_page
+

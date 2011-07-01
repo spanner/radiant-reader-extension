@@ -33,19 +33,17 @@ describe ReadersController do
   end
   
   describe "with a registration" do
-    before do
-      @newreader = Reader.new
-      Reader.stub!(:new).and_return(@newreader)
-      @newreader.perishable_token = "gibberish"
-      @newreader.stub!(:reset_perishable_token!).and_return("gibberish")
-    end
     
     describe "that validates" do
       before do
+        session[:email_field] = 'gibberish'
         post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "password"}, :gibberish => 'registrant@spanner.org'
+        @newreader = Reader.find_by_name("registering user")
       end
       it "should create a new reader" do
+        @newreader.should_not be_nil
         @newreader.new_record?.should be_false
+        @newreader.should be_valid
       end
 
       it "should set the current reader" do
@@ -61,8 +59,12 @@ describe ReadersController do
         response.should redirect_to(reader_activation_url)
       end
     end
+    
     describe "that does not validate" do
       before do
+        session[:email_field] = 'gibberish'
+        @newreader = Reader.new
+        Reader.stub!(:new).and_return(@newreader)
         post :create, :reader => {:name => "registering user", :password => "password", :password_confirmation => "passwrd"}, :gibberish => 'registrant@spanner.org'
       end
       
