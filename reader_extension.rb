@@ -1,10 +1,10 @@
 require_dependency 'application_controller'
-require 'radiant-reader-extension/version'
+require 'radiant-reader-extension'
 
 class ReaderExtension < Radiant::Extension
   version RadiantReaderExtension::VERSION
-  description "Provides reader/member/user registration and management functions"
-  url "http://spanner.org/radiant/reader"
+  description RadiantReaderExtension::DESCRIPTION
+  url RadiantReaderExtension::URL
   
   extension_config do |config|
     config.gem "authlogic"
