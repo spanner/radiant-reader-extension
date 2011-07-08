@@ -1,5 +1,5 @@
 module RadiantReaderExtension
-  VERSION = '2.0.0.rc4'
+  VERSION = '2.0.0.rc5'
   SUMMARY = %q{Reader/viewer/visitor registration, login and access-control for Radiant CMS}
   DESCRIPTION = %q{Provides reader/member/user registration and management functions including password-reminder, group-based page access control and administrative email.}
   URL = "http://radiant.spanner.org/reader"

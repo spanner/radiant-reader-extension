@@ -2,30 +2,34 @@
 
 This is a framework that takes care of all the dull bits of registering, activating, reminding, logging in and editing preferences for your site visitors. 
 
-It uses authlogic to handle sessions and provides complete interfaces both for the administrator and the visitor. The admin interface is basic and fits in with radiant. The visitor interface is more friendly (and incidentally includes a trick email field - so-called inverse captcha - that should prevent spam signups).
+It uses authlogic to handle sessions and provides complete interfaces both for the administrator and the visitor. The admin interface is very basic and fits in with radiant. The visitor interface is more friendly (and incidentally includes a trick email field - so-called inverse captcha - that should prevent spam signups).
 
 The visitors are referred to as 'readers' here. Readers never see the admin interface, but your site authors and admins are automatically given reader status.
 
-The purpose of this extension is to provide a common core that supports other visitor-facing machinery. See for example our [forum extension](http://github.com/spanner/radiant-forum-extension) for discussions and page/blog comments, [reader groups](http://github.com/spanner/radiant-reader_group-extension) for proper page-access control and [downloads extension](http://github.com/spanner/radiant-downloads-extension) for secure access-controlled file downloads. More will follow and I hope other people will make use of this too.
+The purpose of this extension is to provide a common core that supports other visitor-facing machinery. See for example our [forum extension](http://github.com/spanner/radiant-forum-extension) for discussions and page/blog comments and [downloads extension](http://github.com/spanner/radiant-downloads-extension) for secure access-controlled file downloads. More will follow and I hope other people will make use of this framework.
 
 ## Latest
 
 This version requires edge radiant, or radiant 1 when it becomes available. We are using a lot of the new configuration and sheets code.
 
+New ReaderPages provide flexible directory services with configurable access control. The old controller and page parts mechanism is going to be phased out gradually both here and in the forum in favour of more orthodox radiant page-types. We will always need to use the layout-wrapper approach for login and registration forms, though.
+
 Right now we are **not compatible with multi_site or the sites extension**: that's mostly because neither is radiant edge: it will all be sorted out in time for the release of v1, which isn't far away.
+
+Also:
 
 * public interface internationalized;
 * Uses the new configuration interface;
 * Messaging much simplified and now intended to be purely administrative.
-* ajaxable status panel returned by `reader_session_url`
+* ajaxable status panel returned by `reader_session_url` (ie. you just have to call /reader_session.js over xmlhttp to get a sensible welcome and control block)
 
 ## Status
 
-Compatible with radiant 0.9.2, which isn't out yet. You can use radiant edge to try this out. Expect small changes in support of the new forum and group releases. Multi-site compatibility fixes are likely too.
+Compatible with radiant 1, which isn't out yet. You can use radiant edge to try this out. Expect small changes in support of the new forum and group releases. Multi-site compatibility will follow soon.
 
 ## Note on internationalisation and customisation
 
-The locale strings here are generally defined in a functional rather than grammatical way. That is, they have labels like `activation_required_explanation` rather than being assembled out of smaller units. This is partly because for flexibility of translation, but also because it gives you an easy way to change the text on functional pages like reader-preferences and registration forms.
+The locale strings here are generally defined in a functional rather than grammatical way. That is, they have labels like `activation_required_explanation` rather than being assembled out of lexical units. This is partly because for flexibility of translation, but also because it gives you an easy way to change the text on functional pages like reader-preferences and registration forms.
 
 ## Requirements
 

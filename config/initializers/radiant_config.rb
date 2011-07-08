@@ -4,6 +4,8 @@ Radiant.config do |config|
     reader.define 'require_confirmation?', :default => true
     reader.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => false
     reader.define 'get_profile?', :default => true
+    reader.define 'public?', :default => false
+    reader.define 'confine_to_groups?', :default => false
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

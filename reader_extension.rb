@@ -46,7 +46,13 @@ class ReaderExtension < Radiant::Extension
   end
 end
 
-module ReaderGroup
+module ReaderError
+  class AccessDenied < StandardError
+    def initialize(message = "Sorry: you have to log in to see that"); super end
+  end
+end
+
+module ReaderGroupError
   class Exception < StandardError
     def initialize(message = "Sorry: group problem"); super end
   end

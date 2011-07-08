@@ -26,8 +26,7 @@ en:
             password:
               too_short: "this must have at least six characters"
               invalid: "this must include at least one non-letter"
-            password_confirmation:
-              
+            password_confirmation:    
           
   config:
     reader:
@@ -35,7 +34,9 @@ en:
       require_confirmation?: "Confirm email addresses"
       use_honorifics?: "Use honorifics"
       layout: "Layout for forms"
-      get_profile?: "As for profile text"
+      get_profile?: "Ask for profile text"
+      public?: "Readers list public"
+      confine_to_groups?: "Show only members of shared groups"
     email:
       name: "Message sender"
       address: "Message reply-to"
@@ -206,6 +207,7 @@ en:
     send_to: "Send to"
     reader_configuration_page: "reader settings"
     welcome_sent_automatically: "This message is sent automatically when someone completes the registration and email-confirmation process."
+    welcome_please_log_in: '<span class="greeting">Welcome!</span> To take part, please <a href="%{login_url}">log in</a> or <a href="%{register_url}">register</a>.'
     password_reset_sent_automatically: "This message is sent automatically when someone asks to reset their password."
     activation_sent_automatically: "This message is sent automatically when someone begins to register."
     invitation_sent_automatically: "This message is sent automatically when someone is invited to the site."

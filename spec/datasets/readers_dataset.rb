@@ -5,6 +5,8 @@ class ReadersDataset < Dataset::Base
   uses :users, :pages
 
   def load
+    create_page "People", :slug => "directory", :class_name => 'ReaderPage'
+    
     create_reader "Normal"
     create_reader "Another"
     create_reader "Visible"
@@ -90,6 +92,7 @@ From <r:sender:name />
     def default_group_attributes(name="Group")
       attributes = { 
         :name => name,
+        :slug => name.downcase,
         :description => "#{name} group"
       }
       attributes[:site_id] ||= site_id(:test) if defined? Site

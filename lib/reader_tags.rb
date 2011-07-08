@@ -6,7 +6,7 @@ module ReaderTags
   
   class TagError < StandardError; end
 
-  # I need to find a better way to do this, but this gives a starting point
+  ### standard reader css and javascript is just a starting point.
 
   tag 'reader_css' do |tag|
     %{<link rel="stylesheet" href="/stylesheets/reader.css" media="all" />}
@@ -16,15 +16,59 @@ module ReaderTags
     %{<script type="text/javascript" src="/javascripts/reader.js"></script>}
   end
 
+  ### tags displaying the set of readers
+  
+  desc %{
+    Cycles through the (paginated) list of readers available for display. You can do this on 
+    any page but if it's a ReaderPage you also get some access control and the ability to 
+    click through to an individual reader.
+    
+    *Usage:* 
+    <pre><code><r:readers:each [limit=0] [offset=0] [order="asc|desc"] [by="position|title|..."] [extensions="png|pdf|doc"]>...</r:readers:each></code></pre>
+  }    
+  tag 'readers' do |tag|
+    tag.expand
+  end
+  tag 'readers:each' do |tag|
+    tag.locals.readers = get_readers(tag)
+    tag.render('reader_list', tag.attr.dup, &tag.block)
+  end
+
+  # General purpose paginated reader lister. Potentially useful dryness.
+  # Tag.locals.readers must be defined but can be empty.
+
+  tag 'reader_list' do |tag|
+    raise TagError, "r:reader_list: no readers to list" unless tag.locals.readers
+    options = tag.attr.symbolize_keys
+    result = []
+    paging = pagination_find_options(tag)
+    readers = paging ? tag.locals.readers.paginate(paging) : tag.locals.readers.all
+    readers.each do |reader|
+      tag.locals.reader = reader
+      result << tag.expand
+    end
+    if paging && readers.total_pages > 1
+      tag.locals.paginated_list = readers
+      result << tag.render('pagination', tag.attr.dup)
+    end
+    result
+  end
+
+  ### Displaying or addressing an individual reader
+  ### See also the r:recipient tags for use in email messages.
+
   desc %{
     The root 'reader' tag is not meant to be called directly.
     All it does is summon a reader object so that its fields can be displayed with eg.
     <pre><code><r:reader:name /></code></pre>
     
-    This will only work on an access-protected page and should never be used on a cached page, because everyone will see it.
+    On a ReaderPage, this will be the reader designated by the url. 
+    
+    Anywhere else, it will be the current reader (ie the one reading), provided
+    we are on an uncached page.
   }
   tag 'reader' do |tag|
-    tag.expand if !tag.locals.page.cache? && tag.locals.reader = Reader.current
+    tag.expand if get_reader(tag)
   end
 
   [:name, :forename, :email, :description, :login].each do |field|
@@ -38,7 +82,7 @@ module ReaderTags
   end
 
   desc %{
-    Expands if the current reader has been sent any messages.
+    Expands if the reader has been sent any messages.
     
     <pre><code><r:reader:if_messages>...</r:reader:if_messages /></code></pre>
   }
@@ -47,7 +91,7 @@ module ReaderTags
   end
 
   desc %{
-    Expands if the current reader has not been sent any messages.
+    Expands if the reader has not been sent any messages.
     
     <pre><code><r:reader:unless_messages>...</r:reader:unless_messages /></code></pre>
   }
@@ -80,6 +124,7 @@ module ReaderTags
     <pre><code><r:reader:controls /></code></pre>
   }
   tag "reader:controls" do |tag|
+    # if there's no reader, the reader: stem will not expand to render this tag.
     tag.render('reader_welcome')
   end
   
@@ -97,38 +142,64 @@ module ReaderTags
       %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
-        welcome = %{<span class="greeting">Hello #{tag.render('reader:name')}.</span> }
+        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => reader.name)}</span> }
         links = []
         if tag.locals.reader.activated?
-          links << %{<a href="#{edit_reader_path(tag.locals.reader)}">Preferences</a>}
-          links << %{<a href="#{reader_path(tag.locals.reader)}">Your page</a>}
-          links << %{<a href="/admin">Admin</a>} if tag.locals.reader.is_user?
-          links << %{<a href="#{reader_logout_path}">Log out</a>}
+          links << %{<a href="#{edit_reader_path(tag.locals.reader)}">#{I18n.t('reader_extension.navigation.preferences')}</a>}
+          links << %{<a href="#{reader_path(tag.locals.reader)}">#{I18n.t('reader_extension.navigation.account')}</a>}
+          links << %{<a href="/admin">#{I18n.t('reader_extension.navigation.admin')}</a>} if tag.locals.reader.is_user?
+          links << %{<a href="#{reader_logout_path}">#{I18n.t('reader_extension.navigation.log_out')}</a>}
         else
-          welcome << "Please check your email and activate your account."
+          welcome << I18n.t('reader_extension.navigation.activate')
         end
         %{<div class="controls"><p>} + welcome + links.join(%{<span class="separator"> | </span>}) + %{</p></div>}
       elsif Radiant::Config['reader.allow_registration?']
-        %{<div class="controls"><p><span class="greeting">Welcome!</span> To take part, please <a href="#{reader_login_path}">log in</a> or <a href="#{reader_register_path}">register</a>.</p></div>}
+        %{<div class="controls"><p>#{I18n.t('reader_extension.navigation.welcome_please_log_in', :login_url => reader_login_url, :register_url => new_reader_url)}</p></div>}
       end
     end
   end
     
   desc %{
-    Expands only if there is a reader and we are on an uncached page.
+    Expands if there is a reader and we are on an uncached page.
     
     <pre><code><r:if_reader><div id="controls"><r:reader:controls /></r:if_reader></code></pre>
   }
   tag "if_reader" do |tag|
-    tag.expand if !tag.locals.page.cache? && tag.locals.reader = Reader.current
+    tag.expand if get_reader(tag)
   end
   
   desc %{
-    Expands only if there is no reader or we are not on an uncached page.
+    Expands if there is no reader or we are on a cached page.
     
     <pre><code><r:unless_reader>Please log in</r:unless_reader></code></pre>
   }
   tag "unless_reader" do |tag|
-    tag.expand unless Reader.current && !tag.locals.page.cache?
+    tag.expand unless get_reader(tag)
   end
+
+private
+
+  def get_reader(tag)
+    if tag.locals.page.respond_to? :reader
+      tag.locals.reader ||= tag.locals.page.reader
+    elsif !tag.locals.page.cached?
+      tag.locals.reader ||= Reader.current
+    end
+    tag.locals.reader
+  end
+
+  def get_readers(tag)
+    attr = tag.attr.symbolize_keys
+    readers = tag.locals.page.respond_to?(:reader) ? tag.locals.page.readers : Reader.visible_to(current_reader)
+    readers = readers.in_group(group) if group = attr[:group]
+    by = attr[:by] || 'name'
+    order = attr[:order] || 'ASC'
+    readers = readers.scoped({
+      :order => "#{by} #{order.upcase}",
+      :limit => attr[:limit] || nil,
+      :offset => attr[:offset] || nil
+    })
+    readers
+  end
+  
 end

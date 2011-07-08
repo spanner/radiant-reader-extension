@@ -13,8 +13,9 @@ class Group < ActiveRecord::Base
   has_many :memberships
   has_many :readers, :through => :memberships
   
-  validates_presence_of :name
-  validates_uniqueness_of :name
+  before_validation :set_slug
+  validates_presence_of :name, :slug, :allow_blank => false
+  validates_uniqueness_of :name, :slug
   
   named_scope :with_home_page, { :conditions => "homepage_id IS NOT NULL", :include => :homepage }
   named_scope :subscribable, { :conditions => "public = 1" }
@@ -22,6 +23,14 @@ class Group < ActiveRecord::Base
 
   named_scope :from_list, lambda { |ids|
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
+  }
+
+  named_scope :containing, lambda { |reader|
+    {
+      :joins => "INNER JOIN memberships as mb on mb.group_id = groups.id", 
+      :conditions => ["mb.reader_id = ?", reader.id],
+      :group => column_names.map { |n| 'groups.' + n }.join(',')
+    }
   }
 
   named_scope :attached_to, lambda { |objects|
@@ -32,10 +41,21 @@ class Group < ActiveRecord::Base
       :joins => "INNER JOIN permissions as pp on pp.group_id = groups.id", 
       :conditions => [conditions, *binds],
       :having => "pcount > 0",    # otherwise attached_to([]) returns all groups
-      :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
+      :group => column_names.map { |n| 'groups.' + n }.join(','),
       :readonly => false
     }
   }
+
+  def self.visible_to(reader=nil)
+    return all if Radiant.config['readers.public?']
+    return scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
+    return containing(reader) if Radiant.config['readers.confine_to_groups?']
+    return all
+  end
+  
+  def visible_to?(reader=nil)
+    self.class.visible_to(reader).include? self
+  end
 
   def url
     homepage.url if homepage
@@ -74,7 +94,11 @@ class Group < ActiveRecord::Base
     define_method("#{classname.downcase.pluralize}") { self.send("#{classname.to_s.downcase}_permissions".intern).map(&:permitted) }
   end
   
-  
+private
+
+  def set_slug
+    self.slug ||= self.name.slugify.to_s
+  end
 
 end
 

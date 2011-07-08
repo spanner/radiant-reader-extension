@@ -1,6 +1,5 @@
 - if !current_reader
-  = link_to t('reader_extension.navigation.log_in'), reader_login_url
-  = link_to t('reader_extension.navigation.register'), new_reader_url
+  = t('reader_extension.navigation.welcome_please_log_in', :login_url => reader_login_url, :register_url => new_reader_url)
 - else
   %strong
     = link_to t('reader_extension.navigation.greeting', :name => current_reader.name), reader_profile_url

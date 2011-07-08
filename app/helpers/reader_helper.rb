@@ -20,6 +20,14 @@ module ReaderHelper
       image_tag gravatar_url(reader.email, gravatar_options), img_options
     end
   end
+  
+  def link_to_reader(reader)
+    if page = ReaderPage.first
+      page.url_for(reader)
+    else
+      reader_url(reader)
+    end
+  end
 
   def home_page_link(options={})
     home_page = Page.find_by_parent_id(nil)

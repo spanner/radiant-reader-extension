@@ -79,6 +79,17 @@ class Reader < ActiveRecord::Base
     end
     reader
   end
+  
+  def self.visible_to(reader=nil)
+    return all if Radiant.config['readers.public?']
+    return scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
+    return in_groups(reader.groups) if Radiant.config['readers.confine_to_groups?']
+    return all
+  end
+  
+  def visible_to?(reader=nil)
+    self.class.visible_to(reader).include? self
+  end
 
   def forename
     read_attribute(:forename) || name.split(/\s/).first

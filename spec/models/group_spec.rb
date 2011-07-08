@@ -43,4 +43,10 @@ describe Group do
     group.pages.any?.should be_true
     group.pages.size.should == 2
   end
+  
+  it "should give itself a slug if none is present" do
+    g = Group.new(:name => 'testy group')
+    g.valid?.should be_true
+    g.slug.should == 'testy_group'
+  end
 end
