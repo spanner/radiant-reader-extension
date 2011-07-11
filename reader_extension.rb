@@ -7,8 +7,9 @@ class ReaderExtension < Radiant::Extension
   url RadiantReaderExtension::URL
   
   extension_config do |config|
-    config.gem "authlogic"
-    config.gem 'sanitize'
+    config.gem 'authlogic', :version => "~> 2.1.6"
+    config.gem 'sanitize', :version => "~> 2.0.1"
+    config.gem 'snail', :version => "~> 0.5.5"
   end
   
   migrate_from 'Reader Group', 20110214101339
@@ -37,7 +38,7 @@ class ReaderExtension < Radiant::Extension
       add_item("Settings", "/admin/readers/reader_configuration")
     end
     tab("Settings") do
-      add_item("Reader", "/admin/readers/reader_configuration")
+      add_item("Readers", "/admin/readers/reader_configuration")
     end
   end
   
@@ -49,14 +50,5 @@ end
 module ReaderError
   class AccessDenied < StandardError
     def initialize(message = "Sorry: you have to log in to see that"); super end
-  end
-end
-
-module ReaderGroupError
-  class Exception < StandardError
-    def initialize(message = "Sorry: group problem"); super end
-  end
-  class PermissionDenied < Exception
-    def initialize(message = "Sorry: you don't have access to that"); super end
   end
 end

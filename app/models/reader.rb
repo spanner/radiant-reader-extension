@@ -1,5 +1,6 @@
 require 'authlogic'
 require 'digest/sha1'
+require 'snail'
 
 class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
@@ -93,6 +94,18 @@ class Reader < ActiveRecord::Base
 
   def forename
     read_attribute(:forename) || name.split(/\s/).first
+  end
+  
+  def postal_address
+    Snail.new(
+      :name => name,
+      :line_1 => post_line1,
+      :line_2 => post_line2,
+      :city => post_city,
+      :region => post_province,
+      :postal_code => postcode,
+      :country => post_country
+    )
   end
 
   def activate!

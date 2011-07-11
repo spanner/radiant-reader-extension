@@ -28,6 +28,18 @@ module ReaderHelper
       reader_url(reader)
     end
   end
+  
+  def link_to_group(group)
+    if page = group.homepage
+      link_to group.name, page.url
+    else
+      link_to group.name, group_url(group)
+    end
+  end
+  
+  def link_to_message(message)
+    link_to message.subject, message_url(message)
+  end
 
   def home_page_link(options={})
     home_page = Page.find_by_parent_id(nil)

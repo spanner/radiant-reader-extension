@@ -9,5 +9,9 @@ class MessageReader < ActiveRecord::Base
   named_scope :delivered, {
     :conditions => "sent_at IS NOT NULL and sent_at <= NOW()"
   }
+  
+  named_scope :to_reader, lambda { |reader| {
+    :conditions => ["reader_id = ?", reader.id]
+  }}
 
 end

@@ -50,10 +50,6 @@ class Message < ActiveRecord::Base
     deliveries.any?
   end
 
-  def delivered_to?(reader)
-    recipients.include?(reader)
-  end
-
   def preview(reader=nil)
     reader ||= possible_readers.first || Reader.for_user(created_by)
     ReaderNotifier.create_message(reader, self)
@@ -112,4 +108,11 @@ class Message < ActiveRecord::Base
     MessageReader.find_or_create_by_message_id_and_reader_id(self.id, reader.id).update_attribute(:sent_at, Time.now)
   end
 
+  def delivered_to?(reader)
+    recipients.include?(reader)
+  end
+  
+  def delivery_to(reader)
+    deliveries.to_reader(reader).first if delivered_to?(reader)
+  end
 end

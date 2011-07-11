@@ -4,11 +4,13 @@ en:
       reader:
         description: "Text for your profile page"
         email: "Email address"
+        phone: "Telephone"
         honorific: "Title or rank"
         login: "Login username (optional)"
         name: "Your name"
         password: "Password"
         password_confirmation: "Confirm password"
+        postal_address: "Full address"
     errors:
       models:
         reader:
@@ -26,7 +28,6 @@ en:
             password:
               too_short: "this must have at least six characters"
               invalid: "this must include at least one non-letter"
-            password_confirmation:    
           
   config:
     reader:
@@ -42,7 +43,7 @@ en:
       address: "Message reply-to"
       prefix: "Subject prefix"
       layout: "Email layout"
-  reader: "reader"
+  reader: "Reader"
   readers: "Readers"
   groups: "Groups"
   messages: "Messages"
@@ -78,6 +79,22 @@ en:
     confirming_email: "When you press the 'register' button we will send a confirmation email to the address you enter above. Click on a link in that message, and you're in."
     continue: "Continue"
     create_message: "create message"
+    dashboard:
+      directory: "Members directory"
+      directory_introduction: ""
+      introduction: "Hello %{name}. Welcome back to %{site}. This page gathers together recent activity and useful links."
+      profile: "Profile"
+      profile_introduction: "This is how you look in the directory"
+      account: "Account"
+      edit_profile: "Edit profile"
+      groups: "Your groups"
+      groups_introduction: "These are your groups"
+      messages: "Messages for you"
+      messages_introduction: "If you miss an administrative email message you can usually find it here."
+      title: "Dashboard"
+    directory: "Browse members list"
+    directory_csv: "Download members list as CSV file"
+    directory_vcard: "Download members list into your address book"
     dont_fill: "Don't fill this in!"
     edit_profile: "edit your profile"
     email_unknown: "Sorry. That email address is not known here."

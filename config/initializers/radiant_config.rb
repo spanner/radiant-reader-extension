@@ -6,6 +6,7 @@ Radiant.config do |config|
     reader.define 'get_profile?', :default => true
     reader.define 'public?', :default => false
     reader.define 'confine_to_groups?', :default => false
+    reader.define 'share_details?', :default => false
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

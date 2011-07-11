@@ -1,0 +1,8 @@
+= link_to t('reader_extension.dashboard.profile'), reader_profile_url
+\|
+= link_to t('reader_extension.dashboard.account'), reader_account_url
+\|
+= link_to t('reader_extension.dashboard.edit_profile'), reader_account_url(:detail => true)
+- @dashboard_links.each do |l|
+  \|
+  = link_to l.first, l.last

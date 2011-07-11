@@ -1,10 +1,12 @@
 class ReadersController < ReaderActionController
   helper :reader
   
-  cattr_accessor :edit_partials, :show_partials, :index_partials
-  
+  cattr_accessor :dashboard_partials, :dashboard_marginal_partials, :dashboard_links
+  @@dashboard_partials = []
+  @@dashboard_marginal_partials = []
+  @@dashboard_links = []
+
   before_filter :check_registration_allowed, :only => [:new, :create]
-  before_filter :initialize_partials
   before_filter :i_am_me, :only => [:show, :edit]
   before_filter :require_reader, :except => [:new, :create, :activate]
   before_filter :default_to_self, :only => [:show]
@@ -13,11 +15,21 @@ class ReadersController < ReaderActionController
   before_filter :ensure_groups_subscribable, :only => [:update, :create]
 
   def index
-    @readers = Reader.active.paginate(pagination_parameters.merge(:per_page => 60))
+    @readers = Reader.visible_to?(current_reader).paginate(pagination_parameters.merge(:per_page => 60))
+    # respond to vcard request
+    # respond to csv request
   end
 
   def show
     @reader = Reader.find(params[:id])
+  end
+  
+  def dashboard
+    @reader = current_reader
+    @dashboard_links = self.class.dashboard_links
+    @dashboard_partials = ['dashboard/links', 'dashboard/groups', 'dashboard/profile'] + self.class.dashboard_partials
+    @dashboard_marginal_partials = ['dashboard/messages', 'dashboard/directory'] + self.class.dashboard_marginal_partials
+    expires_now
   end
 
   def new
@@ -73,6 +85,20 @@ class ReadersController < ReaderActionController
     end
   end
   
+  def self.add_dashboard_link(link)
+    dashboard_links.push(link)
+  end
+  
+  def self.add_dashboard_partial(partial)
+    dashboard_partials.push(partial) unless dashboard_partials.include?(partial)
+    Rails.logger.warn "add_dashboard_partial(#{partial}): partials now #{dashboard_partials.inspect}"
+  end
+
+  def self.add_marginal_dashboard_partial(partial)
+    dashboard_marginal_partials.push(partial) unless dashboard_marginal_partials.include?(partial)
+    Rails.logger.warn "add_marginal_dashboard_partial(#{partial}): partials now #{dashboard_marginal_partials.inspect}"
+  end
+  
 protected
 
   def i_am_me
@@ -113,27 +139,7 @@ protected
     end
   end
   
-  def self.add_edit_partial(path)
-    @@edit_partials ||= []
-    edit_partials.push(path)
-  end
-
-  def self.add_show_partial(path)
-    @@show_partials ||= []
-    show_partials.push(path)
-  end
-
-  def self.add_index_partial(path)
-    @@index_partials ||= []
-    index_partials.push(path)
-  end
-
 private
-  def initialize_partials
-    @show_partials = show_partials
-    @edit_partials = edit_partials
-    @index_partials = index_partials
-  end
 
   def ensure_groups_subscribable
     if params[:reader] && params[:reader][:group_ids]

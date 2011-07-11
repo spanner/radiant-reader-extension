@@ -20,6 +20,7 @@ module GroupedPage
       permitted_groups_without_inheritance + inherited_groups
     end
 
+    # this is regrettably expensive
     def cache?
       self.permitted_groups.empty?
     end        

@@ -47,7 +47,7 @@ class ReaderSessionsController < ReaderActionController
         end
         format.html {
           flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
-          redirect_back_or_to default_welcome_url(@reader_session.reader)
+          redirect_back_or_to reader_dashboard_url
         }
         format.js { 
           redirect_back_with_format(:js)

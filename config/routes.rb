@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :readers
   map.resources :messages, :only => [:index, :show], :member => [:preview]
-  map.resources :groups, :only => [] do |group|
+  map.resources :groups, :only => [:index, :show] do |group|
     group.resources :messages, :only => [:index, :show], :member => [:preview]
   end
 
@@ -27,4 +27,5 @@ ActionController::Routing::Routes.draw do |map|
   map.reader_profile '/profile', :controller => 'readers', :action => 'show'
   map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
   map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
+  map.reader_dashboard '/dashboard', :controller => 'readers', :action => 'dashboard'
 end

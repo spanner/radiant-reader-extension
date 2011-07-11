@@ -7,13 +7,13 @@ module SiteControllerExtensions
       
       def find_page_with_group_check(url)
         page = find_page_without_group_check(url)
-        raise ReaderGroup::PermissionDenied if page && !page.visible_to?(current_reader)
+        raise ReaderError::AccessDenied if page && !page.visible_to?(current_reader)
         page
       end
         
       def show_page_with_group_check
         show_page_without_group_check
-      rescue ReaderGroup::PermissionDenied
+      rescue ReaderError::AccessDenied
         if current_reader
           flash[:error] = t("reader_extension.access_denied")
           redirect_to reader_permission_denied_url

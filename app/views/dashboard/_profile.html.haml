@@ -1,0 +1,10 @@
+- if Radiant.config['reader.share_details?']
+  %h3
+    =t('reader_extension.dashboard.profile')
+  %p
+    - %w{name email phone}.each do |field|
+      = t("activerecord.attributes.reader.#{field}") + ': '
+      = reader.send(field.to_sym)
+      %br
+    = t("activerecord.attributes.reader.postal_address") + ': '
+    = reader.postal_address.to_html

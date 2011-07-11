@@ -1,0 +1,7 @@
+- if reader.groups.any?
+  %h3
+    =t('reader_extension.dashboard.groups')
+  %ul
+    - reader.groups.each do |group|
+      %li
+        = link_to_group(group)
