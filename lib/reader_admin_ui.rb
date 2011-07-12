@@ -3,16 +3,18 @@ module ReaderAdminUI
  def self.included(base)
    base.class_eval do
 
-      attr_accessor :reader, :message, :group, :reader_configuration
+      attr_accessor :reader, :message, :group, :reader_configuration, :reader_public
       alias_method :readers, :reader
       alias_method :messages, :message
       alias_method :groups, :group
+      alias_method :reader_publics, :reader_public
 
       def load_reader_extension_regions
         @reader = load_default_reader_regions
         @message = load_default_message_regions
         @group = load_default_group_regions
         @reader_configuration = load_default_reader_configuration_regions
+        @reader_public = load_default_reader_public_regions
       end
 
       def load_default_regions_with_reader
@@ -97,6 +99,35 @@ module ReaderAdminUI
         end
       end
     end
+    
+    def load_default_reader_public_regions
+      OpenStruct.new.tap do |rp|
+        rp.dashboard = Radiant::AdminUI::RegionSet.new do |dashboard|
+          dashboard.main.concat %w{dashboard/welcome dashboard/groups dashboard/description dashboard/profile}
+          dashboard.sidebar.concat %w{dashboard/messages dashboard/directory}
+        end
+        rp.index = Radiant::AdminUI::RegionSet.new do |index|
+          index.main.concat %w{readers/list}
+          index.sidebar.concat %w{readers/all_groups readers/links}
+        end
+        rp.show = Radiant::AdminUI::RegionSet.new do |show|
+          show.main.concat %w{readers/groups readers/description readers/profile}
+          show.sidebar.concat %w{readers/links}
+        end
+        rp.edit = Radiant::AdminUI::RegionSet.new do |edit|
+          edit.main.concat %w{preamble readers/form readers/gravatar}
+          edit.form.concat %w{edit_name edit_email edit_username edit_password}
+          edit.form_bottom.concat %w{edit_buttons}
+        end
+        rp.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
+          edit_profile.main.concat %w{edit_header edit_form}
+          edit_profile.form.concat %w{edit_honorific edit_name edit_email edit_phone edit_mobile edit_address edit_shareability}
+          edit_profile.form_bottom.concat %w{edit_buttons}
+        end
+        rp.new = rp.edit
+      end
+    end
+    
   end
 end
 

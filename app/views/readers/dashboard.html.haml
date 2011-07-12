@@ -1,6 +1,11 @@
 - content_for :introduction do
   %p
-    =t('reader_extension.dashboard.introduction', :name => current_reader.name, :site => Radiant.config['site.title'])
+    = link_to t('reader_extension.dashboard.profile'), reader_profile_url
+    \|
+    = link_to t('reader_extension.dashboard.account'), reader_account_url
+    - if Radiant.config['reader.share_details?']
+      \|
+      = link_to t('reader_extension.dashboard.edit_profile'), reader_edit_profile_url
 
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home'), '/'
@@ -10,17 +15,14 @@
 - content_for :title do
   = t('reader_extension.dashboard.title')
 
-- content_for :sidebar do
-  - @dashboard_marginal_partials.each do |mp|
-    .dashboard_module
-      = render :partial => mp, :locals => {:reader => current_reader}
-
-- content_for :dashboard do
-  - @dashboard_partials.each do |p|
-    .dashboard_module
-      = render :partial => p, :locals => {:reader => current_reader}
-
 = render :partial => 'shared/standard_reader_parts'
 
-#dashboard
-  = yield :dashboard
+- content_for :sidebar do
+  - render_region :sidebar    
+
+- content_for :main do
+  - render_region :main
+
+
+
+= yield :main

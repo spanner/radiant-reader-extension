@@ -1,0 +1,86 @@
+- reader ||= @reader
+- check_password ||= false
+
+- form_for reader, :html => {:class => 'friendly'} do |f| 
+  %input{:type => :hidden, :name => :authentication_type, :value => :user}
+
+  - unless @reader.errors.empty?
+    %p.has_error
+      = t('reader_extension.sorry').titlecase
+      = t('reader_extension.form_problem') + '.'
+      = t('reader_extension.affected_fields_highlighted')
+  - else
+    %p
+      = t('reader_extension.bold_required')
+      = t('reader_extension.checked_fields_public')
+
+  - if 1 || Radiant::Config['reader.use_honorifics?']
+    %p
+      = f.label :honorific, nil, :class => 'optional'
+      %br
+      = f.text_field :honorific, :class => 'standard'
+      %span.formnote= t('reader_extension.form_notes.honorific')
+
+  %p
+    = f.label :name, nil, :class => 'required'
+    %br
+    = f.text_field :name, :class => 'standard'
+    %span.formnote= t('reader_extension.form_notes.name')
+
+  %p
+    = f.label :email, nil, :class => 'required'
+    %br
+    = f.text_field :email, :class => 'standard'
+    %span.formnote= t('reader_extension.form_notes.email')
+
+  %p
+    = f.label :phone, nil, :class => 'optional'
+    %br
+    = f.text_field :phone, :class => 'standard'
+    %span.formnote= t('reader_extension.form_notes.phone')
+
+  %p
+    = f.label :mobile, nil, :class => 'optional'
+    %br
+    = f.text_field :mobile, :class => 'standard'
+    %span.formnote= t('reader_extension.form_notes.mobile')
+
+  %p
+    = f.label :post_country, nil, :class => 'optional'
+    = f.select :post_country, country_options_for_select(reader.post_country)
+    %br
+    %span.formnote= t('reader_extension.form_notes.post_country')
+
+  - if Radiant::Config['reader.use_postal_organisation?']
+    %p
+      = f.label :post_organisation, nil, :class => 'optional'
+      = f.text_field :post_organisation, :class => 'standard'
+      %br
+      %span.formnote= t('reader_extension.form_notes.post_organisation')
+  
+  %p
+    = f.label :post_line1, t('activerecord.attributes.reader.postal_address'), :class => 'optional'
+    %br
+    = f.text_field :post_line1, :class => 'standard'
+    %br
+    = f.text_field :post_line2, :class => 'standard'
+    %br
+    = f.label :post_city, nil, :class => 'optional'
+    = f.text_field :post_city, :class => 'standard'
+    %br
+    = f.label :post_province, nil, :class => 'optional'
+    = f.text_field :post_province, :class => 'standard'
+    %br
+    = f.label :postcode, nil, :class => 'optional'
+    = f.text_field :postcode, :class => 'standard'
+
+  %p
+    = f.check_box :unshareable, :class => 'reversed'
+    = f.label :unshareable
+    %br
+    %span.formnote= t('reader_extension.form_notes.unshareable')
+
+  %p
+    = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
+    or 
+    = link_to 'cancel', request.referer

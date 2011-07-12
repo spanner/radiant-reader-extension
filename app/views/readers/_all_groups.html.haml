@@ -1,0 +1,4 @@
+- groups = Group.visible_to(current_reader)
+- if groups.any?
+  = t('reader_extension.group_filter')
+  = groups.map{ |g| link_to_group(g) }.to_sentence(:last_word_connector => 'or', :two_words_connector => 'or')

@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
   map.reader_account '/account', :controller => 'readers', :action => 'edit'
   map.reader_profile '/profile', :controller => 'readers', :action => 'show'
+  map.reader_edit_profile '/edit_profile', :controller => 'readers', :action => 'edit_profile'
   map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
   map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
   map.reader_dashboard '/dashboard', :controller => 'readers', :action => 'dashboard'

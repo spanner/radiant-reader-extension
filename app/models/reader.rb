@@ -1,6 +1,7 @@
 require 'authlogic'
 require 'digest/sha1'
 require 'snail'
+require 'vcard'
 
 class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
@@ -82,20 +83,25 @@ class Reader < ActiveRecord::Base
   end
   
   def self.visible_to(reader=nil)
-    return all if Radiant.config['readers.public?']
-    return scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
-    return in_groups(reader.groups) if Radiant.config['readers.confine_to_groups?']
-    return all
+    return self.all if Radiant.config['readers.public?']
+    return self.scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
+    return self.in_groups(reader.groups) if Radiant.config['readers.confine_to_groups?']
+    return self.all
   end
   
   def visible_to?(reader=nil)
     self.class.visible_to(reader).include? self
   end
 
+  # not very i18nal, this
   def forename
-    read_attribute(:forename) || name.split(/\s/).first
+    read_attribute(:forename) || name.split(/\s+/).first
   end
-  
+
+  def surname
+    read_attribute(:surname) || name.split(/\s+/).last
+  end
+
   def postal_address
     Snail.new(
       :name => name,
@@ -107,7 +113,32 @@ class Reader < ActiveRecord::Base
       :country => post_country
     )
   end
-
+  
+  def vcard
+  	@vcard ||= Vpim::Vcard::Maker.make2 do |maker|
+  		maker.add_name do |n|
+  		  n.prefix = honorific
+  		  n.given = forename
+  		  n.family = surname
+		  end
+  		maker.add_addr {|a| 
+  		  a.location = 'home' # until we do this properly with multiple contact sets
+        a.country = post_country
+        a.region = post_province
+        a.locality = post_city
+        a.street = [post_line1, post_line2].compact.join("\n")
+        a.postalcode = postcode
+  		}
+  		maker.add_tel phone { |t| t.location = 'home' }
+  		maker.add_tel mobile { |t| t.location = 'cell' }
+  		maker.add_email email { |e| t.location = 'home' }
+  	end
+  end
+  
+  def filename
+    name.downcase.gsub(/\W/, '_')
+  end
+  
   def activate!
     self.activated_at = Time.now.utc
     self.save!

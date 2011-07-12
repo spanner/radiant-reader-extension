@@ -1,34 +1,41 @@
 class ReadersController < ReaderActionController
+  include Radiant::Pagination::Controller
   helper :reader
   
   cattr_accessor :dashboard_partials, :dashboard_marginal_partials, :dashboard_links
-  @@dashboard_partials = []
-  @@dashboard_marginal_partials = []
-  @@dashboard_links = []
 
-  before_filter :check_registration_allowed, :only => [:new, :create]
-  before_filter :i_am_me, :only => [:show, :edit]
+  before_filter :check_registration_allowed, :only => [:new, :create, :activate]
+  before_filter :i_am_me, :only => [:show, :edit, :edit_profile]
   before_filter :require_reader, :except => [:new, :create, :activate]
   before_filter :default_to_self, :only => [:show]
-  before_filter :restrict_to_self, :only => [:edit, :update, :resend_activation]
+  before_filter :restrict_to_self, :only => [:edit, :edit_profile, :update, :resend_activation]
   before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :ensure_groups_subscribable, :only => [:update, :create]
 
   def index
-    @readers = Reader.visible_to?(current_reader).paginate(pagination_parameters.merge(:per_page => 60))
-    # respond to vcard request
-    # respond to csv request
+    @readers = Reader.visible_to(current_reader)
+    respond_to do |format|
+      format.html {}
+      format.csv {}
+      format.vcard {
+        send_data @readers.map(&:vcard).join("\n"), :filename => "everyone.vcf"	
+      }
+    end
   end
 
   def show
     @reader = Reader.find(params[:id])
+    respond_to do |format|
+      format.html { }
+      format.csv { }
+      format.vcard {
+        send_data @reader.vcard.to_s, :filename => "#{@reader.filename}.vcf"	
+      }
+    end
   end
   
   def dashboard
-    @reader = current_reader
-    @dashboard_links = self.class.dashboard_links
-    @dashboard_partials = ['dashboard/links', 'dashboard/groups', 'dashboard/profile'] + self.class.dashboard_partials
-    @dashboard_marginal_partials = ['dashboard/messages', 'dashboard/directory'] + self.class.dashboard_marginal_partials
+    # @reader = current_reader
     expires_now
   end
 
@@ -45,7 +52,11 @@ class ReadersController < ReaderActionController
   def edit
     expires_now
   end
-  
+
+  def edit_profile
+    expires_now
+  end
+
   def create
     @reader = Reader.new(params[:reader])
     @reader.clear_password = params[:reader][:password]
@@ -79,24 +90,10 @@ class ReadersController < ReaderActionController
     @reader.clear_password = params[:reader][:password] if params[:reader][:password]
     if @reader.save
       flash[:notice] = t('reader_extension.account_updated')
-      redirect_to url_for(@reader)
+      redirect_to dashboard_url
     else
       render :action => 'edit'
     end
-  end
-  
-  def self.add_dashboard_link(link)
-    dashboard_links.push(link)
-  end
-  
-  def self.add_dashboard_partial(partial)
-    dashboard_partials.push(partial) unless dashboard_partials.include?(partial)
-    Rails.logger.warn "add_dashboard_partial(#{partial}): partials now #{dashboard_partials.inspect}"
-  end
-
-  def self.add_marginal_dashboard_partial(partial)
-    dashboard_marginal_partials.push(partial) unless dashboard_marginal_partials.include?(partial)
-    Rails.logger.warn "add_marginal_dashboard_partial(#{partial}): partials now #{dashboard_marginal_partials.inspect}"
   end
   
 protected

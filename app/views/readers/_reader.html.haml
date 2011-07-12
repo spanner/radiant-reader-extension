@@ -1,0 +1,12 @@
+.reader        
+  %h2
+    = link_to standard_gravatar_for(reader), reader_url(reader), {:title => reader.name}
+    = link_to reader.name, reader_url(reader)
+    %span.headernote
+      = link_to '&nbsp;', reader_url(reader, :format => :vcard), :class => 'vcard'
+      
+  %p.context
+    = t("reader_extension.joined_on")
+    = l(reader.created_at, :format => :date) + '.'
+    = t("reader_extension.groups") + ':'
+    = reader.groups.visible_to(current_reader).map { |g| link_to_group(g) }.join(', ')

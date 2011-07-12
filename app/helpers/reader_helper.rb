@@ -2,6 +2,17 @@ require 'sanitize'
 require "sanitize/config/generous"
 
 module ReaderHelper
+  include SnailHelpers
+  include Admin::RegionsHelper
+  
+  # overriding the default region-set chooser to use the arbitrarily-named 'directory' set
+  def lazy_initialize_region_set
+    unless @region_set
+      @template_name ||= @controller.template_name
+      @region_set = admin.reader_public.send(@template_name)
+    end
+  end
+  
   def standard_gravatar_for(reader=nil, url=nil)
     size = Radiant::Config['forum.gravatar_size'] || 40
     url ||= reader_url(reader)
@@ -120,6 +131,34 @@ EOM
       end
     end
     options
+  end
+  
+  def friendly_date(datetime)
+    I18n.l(datetime, :format => friendly_date_format(datetime)) if datetime
+  end
+  
+  def friendly_date_format(datetime)
+    if datetime && date = datetime.to_date
+      if (date.to_datetime == Date.today)
+        :today
+      elsif (date.to_datetime == Date.yesterday)
+        :yesterday
+      elsif (date.to_datetime > 6.days.ago)
+        :recently
+      elsif (date.year == Date.today.year)
+        :this_year
+      else
+        :standard
+      end
+    end
+  end
+  
+  def country_options_for_select(selected = nil, default_selected = Snail.home_country)
+    usps_country_options_for_select(selected, default_selected)
+  end
+  
+  def email_link(address)
+    mail_to address, nil, :encode => :hex, :replace_at => ' at ', :class => 'mailto'
   end
 
 end

@@ -1,0 +1,31 @@
+- content_for :breadhead do
+  = link_to t('reader_extension.groups').titlecase, groups_url
+  = t('reader_extension.separator')
+
+- content_for :title do
+  = @group.name
+
+- content_for :breadcrumbs do
+  = link_to t('reader_extension.home').titlecase, '/'
+  = t('reader_extension.separator')
+  = link_to t('reader_extension.people').titlecase, readers_url
+  = t('reader_extension.separator')
+  = yield :breadhead
+  = yield :title
+
+= render :partial => 'shared/standard_reader_parts'
+
+- content_for :main do
+  %p
+    = t('reader_extension.download_group_as')
+    = link_to t("reader_extension.csv_file"), group_url(@group, :format => :csv), :class => 'csv'
+    = t('or')
+    = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcard'
+
+  %h3
+    = t('reader_extension.group_members')
+
+  = render :partial => 'readers/reader', :collection => @group.readers
+
+= yield :main
+

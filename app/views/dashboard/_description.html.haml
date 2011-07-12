@@ -1,0 +1,3 @@
+- unless current_reader.description.blank?
+  .dashboard_module
+    = render :partial => 'readers/description', :locals => {:reader => current_reader}

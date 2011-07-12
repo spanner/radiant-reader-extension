@@ -1,26 +1,6 @@
 - content_for :introduction do
   %p
     =t('reader_extension.readers_introduction')
-  
-- content_for :list do
-  #readers
-    - if @readers.size > 1
-      - columns = [@readers[0..@readers.size/2], @readers[@readers.size/2+1..@readers.size]]
-    - else
-      - columns = [@readers]
-    - columns.each do |readers|
-      %div.column
-        - readers.each do |reader|
-          .reader
-            %h2
-              = link_to standard_gravatar_for(reader), reader_url(reader), {:title => reader.name}
-              = link_to reader.name, reader_url(reader)
-            %p.context
-              = t("reader_extension.joined_on")
-              = l(reader.created_at, :format => :date) + '.'
-
-- content_for :pagination do
-  = pagination_and_summary_for(@readers, t('reader_extension.person'))
 
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/'
@@ -32,7 +12,12 @@
 
 = render :partial => 'shared/standard_reader_parts'
 
-= yield :pagination if @readers.previous_page
-= yield :list
-= yield :pagination if @readers.next_page
+- content_for :sidebar do
+  = render_region :sidebar
 
+- content_for :main do
+  = render_region :main
+
+
+
+= yield :main

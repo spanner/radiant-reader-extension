@@ -1,10 +1,11 @@
-- if reader.messages.any?
-  %h3
-    =t('reader_extension.dashboard.messages')
-  %ul
-    - reader.messages.each do |message|
-      %li
-        = link_to_message(message)
-        - if message.delivered_to?(reader)
-          %span.note
-            = t('reader_extension.sent_on', :date => message.delivery_to(current_reader))
+- if current_reader.messages.any?
+  .dashboard_module
+    %h3
+      =t('reader_extension.dashboard.messages')
+    %ul
+      - current_reader.messages.each do |message|
+        %li
+          = link_to_message(message)
+          - if message.delivered_to?(current_reader)
+            %span.note
+              = t('reader_extension.sent_on', :date => friendly_date(message.delivery_to(current_reader).sent_at))

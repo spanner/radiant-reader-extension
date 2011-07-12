@@ -1,0 +1,21 @@
+- content_for :introduction do
+  %p
+    =t('reader_extension.groups_introduction')
+
+- content_for :breadcrumbs do
+  = link_to t('reader_extension.home').titlecase, '/'
+  = t('reader_extension.separator')
+  = link_to t('reader_extension.people').titlecase, readers_url
+  = t('reader_extension.separator')
+  = t('reader_extension.groups')
+
+- content_for :title do
+  = t('reader_extension.groups').titlecase
+
+= render :partial => 'shared/standard_reader_parts'
+
+- content_for :main do
+  = render :partial => 'group', :collection => @groups
+
+
+= yield :main

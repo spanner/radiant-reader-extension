@@ -1,0 +1,32 @@
+- content_for :introduction do
+  %p
+    = t("reader_extension.hello").titlecase
+    = link_to(@reader.name, reader_url(@reader)) + '.'
+    - if Radiant.config['reader.public?']
+      = t('reader_extension.profile_intro_public')
+    - elsif Radiant.config['reader.confine_to_groups?']
+      = t('reader_extension.profile_intro_grouped')
+    - else
+      = t('reader_extension.profile_intro_private')
+
+- content_for :form do
+  %pre
+    = @reader.errors.full_messages
+  = render :partial => 'profile_form', :locals => {:reader => @reader}
+  %p
+    = standard_gravatar_for(@reader, 'http://gravatar.com/site/login')
+    = link_to t('reader_extension.change_gravatar'), "http://gravatar.com/site/login/"
+    
+- content_for :breadcrumbs do 
+  = link_to t('reader_extension.home').titlecase, '/'
+  &gt;
+  = link_to t('reader_extension.you').titlecase, '/readers/me'
+  &gt;
+  = t('reader_extension.edit_profile')
+
+- content_for :title do 
+  = t('reader_extension.edit_profile')
+
+= render :partial => 'shared/standard_reader_parts'
+
+= yield :form

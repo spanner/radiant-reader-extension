@@ -1,0 +1,9 @@
+%h3
+  =t('reader_extension.dashboard.directory')
+%ul
+  %li
+    = link_to t("reader_extension.directory.link"), readers_url
+  %li
+    = link_to t("reader_extension.directory.csv_link"), readers_url(:format => :csv)
+  %li
+    = link_to t("reader_extension.directory.vcard_link"), readers_url(:format => :vcard), :class => 'vcard'

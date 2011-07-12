@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'authlogic', "~> 2.1.6"
   s.add_dependency 'sanitize', "~> 2.0.1"
   s.add_dependency 'snail', "~> 0.5.5"
+  s.add_dependency 'vcard', "~> 0.1.1"
 
   ignores = if File.exist?('.gitignore')
     File.read('.gitignore').split("\n").inject([]) {|a,p| a + Dir[p] }

@@ -19,13 +19,6 @@
     = f.text_field :name, :class => 'standard'
     %span.formnote= t('reader_extension.form_notes.name')
 
-  - if Radiant::Config['reader.use_honorifics?']
-    %p
-      = f.label :honorific, nil, :class => 'optional'
-      %br
-      = f.text_field :honorific, :class => 'standard'
-      %span.formnote= t('reader_extension.form_notes.honorific')
-
   - if reader.new_record?
     %p
       = f.label reader.email_field, t('reader_extension.label.reader.email'), :class => 'required'

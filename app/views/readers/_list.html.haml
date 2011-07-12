@@ -1,0 +1,17 @@
+- readers ||= @readers
+
+- if readers.any?
+  - if readers.respond_to?(:previous_page) && readers.previous_page
+    = pagination_and_summary_for(readers, t('reader_extension.person'))
+
+  - if readers.size > 1
+    - columns = [readers[0..readers.size/2], readers[readers.size/2+1..readers.size]]
+  - else
+    - columns = [readers]
+  - columns.each do |readers|
+    %div.column
+      = render :partial => 'readers/reader', :collection => readers
+
+  - if readers.respond_to?(:next_page) && readers.next_page
+    = pagination_and_summary_for(readers, t('reader_extension.person'))
+
