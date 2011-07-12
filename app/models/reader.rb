@@ -117,20 +117,20 @@ class Reader < ActiveRecord::Base
   def vcard
   	@vcard ||= Vpim::Vcard::Maker.make2 do |maker|
   		maker.add_name do |n|
-  		  n.prefix = honorific
-  		  n.given = forename
-  		  n.family = surname
+  		  n.prefix = honorific || ""
+  		  n.given = forename || ""
+  		  n.family = surname || ""
 		  end
   		maker.add_addr {|a| 
   		  a.location = 'home' # until we do this properly with multiple contact sets
-        a.country = post_country
-        a.region = post_province
-        a.locality = post_city
+        a.country = post_country || ""
+        a.region = post_province || ""
+        a.locality = post_city || ""
         a.street = [post_line1, post_line2].compact.join("\n")
-        a.postalcode = postcode
+        a.postalcode = postcode || ""
   		}
-  		maker.add_tel phone { |t| t.location = 'home' }
-  		maker.add_tel mobile { |t| t.location = 'cell' }
+  		maker.add_tel phone { |t| t.location = 'home' } unless phone.blank?
+  		maker.add_tel mobile { |t| t.location = 'cell' } unless mobile.blank?
   		maker.add_email email { |e| t.location = 'home' }
   	end
   end
