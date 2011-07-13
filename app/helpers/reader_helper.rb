@@ -1,17 +1,10 @@
 require 'sanitize'
 require "sanitize/config/generous"
+require "fastercsv"
 
 module ReaderHelper
   include SnailHelpers
   include Admin::RegionsHelper
-  
-  # overriding the default region-set chooser to use the arbitrarily-named 'directory' set
-  def lazy_initialize_region_set
-    unless @region_set
-      @template_name ||= @controller.template_name
-      @region_set = admin.reader_public.send(@template_name)
-    end
-  end
   
   def standard_gravatar_for(reader=nil, url=nil)
     size = Radiant::Config['forum.gravatar_size'] || 40
@@ -84,20 +77,9 @@ module ReaderHelper
     
   def pagination_summary(list, name='')
     total = list.total_entries
-    if list.empty?
-      %{#{t('reader_extension.no')} #{name.pluralize}}
-    else      
-      name ||= t(list.first.class.to_s.underscore.gsub('_', ' '))
-      if total == 1
-        %{#{t('reader_extension.showing')} #{t('reader_extension.one')} #{name}}
-      elsif list.current_page == 1 && total < list.per_page
-        %{#{t('reader_extension.all')} #{total} #{name.pluralize}}
-      else
-        start = list.offset + 1
-        finish = ((list.offset + list.per_page) < list.total_entries) ? list.offset + list.per_page : list.total_entries
-        %{#{start} #{t('reader_extension.to')} #{finish} #{t('reader_extension.of')} #{total} #{name.pluralize}}
-      end
-    end
+    start = list.offset + 1
+    finish = ((list.offset + list.per_page) < list.total_entries) ? list.offset + list.per_page : list.total_entries
+    t("reader_extension.showing_of_total", :count => total, :start => start, :finish => finish, :name => name, :names => name.pluralize)
   end
   
   def message_preview(subject, body, reader)

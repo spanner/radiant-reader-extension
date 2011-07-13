@@ -1,0 +1,10 @@
+- groups = Group.visible_to(current_reader)
+- if groups.any?
+  %h3
+    = t('reader_extension.groups')
+  %ul.groups
+    - groups.each do |group|
+      %li
+        = link_to_group(group)
+    
+    

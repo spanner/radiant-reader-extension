@@ -2,12 +2,13 @@ en:
   activerecord:
     attributes:
       reader:
-        description: "Text for your profile page"
+        description: "Biog"
         email: "Email address"
-        phone: "Telephone"
+        phone: "Home phone"
         mobile: "Mobile phone"
+        forename: "Forename"
         honorific: "Title or rank"
-        login: "Login username (optional)"
+        login: "Login username"
         name: "Your name"
         password: "Password"
         password_confirmation: "Confirm password"
@@ -19,6 +20,7 @@ en:
         post_province: "County"
         post_country: "Country"
         postcode: "Postcode"
+        surname: "Surname"
         unshareable: "Share none of this information"
     errors:
       models:
@@ -69,6 +71,7 @@ en:
     activation_required_explanation: "You should have received a confirmation message containing a link that will activate your account."
     activation_sent: "Activation message sent"
     affected_fields_highlighted: "The affected fields are highlighted below."
+    all: "All"
     all_deliveries_failed: "All deliveries failed"
     already_active: "Your account is already active."
     already_logged_in: "You're already logged in!"
@@ -90,6 +93,10 @@ en:
     confirmation_code: "Confirmation code"
     confirming_email: "When you press the 'register' button we will send a confirmation email to the address you enter above. Click on a link in that message, and you're in."
     continue: "Continue"
+    count_people: 
+      zero: "(nobody)"
+      one: "(one person)"
+      other: "(%{count} people)"
     create_message: "create message"
     csv_file: "a csv file"
     dashboard:
@@ -169,7 +176,7 @@ en:
       directory: "Directory"
       greeting: "Hello %{name}"
       help: "Help"
-      readers: "Readers"
+      readers: "Members"
       preferences: "Preferences"
       profile: "Profile"
       log_in: "Log in"
@@ -229,6 +236,11 @@ en:
     send_reset_button: "send me instructions"
     sent_on: "sent on %{date}"
     set_new_password: "set new password"
+    showing: "Showing"
+    showing_of_total:
+      zero: "No %{names} to show."
+      one: "Showing one %{name}"
+      other: "Showing %{start} to %{finish} of %{count} %{names}"
     some_deliveries_failed: "Some deliveries failed"
     sorry: "sorry"
     sorry_access_denied: "Sorry: access denied"
@@ -246,10 +258,6 @@ en:
     your_description: "Some text for your profile page"
     your_email: "Your email address"
     your_name: "Your name"
-    count_people: 
-      zero: "(nobody)"
-      one: "(one person)"
-      other: "(%{count} people)"
     send_to: "Send to"
     reader_configuration_page: "reader settings"
     welcome_sent_automatically: "This message is sent automatically when someone completes the registration and email-confirmation process."
@@ -275,7 +283,8 @@ en:
     update_account: "Save changes"
     create_account: "Register"
     separator: " &raquo; "
-    vcard_file: "address book entries"
+    vcard_file: "address book"
+    you_are_not_shared: "You have chosen not to share your contact information."
   time:
     formats:
       date: "%B %e, %Y"

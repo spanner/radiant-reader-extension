@@ -17,7 +17,7 @@ class ReaderSessionsController < ReaderActionController
         end
       }
       format.js {
-        render :partial => 'readers/controls', :layout => false
+        render :partial => 'accounts/controls', :layout => false
       }
     end
   end

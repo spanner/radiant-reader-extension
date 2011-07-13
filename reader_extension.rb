@@ -11,6 +11,7 @@ class ReaderExtension < Radiant::Extension
     config.gem 'sanitize', :version => "~> 2.0.1"
     config.gem 'snail', :version => "~> 0.5.5"
     config.gem 'vcard', :version => "~> 0.1.1"
+    config.gem 'fastercsv', :version => "~> 1.5.4"
   end
   
   migrate_from 'Reader Group', 20110214101339

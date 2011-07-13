@@ -11,7 +11,7 @@ class Group < ActiveRecord::Base
   has_many :permissions
   has_many :pages, :through => :permissions
   has_many :memberships
-  has_many :readers, :through => :memberships
+  has_many :readers, :through => :memberships, :uniq => true
   
   before_validation :set_slug
   validates_presence_of :name, :slug, :allow_blank => false
@@ -59,6 +59,10 @@ class Group < ActiveRecord::Base
 
   def url
     homepage.url if homepage
+  end
+  
+  def filename
+    name.downcase.gsub(/\W/, '_')
   end
   
   def send_welcome_to(reader)

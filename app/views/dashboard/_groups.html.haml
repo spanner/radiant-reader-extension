@@ -1,8 +1,8 @@
 - if current_reader.groups.any?
   .dashboard_module
     %h3
-      =t('reader_extension.dashboard.groups')
-    %ul
+      = t('reader_extension.dashboard.groups')
+    %ul.groups
       - current_reader.groups.each do |group|
         %li
           = link_to_group(group)

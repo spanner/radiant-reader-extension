@@ -4,8 +4,8 @@
   
 - content_for :section_navigation do
   = link_to t('reader_extension.navigation.readers'), readers_url, :class => 'section'
-  = link_to t('reader_extension.navigation.directory'), readers_url
   = link_to t('reader_extension.navigation.dashboard'), reader_dashboard_url
+  = link_to t('reader_extension.navigation.directory'), readers_url
   = link_to t('reader_extension.navigation.profile'), reader_profile_url
   = link_to t('reader_extension.navigation.account'), reader_account_url
 
@@ -13,7 +13,7 @@
     = link_to t('reader_extension.navigation.help'), Radiant::Config['reader.help_url']
 
 - content_for :controls do
-  = render :partial => 'readers/controls'
+  = render :partial => 'accounts/controls'
 
 - content_for :signals do
-  = render :partial => 'readers/flasher'
+  = render :partial => 'accounts/flasher'

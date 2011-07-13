@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :readers, :except => [:show]
   end
 
-  map.resources :readers
+  map.resources :readers, :controller => 'accounts'
   map.resources :messages, :only => [:index, :show], :member => [:preview]
   map.resources :groups, :only => [:index, :show] do |group|
     group.resources :messages, :only => [:index, :show], :member => [:preview]
@@ -21,12 +21,12 @@ ActionController::Routing::Routes.draw do |map|
   
   map.activate_me '/activate/:id/:activation_code', :controller => 'reader_activations', :action => 'update'
   map.repassword_me 'repassword/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
-  map.reader_register '/register', :controller => 'readers', :action => 'new'
+  map.reader_register '/register', :controller => 'accounts', :action => 'new'
   map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
-  map.reader_account '/account', :controller => 'readers', :action => 'edit'
-  map.reader_profile '/profile', :controller => 'readers', :action => 'show'
-  map.reader_edit_profile '/edit_profile', :controller => 'readers', :action => 'edit_profile'
+  map.reader_account '/account', :controller => 'accounts', :action => 'edit'
+  map.reader_profile '/profile', :controller => 'accounts', :action => 'show'
+  map.reader_edit_profile '/edit_profile', :controller => 'accounts', :action => 'edit_profile'
   map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
-  map.reader_permission_denied '/permission_denied', :controller => 'readers', :action => 'permission_denied'
-  map.reader_dashboard '/dashboard', :controller => 'readers', :action => 'dashboard'
+  map.reader_permission_denied '/permission_denied', :controller => 'accounts', :action => 'permission_denied'
+  map.reader_dashboard '/dashboard', :controller => 'accounts', :action => 'dashboard'
 end

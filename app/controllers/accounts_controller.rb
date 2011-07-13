@@ -1,9 +1,6 @@
-class ReadersController < ReaderActionController
-  include Radiant::Pagination::Controller
+class AccountsController < ReaderActionController
   helper :reader
   
-  cattr_accessor :dashboard_partials, :dashboard_marginal_partials, :dashboard_links
-
   before_filter :check_registration_allowed, :only => [:new, :create, :activate]
   before_filter :i_am_me, :only => [:show, :edit, :edit_profile]
   before_filter :require_reader, :except => [:new, :create, :activate]
@@ -16,9 +13,11 @@ class ReadersController < ReaderActionController
     @readers = Reader.visible_to(current_reader)
     respond_to do |format|
       format.html {}
-      format.csv {}
+      format.csv {
+        send_data generate_csv(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "everyone.csv"
+      }
       format.vcard {
-        send_data @readers.map(&:vcard).join("\n"), :filename => "everyone.vcf"	
+        send_data @readers.map(&:vcard).join("\n"), :filename => "everyone.vcf"
       }
     end
   end
@@ -26,8 +25,7 @@ class ReadersController < ReaderActionController
   def show
     @reader = Reader.find(params[:id])
     respond_to do |format|
-      format.html { }
-      format.csv { }
+      format.html
       format.vcard {
         send_data @reader.vcard.to_s, :filename => "#{@reader.filename}.vcf"	
       }

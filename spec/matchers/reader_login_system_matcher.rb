@@ -10,13 +10,13 @@ module Spec
           proc.call
           @response = @example.response
           @was_redirect = @response.redirect?
-          @was_redirect_to_login = @response.redirect_url_match?("/readers/login")
+          @was_redirect_to_login = @response.redirect_url_match?("/login")
           @was_redirect && @was_redirect_to_login
         end
 
         def failure_message
           if @was_redirect
-            "expected to redirect to /readers/login but redirected to #{@response.redirect_url}"
+            "expected to redirect to /login but redirected to #{@response.redirect_url}"
           else
             "expected to require reader login but did not redirect"
           end

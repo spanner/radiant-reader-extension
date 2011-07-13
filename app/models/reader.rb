@@ -23,7 +23,7 @@ class Reader < ActiveRecord::Base
   has_many :message_readers
   has_many :messages, :through => :message_readers
   has_many :memberships
-  has_many :groups, :through => :memberships
+  has_many :groups, :through => :memberships, :uniq => true
   accepts_nested_attributes_for :memberships
 
   before_update :update_user

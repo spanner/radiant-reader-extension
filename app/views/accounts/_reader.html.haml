@@ -8,5 +8,3 @@
   %p.context
     = t("reader_extension.joined_on")
     = l(reader.created_at, :format => :date) + '.'
-    = t("reader_extension.groups") + ':'
-    = reader.groups.visible_to(current_reader).map { |g| link_to_group(g) }.join(', ')

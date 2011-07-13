@@ -99,4 +99,12 @@ protected
     end
   end
   
+  def generate_csv(readers=[])
+    columns = %w{forename surname email phone mobile postal_address}
+    table = FasterCSV.generate do |csv|
+      csv << columns.map { |f| t("activerecord.attributes.reader.#{f}") }
+      readers.each { |r| csv << columns.map{ |f| r.send(f.to_sym) } }
+    end
+  end
+  
 end

@@ -1,15 +1,3 @@
 - if Radiant.config['reader.share_details?']
   .dashboard_module
-    %h3
-      = t('reader_extension.dashboard.profile')
-    %p
-      - %w{name email phone mobile}.each do |field|
-        = t("activerecord.attributes.reader.#{field}") + ': '
-        = current_reader.send(field.to_sym)
-        %br
-      = t("activerecord.attributes.reader.postal_address") + ': '
-    = current_reader.postal_address.to_html
-    %p
-      = link_to t('reader_extension.check_vcard'), reader_url(current_reader, :format => :vcard), :class => 'vcard'
-      %br
-      = link_to t('reader_extension.edit_profile'), reader_account_url
+    = render :partial => 'accounts/profile', :locals => {:reader => current_reader}

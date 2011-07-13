@@ -3,18 +3,18 @@ module ReaderAdminUI
  def self.included(base)
    base.class_eval do
 
-      attr_accessor :reader, :message, :group, :reader_configuration, :reader_public
+      attr_accessor :reader, :message, :group, :reader_configuration, :account
       alias_method :readers, :reader
       alias_method :messages, :message
       alias_method :groups, :group
-      alias_method :reader_publics, :reader_public
+      alias_method :accounts, :account      #note to self: plurals are called by region_helper
 
       def load_reader_extension_regions
         @reader = load_default_reader_regions
         @message = load_default_message_regions
         @group = load_default_group_regions
         @reader_configuration = load_default_reader_configuration_regions
-        @reader_public = load_default_reader_public_regions
+        @account = load_default_account_regions
       end
 
       def load_default_regions_with_reader
@@ -100,31 +100,31 @@ module ReaderAdminUI
       end
     end
     
-    def load_default_reader_public_regions
-      OpenStruct.new.tap do |rp|
-        rp.dashboard = Radiant::AdminUI::RegionSet.new do |dashboard|
-          dashboard.main.concat %w{dashboard/welcome dashboard/groups dashboard/description dashboard/profile}
-          dashboard.sidebar.concat %w{dashboard/messages dashboard/directory}
+    def load_default_account_regions
+      OpenStruct.new.tap do |account|
+        account.dashboard = Radiant::AdminUI::RegionSet.new do |dashboard|
+          dashboard.main.concat %w{dashboard/welcome dashboard/groups dashboard/description}
+          dashboard.sidebar.concat %w{dashboard/profile dashboard/messages dashboard/directory}
         end
-        rp.index = Radiant::AdminUI::RegionSet.new do |index|
-          index.main.concat %w{readers/list}
-          index.sidebar.concat %w{readers/all_groups readers/links}
+        account.index = Radiant::AdminUI::RegionSet.new do |index|
+          index.main.concat %w{list}
+          index.sidebar.concat %w{groups/all}
         end
-        rp.show = Radiant::AdminUI::RegionSet.new do |show|
-          show.main.concat %w{readers/groups readers/description readers/profile}
-          show.sidebar.concat %w{readers/links}
+        account.show = Radiant::AdminUI::RegionSet.new do |show|
+          show.main.concat %w{groups description}
+          show.sidebar.concat %w{profile}
         end
-        rp.edit = Radiant::AdminUI::RegionSet.new do |edit|
-          edit.main.concat %w{preamble readers/form readers/gravatar}
+        account.edit = Radiant::AdminUI::RegionSet.new do |edit|
+          edit.main.concat %w{preamble form gravatar}
           edit.form.concat %w{edit_name edit_email edit_username edit_password}
           edit.form_bottom.concat %w{edit_buttons}
         end
-        rp.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
+        account.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
           edit_profile.main.concat %w{edit_header edit_form}
           edit_profile.form.concat %w{edit_honorific edit_name edit_email edit_phone edit_mobile edit_address edit_shareability}
           edit_profile.form_bottom.concat %w{edit_buttons}
         end
-        rp.new = rp.edit
+        account.new = account.edit
       end
     end
     

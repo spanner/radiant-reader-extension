@@ -9,12 +9,14 @@ class GroupsController < ReaderActionController
   end
 
   def show
-    @readers = @group.readers
+    @readers = @group.readers.uniq
     respond_to do |format|
-      format.html {}
-      format.csv {}
+      format.html
+      format.csv {
+        send_data generate_csv(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@group.filename}.csv"
+      }
       format.vcard {
-        send_data @readers.map(&:vcard).join("\n"), :filename => "everyone.vcf"	
+        send_data @readers.map(&:vcard).join("\n"), :filename => "#{@group.filename}.vcf"	
       }
     end
   end

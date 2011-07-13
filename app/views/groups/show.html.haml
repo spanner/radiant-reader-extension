@@ -25,7 +25,7 @@
   %h3
     = t('reader_extension.group_members')
 
-  = render :partial => 'readers/reader', :collection => @group.readers
+  = render :partial => 'accounts/list', :readers => @readers
 
 = yield :main
 
