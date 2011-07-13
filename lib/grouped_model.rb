@@ -42,24 +42,28 @@ module GroupedModel
         } 
       }
 
-      named_scope :ungrouped, {
-        :select => "#{self.table_name}.*, count(pp.id) as group_count",
-        :joins => "LEFT OUTER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
-        :having => "group_count = 0",
-        :group => column_names.map { |n| self.table_name + '.' + n }.join(','),    # postgres requires that we group by all selected (but not aggregated) columns
-        :readonly => false
+      named_scope :ungrouped, lambda {
+        {
+          :select => "#{self.table_name}.*, count(pp.id) as group_count",
+          :joins => "LEFT OUTER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
+          :having => "group_count = 0",
+          :group => column_names.map { |n| self.table_name + '.' + n }.join(','),    # postgres requires that we group by all selected (but not aggregated) columns
+          :readonly => false
+        }
       } do
         def count
           length
         end
       end
 
-      named_scope :grouped, {
-        :select => "#{self.table_name}.*, count(pp.id) as group_count",
-        :joins => "LEFT OUTER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
-        :having => "group_count > 0",
-        :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
-        :readonly => false
+      named_scope :grouped, lambda {
+          {
+          :select => "#{self.table_name}.*, count(pp.id) as group_count",
+          :joins => "LEFT OUTER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
+          :having => "group_count > 0",
+          :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
+          :readonly => false
+        }
       } do
         def count
           length
