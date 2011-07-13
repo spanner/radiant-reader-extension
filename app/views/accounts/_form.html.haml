@@ -17,6 +17,7 @@
     = f.label :name, nil, :class => 'required'
     %br
     = f.text_field :name, :class => 'standard'
+    %br
     %span.formnote= t('reader_extension.form_notes.name')
 
   - if reader.new_record?
@@ -24,12 +25,14 @@
       = f.label reader.email_field, t('activerecord.attributes.reader.email'), :class => 'required'
       %br
       = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
+      %br
       %span.formnote= t('reader_extension.form_notes.email')
     .innocuous
       %p
         =f.label :email, nil, :class => 'required'
         %br
         = f.text_field :email, :class => 'standard', :value => ""
+        %br
         %span.formnote= t('reader_extension.spam_trap')
 
   - else
@@ -37,12 +40,14 @@
       = f.label :email, nil, :class => 'required'
       %br
       = f.text_field :email, :class => 'standard'
+      %br
       %span.formnote= t('reader_extension.form_notes.email')
 
   %p
     = f.label :login, nil, :class => 'optional'
     %br
     = f.text_field :login, :class => 'standard'
+    %br
     %span.formnote= t('reader_extension.form_notes.login')
 
   - if reader.new_record?
@@ -50,6 +55,7 @@
       = f.label :password, nil, :class => 'required'
       %br
       = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+      %br
       %span.formnote= t('reader_extension.form_notes.new_password')
 
     %p
@@ -63,6 +69,7 @@
         = f.label :password, nil, :class => 'optional'
         %span.password
           &bull;&bull;&bull;&bull;&bull;
+        %br
         %span.formnote= link_to t('reader_extension.change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
           
     .new_password.hidden

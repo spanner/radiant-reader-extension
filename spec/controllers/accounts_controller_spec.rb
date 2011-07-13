@@ -119,11 +119,11 @@ describe AccountsController do
       end
   
       it "should route '/account' to my account" do
-        params_from(:get, '/account').should == {:controller => 'readers', :action => 'edit'}
+        params_from(:get, '/account').should == {:controller => 'accounts', :action => 'edit'}
       end
 
       it "should route '/profile' to my account" do
-        params_from(:get, '/profile').should == {:controller => 'readers', :action => 'show'}
+        params_from(:get, '/profile').should == {:controller => 'accounts', :action => 'show'}
       end
 
       it "should consent to show another reader page" do 
@@ -182,7 +182,7 @@ describe AccountsController do
 
       it "should redirect to the reader page" do 
         response.should be_redirect
-        response.should redirect_to(reader_url(@reader))
+        response.should redirect_to(dashboard_url)
       end
       
     end

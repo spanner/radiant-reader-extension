@@ -21,9 +21,9 @@ describe ReaderActivationsController do
       @reader.activated_at.should be_close((Time.now).utc, 1.minute)
     end
 
-    it "should show the show page" do
-      response.should be_success
-      response.should render_template("show")
+    it "should redirect to the dashboard" do
+      response.should be_redirect
+      response.should redirect_to(dashboard_url)
     end
   end
 
