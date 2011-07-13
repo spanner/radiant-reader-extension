@@ -1,5 +1,5 @@
 - if Radiant.config['reader.share_details?']
-  - reader ||= reader
+  - reader ||= @reader
   
   - if reader.unshareable?
     - if reader == current_reader
