@@ -1,6 +1,15 @@
-#message
-  %iframe.message_body{:src => preview_message_url(@message)}
+- content_for :introduction do
+  %p
+    = t('reader_extension.message_preview_introduction', :date => friendly_date(@delivery.sent_at))
+
+- content_for :message do
+  #preview
+    .message_body
+      %iframe{:src => preview_message_url(@message)}
 
 - content_for :title do
   = @message.subject
   
+= render :partial => 'shared/standard_reader_parts'
+
+= yield :message

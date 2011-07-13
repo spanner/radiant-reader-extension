@@ -30,6 +30,7 @@ protected
   
   def get_message
     @message = current_reader.messages.find(params[:id])
+    @delivery = @message.delivery_to(current_reader)
   end
 
 end

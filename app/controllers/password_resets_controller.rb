@@ -13,13 +13,13 @@ class PasswordResetsController < ReaderActionController
   end
   
   def create
-    @reader = Reader.find_by_email(params[:email])
-    if @reader
-      if @reader.activated?
-        @reader.send_password_reset_message
+    @forgetter = Reader.find_by_email(params[:email])
+    if @forgetter
+      if @forgetter.activated?
+        @forgetter.send_password_reset_message
         render
       else
-        @reader.send_activation_message
+        @forgetter.send_activation_message
         redirect_to new_reader_activation_url
       end
     else  
@@ -42,7 +42,7 @@ class PasswordResetsController < ReaderActionController
       if @reader.save 
         self.current_reader = @reader
         flash[:notice] = t('reader_extension.password_updated_notice')
-        redirect_to url_for(@reader)
+        redirect_to dashboard_url
       else
         flash[:error] = t('reader_extension.password_mismatch')
         render :action => :edit 

@@ -7,7 +7,7 @@ class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
   cattr_accessor :user_columns
   cattr_accessor :current
-  attr_accessor :email_field        # used in blocking spam registrations
+  attr_accessor :email_field, :newly_activated
 
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
@@ -141,6 +141,7 @@ class Reader < ActiveRecord::Base
   
   def activate!
     self.activated_at = Time.now.utc
+    self.newly_activated = true
     self.save!
     send_welcome_message
     send_group_welcomes
@@ -148,6 +149,10 @@ class Reader < ActiveRecord::Base
 
   def activated?
     !inactive?
+  end
+  
+  def newly_activated?
+    !!newly_activated
   end
 
   def inactive?

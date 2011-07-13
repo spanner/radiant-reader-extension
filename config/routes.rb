@@ -23,10 +23,10 @@ ActionController::Routing::Routes.draw do |map|
   map.repassword_me 'repassword/:id/:confirmation_code', :controller => 'password_resets', :action => 'edit'
   map.reader_register '/register', :controller => 'accounts', :action => 'new'
   map.reader_login '/login', :controller => 'reader_sessions', :action => 'new'
+  map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
+  map.reader_dashboard '/dashboard', :controller => 'accounts', :action => 'dashboard'
   map.reader_account '/account', :controller => 'accounts', :action => 'edit'
   map.reader_profile '/profile', :controller => 'accounts', :action => 'show'
   map.reader_edit_profile '/edit_profile', :controller => 'accounts', :action => 'edit_profile'
-  map.reader_logout '/logout', :controller => 'reader_sessions', :action => 'destroy'
   map.reader_permission_denied '/permission_denied', :controller => 'accounts', :action => 'permission_denied'
-  map.reader_dashboard '/dashboard', :controller => 'accounts', :action => 'dashboard'
 end
