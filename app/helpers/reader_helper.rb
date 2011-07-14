@@ -58,11 +58,13 @@ module ReaderHelper
     Sanitize.clean(textilize(text), Sanitize::Config::GENEROUS)
   end
 
-  def truncate_words(text='', length=24, omission="...")
+  def truncate_words(text='', options={})
     return '' if text.blank?
+    options.reverse_merge!(:length => 30, :omission => '&hellip;')
     words = text.split
-    omission = '' unless words.size > length
-    words[0..(length-1)].join(" ") + omission
+    length = options[:length].to_i
+    options[:omission] = '' unless words.size > length
+    words[0..(length-1)].join(" ") + options[:omission]
   end 
   
   def pagination_and_summary_for(list, name='')

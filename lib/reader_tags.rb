@@ -1,6 +1,7 @@
 module ReaderTags
   include Radiant::Taggable
   include ReaderHelper
+  include ActionView::Helpers::TextHelper
   include GroupTags
   include MessageTags
   
@@ -22,6 +23,10 @@ module ReaderTags
     Cycles through the (paginated) list of readers available for display. You can do this on 
     any page but if it's a ReaderPage you also get some access control and the ability to 
     click through to an individual reader.
+    
+    Please note that if you use this tag on a normal radiant page, all registered readers
+    will be displayed, regardless of group-based or other access limitations. You really
+    want to keep this tag for ReaderPages and GroupPages.
     
     *Usage:* 
     <pre><code><r:readers:each [limit=0] [offset=0] [order="asc|desc"] [by="position|title|..."] [extensions="png|pdf|doc"]>...</r:readers:each></code></pre>
@@ -77,44 +82,8 @@ module ReaderTags
       <pre><code><r:reader:#{field} /></code></pre>
     }
     tag "reader:#{field}" do |tag|
-      tag.locals.reader.send(field)
+      tag.locals.reader.send(field) if tag.locals.reader
     end
-  end
-
-  desc %{
-    Expands if the reader has been sent any messages.
-    
-    <pre><code><r:reader:if_messages>...</r:reader:if_messages /></code></pre>
-  }
-  tag "reader:if_messages" do |tag|
-    tag.expand if tag.locals.reader.messages.any?
-  end
-
-  desc %{
-    Expands if the reader has not been sent any messages.
-    
-    <pre><code><r:reader:unless_messages>...</r:reader:unless_messages /></code></pre>
-  }
-  tag "reader:unless_messages" do |tag|
-    tag.expand unless tag.locals.reader.messages.any?
-  end
-
-  desc %{
-    Loops through the messages that belong to this reader (whether they have been sent or not, so at the moment this may include drafts).
-    
-    <pre><code><r:reader:messages:each>...</r:reader:messages:each /></code></pre>
-  }
-  tag "reader:messages" do |tag|
-    tag.locals.messages = tag.locals.reader.messages
-    tag.expand if tag.locals.messages.any?
-  end
-  tag "reader:messages:each" do |tag|
-    result = []
-    tag.locals.messages.each do |message|
-      tag.locals.message = message
-      result << tag.expand
-    end
-    result
   end
   
   desc %{
@@ -133,7 +102,7 @@ module ReaderTags
     If there is no reader, this will show a 'login or register' invitation, provided the reader.allow_registration? config entry is true. 
     If you don't want that, use @r:reader:controls@ instead: the reader: prefix means it will only show when a reader is present.
     
-    If this tag appears on a cached page, we return an empty @<div class="remote_controls">@ into which you can drop whatever you like.
+    If this tag appears on a cached page, we return an empty @<div class="remote_controls">@ suitable for ajaxing.
     
     <pre><code><r:reader_welcome /></code></pre>
   }
@@ -177,20 +146,45 @@ module ReaderTags
     tag.expand unless get_reader(tag)
   end
 
+  desc %{
+    Truncates the contained text or html to the specified length. Unless you supply a 
+    html="true" parameter, all html tags will be removed before truncation. You probably
+    don't want to do that: open tags will not be closed and the truncated
+    text length will vary.
+    
+    <pre><code>
+      <r:truncated words="30"><r:content part="body" /></r:truncated>
+      <r:truncated chars="100" omission=" (continued)"><r:post:body /></r:truncated>
+      <r:truncated words="100" allow_html="true"><r:reader:description /></r:truncated>
+    </code></pre>
+  }
+  tag "truncated" do |tag|
+    content = tag.expand
+    tag.attr['words'] ||= tag.attr['length']
+    omission = tag.attr['omission'] || '&hellip;'
+    content = scrub_html(content) unless tag.attr['allow_html'] == 'true'
+    if tag.attr['chars']
+      truncate(content, :length => tag.attr['chars'].to_i, :omission => omission)
+    else
+      truncate_words(content, :length => tag.attr['words'].to_i, :omission => omission)   # defined in ReaderHelper
+    end
+  end
+
 private
 
   def get_reader(tag)
-    if tag.locals.page.respond_to? :reader
-      tag.locals.reader ||= tag.locals.page.reader
-    elsif !tag.locals.page.cached?
-      tag.locals.reader ||= Reader.current
+    tag.locals.reader ||= if tag.attr['id']
+      Reader.find_by_id(tag.attr['id'].to_i)
+    elsif tag.locals.page.respond_to? :reader
+      tag.locals.page.reader
+    elsif !tag.locals.page.cache?
+      Reader.current
     end
-    tag.locals.reader
   end
 
   def get_readers(tag)
     attr = tag.attr.symbolize_keys
-    readers = tag.locals.page.respond_to?(:reader) ? tag.locals.page.readers : Reader.visible_to(current_reader)
+    readers = tag.locals.page.respond_to?(:reader) ? tag.locals.page.readers : Reader.scoped({})
     readers = readers.in_group(group) if group = attr[:group]
     by = attr[:by] || 'name'
     order = attr[:order] || 'ASC'

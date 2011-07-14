@@ -41,7 +41,7 @@ class ReaderPage < Page
     my_url = self.url
     return false unless url =~ /^#{Regexp.quote(my_url)}(.*)/
     raise ReaderError::AccessDenied unless visible?
-
+    
     params = $1.split('/').compact
     self.group = Group.find_by_slug(params.first) if params.first =~ /\w/
     self.reader = Reader.find_by_id(params.last) if params.last !~ /\D/
