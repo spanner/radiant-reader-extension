@@ -169,6 +169,8 @@ module ReaderTags
       truncate_words(content, :length => tag.attr['words'].to_i, :omission => omission)   # defined in ReaderHelper
     end
   end
+  
+  deprecated_tag "truncate", :substitute => "truncated"
 
 private
 
