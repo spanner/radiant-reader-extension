@@ -60,6 +60,7 @@ module ReaderHelper
 
   def truncate_words(text='', options={})
     return '' if text.blank?
+    options = {:length => options} unless options.is_a? Hash
     options.reverse_merge!(:length => 30, :omission => '&hellip;')
     words = text.split
     length = options[:length].to_i
