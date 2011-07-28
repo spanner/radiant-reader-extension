@@ -199,6 +199,14 @@ class Reader < ActiveRecord::Base
       homegroup.homepage
     end
   end
+  
+  def home_url
+    if homepage = self.find_homepage
+      homepage.url
+    else
+      nil
+    end
+  end
 
   def can_see? (this)
     permitted_groups = this.permitted_groups
