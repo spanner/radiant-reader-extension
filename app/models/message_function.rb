@@ -34,6 +34,8 @@ class MessageFunction
   @@functions = [
     MessageFunction.new('welcome', 'Welcome'),
     MessageFunction.new('invitation', 'Invitation' ),
+    MessageFunction.new('group_welcome', 'Group welcome'),
+    MessageFunction.new('group_invitation', 'Group invitation' ),
     MessageFunction.new('password_reset', 'Password instructions'),
     MessageFunction.new('activation', 'Activation instructions')
   ]

@@ -18,7 +18,7 @@
     %br
     = f.text_field :name, :class => 'standard'
     %br
-    %span.formnote= t('reader_extension.form_notes.name')
+    %span.formnote= t('reader_extension.form_notes.account.name')
 
   - if reader.new_record?
     %p
@@ -26,7 +26,7 @@
       %br
       = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
       %br
-      %span.formnote= t('reader_extension.form_notes.email')
+      %span.formnote= t('reader_extension.form_notes.account.email')
     .innocuous
       %p
         =f.label :email, nil, :class => 'required'
@@ -41,14 +41,14 @@
       %br
       = f.text_field :email, :class => 'standard'
       %br
-      %span.formnote= t('reader_extension.form_notes.email')
+      %span.formnote= t('reader_extension.form_notes.account.email')
 
   %p
     = f.label :login, nil, :class => 'optional'
     %br
     = f.text_field :login, :class => 'standard'
     %br
-    %span.formnote= t('reader_extension.form_notes.login')
+    %span.formnote= t('reader_extension.form_notes.account.login')
 
   - if reader.new_record?
     %p
@@ -56,7 +56,7 @@
       %br
       = f.password_field :password, :class => 'standard', :autocomplete => 'off'
       %br
-      %span.formnote= t('reader_extension.form_notes.new_password')
+      %span.formnote= t('reader_extension.form_notes.account.new_password')
 
     %p
       = f.label :password_confirmation, nil, :class => 'required'
@@ -77,7 +77,7 @@
         = f.label :password, t('reader_extension.new_password'), :class => 'required'
         %br
         = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-        %span.formnote= t('reader_extension.form_notes.new_password')
+        %span.formnote= t('reader_extension.form_notes.account.new_password')
       %p
         = f.label :password_confirmation, t('reader_extension.confirm_new_password'), :class => 'required'
         %br

@@ -45,7 +45,7 @@ module MessageTags
     tag.expand
   end
 
-  [:name, :forename, :email, :description, :login].each do |field|
+  [:name, :forename, :surname, :email, :description, :login].each do |field|
     desc %{
       Only for use in email messages. Displays the #{field} field of the reader currently being emailed.
       <pre><code><r:recipient:#{field} /></code></pre>
@@ -58,8 +58,8 @@ module MessageTags
   desc %{
     Only for use in email messages. Displays the password of the reader currently being emailed, if we still have it.
 
-    (After the first successful login we forget the cleartext version of their password, so you only want to use this 
-    tag in welcome and activation messages.)
+    (After the first successful login we forget the cleartext version of their password, so in normal use you would 
+    only see this tag in welcome and activation messages.)
   
     <pre><code><r:recipient:url /></code></pre>
   }

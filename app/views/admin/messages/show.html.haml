@@ -1,4 +1,5 @@
 - include_stylesheet('admin/reader')
+- include_javascript('admin/reader')
 - body_classes << "reversed"
 
 = render_region :top 
@@ -35,42 +36,51 @@
         %p
           - if @message.group
             = t("reader_extension.belongs_to_group", :name => @message.group.name, :href => admin_group_url(@message.group))
-            = t("reader_extension.message_administrative")
+            = t("reader_extension.message_group_administrative")
             = t("reader_extension.message_function.#{@message.function}")
           - else
-            = t("reader_extension.#{@message.function}_sent_automatically")
-        %ul
-          %li
-            = link_to t('reader_extension.edit_message').titlecase, edit_admin_message_url(@message)
-          %li
-            - if @message.group
-              = link_to @message.group.name + ' ' + t('reader_extension.group_page'), admin_group_url(@message.group)
-            - else
-              = link_to t('reader_extension.reader_configuration_page').titlecase, admin_reader_configuration_url
+            = t("reader_extension.message_administrative")
+            = t("reader_extension.message_function.#{@message.function}")
       - else
         %p
           = t("reader_extension.message_adhoc")
+          = t("reader_extension.message_group_adhoc", :name => @message.group.name, :href => admin_group_url(@message.group))
           
     - delivery.options do
       - unless @message.administrative?
         - form_for :message, @message, :url => deliver_admin_message_url(@message), :html => {"data-onsubmit_status"=>"Sending email messages&#8230;"} do |f|
           %h3
             = t("reader_extension.send_to").titlecase + ":"
-          %p
-            = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :disabled => @message.possible_readers.empty?
-            %label.checkbox{:for => 'delivery_to_all', :class => @message.possible_readers.empty? ? 'disabled' : ''} 
-              = t('reader_extension.everyone')
-              = t('reader_extension.count_people', :count => @message.possible_readers.count)
-          %p
-            = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :disabled => @message.undelivered_readers.empty?
-            %label.checkbox{:for => 'delivery_to_unsent', :class => @message.undelivered_readers.empty? ? 'disabled' : ''} 
-              = t('reader_extension.everyone_unsent')
-              = t('reader_extension.count_people', :count => @message.undelivered_readers.count)
-          %p
-            = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :disabled => @message.inactive_readers.empty?
-            %label.checkbox{:for => 'delivery_to_inactive', :class => @message.inactive_readers.empty? ? 'disabled' : ''} 
-              = t('reader_extension.everyone_inactive')
-              = t('reader_extension.count_people', :count => @message.inactive_readers.count)
+          .radio_group
+            %p
+              = radio_button_tag 'delivery', 'all', true, :id => 'delivery_to_all', :disabled => @message.possible_readers.empty?
+              %label.checkbox{:for => 'delivery_to_all', :class => @message.possible_readers.empty? ? 'disabled' : ''} 
+                = t('reader_extension.everyone')
+                = t('reader_extension.count_people', :count => @message.possible_readers.count)
+            %p
+              = radio_button_tag 'delivery', 'unsent', false, :id => 'delivery_to_unsent', :disabled => @message.undelivered_readers.empty?
+              %label.checkbox{:for => 'delivery_to_unsent', :class => @message.undelivered_readers.empty? ? 'disabled' : ''} 
+                = t('reader_extension.everyone_unsent')
+                = t('reader_extension.count_people', :count => @message.undelivered_readers.count)
+            %p
+              = radio_button_tag 'delivery', 'inactive', false, :id => 'delivery_to_inactive', :disabled => @message.inactive_readers.empty?
+              %label.checkbox{:for => 'delivery_to_inactive', :class => @message.inactive_readers.empty? ? 'disabled' : ''} 
+                = t('reader_extension.everyone_inactive')
+                = t('reader_extension.count_people', :count => @message.inactive_readers.count)
+            %p
+              = radio_button_tag 'delivery', 'selected', false, :id => 'delivery_to_selected', :disabled => @message.possible_readers.empty?, :rel => 'toggle[select_recipients]'
+              %label.checkbox{:for => 'delivery_to_selected', :class => @message.possible_readers.empty? ? 'disabled' : ''} 
+                = t('reader_extension.selected_people') + "..."
+            %ul#select_recipients
+              %li
+                = check_box_tag 'null', '', false, :class => 'select_all'
+                %label.checkbox.select_all
+                  = t('reader_extension.select_all')
+              - @message.possible_readers.each do |reader|
+                %li
+                  = check_box_tag "recipients[]", reader.id, false, :id => "recipients_#{reader.id}", :class => 'toggled'
+                  %label.checkbox
+                    = reader.name
 
           %p.buttons
             = submit_tag t('reader_extension.send_message')

@@ -4,23 +4,33 @@
   - render_region :form do |formpart|
     - formpart.edit_subject do
       %p.title
-        = form.label :subject, "Message Subject"
+        = form.label :subject
         = form.text_field :subject, :class => 'textbox', :maxlength => 255
-        - if @message.new_record?
-          = form.hidden_field :function_id
 
     - formpart.edit_body do
       %div.body
         %p
           %span.filter
-            = form.label :filter_id, "Filter:"
-            = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :id => 'message_filter', :include_blank => true
-          = form.label :body, "Message Body"
+            = form.label :filter_id
+            = form.select :filter_id, TextFilter.descendants.map { |tf| tf.filter_name }.sort, :include_blank => true
+          = form.label :body
           = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
-    - formpart.edit_group do
-      - if @message.new_record? && @message.group
-        = f.hidden_field :group_id
+    - formpart.edit_function do
+      - if admin?
+        %div.function.set
+          %p
+            = form.label :function_id
+            = form.select :function_id, MessageFunction.find_all.map { |mf| [mf.description, mf.name] }, :include_blank => true
+          %p
+            = form.label :group_id
+            = form.select :group_id, Group.all.map { |g| [g.name, g.id] }, :include_blank => true
+        
+      - elsif @message.new_record?
+        - if @message.group
+          = f.hidden_field :group_id
+        - if @message.function
+          = f.hidden_field :function_id
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do

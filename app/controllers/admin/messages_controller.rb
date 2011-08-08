@@ -24,6 +24,8 @@ class Admin::MessagesController < Admin::ResourceController
       @readers = @message.inactive_readers
     when "unsent"
       @readers = @message.undelivered_readers
+    when "selected"
+      @readers = @message.possible_readers.find(params['recipients'])
     else
       redirect_to admin_message_url(@message)
       return

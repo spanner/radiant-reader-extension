@@ -7,8 +7,8 @@ class ReaderNotifier < ActionMailer::Base
     prefix = site ? site.abbreviation : Radiant::Config['email.prefix']
     host = site ? site.base_domain : Radiant::Config['site.host'] || 'www.example.com'
     default_url_options[:host] = host
-    sender = Radiant::Config['email.name'] || "sender_not_configured"
-    sender_address = Radiant::Config['email.address'] || "admin@#{host}"
+    sender = Radiant::Config['email.name'] || current_user.name
+    sender_address = Radiant::Config['email.address'] || current_user.email
 
     message_layout(message.layout) if message.layout
     content_type("text/html")
