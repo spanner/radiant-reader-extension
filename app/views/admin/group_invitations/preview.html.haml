@@ -49,7 +49,7 @@
             %td 
               = text_field_tag "reader_#{i}[login]", reader.login, :class => "preview#{ ' with_error' if reader.errors.on(:login)}", :title => reader.errors.on(:login), :disabled => true
             %td 
-              = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone)
+              = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone), :disabled => true
         - i = i + 1
 
   %p.buttons

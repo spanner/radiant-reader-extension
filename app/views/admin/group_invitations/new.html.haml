@@ -3,7 +3,7 @@
 %h1 
   = t('reader_extension.invite_into_group', :name => @group.name)
 
-- if message = @group.messages.for_function('invitation').first
+- if message = @group.messages.for_function('group_invitation').first
 
   - form_for :group, @group, :url => admin_group_group_invitations_url(@group), :html => {:id => 'preview_form', :method => 'post'} do
     .form-area
