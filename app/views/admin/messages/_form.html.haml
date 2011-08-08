@@ -34,10 +34,11 @@
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
-    = updated_stamp @message  
+    = updated_stamp @message
   - form_bottom.edit_buttons do
     %p.buttons
       = save_model_button(@message)
       = save_model_and_continue_editing_button(@message)
-      or
-      = link_to "cancel", admin_message_url(@message)
+      = t('or')
+      = link_to t("cancel"), @message.new_record? ? admin_messages_url : admin_message_url(@message)
+      
