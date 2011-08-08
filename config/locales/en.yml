@@ -39,7 +39,6 @@ en:
             password:
               too_short: "this must have at least six characters"
               invalid: "this must include at least one non-letter"
-          
   config:
     reader:
       allow_registration?: "Allow registration"
@@ -262,17 +261,22 @@ en:
     your_name: "Your name"
     send_to: "Send to"
     reader_configuration_page: "reader settings"
-    welcome_sent_automatically: "This message is sent automatically when someone completes the registration and email-confirmation process."
     welcome_please_log_in: '<span class="greeting">Welcome!</span> To take part, please <a href="%{login_url}">log in</a> or <a href="%{register_url}">register</a>.'
-    password_reset_sent_automatically: "This message is sent automatically when someone asks to reset their password."
-    activation_sent_automatically: "This message is sent automatically when someone begins to register."
-    invitation_sent_automatically: "This message is sent automatically when someone is invited to the site."
+    message_administrative: "It is sent automatically"
+    message_adhoc: "This is an ad-hoc message sendable to anyone."
+    message_function:
+      welcome: "when someone completes the registration and email-confirmation process."
+      password_reset: "when someone asks to reset their password."
+      activation: "when someone registers here."
+      invitation: "when someone is invited to visit the site."
+      group_welcome: "when someone joins the group."
+      group_invitation: "when someone is invited into the group."
     everyone_unsent: "anyone who has not received this message"
     everyone_inactive: "anyone who has not activated their account"
     everyone: "Everyone"
     send_message: "Send Message"
-    edit_message: "edit message"
-    delete_message: "delete message"
+    edit_message: "Edit message"
+    delete_message: "Delete message"
     this_message_functional: "This is the %{function} message."
     preview_and_send_message: "Preview and send message"
     really_delete_message: "Are you sure you want to delete the message '%{title}'? This cannot be undone."
@@ -307,8 +311,6 @@ en:
     create_invitation: "create invitation"
     last_sent: "last sent"
     private_page_explanation: "The pages selected on the left are only visible to the people selected on the right."
-    group_welcome_sent_automatically: "This message is sent automatically when someone joins the %{name} group."
-    group_invitation_sent_automatically: "This message is sent automatically when someone is invited into the %{name} group."
     sent_to_group: "sent automatically to the %{name} group"
     sent_to_these_groups: "sent automatically to these groups"
     group_welcome: "This is the welcome message"
@@ -322,7 +324,7 @@ en:
     delete_group: "delete group"
     really_delete_group: "Are you sure you want to completely remove the '%{name}' group? This cannot be undone."
     edit_group: "edit group"
-    belongs_to_group: "This message belongs to the %{name} group."
+    belongs_to_group: 'This message belongs to the <a href="%{href}">%{name}</a> group.'
     belongs_to_these_groups: "This message is sent to these groups:"
     invite_into_group: "Invite people into the %{name} group"
     invitation_instructions: "This is a quick way to bring a group of people into the system in one go. Enter a comma-separated list of names and email addresses (one person per line) and after a bit of checking and tweaking on the next page, each of those people will be invited into the system and issued an account with a vaguely adequate username and entirely random password. Anyone who is already here will just be added to the group."

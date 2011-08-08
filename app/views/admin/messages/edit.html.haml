@@ -5,8 +5,7 @@
 
   - main.edit_header do
     %h1 
-      Edit
-      = render :partial => 'message_description'
+      = t('reader_extension.edit_message')
 
   - main.edit_form do
     - form_for :message, @message, :url => admin_message_url(@message), :html => {:id => 'message_form', :method => 'put'} do |f|
