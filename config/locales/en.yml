@@ -62,6 +62,14 @@ en:
   groups: "Groups"
   messages: "Messages"
   settings: "Settings"
+  message_functions:
+    activation: "Activation instructions"
+    ad_hoc: "Ad hoc message"
+    invitation: "Invitation"
+    group_welcome: "Group welcome"
+    group_invitation: "Group invitation"
+    password_reset: "Password instructions"
+    welcome: "Registration complete"
   reader_extension:
     access_denied: "Access denied"
     account_settings: "Account settings"
@@ -183,7 +191,7 @@ en:
       password_reset: "when someone asks to reset their password."
       activation: "when someone registers here."
       invitation: "when someone is invited to visit the site."
-      group_welcome: "when someone joins the group."
+      group_welcome: "when someone is admitted to the group."
       group_invitation: "when someone is invited into the group."
     navigation:
       account: "Your account"
@@ -320,7 +328,7 @@ en:
     create_welcome: "create welcome"
     create_invitation: "create invitation"
     last_sent: "last sent"
-    private_page_explanation: "The pages selected on the left are only visible to the people selected on the right."
+    private_page_explanation: "The pages selected on the left are only visible to the people selected on the right (unless another group is also given permission to see that page)."
     sent_to_group: "sent automatically to the %{name} group"
     sent_to_these_groups: "sent automatically to these groups"
     group_welcome: "This is the welcome message"

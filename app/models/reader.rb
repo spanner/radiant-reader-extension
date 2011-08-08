@@ -258,7 +258,7 @@ private
   end
 
   def send_group_invitation_message(group=nil)
-    send_functional_message('invitation', group)
+    send_functional_message('group_invitation', group)
   end
 
 end

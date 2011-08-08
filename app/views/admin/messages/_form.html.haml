@@ -21,7 +21,7 @@
         %div.function.set
           %p
             = form.label :function_id
-            = form.select :function_id, MessageFunction.find_all.map { |mf| [mf.description, mf.name] }, :include_blank => true
+            = form.select :function_id, MessageFunction.find_all.map { |mf| [t("message_functions.#{mf.name}"), mf.name] }, :include_blank => true
           %p
             = form.label :group_id
             = form.select :group_id, Group.all.map { |g| [g.name, g.id] }, :include_blank => true

@@ -1,9 +1,8 @@
 class MessageFunction
-  attr_accessor :name, :description
+  attr_accessor :name
   
   def initialize(name, description='')
     @name = name
-    @description = description
   end
   
   def symbol
@@ -12,6 +11,10 @@ class MessageFunction
   
   def to_s
     @name
+  end
+  
+  def description
+    I18n.t("message_functions.#{@name}")
   end
   
   def humanize

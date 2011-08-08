@@ -19,7 +19,14 @@
             - tbody.subject_cell do
               %td.name
                 = link_to message.subject, admin_message_url(message), :class => message.has_function? ? "functional" : "normal"
-                = render :partial => '/admin/messages/list_function', :locals => {:message => message}
+                %span.function
+                  - if message.administrative?
+                    = t("message_functions.#{message.function}")
+                  - else
+                    = t("message_functions.ad_hoc")
+                  - if message.group
+                    = t('reader_extension.for')
+                    = link_to message.group.name, admin_group_url(message.group)
 
             - tbody.sent_cell do
               %td.message_sent

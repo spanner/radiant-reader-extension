@@ -14,11 +14,11 @@
         = link_to image('plus') + ' ' + t("reader_extension.create_new_message"), new_admin_group_message_url(@group), :class => 'action create'
       %h3
         =t('reader_extension.admin_messages').titlecase
-      - ['welcome', 'invitation'].each do |func|
+      - ['group_welcome', 'group_invitation'].each do |func|
         - message = Message.functional(func, @group)
         %p.ruled
           %label 
-            = t("reader_extension.#{func}_message")
+            = t("message_functions.#{func}")
           - if message
             %strong
               = link_to message.subject, admin_message_url(message)
