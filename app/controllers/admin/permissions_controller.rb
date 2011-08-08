@@ -9,7 +9,8 @@ class Admin::PermissionsController < ApplicationController
   def create
     @page = Page.find(params[:page_id])
     raise ActiveRecord::RecordNotFound unless @page
-    @permission = Permission.find_or_create_by_page_id_and_group_id(@page.id, @group.id)
+    scope = @group.permissions.for(@page)
+    @permission = scope.first || scope.create!
     respond_to do |format|
       format.html { 
         flash[:notice] = "#{@page.name} bound to group #{@group.name}"
@@ -21,7 +22,7 @@ class Admin::PermissionsController < ApplicationController
   
   def destroy
     @permission = @group.permissions.find(params[:id])
-    @page = @permission.page
+    @page = @permission.permitted
     @permission.delete if @permission
     respond_to do |format|
       format.html { 

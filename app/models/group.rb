@@ -40,7 +40,7 @@ class Group < ActiveRecord::Base
       :select => "groups.*, count(pp.group_id) AS pcount",
       :joins => "INNER JOIN permissions as pp on pp.group_id = groups.id", 
       :conditions => [conditions, *binds],
-      :having => "pcount > 0",    # otherwise attached_to([]) returns all groups
+      :having => "count(pp.group_id) > 0",    # otherwise attached_to([]) returns all groups
       :group => column_names.map { |n| 'groups.' + n }.join(','),
       :readonly => false
     }
