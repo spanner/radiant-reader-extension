@@ -47,7 +47,7 @@ class Reader < ActiveRecord::Base
   named_scope :except, lambda { |readers|
     readers = [readers].flatten
     if readers.any?
-      { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", readers.map(&:id)] }
+      { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", *readers.map(&:id)] }
     else
       { }
     end
@@ -229,7 +229,7 @@ class Reader < ActiveRecord::Base
 private
 
   def email_must_not_be_in_use
-    reader = Reader.find_by_email(self.email)   # the finds will be site-scoped if appropriate
+    reader = Reader.find_by_email(self.email)
     user = User.find_by_email(self.email)
     if user && user != self.user
       errors.add :value, :taken_by_author

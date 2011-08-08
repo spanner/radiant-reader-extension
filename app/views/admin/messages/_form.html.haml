@@ -18,7 +18,9 @@
           = form.label :body, "Message Body"
           = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
-      = render_region :body_bottom, :locals => {:form => form}
+    - formpart.edit_group do
+      - if @message.new_record? && @message.group
+        = f.hidden_field :group_id
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
@@ -28,4 +30,4 @@
       = save_model_button(@message)
       = save_model_and_continue_editing_button(@message)
       or
-      = link_to "cancel", admin_reader_configuration_url
+      = link_to "cancel", admin_messages_url

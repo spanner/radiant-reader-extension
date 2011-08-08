@@ -31,9 +31,9 @@ class Message < ActiveRecord::Base
     filter.filter(body)
   end
 
-  # has to return a named_scope for chainability
+  # has to return a scope for chainability
   def possible_readers
-    groups.any? ? Reader.in_groups(groups) : Reader.scoped({})
+    group ? group.readers : Reader.scoped({})
   end
 
   def undelivered_readers
