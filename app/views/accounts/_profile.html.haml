@@ -19,6 +19,12 @@
             %li
               = t("reader_extension.directory.#{field}") + ': '
               = value
-      - if reader.postal_address?
-        = reader.postal_address.to_html
-
+        - if reader.postal_address?
+          %li
+            %span.indent
+              = t("reader_extension.directory.postal_address") + ': '
+            = reader.postal_address.to_html
+        - if reader == current_reader
+          %li
+            = link_to t("reader_extension.edit_profile"), reader_edit_profile_url, :class => 'edit'
+          

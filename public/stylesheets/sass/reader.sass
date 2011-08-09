@@ -88,6 +88,7 @@ form.friendly
   input.standard
     width: 95%
   span.formnote
+    clear: left
     +small
     color: $mid
   label
@@ -132,12 +133,23 @@ form.friendly
   h3:first-child
     margin-top: 0
 
-address
-  width: 75%
-  border: 1px solid $paler
-  padding: 1em
-  margin: 1em -1em
-  +border-radius(5px)
+#marginalia
+  div.contact
+    border: 1px solid $paler
+    +box-shadow
+    padding: 1em
+    margin: 1em -1em
+    h3
+      margin-bottom: 1em
+    ul
+      margin-bottom: 0
+      li
+        margin-bottom: 0
+        span.indent
+          float: left
+          margin-right: 0.5em
+        address
+          overflow: hidden
   
 a.vcard
   padding-left: 25px
@@ -171,3 +183,34 @@ ul.groups
 
 .cleared
   clear: left
+  
+.message_head
+  
+div#preview
+  float: left
+  width: 80%
+  +box-shadow
+  background-color: white
+  .message_header
+    padding: 10px
+    overflow: hidden
+    background-color: #eee
+    color: #333
+    font-size: 80%
+    line-height: 1.5
+    ul
+      margin: 0
+      padding: 6px 14px
+      list-style-type: none
+      li.subject
+        font-size: 1.6em
+        margin-top: 6px
+      li.mime-version, li.content-type
+        display: none
+  .message_body
+    iframe
+      width: 99%
+      height: 520px
+      margin: 0
+      border: 0
+      overflow: auto
