@@ -1,6 +1,10 @@
 - readers ||= @readers
 
 - if readers.any?
+
+  %h3
+    = t('reader_extension.people').titlecase
+
   - if readers.respond_to?(:previous_page) && readers.previous_page
     = pagination_and_summary_for(readers, t('reader_extension.person'))
 

@@ -253,7 +253,8 @@ en:
     reader_logged_in_as: "You are logged in as %{name}."
     reader_saved: "Reader saved"
     readers: 'People'
-    readers_introduction: "This is a list of everyone who has joined the site. It's only visible to logged-in users."
+    readers_introduction: "This is a list of every member of the site. It's only visible to logged-in users and may only include people who are in the same groups as you."
+    readers_title: "Directory"
     register: "register"
     registration: "registration"
     registration_disallowed: "Sorry. This site does not allow visitors to register"
