@@ -32,12 +32,8 @@ class ReaderActionController < ApplicationController
     render
   end
   
-  def default_welcome_url(reader)
-    if page = reader.find_homepage
-      page.url
-    else
-      reader_url(reader)  #TODO make this interesting
-    end
+  def default_welcome_url(reader=nil)
+    (reader && reader.home_url) || reader_dashboard_url
   end
 
 protected

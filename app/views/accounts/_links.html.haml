@@ -9,4 +9,4 @@
     = link_to t("reader_extension.directory.vcard_link"), readers_url(:format => :vcard), :class => 'vcard'
   - Group.visible_to(current_reader).each do |group|
     %li
-      = link_to_group(group)
+      = link_to_group(group) + t('group')

@@ -42,7 +42,7 @@ class PasswordResetsController < ReaderActionController
       if @reader.save 
         self.current_reader = @reader
         flash[:notice] = t('reader_extension.password_updated_notice')
-        redirect_to dashboard_url
+        redirect_to default_welcome_url(@reader)
       else
         flash[:error] = t('reader_extension.password_mismatch')
         render :action => :edit 

@@ -9,6 +9,7 @@ Radiant.config do |config|
     reader.define 'share_details?', :default => false
     reader.define 'profiles_path', :default => ""
     reader.define 'preferences_path', :default => ""
+    reader.define 'login_to', :default => "dashboard"
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

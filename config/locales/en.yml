@@ -57,9 +57,11 @@ en:
       address: "Message reply-to"
       prefix: "Subject prefix"
       layout: "Email layout"
-  reader: "Reader"
+  reader: "reader"
   readers: "Readers"
+  group: "group"
   groups: "Groups"
+  message: "message"
   messages: "Messages"
   settings: "Settings"
   message_functions:

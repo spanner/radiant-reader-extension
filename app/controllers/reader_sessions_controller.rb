@@ -74,8 +74,4 @@ class ReaderSessionsController < ReaderActionController
     redirect_to reader_login_url
   end
 
-  def default_welcome_url(reader=nil)
-    reader.home_url || dashboard_url
-  end
-
 end
