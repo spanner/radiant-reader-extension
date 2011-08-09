@@ -1,0 +1,14 @@
+- unless @reader.errors.empty?
+  %p.has_error
+    = t('reader_extension.sorry').titlecase
+    = t('reader_extension.form_problem') + '.'
+    = t('reader_extension.affected_fields_highlighted')
+- else
+  %p
+    = t('reader_extension.bold_required')
+    - unless @reader.new_record?
+      - if controller.action_name == 'edit'
+        = t('reader_extension.or_edit_profile', :url => reader_edit_profile_url)
+      - else
+        = t('reader_extension.or_edit_preferences', :url => reader_account_url)
+    

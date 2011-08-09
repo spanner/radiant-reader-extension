@@ -8,21 +8,13 @@
       = t('reader_extension.profile_intro_grouped')
     - else
       = t('reader_extension.profile_intro_private')
-
-- content_for :form do
-  %pre
-    = @reader.errors.full_messages
-  = render :partial => 'profile_form', :locals => {:reader => @reader}
-  %p
-    = standard_gravatar_for(@reader, 'http://gravatar.com/site/login')
-    = link_to t('reader_extension.change_gravatar'), "http://gravatar.com/site/login/"
     
 - content_for :breadcrumbs do 
   = link_to t('reader_extension.home').titlecase, '/'
   &gt;
   = link_to t('reader_extension.readers').titlecase, readers_url
   &gt;
-  = link_to t('reader_extension.you').titlecase, profile_url
+  = link_to t('reader_extension.you').titlecase, reader_profile_url
   &gt;
   = t('reader_extension.edit_profile')
 
@@ -31,4 +23,12 @@
 
 = render :partial => 'shared/standard_reader_parts'
 
-= yield :form
+- content_for :main do
+  / brings in partials _preamble, _profile_form, _gravatar
+  = render_region :main
+
+- content_for :sidebar do
+  / not defined here
+  = render_region :sidebar
+
+= yield :main

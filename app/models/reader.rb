@@ -102,9 +102,12 @@ class Reader < ActiveRecord::Base
     read_attribute(:surname) || name.split(/\s+/).last
   end
 
+  def postal_address?
+    !post_line1.blank? && !post_city.blank?
+  end
+  
   def postal_address
     Snail.new(
-      :name => name,
       :line_1 => post_line1,
       :line_2 => post_line2,
       :city => post_city,

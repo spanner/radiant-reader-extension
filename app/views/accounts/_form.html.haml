@@ -4,15 +4,6 @@
 - form_for reader, :html => {:class => 'friendly'} do |f| 
   %input{:type => :hidden, :name => :authentication_type, :value => :user}
 
-  - unless @reader.errors.empty?
-    %p.has_error
-      = t('reader_extension.sorry').titlecase
-      = t('reader_extension.form_problem') + '.'
-      = t('reader_extension.affected_fields_highlighted')
-  - else
-    %p
-      = t('reader_extension.bold_required')
-
   %p
     = f.label :name, nil, :class => 'required'
     %br
@@ -69,7 +60,6 @@
         = f.label :password, nil, :class => 'optional'
         %span.password
           &bull;&bull;&bull;&bull;&bull;
-        %br
         %span.formnote= link_to t('reader_extension.change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
           
     .new_password.hidden

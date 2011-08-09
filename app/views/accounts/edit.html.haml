@@ -9,7 +9,7 @@
   &gt;
   = link_to t('reader_extension.readers').titlecase, readers_url
   &gt;
-  = link_to t('reader_extension.you').titlecase, profile_url
+  = link_to t('reader_extension.you').titlecase, reader_profile_url
   &gt;
   = t('reader_extension.account_settings')
 
@@ -19,11 +19,11 @@
 = render :partial => 'shared/standard_reader_parts'
 
 - content_for :main do
+  / brings in partials _preamble, _form, _gravatar
   = render_region :main
 
 - content_for :sidebar do
+  / not defined here
   = render_region :sidebar
-    
-
 
 = yield :main

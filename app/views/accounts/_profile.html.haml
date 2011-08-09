@@ -6,24 +6,19 @@
       %p.warning
         = t('reader_extension.you_are_not_shared')
   - else
-    %h3
-      = t('reader_extension.directory.contact')
-    %ul
-      - if email = reader.email
-        %li
-          = t("reader_extension.directory.email") + ': '
-          = email_link email
-
-      - %w{phone mobile}.each do |field|
-        - if value = reader.send(field.to_sym)
+    %div.contact
+      %h3
+        = link_to reader.name, reader_url(reader, :format => :vcard), :class => 'vcard', :title => t('reader_extension.directory.vcard_link')
+      %ul
+        - if email = reader.email
           %li
-            = t("reader_extension.directory.#{field}") + ': '
-            = value
-          
-    = reader.postal_address.to_html
+            = t("reader_extension.directory.email") + ': '
+            = email_link email
+        - %w{phone mobile}.each do |field|
+          - if value = reader.send(field.to_sym)
+            %li
+              = t("reader_extension.directory.#{field}") + ': '
+              = value
+      - if reader.postal_address?
+        = reader.postal_address.to_html
 
-    %p
-      - if reader == current_reader
-        = link_to t('reader_extension.check_vcard'), reader_url(reader, :format => :vcard), :class => 'vcard'
-      - else
-        = link_to t('reader_extension.directory.vcard_link'), reader_url(reader, :format => :vcard), :class => 'vcard'
