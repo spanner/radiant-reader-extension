@@ -88,7 +88,7 @@ class AccountsController < ReaderActionController
     @reader.clear_password = params[:reader][:password] if params[:reader][:password]
     if @reader.save
       flash[:notice] = t('reader_extension.account_updated')
-      redirect_to dashboard_url
+      redirect_to reader_dashboard_url
     else
       render :action => 'edit'
     end
@@ -105,7 +105,7 @@ protected
   end
   
   def restrict_to_self
-    flash[:error] = t("reader_extension.cannot_edit_others") if params[:id] && params[:id] != current_reader.id
+    flash[:error] = t("reader_extension.cannot_edit_others") if params[:id] && params[:id] != current_reader.id.to_s
     @reader = current_reader
   end
   

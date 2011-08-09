@@ -2,7 +2,7 @@ en:
   activerecord:
     attributes:
       reader:
-        description: "Biog"
+        description: "Biog or remarks"
         email: "Email address"
         phone: "Home phone"
         mobile: "Mobile phone"
@@ -147,7 +147,7 @@ en:
     forgotten_password: "Forgotten your password?"
     form_notes:
       account:
-        description: "you can fill this in later. Textile formatting is allowed."
+        description: "This appears at the top of your profile page."
         email: "we will send activation instructions to this address"
         existing_password: "leave blank to keep present password. If changing, at least four characters."
         login: "you can always use your email address instead"
@@ -365,7 +365,8 @@ en:
     optional_phone: "[phone]"
     optional_login: "[login]"
     page_not_public: "The page you have requested is not public. Please log in. If your account has the necessary permission you will be taken straight there."
-
+    your_description: "Your profile text"
+    
   time:
     formats:
       date: "%B %e, %Y"

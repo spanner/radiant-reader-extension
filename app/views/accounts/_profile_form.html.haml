@@ -12,18 +12,6 @@
       %span.formnote= t('reader_extension.form_notes.account.honorific')
 
   %p
-    = f.label :name, nil, :class => 'required'
-    %br
-    = f.text_field :name, :class => 'standard'
-    %span.formnote= t('reader_extension.form_notes.account.name')
-
-  %p
-    = f.label :email, nil, :class => 'required'
-    %br
-    = f.text_field :email, :class => 'standard'
-    %span.formnote= t('reader_extension.form_notes.account.email')
-
-  %p
     = f.label :phone, nil, :class => 'optional'
     %br
     = f.text_field :phone, :class => 'standard'
@@ -41,7 +29,7 @@
     %br
     %span.formnote= t('reader_extension.form_notes.account.post_country')
 
-  - if Radiant::Config['reader.use_postal_organisation?']
+  - if Radiant::Config['reader.postal.use_organisation?']
     %p
       = f.label :post_organisation, nil, :class => 'optional'
       = f.text_field :post_organisation, :class => 'standard'
@@ -63,6 +51,12 @@
     %br
     = f.label :postcode, nil, :class => 'optional'
     = f.text_field :postcode, :class => 'standard'
+
+  %p
+    = f.label :description, nil, :class => 'optional'
+    %br
+    = f.text_area :description, :class => Radiant::Config['forum.toolbar?'] ? 'rte' : 'standard'
+    %span.formnote= t('reader_extension.form_notes.account.description')
 
   %p
     = f.check_box :unshareable, :class => 'reversed'
