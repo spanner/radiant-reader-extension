@@ -45,13 +45,15 @@ class ReaderSessionsController < ReaderActionController
           @reader_session.reader.clear_password = ""                          # we forget the cleartext version on the first successful login
           @reader_session.reader.save(false)
         end
-        format.html {
-          flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
-          redirect_back_or_to default_welcome_url(@reader_session.reader)
-        }
-        format.js { 
-          redirect_back_with_format(:js)
-        }
+        respond_to do |format|
+          format.html {
+            flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
+            redirect_back_or_to default_welcome_url(@reader_session.reader)
+          }
+          format.js { 
+            redirect_back_with_format(:js)
+          }
+        end
       else
         respond_to do |format|
           format.html { render :action => :new }
