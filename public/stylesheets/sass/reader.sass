@@ -151,14 +151,24 @@ form.friendly
         address
           overflow: hidden
   
-a.vcard
-  padding-left: 25px
-  background: transparent url(/images/furniture/vcard_tiny.png) no-repeat 0 3px
-  
-h3.vcard
-  padding-left: 40px
-  background: transparent url(/images/furniture/vcard.png) no-repeat 0 3px
+a.vcard, a.csv
+  padding-left: 12px
+  background: transparent url(/images/furniture/vcard_tiny.png) no-repeat 0 0
+  &:hover
+    background-position: 0 -19px
 
+a.csv
+  background-image: url(/images/furniture/csv_tiny.png)
+
+h2
+  a.vcard, a.csv
+    display: inline-block
+    height: 14px
+    width: 20px
+    text-indent: -100px
+    padding-left: 0
+    margin-right: 4px
+  
 a.mailto
   color: $mid
   

@@ -111,7 +111,7 @@ en:
       one: "(one person)"
       other: "(%{count} people)"
     create_message: "create message"
-    csv_file: "a csv file"
+    csv_file: "CSV data"
     dashboard:
       directory: "Directory"
       edit_profile: "Edit profile"
@@ -133,8 +133,8 @@ en:
       postal_address: "Address"
       link: "Browse members list"
       title: "Directory"
-      csv_link: "Download as CSV file"
-      vcard_link: "Download to your address book"
+      csv_link: "Download CSV data"
+      vcard_link: "Download address book file"
       groups: "Groups"
     dont_fill: "Don't fill this in!"
     download_as: "Download as"
@@ -164,6 +164,7 @@ en:
     groups: "Groups"
     group_filter: "Show only members of the group: "
     group_members: "Group Members"
+    groups_introduction: ""
     hello: "hello"
     honorific: "Title or rank"
     invitation_message: "Invitation message"
@@ -181,6 +182,10 @@ en:
     login_unknown: "Sorry: we don't recognise that combination of username and password."
     logout_message: "You are logged out. Bye!"
     member: "member"
+    member_count:
+      zero: "No members."
+      one: "One member"
+      other: "%{count} members"
     message_delivered: "Message delivered"
     message_preview_introduction: "This is a snapshot of the message that was delivered to you %{date}. If it contains instructions they may now be out of date."
     must_be_empty: "must be empty"
@@ -311,7 +316,7 @@ en:
     update_account: "Save changes"
     create_account: "Register"
     separator: " &raquo; "
-    vcard_file: "address book"
+    vcard_file: "address book file"
     you_are_not_shared: "You have chosen not to share your contact information."
 
     # group

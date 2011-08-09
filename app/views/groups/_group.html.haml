@@ -1,0 +1,13 @@
+.group        
+  %h2
+    = link_to group.name, group_url(group)
+      
+  %p.context
+    = t("reader_extension.member_count", :count => group.readers.count) + '.'
+    = link_to t('reader_extension.directory.vcard_link'), group_url(group, :format => :vcard), :class => 'vcard'
+    = link_to t('reader_extension.directory.csv_link'), group_url(group, :format => :csv), :class => 'csv'
+    
+
+  - if group.description
+    %p
+      = group.description
