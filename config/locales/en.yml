@@ -51,7 +51,7 @@ en:
       layout: "Layout for forms"
       get_profile?: "Ask for profile text"
       public?: "Readers list public"
-      confine_to_groups?: "Show only members of shared groups"
+      directory_visibility: "Access to directory"
     email:
       name: "Message sender"
       address: "Message reply-to"
@@ -253,7 +253,10 @@ en:
     reader_logged_in_as: "You are logged in as %{name}."
     reader_saved: "Reader saved"
     readers: 'People'
-    readers_introduction: "This is a list of every member of the site. It's only visible to logged-in users and may only include people who are in the same groups as you."
+    readers_introduction_public: "Click on a person to see their profile, contact information and other details."
+    readers_introduction_private: "This is a list of every member of the site. It is only visible to logged-in users of the site."
+    readers_introduction_grouped: "This directory shows only people who are in the same groups as you (and it only shows your details to those people)."
+    readers_introduction_none: "This site does not provide a directory of members."
     readers_title: "Directory"
     register: "register"
     registration: "registration"

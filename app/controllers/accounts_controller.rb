@@ -23,7 +23,7 @@ class AccountsController < ReaderActionController
   end
 
   def show
-    @reader = Reader.find(params[:id])
+    @reader = Reader.visible_to(current_reader).find(params[:id])
     respond_to do |format|
       format.html
       format.vcard {

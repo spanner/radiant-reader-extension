@@ -5,7 +5,7 @@ Radiant.config do |config|
     reader.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => false
     reader.define 'get_profile?', :default => true
     reader.define 'public?', :default => false
-    reader.define 'confine_to_groups?', :default => false
+    reader.define 'directory_visibility', :select_from => %w{public private grouped none}, :allow_blank => false, :default => 'private'
     reader.define 'share_details?', :default => false
     reader.define 'profiles_path', :default => ""
     reader.define 'preferences_path', :default => ""

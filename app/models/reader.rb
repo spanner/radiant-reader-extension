@@ -83,10 +83,16 @@ class Reader < ActiveRecord::Base
   end
   
   def self.visible_to(reader=nil)
-    return self.all if Radiant.config['readers.public?']
-    return self.scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
-    return self.in_groups(reader.groups) if Radiant.config['readers.confine_to_groups?']
-    return self.all
+    case Radiant.config['reader.directory_visibility']
+    when 'public'
+      self.all
+    when 'private'
+      self.all if reader
+    when 'grouped'
+      self.in_groups(reader.groups) if reader
+    else
+      self.scoped({:conditions => "1 = 0"})   # nasty! but doesn't break chain
+    end
   end
   
   def visible_to?(reader=nil)

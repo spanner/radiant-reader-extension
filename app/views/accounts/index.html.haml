@@ -1,6 +1,6 @@
 - content_for :introduction do
   %p
-    =t('reader_extension.readers_introduction')
+    =t("reader_extension.readers_introduction_#{Radiant.config['reader.directory_visibility']}")
 
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/'
