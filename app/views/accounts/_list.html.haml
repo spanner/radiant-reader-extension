@@ -1,19 +1,29 @@
 - readers ||= @readers
 
-- if readers.any?
+%h2 
+  = t('reader_extension.people').titlecase
 
+- if readers.any?
   - if readers.respond_to?(:previous_page) && readers.previous_page
     = pagination_and_summary_for(readers, t('reader_extension.person'))
 
-  - if readers.size > 1
-    - cols = 3
-    - columns = readers.in_groups_of((readers.size / cols), false)
+  - if @display == 'gallery'
+    - if readers.size > 1
+      - cols = 3
+      - columns = readers.in_groups_of((readers.size / cols), false)
+    - else
+      - columns = [readers]
+    - columns.each do |column|
+      %div.column
+        = render :partial => 'accounts/mugshot', :collection => column
+
   - else
-    - columns = [readers]
-  - columns.each do |column|
-    %div.column
-      = render :partial => 'accounts/reader', :collection => column
+    %table.readers
+      %tbody
+        = render :partial => 'accounts/reader', :collection => readers
 
   - if readers.respond_to?(:next_page) && readers.next_page
     = pagination_and_summary_for(readers, t('reader_extension.person'))
 
+- else
+  = t('reader_extension.nobody_to_list')

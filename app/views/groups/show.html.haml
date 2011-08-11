@@ -1,4 +1,6 @@
 - content_for :breadhead do
+  = link_to t('reader_extension.readers_title').titlecase, reader_index_url
+  = t('reader_extension.separator')
   = link_to t('reader_extension.groups').titlecase, groups_url
   = t('reader_extension.separator')
 
@@ -21,9 +23,6 @@
     = link_to t("reader_extension.csv_file"), group_url(@group, :format => :csv), :class => 'csv'
     = t('or')
     = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcard'
-
-  %h3
-    = t('reader_extension.group_members')
 
   = render :partial => 'accounts/list', :readers => @readers
 

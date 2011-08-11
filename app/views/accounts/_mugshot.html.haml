@@ -1,0 +1,10 @@
+.reader        
+  %h2
+    = link_to gravatar_for(reader, :size => 128), reader_url(reader), :title => reader.name
+    = link_to reader.name, reader_url(reader)
+    %span.headernote
+      = link_to '&nbsp;', reader_url(reader, :format => :vcard), :class => 'vcard'
+      
+  %p.context
+    = t("reader_extension.joined_on")
+    = l(reader.created_at, :format => :date) + '.'

@@ -1,10 +1,28 @@
-.reader        
-  %h2
-    = link_to standard_gravatar_for(reader), reader_url(reader), {:title => reader.name}
-    = link_to reader.name, reader_url(reader)
-    %span.headernote
-      = link_to '&nbsp;', reader_url(reader, :format => :vcard), :class => 'vcard'
-      
-  %p.context
-    = t("reader_extension.joined_on")
-    = l(reader.created_at, :format => :date) + '.'
+%tr.reader
+  - if reader.unshareable?
+    %td{:colspan => 7}
+      = t("reader_extension.listing_denied")
+  - else
+    %td.gravatar
+      = link_to gravatar_for(reader, {:size => 18}, {:class => 'gravatar'}), reader_url(reader), :title => reader.name
+    %td.name
+      %h3
+        = link_to reader.name, reader_url(reader)
+    %td.email
+      %p
+        = mail_to reader.email, nil, :encode => 'hex', :replace_at => " #{t('reader_extension.at')} "
+
+    - [:phone, :mobile].each do |field|
+      - value = reader.send(field)
+      - unless value.blank?
+        %td{:class => field.to_s}
+          %p
+            = value
+      - else
+        %td.missing
+          %p
+            = t("reader_extension.no_#{field}")
+
+    %td.vcard
+      %p
+        = link_to t('reader_extension.vcard'), reader_url(reader, :format => :vcard), :class => 'vcard'

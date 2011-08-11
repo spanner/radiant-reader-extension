@@ -1,6 +1,8 @@
 - content_for :introduction do
   %p
-    =t("reader_extension.readers_introduction_#{Radiant.config['reader.directory_visibility']}")
+    = t("reader_extension.readers_introduction_#{Radiant.config['reader.directory_visibility']}")
+    - if current_reader && Radiant.config['reader.directory_visibility'] != 'none'
+      = t("reader_extension.readers_introduction_edit", :url => reader_edit_profile_url)
 
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/'

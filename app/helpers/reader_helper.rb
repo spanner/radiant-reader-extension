@@ -7,7 +7,7 @@ module ReaderHelper
   include Admin::RegionsHelper
   
   def standard_gravatar_for(reader=nil, url=nil)
-    size = Radiant::Config['forum.gravatar_size'] || 40
+    size = Radiant::Config['reader.gravatar_size'] || 40
     url ||= reader_url(reader)
     gravatar = gravatar_for(reader, {:size => size}, {:class => 'gravatar offset', :width => size, :height => size})
     content_tag(:div, link_to(gravatar, url), :class => "speaker")

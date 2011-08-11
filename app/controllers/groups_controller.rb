@@ -25,11 +25,11 @@ private
   
   def get_group_or_groups
     @groups = Group.visible_to(current_reader)
-    @group = @groups.find(params[:id]).first if params[:id]
+    @group = Group.find(params[:id]) if params[:id]
   end
 
   def require_group_visibility
-    raise ReaderError::AccessDenied if @group && !@group.visible_to?(current_reader)
+    raise ReaderError::AccessDenied if @group && !@groups.include?(@group)
   end
   
 end
