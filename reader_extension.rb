@@ -50,7 +50,13 @@ class ReaderExtension < Radiant::Extension
 end
 
 module ReaderError
+  class LoginRequired < StandardError
+    def initialize(message = "Login Required"); super end
+  end
+  class ActivationRequired < StandardError
+    def initialize(message = "Activation Required"); super end
+  end
   class AccessDenied < StandardError
-    def initialize(message = "Sorry: you have to log in to see that"); super end
+    def initialize(message = "Access Denied"); super end
   end
 end

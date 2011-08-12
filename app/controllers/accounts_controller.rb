@@ -2,16 +2,16 @@ class AccountsController < ReaderActionController
   helper :reader
   
   before_filter :check_registration_allowed, :only => [:new, :create, :activate]
+  before_filter :no_removing, :only => [:remove, :destroy]
   before_filter :i_am_me, :only => [:show, :edit, :edit_profile]
-  before_filter :require_reader, :except => [:new, :create, :activate]
   before_filter :default_to_self, :only => [:show]
   before_filter :restrict_to_self, :only => [:edit, :edit_profile, :update, :resend_activation]
-  before_filter :no_removing, :only => [:remove, :destroy]
+  before_filter :get_readers_and_groups, :only => [:index, :show]
+  before_filter :require_reader, :except => [:new, :create, :activate]
+  before_filter :require_reader_visibility
   before_filter :ensure_groups_subscribable, :only => [:update, :create]
 
   def index
-    @readers = Reader.visible_to(current_reader)
-    @groups = Group.visible_to(current_reader)
     respond_to do |format|
       format.html {
         render :template => 'readers/index'
@@ -26,7 +26,6 @@ class AccountsController < ReaderActionController
   end
 
   def show
-    @reader = Reader.visible_to(current_reader).find(params[:id])
     respond_to do |format|
       format.html {
         render :template => 'readers/show'
@@ -141,15 +140,24 @@ protected
   
 private
 
+  def get_readers_and_groups
+    @readers = Reader.visible_to(current_reader)
+    @groups = Group.super.visible_to(current_reader)
+    @reader = Reader.find(params[:id]) if params[:id]
+  end
+
+  def require_reader_visibility
+    # more useful than a 404 but perhaps too informative?
+    raise ReaderError::AccessDenied, "You do not have permission to see that person." if @reader && !@reader.visible_to?(current_reader)
+  end
+
   def ensure_groups_subscribable
     if params[:reader] && params[:reader][:group_ids]
       params[:reader][:group_ids].each do |g|
-        raise ActiveRecord::RecordNotFound unless Group.find(g).public?
+        raise ReaderError::AccessDenied, "One of those groups is not public and does not accept subscriptions." unless Group.find(g).public?
       end
     end
     true
-  rescue ActiveRecord::RecordNotFound
-    false
   end
 
 end

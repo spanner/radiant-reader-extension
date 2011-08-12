@@ -1,11 +1,13 @@
 class ReaderActionController < ApplicationController
   include Radiant::Pagination::Controller
+  rescue_from ReaderError::AccessDenied, :with => :access_denied
+  rescue_from ReaderError::LoginRequired, :with => :login_required
+  rescue_from ReaderError::ActivationRequired, :with => :activation_required
 
   helper :reader
   helper_method :current_site, :current_site=, :logged_in?, :logged_in_user?, :logged_in_admin?
   
   no_login_required
-  before_filter :set_site_title
   
   # reader session is normally required for modifying actions
   before_filter :require_reader, :except => [:index, :show]
@@ -38,50 +40,19 @@ class ReaderActionController < ApplicationController
 
 protected
   
-  # context-setters
-
-  def set_site_title
-    if defined? Site && current_site
-      @site_title = current_site.name
-      @short_site_title = current_site.abbreviation || @site_title
-      @site_url = current_site.base_domain
-    else
-      @site_title = Radiant::Config['site.title']
-      @short_site_title = Radiant::Config['site.abbreviation'] || @site_title
-      @site_url = request.host
-    end
-  end
-
+  # basic action requirements
+  
   def require_reader
-    unless set_reader     # set_reader is in ControllerExtension and sets Reader.current while checking for current_reader
+    unless set_reader     # set_reader is in ControllerExtension and sets Reader.current while checking authentication
       store_location
-      respond_to do |format|
-        format.html {
-          flash[:explanation] = t('reader_extension.reader_required')
-          flash[:notice] = t('reader_extension.please_log_in')
-          redirect_to reader_login_url 
-        }
-        format.js { 
-          @inline = true
-          render :partial => 'reader_sessions/login_form' 
-        }
-      end
+      raise ReaderError::LoginRequired, t('reader_extension.please_log_in')
       false
     end
   end
   
   def require_activated_reader
     unless current_reader && current_reader.activated?
-      respond_to do |format|
-        format.html { 
-          flash[:explanation] = t('reader_extension.activation_required')
-          redirect_to reader_activation_url 
-        }
-        format.js { 
-          @inline = true
-          render :partial => 'reader_activations/activation_required' 
-        }
-      end
+      raise ReaderError::ActivationRequired, t('reader_extension.activation_required')
       false
     end
   end
@@ -95,11 +66,48 @@ protected
     end
   end
   
-  def generate_csv(readers=[])
-    columns = %w{forename surname email phone mobile postal_address}
-    table = FasterCSV.generate do |csv|
-      csv << columns.map { |f| t("activerecord.attributes.reader.#{f}") }
-      readers.each { |r| csv << columns.map{ |f| r.send(f.to_sym) } }
+  # exception handling
+  
+  def login_required(e)
+    @message = e.message
+    respond_to do |format|
+      format.html {
+        flash[:explanation] = t('reader_extension.reader_required')
+        flash[:notice] = e.message
+        redirect_to reader_login_url 
+      }
+      format.js { 
+        @inline = true
+        render :partial => 'reader_sessions/login_form'
+      }
+    end
+  end
+  
+  def activation_required(e)
+    @message = e.message
+    respond_to do |format|
+      format.html { 
+        flash[:explanation] = t('reader_extension.activation_required')
+        redirect_to reader_activation_url 
+      }
+      format.js { 
+        @inline = true
+        render :partial => 'reader_activations/activation_required' 
+      }
+    end
+  end
+  
+  def access_denied(e)
+    @message = e.message
+    respond_to do |format|
+      format.html { 
+        flash[:explanation] = t('reader_extension.access_denied')
+        flash[:notice] = e.message
+        render :template => 'shared/not_allowed' 
+      }
+      format.js { 
+        render :text => @message, :status => 403
+      }
     end
   end
   
