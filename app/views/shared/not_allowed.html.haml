@@ -1,0 +1,16 @@
+- content_for :title do
+  = t('reader_extension.access_denied')
+
+= render :partial => 'shared/standard_reader_parts'
+
+- content_for :main do
+  %p
+    = t('reader_extension.explain_access_error')
+
+  %p.exception
+    = @message
+
+  %p
+    = t('reader_extension.mistaken_access_error')
+
+= yield :main
