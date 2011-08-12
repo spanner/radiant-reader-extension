@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
 
-  acts_as_tree :order => 'name ASC'
+  acts_as_nested_set
   default_scope :order => 'name'
 
   belongs_to :created_by, :class_name => 'User'
@@ -17,11 +17,11 @@ class Group < ActiveRecord::Base
   validates_presence_of :name, :slug, :allow_blank => false
   validates_uniqueness_of :name, :slug
   
+  named_scope :any
+  named_scope :none, { :conditions => "1 = 0" }   # nasty! but doesn't break chains
   named_scope :with_home_page, { :conditions => "homepage_id IS NOT NULL", :include => :homepage }
   named_scope :subscribable, { :conditions => "public = 1" }
   named_scope :unsubscribable, { :conditions => "public = 0" }
-  named_scope :super, { :conditions => "parent_id IS NULL", :include => :children }
-  named_scope :sub, { :conditions => "parent_id IS NOT NULL", :include => :parent }
   
   named_scope :from_list, lambda { |ids|
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
@@ -47,12 +47,22 @@ class Group < ActiveRecord::Base
       :readonly => false
     }
   }
-
+  
   def self.visible_to(reader=nil)
-    return all if Radiant.config['readers.public?']
-    return scoped({:conditions => "1 = 0"}) unless reader   # nasty but chainable
-    return containing(reader) if Radiant.config['readers.confine_to_groups?']
-    return all
+    case Radiant.config['reader.directory_visibility']
+    when 'public'
+      self.all
+    when 'private'
+      reader ? self.all : self.none
+    when 'grouped'
+      reader ? reader.all_groups : self.none
+    else
+      self.none
+    end
+  end
+  
+  def self.family_of
+    
   end
   
   def visible_to?(reader=nil)

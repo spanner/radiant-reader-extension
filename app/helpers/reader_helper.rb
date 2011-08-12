@@ -103,7 +103,7 @@ EOM
   def choose_page(object, field, select_options={})
     root = Page.respond_to?(:homepage) ? Page.homepage : Page.find_by_parent_id(nil)
     options = page_option_branch(root)
-    options.unshift ['<none>', nil]
+    options.unshift [t("reader_extension.none_option"), nil]
     select object, field, options, select_options
   end
 
@@ -140,6 +140,10 @@ EOM
   
   def country_options_for_select(selected = nil, default_selected = Snail.home_country)
     usps_country_options_for_select(selected, default_selected)
+  end
+  
+  def parent_group_options_for_select(group=nil)
+    nested_set_options(Group, group) {|g| "#{'-' * g.level} #{g.name}" }.unshift([t("reader_extension.none_option"), nil])
   end
   
   def email_link(address)

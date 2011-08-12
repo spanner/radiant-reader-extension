@@ -7,34 +7,8 @@
     %thead
       = render :partial => 'list_head'
     %tbody
-      - @groups.each do |group|
-        %tr
-          - render_region :tbody do |tbody|
-            - tbody.name_cell do
-              %td.name
-                %p
-                  = link_to group.name, admin_group_url(group)
-                  %br
-                  %span.notes
-                    = group.description
-            - tbody.home_cell do
-              %td.home
-                - if group.homepage
-                  = link_to group.homepage.title, edit_admin_page_url(group.homepage)
-                - else
-                  = t('reader_extension.none')
-            - tbody.members_cell do
-              %td.members
-                = group.readers.count
-            - tbody.pages_cell do
-              %td.pages
-                = group.pages.count
-            - tbody.modify_cell do
-              %td.actions
-                = link_to_unless_current image('plus') + ' ' + t('reader_extension.add_members'), new_admin_group_group_invitation_url(group), :class => 'action'
-                = link_to_unless_current image('delta') + ' ' + t('reader_extension.edit_group'), edit_admin_group_url(group), :class => 'action'
-                = link_to_unless_current image('minus') + ' ' + t('reader_extension.delete_group'), admin_group_url(group), :method => 'delete', :confirm => t("reader_extension.really_delete_group", :name => group.name), :class => 'action'
-        
+      = render :partial => "group", :collection => @groups, :locals => {:level => 0}
+
 - render_region :bottom do |bottom|
   - bottom.buttons do
     #actions

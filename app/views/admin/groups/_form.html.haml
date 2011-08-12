@@ -8,12 +8,15 @@
         #group
           %p.title
             = f.label :name
-            = f.text_field 'name', :maxlength => 100, :class => "textbox"
+            = f.text_field :name, :maxlength => 100, :class => "textbox"
+          %p.parent
+            = f.label :parent_id
+            = f.select :parent_id, parent_group_options_for_select(@group)
           %p.description
             = f.label :description
-            = f.text_area 'description'
+            = f.text_area :description
           %p.homepage
-            = f.label :homepage_id, "Group home page:"
+            = f.label :homepage_id
             = choose_page 'group', 'homepage_id', {:selected =>@group.homepage_id}
 
       - form.edit_timestamp do
@@ -23,4 +26,4 @@
           = save_model_button @group
           = save_model_and_continue_editing_button @group
           or
-          = link_to "Cancel", admin_groups_url
+          = link_to t("cancel"), admin_groups_url

@@ -7,4 +7,17 @@ class Admin::GroupsController < Admin::ResourceController
   def show
     
   end
+  
+  def load_models
+    self.models = paginated? ? model_class.roots.paginate(pagination_parameters) : model_class.roots.all
+  end
+  
+  def load_model
+    self.model = if params[:id]
+      model_class.find(params[:id])
+    else
+      model_class.new(:parent_id => params[:parent_id])
+    end
+  end
+  
 end

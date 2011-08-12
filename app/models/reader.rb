@@ -41,6 +41,7 @@ class Reader < ActiveRecord::Base
 
   default_scope :order => 'name ASC'
   named_scope :any
+  named_scope :none, { :conditions => "1 = 0" }   # nasty! but doesn't break chains
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
   named_scope :imported, :conditions => "old_id IS NOT NULL"
@@ -87,16 +88,25 @@ class Reader < ActiveRecord::Base
     when 'public'
       self.all
     when 'private'
-      self.all if reader
+      reader ? self.all : self.none
     when 'grouped'
-      self.in_groups(reader.groups) if reader
+      reader ? self.in_groups(reader.all_groups) : self.none
     else
-      self.scoped({:conditions => "1 = 0"})   # nasty! but doesn't break chain
+      self.none
     end
   end
   
   def visible_to?(reader=nil)
     self.class.visible_to(reader).include? self
+  end
+  
+  # returns a useful list of all the groups related to groups that this person is in.
+  # for most permissions purposes, that's the set of visible groups
+  # individual groups can be declared private if the members of related groups should not be allowed to see them.
+  # can return scope or list.
+  #
+  def all_groups
+    Group.with_permitted_relatives(self.groups)
   end
 
   # not very i18nal, this
