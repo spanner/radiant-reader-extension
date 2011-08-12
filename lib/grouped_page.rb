@@ -20,9 +20,16 @@ module GroupedPage
       permitted_groups_without_inheritance + inherited_groups
     end
 
-    # this is regrettably expensive
+    def restricted?
+      self.permitted_groups.any?
+    end
+    
+    # this has been squashed down to two queries: 
+    # groups attached here and groups attached to any ancestor
+    # but it is still regrettably expensive.
+    # once a page is cached, it is not called again
     def cache?
-      self.permitted_groups.empty?
+      !restricted?
     end        
 
     def has_inherited_group?(group)

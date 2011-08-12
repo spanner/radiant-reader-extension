@@ -3,6 +3,10 @@ module ControllerExtensions    # for inclusion into ApplicationController
   def self.included(base)
     
     base.class_eval do
+      rescue_from ReaderError::AccessDenied, :with => :access_denied
+      rescue_from ReaderError::LoginRequired, :with => :login_required
+      rescue_from ReaderError::ActivationRequired, :with => :activation_required
+
       before_filter :set_reader_for_user
       before_filter :set_reader
       helper_method :current_reader_session, :current_reader, :current_reader=
@@ -67,6 +71,51 @@ module ControllerExtensions    # for inclusion into ApplicationController
       previous_format = File.extname(address)
       raise StandardError, "Can't add format to an already formatted url: #{address}" unless previous_format.blank? || previous_format == format
       redirect_to address + ".#{format}"    # nasty! but necessary for inline login.
+    end
+
+    # reader-permission exception handling
+
+    def login_required(e)
+      @message = e.message
+      respond_to do |format|
+        format.html {
+          flash[:explanation] = t('reader_extension.reader_required')
+          flash[:notice] = e.message
+          redirect_to reader_login_url 
+        }
+        format.js { 
+          @inline = true
+          render :partial => 'reader_sessions/login_form'
+        }
+      end
+    end
+
+    def activation_required(e)
+      @message = e.message
+      respond_to do |format|
+        format.html { 
+          flash[:explanation] = t('reader_extension.activation_required')
+          redirect_to reader_activation_url 
+        }
+        format.js { 
+          @inline = true
+          render :partial => 'reader_activations/activation_required' 
+        }
+      end
+    end
+
+    def access_denied(e)
+      @message = e.message
+      respond_to do |format|
+        format.html { 
+          flash[:explanation] = t('reader_extension.access_denied')
+          flash[:notice] = e.message
+          render :template => 'shared/not_allowed' 
+        }
+        format.js { 
+          render :text => @message, :status => 403
+        }
+      end
     end
 
   end
