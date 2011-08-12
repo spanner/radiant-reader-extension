@@ -3,6 +3,9 @@
   = t('reader_extension.separator')
   = link_to t('reader_extension.groups').titlecase, groups_url
   = t('reader_extension.separator')
+  - if @group.parent
+    = link_to @group.parent.name, group_url(@group.parent)
+    = t('reader_extension.separator')
 
 - content_for :title do
   = @group.name
@@ -24,7 +27,12 @@
     = t('or')
     = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcard'
 
-  = render :partial => 'readers/list', :readers => @readers
+  - if @group.children.any?
+    %h2
+      = t('reader_extension.subgroups', :name => @group.name)
+    = render :partial => 'groups/group', :collection => @group.children
+
+  = render :partial => 'readers/people', :readers => @readers
 
 = yield :main
 

@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
 
-  has_site if respond_to? :has_site
+  acts_as_tree :order => 'name ASC'
   default_scope :order => 'name'
 
   belongs_to :created_by, :class_name => 'User'
@@ -20,7 +20,9 @@ class Group < ActiveRecord::Base
   named_scope :with_home_page, { :conditions => "homepage_id IS NOT NULL", :include => :homepage }
   named_scope :subscribable, { :conditions => "public = 1" }
   named_scope :unsubscribable, { :conditions => "public = 0" }
-
+  named_scope :super, { :conditions => "parent_id IS NULL", :include => :children }
+  named_scope :sub, { :conditions => "parent_id IS NOT NULL", :include => :parent }
+  
   named_scope :from_list, lambda { |ids|
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
   }

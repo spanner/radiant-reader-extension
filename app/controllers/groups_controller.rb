@@ -16,7 +16,7 @@ class GroupsController < ReaderActionController
         send_data generate_csv(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "#{@group.filename}.csv"
       }
       format.vcard {
-        send_data @readers.map(&:vcard).join("\n"), :filename => "#{@group.filename}.vcf"	
+        send_data generate_vcard(@readers), :filename => "#{@group.filename}.vcf"	
       }
     end
   end
@@ -24,12 +24,14 @@ class GroupsController < ReaderActionController
 private
   
   def get_group_or_groups
-    @groups = Group.visible_to(current_reader)
+    @groups = Group.super.visible_to(current_reader)
     @group = Group.find(params[:id]) if params[:id]
   end
 
   def require_group_visibility
-    raise ReaderError::AccessDenied if @group && !@groups.include?(@group)
+     if @group && !@groups.include?(@group)
+       raise ReaderError::AccessDenied, "That group is not public and you are not in it."
+     end
   end
   
 end
