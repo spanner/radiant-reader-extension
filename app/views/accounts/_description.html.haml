@@ -1,7 +1,0 @@
-- reader ||= @reader
-
-- unless reader.description.blank?
-  - if reader == current_reader
-    %h3
-      = t('reader_extension.your_description')
-    = clean_html(reader.description)

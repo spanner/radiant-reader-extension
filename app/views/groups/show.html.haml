@@ -24,7 +24,7 @@
     = t('or')
     = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcard'
 
-  = render :partial => 'accounts/list', :readers => @readers
+  = render :partial => 'readers/list', :readers => @readers
 
 = yield :main
 

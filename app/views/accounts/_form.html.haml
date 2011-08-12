@@ -81,7 +81,7 @@
     %br
     %span.formnote= t('reader_extension.form_notes.account.description')
 
-  = render :partial => 'memberships'
+  = render :partial => 'choose_memberships'
 
   %p
     = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")

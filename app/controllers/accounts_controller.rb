@@ -11,8 +11,11 @@ class AccountsController < ReaderActionController
 
   def index
     @readers = Reader.visible_to(current_reader)
+    @groups = Group.visible_to(current_reader)
     respond_to do |format|
-      format.html {}
+      format.html {
+        render :template => 'readers/index'
+      }
       format.csv {
         send_data generate_csv(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "everyone.csv"
       }
@@ -25,7 +28,9 @@ class AccountsController < ReaderActionController
   def show
     @reader = Reader.visible_to(current_reader).find(params[:id])
     respond_to do |format|
-      format.html
+      format.html {
+        render :template => 'readers/show'
+      }
       format.vcard {
         send_data @reader.vcard.to_s, :filename => "#{@reader.filename}.vcf"	
       }

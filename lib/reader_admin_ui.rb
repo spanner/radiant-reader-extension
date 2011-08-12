@@ -107,11 +107,11 @@ module ReaderAdminUI
           dashboard.sidebar.concat %w{dashboard/profile dashboard/messages dashboard/directory}
         end
         account.index = Radiant::AdminUI::RegionSet.new do |index|
-          index.main.concat %w{groups/all list}
+          index.main.concat %w{readers/groups readers/people}
         end
         account.show = Radiant::AdminUI::RegionSet.new do |show|
-          show.main.concat %w{groups description}
-          show.sidebar.concat %w{profile}
+          show.main.concat %w{readers/memberships readers/description}
+          show.sidebar.concat %w{readers/profile}
         end
         account.edit = Radiant::AdminUI::RegionSet.new do |edit|
           edit.main.concat %w{preamble form gravatar}

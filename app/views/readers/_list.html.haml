@@ -1,7 +1,4 @@
-- readers ||= @readers
-
-%h2 
-  = t('reader_extension.people').titlecase
+- readers ||= []
 
 - if readers.any?
   - if readers.respond_to?(:previous_page) && readers.previous_page
@@ -15,15 +12,12 @@
       - columns = [readers]
     - columns.each do |column|
       %div.column
-        = render :partial => 'accounts/mugshot', :collection => column
+        = render :partial => 'readers/mugshot', :collection => column
 
   - else
     %table.readers
       %tbody
-        = render :partial => 'accounts/reader', :collection => readers
+        = render :partial => 'readers/reader', :collection => readers
 
   - if readers.respond_to?(:next_page) && readers.next_page
     = pagination_and_summary_for(readers, t('reader_extension.person'))
-
-- else
-  = t('reader_extension.nobody_to_list')

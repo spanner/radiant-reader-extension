@@ -312,7 +312,7 @@ en:
     reader_saved: "Reader saved"
     readers: 'People'
     readers_introduction_edit: 'You can update your listing by <a href="%{url}">editing your profile</a>.'
-    readers_introduction_grouped: "This is a private, group-based directory. The list below shows only people who are in the same groups as you."
+    readers_introduction_grouped: "This is a private directory and will only show people who are in the same groups as you."
     readers_introduction_none: "This site does not provide a directory of members."
     readers_introduction_private: "This is a private directory visible only to logged-in users of the site."
     readers_introduction_public: "Click on a person to see their profile, contact information and other details."
