@@ -1,11 +1,10 @@
 class Group < ActiveRecord::Base
 
   acts_as_nested_set
-  default_scope :order => 'name'
-
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   belongs_to :homepage, :class_name => 'Page'
+  belongs_to :root_group, :class_name => 'Group'   # stored to allow whole-tree and many-tree retrievals in one step
 
   has_many :messages
   has_many :permissions
@@ -13,6 +12,7 @@ class Group < ActiveRecord::Base
   has_many :memberships
   has_many :readers, :through => :memberships, :uniq => true
   
+  before_save :set_root
   before_validation :set_slug
   validates_presence_of :name, :slug, :allow_blank => false
   validates_uniqueness_of :name, :slug
@@ -23,6 +23,10 @@ class Group < ActiveRecord::Base
   named_scope :subscribable, { :conditions => "public = 1" }
   named_scope :unsubscribable, { :conditions => "public = 0" }
   
+  named_scope :from_roots, lambda { |ids|
+    { :conditions => ["groups.root_group_id IN (#{ids.map{"?"}.join(',')})", *ids] }
+  }
+
   named_scope :from_list, lambda { |ids|
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
   }
@@ -61,14 +65,15 @@ class Group < ActiveRecord::Base
     end
   end
   
-  def self.family_of
-    
-  end
-  
   def visible_to?(reader=nil)
     self.class.visible_to(reader).include? self
   end
 
+  def tree
+    # can't do this in one step, but we can return a scope
+    self.root.self_and_descendants
+  end
+  
   def url
     homepage.url if homepage
   end
@@ -114,6 +119,11 @@ private
 
   def set_slug
     self.slug ||= self.name.slugify.to_s
+  end
+  
+  def set_root
+    # we assume that parent is already in the database
+    self.root_group = self.parent ? self.parent.root_group : self
   end
 
 end

@@ -100,15 +100,15 @@ class Reader < ActiveRecord::Base
     self.class.visible_to(reader).include? self
   end
   
-  # returns a useful list of all the groups related to groups that this person is in.
+  # returns a useful list of all the groups related to any group that this person is in.
   # for most permissions purposes, that's the set of visible groups
   # individual groups can be declared private if the members of related groups should not be allowed to see them.
   # can return scope or list.
   #
   def all_groups
-    Group.with_permitted_relatives(self.groups)
+    Group.from_roots(self.groups.map(&:root_group_id))
   end
-
+  
   # not very i18nal, this
   def forename
     read_attribute(:forename) || name.split(/\s+/).first

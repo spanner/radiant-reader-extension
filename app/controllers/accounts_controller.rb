@@ -142,7 +142,7 @@ private
 
   def get_readers_and_groups
     @readers = Reader.visible_to(current_reader)
-    @groups = Group.super.visible_to(current_reader)
+    @groups = Group.roots.visible_to(current_reader)
     @reader = Reader.find(params[:id]) if params[:id]
   end
 

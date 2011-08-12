@@ -24,12 +24,12 @@ class GroupsController < ReaderActionController
 private
   
   def get_group_or_groups
-    @groups = Group.super.visible_to(current_reader)
+    @groups = Group.roots.visible_to(current_reader)
     @group = Group.find(params[:id]) if params[:id]
   end
 
   def require_group_visibility
-     if @group && !@groups.include?(@group)
+     if @group && !@group.visible_to?(current_reader)    # nb. @groups is a smaller set
        raise ReaderError::AccessDenied, "That group is not public and you are not in it."
      end
   end
