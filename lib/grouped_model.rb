@@ -1,14 +1,36 @@
 module GroupedModel
+  
+  # Grouped Models are those that can be assigned to one or more groups, and so made invisible to any reader 
+  # who is not a member of one of those groups. As standard this is applied to pages and messages.
+  # To group-limit another class:
+  #
+  # class Widget < ActiveRecord::Base
+  #   has_groups
+  #   ...
+  #
+  # This will define several class and instance methods and some scopes, most usefully:
+  #
+  # Widget#groups               -> groups association can << and +/- in the usual ways
+  # Group#widgets               -> a scope, not an association
+  # Widget#visible_to?(reader)  -> boolean
+  # Widget.visible_to(reader)   -> list of visible widgets (as scope)
+  # Widget.belonging_to(group)  -> list of widgets
+  #
+  # The situation is more complex than it seems because of polymorphy and group-inheritance but that should all be taken care of for you.
+  #
   def self.included(base)
     base.extend ClassMethods
   end
 
   module ClassMethods
+    # Returns true if group relations have been established in this model.
     def has_groups?
       false
     end
     alias :has_group? :has_groups?
     
+    # Sets up group relations and scopes in this model. No extra columns are required in the model table.
+    #
     def has_groups(options={})
       return if has_groups?
       
@@ -70,11 +92,12 @@ module GroupedModel
         end
       end
       
-      named_scope :belonging_to, lambda { |group| 
+      named_scope :belonging_to, lambda { |group|
+        group_ids = group.groups_conferring_permission.map(&:id)
         {
           :joins => "INNER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
           :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
-          :conditions => ["pp.group_id = ?", group.id],
+          :conditions => ["pp.group_id IN (#{ids.map{"?"}.join(',')})", *group_ids],
           :readonly => false
         }
       }
@@ -85,13 +108,16 @@ module GroupedModel
 
   module GroupedInstanceMethods
 
-    # in GroupedPage this is chained to include inherited groups
+    # The list of groups that is allowed to see this object. This will include the groups directly
+    # associated and their descendant subgroups.
+    #
     def permitted_groups
-      groups
+      # in GroupedPage this is chained to include groups inherited from ancestor pages
+      # while here groups_conferring_permission provides inheritance from ancester groups
+      groups.map(&:groups_conferring_permission).flatten.uniq
     end
 
     def visible_to?(reader)
-      Rails.logger.warn "grouped_model#visible_to?"
       return true if self.permitted_groups.empty?
       return false if reader.nil?
       return true if reader.is_admin?

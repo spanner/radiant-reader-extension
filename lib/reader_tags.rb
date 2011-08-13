@@ -26,7 +26,7 @@ module ReaderTags
     
     Please note that if you use this tag on a normal radiant page, all registered readers
     will be displayed, regardless of group-based or other access limitations. You really
-    want to keep this tag for ReaderPages and GroupPages.
+    want to keep this tag for ReaderPages and (soon) GroupPages.
     
     *Usage:* 
     <pre><code><r:readers:each [limit=0] [offset=0] [order="asc|desc"] [by="position|title|..."] [extensions="png|pdf|doc"]>...</r:readers:each></code></pre>

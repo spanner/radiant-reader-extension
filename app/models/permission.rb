@@ -6,6 +6,10 @@ class Permission < ActiveRecord::Base
   named_scope :for, lambda { |object|
     { :conditions => {:permitted_id => object.id, :permitted_type => object.class.name.to_s} }
   }
+  
+  named_scope :to_groups, lambda { |ids|
+    { :conditions => ["permissions.group_id IN (#{ids.map{"?"}.join(',')})", *ids] }
+  }
 
 end
 

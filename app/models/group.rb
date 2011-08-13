@@ -70,8 +70,24 @@ class Group < ActiveRecord::Base
   end
 
   def tree
-    # can't do this in one step, but we can return a scope
+    # can't quite do this in one step, but we can return a scope
     self.root.self_and_descendants
+  end
+  
+  def members
+    Reader.in_groups(groups_conferring_membership)
+  end
+  
+  def inherited_permissions
+    Permission.to_groups(groups_conferring_permission)
+  end
+  
+  def groups_conferring_membership
+    self_and_descendants
+  end
+
+  def groups_conferring_permission
+    self_and_ancestors
   end
   
   def url
@@ -111,7 +127,7 @@ class Group < ActiveRecord::Base
   def self.define_retrieval_methods(classname)
     type_scope = "for_#{classname.downcase.pluralize}".intern
     Permission.send :named_scope, type_scope, :conditions => { :permitted_type => classname }
-    define_method("#{classname.downcase}_permissions") { self.permissions.send type_scope }
+    define_method("#{classname.downcase}_permissions") { self.inherited_permissions.send type_scope }
     define_method("#{classname.downcase.pluralize}") { self.send("#{classname.to_s.downcase}_permissions".intern).map(&:permitted) }
   end
   

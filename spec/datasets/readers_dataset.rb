@@ -19,6 +19,11 @@ class ReadersDataset < Dataset::Base
     create_group "Homed", :homepage_id => page_id(:parent)
     create_group "Elsewhere", :site_id => site_id(:elsewhere) if defined? Site
 
+    create_group "Supergroup" do
+      create_group "Subgroup" do
+        create_group "Subsubgroup"
+        create_group "Anothersubsubgroup"
+
     create_message "Normal"
     create_message "Grouped", :function_id => "group_welcome"
     create_message "Filtered", :filter_id => 'Textile', :body => 'this is a *filtered* message'
@@ -50,9 +55,11 @@ From <r:sender:name />
     admit_to_group :homed, [readers(:normal)] 
     admit_to_group :normal, [readers(:normal), readers(:inactive)] 
     admit_to_group :special, [readers(:another)] 
+    admit_to_group :subgroup, [readers(:normal), readers(:another)] 
     restrict_to_group :homed, [pages(:parent), pages(:childless)]
     restrict_to_group :special, [pages(:news)]
     restrict_to_group :normal, [messages(:grouped)]
+    restrict_to_group :subgroup, [pages(:child)] 
   end
   
   helpers do
@@ -61,7 +68,13 @@ From <r:sender:name />
     end
     
     def create_group(name, attributes={})
-      group = create_record Group, name.symbolize, default_group_attributes(name).merge(attributes)
+      symbol = name.symbolize
+      group = create_record Group, symbol, default_group_attributes(name).merge(attributes)
+      if block_given?
+        @group_id = group_id(symbol)
+        yield
+        @group_id = nil
+      end
     end
 
     def create_message(subject, attributes={})
@@ -95,6 +108,7 @@ From <r:sender:name />
         :slug => name.downcase,
         :description => "#{name} group"
       }
+      attributes[:parent_id] ||= @group_id if @group_id
       attributes[:site_id] ||= site_id(:test) if defined? Site
       attributes
     end
