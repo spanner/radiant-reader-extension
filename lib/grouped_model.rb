@@ -98,9 +98,13 @@ module GroupedModel
         {
           :joins => "INNER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
           :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
-          :conditions => ["pp.group_id IN (#{ids.map{"?"}.join(',')})", *group_ids],
+          :conditions => ["pp.group_id IN (#{group_ids.map{"?"}.join(',')})", *group_ids],
           :readonly => false
         }
+      }
+      
+      named_scope :find_these, lambda { |ids|
+        { :conditions => ["#{self.table_name}.id IN (#{ids.map{"?"}.join(',')})", *ids] }
       }
             
     end
