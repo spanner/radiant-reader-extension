@@ -7,11 +7,21 @@
       %tr
         - render_region :thead do |thead|
           - thead.subject_header do
-            %th.message Subject
+            %th.message
+              = t('reader_extension.subject')
+          - thead.function_header do
+            %th.message_function 
+              = t('reader_extension.function')
+          - thead.groups_header do
+            %th.message_groups 
+              = t('reader_extension.groups')
           - thead.sent_header do
-            %th.message_sent Delivery status
+            %th.message_sent
+              = t('reader_extension.delivery_status')
           - thead.modify_header do
-            %th.modify Modify
+            %th.modify 
+              = t('modify')
+            
     %tbody
       - @messages.each do |message|
         %tr
@@ -19,14 +29,14 @@
             - tbody.subject_cell do
               %td.name
                 = link_to message.subject, admin_message_url(message), :class => message.has_function? ? "functional" : "normal"
-                %span.function
-                  - if message.administrative?
-                    = t("message_functions.#{message.function}")
-                  - else
-                    = t("message_functions.ad_hoc")
-                  - if message.group
-                    = t('reader_extension.for')
-                    = link_to message.group.name, admin_group_url(message.group)
+            - tbody.function_cell do
+              %td.message_function
+                - if message.administrative?
+                  = t("message_functions.#{message.function}")
+            - tbody.groups_cell do
+              %td.message_groups
+                - if message.groups.any?
+                  = message.groups.map(&:name).to_sentence
 
             - tbody.sent_cell do
               %td.message_sent

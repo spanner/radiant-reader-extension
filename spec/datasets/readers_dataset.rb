@@ -23,6 +23,8 @@ class ReadersDataset < Dataset::Base
       create_group "Subgroup" do
         create_group "Subsubgroup"
         create_group "Anothersubsubgroup"
+      end
+    end
 
     create_message "Normal"
     create_message "Grouped", :function_id => "group_welcome"

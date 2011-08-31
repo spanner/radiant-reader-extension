@@ -10,7 +10,7 @@ module ReaderHelper
     size = Radiant::Config['reader.gravatar_size'] || 40
     url ||= reader_url(reader)
     gravatar = gravatar_for(reader, {:size => size}, {:class => 'gravatar offset', :width => size, :height => size})
-    content_tag(:div, link_to(gravatar, url), :class => "speaker")
+    content_tag(:div, link_to(gravatar, url), :class => "speaker", :width => size, :height => size)
   end
 
   def gravatar_for(reader=nil, gravatar_options={}, img_options ={})
@@ -140,6 +140,10 @@ EOM
   
   def country_options_for_select(selected = nil, default_selected = Snail.home_country)
     usps_country_options_for_select(selected, default_selected)
+  end
+  
+  def group_options_for_select
+    nested_set_options(Group) {|g| "#{'-' * g.level} #{g.name}" }.unshift([t("reader_extension.any_option"), nil])
   end
   
   def parent_group_options_for_select(group=nil)

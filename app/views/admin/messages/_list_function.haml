@@ -1,7 +1,6 @@
 %span.function
   - if message.administrative?
     = message.function.description
-    - if message.group
+    - if message.groups.any?
       = t('reader_extension.for')
-  - if message.group
-    = link_to message.group.name, admin_group_url(message.group)
+  = message.groups.collect { |group| link_to message.group.name, admin_group_url(message.group) }.join(', ')

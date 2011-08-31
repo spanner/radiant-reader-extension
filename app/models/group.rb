@@ -1,6 +1,7 @@
 class Group < ActiveRecord::Base
 
   acts_as_nested_set
+  belongs_to :leader, :class_name => 'Reader'
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   belongs_to :homepage, :class_name => 'Page'

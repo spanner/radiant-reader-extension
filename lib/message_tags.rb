@@ -77,10 +77,30 @@ module MessageTags
 
   desc %{
     Only for use in email messages. Displays the preferences url of the reader currently being emailed.
-    <pre><code><r:recipient:url /></code></pre>
+    <pre><code><r:recipient:edit_preferences_url /></code></pre>
   }
-  tag "recipient:edit_url" do |tag|
-    edit_reader_url(tag.locals.recipient, :host => @mailer_vars[:@host])
+  tag "recipient:edit_preferences_url" do |tag|
+    
+    Rails.logger.warn "and the :host argument will be #{@mailer_vars[:@host]}"
+    Rails.logger.warn "giving us #{reader_account_url(:host => @mailer_vars[:@host])}"
+    
+    reader_account_url(:host => @mailer_vars[:@host])
+  end
+
+  desc %{
+    Please replace your old r:recipient:edit_url tags with either `r:recipient:edit_profile_url` or `r:recipient:edit_preferences_url`.
+    <pre><code><r:recipient:edit_url /></code></pre>
+  }
+  deprecated_tag "recipient:edit_url" do |tag|
+    reader_account_url(:host => @mailer_vars[:@host])
+  end
+
+  desc %{
+    Only for use in email messages. Displays the edit-my-profile url of the reader currently being emailed.
+    <pre><code><r:recipient:edit_profile_url /></code></pre>
+  }
+  tag "recipient:edit_profile_url" do |tag|
+    reader_edit_profile_url(:host => @mailer_vars[:@host])
   end
 
   desc %{

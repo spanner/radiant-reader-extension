@@ -32,7 +32,7 @@ If you're installing the radiant-reader-extension gem they will have been instal
 
 	sudo rake gems:install
 
-Sanitize uses nokogiri, which needs libxml2 and libxslt: you will need to make sure those are installed before you can install this gem.
+Sanitize uses nokogiri, which needs libxml2 and libxslt. It's very likely that you have those as a result of installing imagemagick, but if not you will need to get them before you can install this gem.
 
 ## Installation
 

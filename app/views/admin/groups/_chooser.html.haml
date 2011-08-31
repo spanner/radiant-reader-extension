@@ -1,0 +1,8 @@
+// This is going to be a tree of checkboxes with some 
+// javascript to make visible the inheritance of permission. 
+// It will be used on pages, messages and any other group-linkable object.
+
+- Group.roots.each do |group|
+  = f.check_box :group_ids, {}, group.id
+  = f.label :group_ids, group.name, :class => 'checkbox'
+  %br

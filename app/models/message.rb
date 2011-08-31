@@ -1,11 +1,11 @@
 class Message < ActiveRecord::Base
 
+  has_groups
   has_site if respond_to? :has_site
 
   belongs_to :layout
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
-  belongs_to :group
 
   has_many :deliveries, :class_name => 'MessageReader', :conditions => ["message_readers.sent_at IS NOT NULL and message_readers.sent_at <= ?", Time.now.to_s(:db)]
   has_many :recipients, :through => :deliveries, :source => :reader
@@ -21,26 +21,19 @@ class Message < ActiveRecord::Base
   named_scope :ordinary, { :conditions => "function_id = '' OR function_id IS NULL" }
   named_scope :published, { :conditions => "status_id >= 100" }
 
-  named_scope :belonging_to, lambda {|group|
-   { :conditions => {:group_id => group }}
-  }
-
-  named_scope :ungrouped, :conditions => {:group_id => nil}
-
   def filtered_body
     filter.filter(body)
   end
 
-  # has to return a scope for chainability
   def possible_readers
-    group ? group.readers : Reader.scoped({})
+    permitted_readers
   end
 
   def undelivered_readers
     if recipients.any?
       possible_readers.except(recipients)
     else
-      recipients
+      possible_readers
     end
   end
 
@@ -57,7 +50,7 @@ class Message < ActiveRecord::Base
   end
 
   def preview(reader=nil)
-    reader ||= possible_readers.first || Reader.for_user(created_by)
+    reader ||= possible_readers.first || Reader.for_user(Reader.current)
     ReaderNotifier.create_message(reader, self)
   end
   

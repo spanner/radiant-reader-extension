@@ -31,6 +31,7 @@ en:
         body: "Message body"
         filter_id: "Filter"
         subject: "Message Subject"
+        group_ids: "Groups"
     errors:
       models:
         reader:
@@ -98,6 +99,7 @@ en:
     already_logged_in: "You're already logged in!"
     already_registered: "If you've already registered, you should only need to"
     and_try_again: "and try again."
+    any_option: "<any>"
     at: "at"
     belongs_to_group: 'This message belongs to the <a href="%{href}">%{name}</a> group.'
     belongs_to_these_groups: "This message is sent to these groups:"
@@ -148,6 +150,7 @@ en:
     delete_message: "Delete message"
     delete_message: "delete message"
     delete_reader: "delete reader"
+    delivery_status: "Delivery"
     directory: 
       contact: "Contact"
       csv_link: "Download CSV data"
@@ -179,6 +182,10 @@ en:
     explain_access_error: "Sorry: you have run into a barrier and are not allowed to do whatever it was you just tried to do. The error message was:"
     for: 'for'
     for_group: "for the %{name} group"
+    for_the_groups: 
+      zero: "without group links"
+      one: "for the %{names} group"
+      other: "for the %{names} groups"
     forgotten_password: "Forgotten your password?"
     form_notes:
       account:
@@ -196,6 +203,7 @@ en:
         unshareable: "To keep your contact information private and receive only administrative messages, check this box."
     form_problem: "there was a problem with the form"
     full_name: "full name"
+    function: "Function"
     getting_gravatar: "If you would like a picture to appear next to your messages, give yourself a gravatar at"
     group: "group"
     group_filter: "Show only members of the group: "
@@ -352,6 +360,8 @@ en:
     sent_to_group: "sent automatically to the %{name} group"
     sent_to_these_groups: "sent automatically to these groups"
     separator: " &raquo; "
+    set_message_function: "Message function"
+    set_message_groups: "Message groups"
     set_new_password: "set new password"
     showing: "Showing"
     showing_of_total:
@@ -365,6 +375,7 @@ en:
     spam_trap: "it's a spam trap and shouldn't be visible"
     status_check: "Please wait: loading controls"
     subgroups: "Groups within %{name}"
+    subject: "Subject"
     subscriptions: "subscriptions"
     terms_and_conditions: "terms and conditions"
     thanks_activated: "Thank you! Your account has been activated."

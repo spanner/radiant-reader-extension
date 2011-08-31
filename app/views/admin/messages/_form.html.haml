@@ -17,20 +17,20 @@
           = form.text_area :body, :class => 'textarea', :style => 'width: 100%'
 
     - formpart.edit_function do
-      - if admin?
-        %div.function.set
+      #message_function.set
+        - if admin?
           %p
             = form.label :function_id
             = form.select :function_id, MessageFunction.find_all.map { |mf| [t("message_functions.#{mf.name}"), mf.name] }, :include_blank => true
           %p
-            = form.label :group_id
-            = form.select :group_id, Group.all.map { |g| [g.name, g.id] }, :include_blank => true
-        
-      - elsif @message.new_record?
-        - if @message.group
-          = f.hidden_field :group_id
-        - if @message.function
-          = f.hidden_field :function_id
+            = form.label :group_ids
+            = render :partial => 'admin/groups/chooser', :locals => {:f => form}
+
+        - elsif @message.new_record?
+          - if @message.function
+            = f.hidden_field :function_id
+          - if @message.group_ids
+            = f.hidden_field :group_ids
 
 - render_region :form_bottom do |form_bottom|
   - form_bottom.edit_timestamp do
@@ -41,4 +41,3 @@
       = save_model_and_continue_editing_button(@message)
       = t('or')
       = link_to t("cancel"), @message.new_record? ? admin_messages_url : admin_message_url(@message)
-      
