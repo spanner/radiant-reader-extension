@@ -1,6 +1,6 @@
 class Admin::PermissionsController < ApplicationController
     
-  before_filter :find_group
+  before_filter :find_page_and_group
   
   def index
     redirect_to admin_group_url(@group)
@@ -8,12 +8,11 @@ class Admin::PermissionsController < ApplicationController
   
   def create
     @page = Page.find(params[:page_id])
-    raise ActiveRecord::RecordNotFound unless @page
     scope = @group.permissions.for(@page)
     @permission = scope.first || scope.create!
     respond_to do |format|
       format.html { 
-        flash[:notice] = "#{@page.name} bound to group #{@group.name}"
+        flash[:notice] = "#{@page.title} bound to group #{@group.name}"
         redirect_to admin_group_url(@group) 
       }
       format.js { render :partial => 'page' }
@@ -21,23 +20,31 @@ class Admin::PermissionsController < ApplicationController
   end
   
   def destroy
-    @permission = @group.permissions.find(params[:id])
+    @permission ||= @group.permissions.find(params[:id])
     @page = @permission.permitted
     @permission.delete if @permission
     respond_to do |format|
       format.html { 
-        flash[:notice] = "#{@page.name} released from group #{@group.name}"
+        flash[:notice] = "#{@page.title} released from group #{@group.name}"
         redirect_to admin_group_url(@group)
       }
       format.js { render :partial => 'page' }
     end
   end
   
-protected
-
-  def find_group
-    @group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless @group
+  def toggle
+    if @permission = @group.permission_for(@page)
+      destroy
+    else
+      create
+    end
   end
   
+protected
+
+  def find_page_and_group
+    @group = Group.find(params[:group_id])
+    @page = Page.find(params[:page_id]) if params[:page_id]
+  end
+
 end
