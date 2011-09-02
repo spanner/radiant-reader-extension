@@ -1,3 +1,4 @@
+- include_javascript 'admin/reader'
 - include_stylesheet 'admin/reader_group'
 - body_classes << "reversed"
 
@@ -40,7 +41,7 @@
         =t('reader_extension.private_pages').titlecase
       %ul
         - page = Page.respond_to?(:homepage) ? Page.homepage : Page.find_by_parent_id(nil)
-        %div{:id => "page_holder_#{page.id}"}
+        %li{:id => "page_holder_#{page.id}"}
           = render :partial => 'admin/permissions/page', :object => page
 
   - main.members do
@@ -56,7 +57,7 @@
       - columns.each do |column|
         %ul.column
           - column.each do |reader|
-            %div{:id => "reader_holder_#{reader.id}"}
+            %li{:id => "reader_holder_#{reader.id}"}
               = render :partial => 'admin/memberships/reader', :object => reader
 
 - render_region :footer do |footer|

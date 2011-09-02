@@ -3,6 +3,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :messages, :member => [:preview, :deliver]
     admin.resources :groups, :has_many => [:memberships, :permissions, :group_invitations, :messages]
     admin.resource :reader_configuration, :controller => 'reader_configuration'
+    admin.toggle_group_membership "memberships/toggle", :controller => 'memberships', :action => 'toggle'
+    admin.toggle_group_permission "permissions/toggle", :controller => 'permissions', :action => 'toggle'
   end
 
   map.namespace :admin do |admin|

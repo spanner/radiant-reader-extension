@@ -104,7 +104,11 @@ module GroupedModel
       }
       
       named_scope :find_these, lambda { |ids|
-        { :conditions => ["#{self.table_name}.id IN (#{ids.map{"?"}.join(',')})", *ids] }
+        if ids.any?
+          { :conditions => ["#{self.table_name}.id IN (#{ids.map{"?"}.join(',')})", *ids] }
+        else
+          {}
+        end
       }
             
     end

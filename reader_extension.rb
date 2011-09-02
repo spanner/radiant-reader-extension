@@ -6,14 +6,6 @@ class ReaderExtension < Radiant::Extension
   description RadiantReaderExtension::DESCRIPTION
   url RadiantReaderExtension::URL
   
-  extension_config do |config|
-    config.gem 'authlogic', :version => "~> 2.1.6"
-    config.gem 'sanitize', :version => "~> 2.0.1"
-    config.gem 'snail', :version => "~> 0.5.5"
-    config.gem 'vcard', :version => "~> 0.1.1"
-    config.gem 'fastercsv', :version => "~> 1.5.4"
-  end
-  
   migrate_from 'Reader Group', 20110214101339
   
   def activate

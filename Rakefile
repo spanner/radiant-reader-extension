@@ -16,11 +16,11 @@ unless defined? RADIANT_ROOT
 end
 
 require 'rake'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rake/testtask'
 
-rspec_base = File.expand_path(RADIANT_ROOT + '/vendor/plugins/rspec/lib')
-$LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
+# rspec_base = File.expand_path(RADIANT_ROOT + '/vendor/plugins/rspec/lib')
+# $LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
 require 'spec/rake/spectask'
 require 'cucumber'
 require 'cucumber/rake/task'
@@ -101,7 +101,7 @@ namespace :spec do
 end
 
 desc 'Generate documentation for the reader extension.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'ReaderExtension'
   rdoc.options << '--line-numbers' << '--inline-source'

@@ -35,7 +35,8 @@ Gem::Specification.new do |s|
 
     config.gem 'radiant-reader-extension', :version => '~> #{RadiantReaderExtension::VERSION}'
 
-  and please remember to enable ActionMailer in your project's config/environment.rb.
+  and if you haven't already, remember to enable ActionMailer in your
+  project's config/environment.rb.
   }
 
 end
