@@ -5,14 +5,25 @@
     &#groups
       td.name
         width: 35%
-        a
-          font-size: 160%
         span.notes
           font-size: 80%
           color: #929488
           font-weight: lighter
           line-height: 1.2
           margin-top: 0.25em
+      tr.level_0
+        td.name
+          a
+            font-size: 120%
+      tr.level_1
+        td.name
+          a
+            font-size: 100%
+      tr.level_2
+        td.name
+          a
+            font-size: 85%
+        
     &#import
       th
         text-align: left
@@ -113,39 +124,29 @@
  *}
 
 .fake_checkbox
+  display: block
   padding-left: 20px
   cursor: pointer
   background-repeat: no-repeat
   background-position: 0 3px
+  text-decoration: none
+  color: #ccc
+  font-weight: normal
+  background-image: url(/images/admin/chk_off.png)
   input
     position: absolute
     left: -9999px
-  a
-    text-decoration: none
   &.checked
+    color: #5da454
     background-image: url(/images/admin/chk_on.png)
-  &.unchecked
-    background-image: url(/images/admin/chk_off.png)
   &.inherited
+    color: #bfe4b9
     background-image: url(/images/admin/chk_auto.png)
   &.waiting
+    color: #8c8d8e
     background-image: url(/images/admin/spinner.gif)
-
-.checked a, .selected a
-  color: #5da454
-
-.unchecked a, .unselected a
-  color: #ccc
-  font-weight: normal
-
-.waiting a
-  color: #8c8d8e
-
-.failed a
-  color: #c00
-
-.inherited
-  color: #bfe4b9
+  &.failed
+    color: #c00
 
 span.group_actions
   img
