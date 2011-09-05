@@ -9,7 +9,6 @@ class ReaderMessages < ActiveRecord::Migration
       t.column :updated_at, :datetime
       t.column :created_by_id, :integer
       t.column :updated_by_id, :integer
-      t.column :lock_version, :integer
     end
 
     create_table :message_readers do |t|

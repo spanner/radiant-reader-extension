@@ -1,19 +1,18 @@
+require 'ancestry'
+
 class Group < ActiveRecord::Base
 
-  acts_as_nested_set
+  has_ancestry
   belongs_to :leader, :class_name => 'Reader'
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   belongs_to :homepage, :class_name => 'Page'
-  belongs_to :root_group, :class_name => 'Group'   # stored to allow whole-tree and many-tree retrievals in one step
 
   has_many :messages
   has_many :permissions
-  has_many :pages, :through => :permissions
   has_many :memberships
   has_many :readers, :through => :memberships, :uniq => true
   
-  before_save :set_root
   before_validation :set_slug
   validates_presence_of :name, :slug, :allow_blank => false
   validates_uniqueness_of :name, :slug
@@ -24,11 +23,8 @@ class Group < ActiveRecord::Base
   named_scope :subscribable, { :conditions => "public = 1" }
   named_scope :unsubscribable, { :conditions => "public = 0" }
   
-  named_scope :from_roots, lambda { |ids|
-    { :conditions => ["groups.root_group_id IN (#{ids.map{"?"}.join(',')})", *ids] }
-  }
-
-  named_scope :from_list, lambda { |ids|
+  named_scope :find_these, lambda { |ids|
+    ids = ['NULL'] unless ids && ids.any?
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
   }
 
@@ -60,37 +56,33 @@ class Group < ActiveRecord::Base
     when 'private'
       reader ? self.all : self.none
     when 'grouped'
-      reader ? reader.all_groups : self.none
+      (reader && reader.is_grouped?) ? reader.all_visible_groups : self.none
     else
       self.none
     end
   end
   
   def visible_to?(reader=nil)
-    self.class.visible_to(reader).include? self
+    self.class.visible_to(reader).map(&:id).include? self.id
   end
 
   def tree
     # can't quite do this in one step, but we can return a scope
-    self.root.self_and_descendants
+    self.root.subtree
+  end
+  
+  def tree_ids
+    self.root.subtree_ids
   end
   
   def members
-    Reader.in_groups(groups_conferring_membership)
+    Reader.in_groups(subtree)
   end
   
   def inherited_permissions
-    Permission.to_groups(groups_conferring_permission)
+    Permission.to_groups(path)
   end
-  
-  def groups_conferring_membership
-    self_and_descendants
-  end
-
-  def groups_conferring_permission
-    self_and_ancestors
-  end
-  
+    
   def url
     homepage.url if homepage
   end
@@ -124,7 +116,7 @@ class Group < ActiveRecord::Base
   # Permission.for_pages named_scope
   # Group.page_permissions  => set of permission objects
   # Group.pages             => set of page objects
-  
+  #
   def self.define_retrieval_methods(classname)
     type_scope = "for_#{classname.downcase.pluralize}".intern
     Permission.send :named_scope, type_scope, :conditions => { :permitted_type => classname }
@@ -141,10 +133,5 @@ private
     self.slug ||= self.name.slugify.to_s
   end
   
-  def set_root
-    # we assume that parent is already in the database
-    self.root_group = self.parent ? self.parent.root_group : self
-  end
-
 end
 

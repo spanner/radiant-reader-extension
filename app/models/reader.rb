@@ -18,6 +18,8 @@ class Reader < ActiveRecord::Base
   end
 
   belongs_to :user
+  before_update :update_user
+  
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
   has_many :message_readers
@@ -25,8 +27,6 @@ class Reader < ActiveRecord::Base
   has_many :memberships
   has_many :groups, :through => :memberships, :uniq => true
   accepts_nested_attributes_for :memberships
-
-  before_update :update_user
 
   validates_presence_of :name, :email
   validates_length_of :name, :maximum => 100, :allow_nil => true
@@ -90,23 +90,57 @@ class Reader < ActiveRecord::Base
     when 'private'
       reader ? self.all : self.none
     when 'grouped'
-      reader ? self.in_groups(reader.all_groups) : self.none
+      reader ? self.in_groups(reader.all_visible_group_ids) : self.none
     else
       self.none
     end
   end
   
   def visible_to?(reader=nil)
-    self.class.visible_to(reader).include? self
+    (reader && (reader == self)) || self.class.visible_to(reader).map(&:id).include?(self.id)
   end
   
-  # returns a useful list of all the groups related to any group that this person is in.
-  # for most permissions purposes, that's the set of visible groups
-  # individual groups can be declared private if the members of related groups should not be allowed to see them.
-  # can return scope or list.
+  # returns a useful list of the groups that this person is in and all their ancestor groups.
+  # for most authorisation purposes, that's the set of groups of which this reader is considered a member.
+  # 
+  # Returns a scope.
   #
   def all_groups
-    Group.from_roots(self.groups.map(&:root_group_id))
+    Group.find_these(all_group_ids)
+  end
+  
+  def all_group_ids
+    self.groups.map(&:path_ids).flatten.uniq
+  end
+  
+  # Returns a list of the groups that this person is in along with their whole tree of super and subgroups.
+  # That's the list of groups that this person can see. It is larger than the list of groups that confer permission:
+  # this reader can see subgroups of his own groups in the directory, but he can't see their pages.
+  #
+  def all_visible_groups
+    Group.find_these(all_visible_group_ids)
+  end
+
+  def all_visible_group_ids
+    self.groups.map(&:tree_ids).flatten.uniq
+  end
+  
+  def can_see? (this)
+    permitted_groups = this.permitted_groups
+    permitted_groups.empty? or in_any_of_these_groups?(permitted_groups)
+  end
+    
+  def in_any_of_these_groups? (grouplist)
+    (grouplist & all_groups).any?
+  end
+
+  def has_group? (group)
+    all_groups.include?(group)
+  end
+  alias :is_in? :has_group?
+  
+  def is_grouped?
+    groups.any?
   end
   
   # not very i18nal, this
@@ -225,24 +259,6 @@ class Reader < ActiveRecord::Base
     else
       nil
     end
-  end
-
-  def can_see? (this)
-    permitted_groups = this.permitted_groups
-    permitted_groups.empty? or in_any_of_these_groups?(permitted_groups)
-  end
-    
-  def in_any_of_these_groups? (grouplist)
-    (grouplist & groups).any?
-  end
-
-  def is_in? (group)
-    groups.include?(group)
-  end
-  
-  # has_group? is ambiguous: with no argument it means 'is this reader grouped at all?'.
-  def has_group?(group=nil)
-    group.nil? ? groups.any? : is_in?(group)
   end
   
 private

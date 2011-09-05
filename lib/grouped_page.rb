@@ -5,7 +5,7 @@ module GroupedPage
       has_groups
       has_one :homegroup, :foreign_key => 'homepage_id', :class_name => 'Group'
       include InstanceMethods
-      alias_method_chain :permitted_groups, :inheritance
+      alias_method_chain :permitted_group_ids, :inheritance
     }
   end
   
@@ -15,19 +15,24 @@ module GroupedPage
     def inherited_groups
       @inherited_groups ||= self.parent ? Group.attached_to(self.ancestors) : []
     end
+    
+    # If a grandparent page is associated with a supergroup page
+    # then all of the descendant pages are bound to all of the descendant groups.
+    def inherited_group_ids
+      self.ancestors.map(&:group_ids).flatten.uniq
+    end
 
-    def permitted_groups_with_inheritance
-      permitted_groups_without_inheritance + inherited_groups
+    def permitted_group_ids_with_inheritance
+      (permitted_group_ids_without_inheritance + inherited_group_ids).flatten.uniq
     end
 
     def restricted?
       self.permitted_groups.any?
     end
     
-    # this has been squashed down to two queries: 
-    # groups attached here and groups attached to any ancestor
-    # but it is still regrettably expensive.
-    # once a page is cached, it is not called again
+    # this is regrettably expensive and I plan to replace it with a 
+    # private? method that would be cascaded on page update
+    #
     def cache?
       !restricted?
     end        

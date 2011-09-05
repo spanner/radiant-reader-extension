@@ -47,7 +47,7 @@ describe "Reader Tags" do
 
   describe "utility tags" do 
     subject { page }
-    it { should render(%{<r:truncated chars="50">All happy families are alike; each unhappy family is unhappy in its own way.</r:truncated>}).as(' All happy families are alike; each unhapp&hellip;') }
+    it { should render(%{<r:truncated chars="50">All happy families are alike; each unhappy family is unhappy in its own way.</r:truncated>}).as('All happy families are alike; each unhappy&hellip;') }
     it { should render(%{<r:truncated words="5" omission="">All happy families are alike; each unhappy family is unhappy in its own way.</r:truncated>}).as('All happy families are alike;') }
     it { should render(%{<r:truncated words="5" allow_html="true" omission=" (tbc)">All <em>happy families</em> are alike; each unhappy family is unhappy in its own way.</r:truncated>}).as('All <em>happy families</em> are alike; (tbc)') }
   end

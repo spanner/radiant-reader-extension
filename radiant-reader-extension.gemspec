@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'snail', "~> 0.5.5"
   s.add_dependency 'vcard', "~> 0.1.1"
   s.add_dependency 'fastercsv', "~> 1.5.4"
+  s.add_dependency 'ancestry', "~> 1.2.4"
 
   ignores = if File.exist?('.gitignore')
     File.read('.gitignore').split("\n").inject([]) {|a,p| a + Dir[p] }

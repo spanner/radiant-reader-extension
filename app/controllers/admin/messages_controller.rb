@@ -6,6 +6,7 @@ class Admin::MessagesController < Admin::ResourceController
   before_filter :get_group, :only => :new
 
   # here :show is the preview/send page
+  # continue_url is extended below to redirect to show rather than index after editing.
   def show
     
   end

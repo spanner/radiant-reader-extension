@@ -55,36 +55,45 @@ describe Group do
       group = groups(:subgroup)
       group.respond_to?(:parent).should be_true
       group.respond_to?(:children).should be_true
-      group.children.should == [groups[:subsubgroup]]
-      group.parent.should == [groups[:supergroup]]
+      group.children.should =~ [groups(:subsubgroup), groups(:anothersubsubgroup)]
+      group.parent.should == groups(:supergroup)
     end
     
     it "should have descendants and ancestors" do
-      groups(:subsubgroup).self_with_ancestors.should == [groups(:supergroup), groups(:subgroup), groups(:subsubgroup)]
+      groups(:subsubgroup).path.should == [groups(:supergroup), groups(:subgroup), groups(:subsubgroup)]
       groups(:subsubgroup).root.should == groups(:supergroup)
-      groups(:supergroup).self_with_descendants.should == [groups(:supergroup), groups(:subgroup), groups(:subsubgroup), groups(:anothersubsubgroup)]
-      groups(:supergroup).leaves.should == [groups(:subsubgroup), groups(:anothersubsubgroup)]
+      groups(:supergroup).subtree.should =~ [groups(:supergroup), groups(:subgroup), groups(:subsubgroup), groups(:anothersubsubgroup)]
     end
 
-    it "should have a root_group" do
+    it "should have a root group" do
       [:supergroup, :subgroup, :subsubgroup].each do |g|
-        groups(g).root_group.should == groups(:supergroup)
+        groups(g).root.should == groups(:supergroup)
       end
     end
 
     it "should inherit memberships from descendants" do
       groups(:supergroup).members.should =~ [readers(:normal), readers(:another)]
+    end
+    
+    it "should not inherit memberships from ancestors" do
       groups(:subsubgroup).members.should be_empty
     end
     
-    it "should inhert permissions from ancestors" do
-      groups(:subsubgroup).pages.should =~ [readers(:normal), readers(:another)]
+    it "should inherit permissions from ancestors" do
+      groups(:subsubgroup).pages.should =~ [pages(:child), pages(:child_2)]
+    end
+
+    it "should not inherit permissions from descendants" do
       groups(:supergroup).pages.should be_empty
     end
   end
   
   describe "directory visibility" do
     describe "when directory is grouped" do
+      before do
+        Radiant.config['reader.directory_visibility'] = 'grouped'
+      end
+      
       it "should be visible to members" do
         groups(:subgroup).visible_to?(readers(:normal)).should be_true
       end

@@ -9,7 +9,6 @@ class GroupMessages < ActiveRecord::Migration
     t.column :updated_by_id, :integer
     t.column :homepage_id, :integer
     t.column :site_id, :integer
-    t.column :lock_version, :integer
   end
 
   create_table :memberships do |t|

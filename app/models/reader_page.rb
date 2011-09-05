@@ -21,11 +21,15 @@ class ReaderPage < Page
   end
     
   def cache?
-    !!Radiant.config['readers.public?']
+    public?
+  end
+  
+  def public?
+    Radiant.config['reader.directory_visibility'] == 'public'
   end
   
   def visible?
-    Radiant.config['readers.public?'] || current_reader
+    public? || current_reader
   end
   
   def url_for(thing)
@@ -46,9 +50,9 @@ class ReaderPage < Page
     self.group = Group.find_by_slug(params.first) if params.first =~ /\w/
     self.reader = Reader.find_by_id(params.last) if params.last !~ /\D/
 
-    raise ReaderError::AccessDenied if group && !group.visible_to?(current_reader)
-    raise ReaderError::AccessDenied if reader && !reader.visible_to?(current_reader)
-    raise ActiveRecord::RecordNotFound if reader && group && !reader.is_in?(group)
+    raise ReaderError::AccessDenied, "Group visibility denied" if group && !group.visible_to?(current_reader)
+    raise ReaderError::AccessDenied, "Reader visibility denied: #{current_reader} (#{current_reader.name}) cannot see #{reader} (#{reader.name})" if reader && !reader.visible_to?(current_reader)
+    raise ActiveRecord::RecordNotFound if reader && group && !reader.has_group?(group)
 
     self
   end

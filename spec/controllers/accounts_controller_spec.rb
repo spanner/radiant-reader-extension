@@ -117,14 +117,6 @@ describe AccountsController do
         rsession = ReaderSession.create!(readers(:normal))
         # controller.stub!(:current_reader_session).and_return(rsession)
       end
-  
-      it "should route '/account' to my account" do
-        params_from(:get, '/account').should == {:controller => 'accounts', :action => 'edit'}
-      end
-
-      it "should route '/profile' to my account" do
-        params_from(:get, '/profile').should == {:controller => 'accounts', :action => 'show'}
-      end
 
       it "should consent to show another reader page" do 
         get :show, :id => reader_id(:visible)
@@ -166,35 +158,29 @@ describe AccountsController do
   end
     
   describe "with an update request" do
-    before do
-      login_as_reader(:normal)
-    end
-
     describe "that is valid" do
       before do
-        put :update, {:id => reader_id(:normal), :reader => {:name => "New Name"}}
+        login_as_reader(:normal)
+        put :update, {:id => reader_id(:normal), :reader => {:name => "Abnormal"}}
         @reader = readers(:normal)
       end
       
       it "should update the reader" do 
-        @reader.name.should == 'New Name'
+        @reader.name.should == 'Abnormal'
+        @reader.changed?.should be_false
       end
 
-      it "should redirect to the reader page" do 
+      it "should redirect to the reader-dashboard page" do 
         response.should be_redirect
-        response.should redirect_to(dashboard_url)
+        response.should redirect_to(reader_dashboard_url)
       end
       
     end
 
     describe "that does not validate" do
       before do
-        put :update, {:id => reader_id(:normal), :reader => {:login => "visible@spanner.org"}, :current_password => 'password'}
-        @reader = readers(:normal)
-      end
-
-      it "should not update the reader" do 
-        @reader.name.should == 'Normal'
+        login_as_reader(:normal)
+        put :update, {:id => reader_id(:normal), :reader => {:login => readers(:visible).login}}
       end
 
       it "should re-render the edit form" do 

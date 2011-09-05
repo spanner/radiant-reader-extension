@@ -20,7 +20,6 @@ class CreateReaders < ActiveRecord::Migration
       t.column :activation_code, :string
       t.column :provisional_password, :string
       t.column :activated_at, :datetime
-      # t.column :lock_version, :integer, :default => 0
     end
     add_index :readers, ["session_token"], :name => "session_token"
   end

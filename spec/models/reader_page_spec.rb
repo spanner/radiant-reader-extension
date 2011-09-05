@@ -15,7 +15,7 @@ describe ReaderPage do
   
   describe "reading parameters" do
     before do
-      Radiant.config['readers.public?'] = true
+      Radiant.config['reader.directory_visibility'] = 'public'
     end
 
     it "should interrupt the find_by_path cascade" do
@@ -50,7 +50,7 @@ describe ReaderPage do
   
   describe "when the readership is private" do
     before do
-      Radiant.config['readers.public?'] = false
+      Radiant.config['reader.directory_visibility'] = 'private'
     end
     
     describe "and no reader is logged in" do
@@ -81,24 +81,40 @@ describe ReaderPage do
       it "should allow access to a reader" do
         lambda { Page.find_by_path("/directory/#{reader_id(:normal)}").reader.should == readers(:normal) }.should_not raise_error
       end
+    end
+  end
+  
+  describe "when the readership is group-limited" do
+    before do
+      Radiant.config['reader.directory_visibility'] = 'grouped'
+    end
+    
+    describe "and no reader is logged in" do
+      before do
+        logout_reader
+        Reader.current = nil
+      end
+      
+      it "should deny access completely" do
+        lambda { Page.find_by_path("/directory") }.should raise_error(ReaderError::AccessDenied)
+        lambda { Page.find_by_path("/directory/normal") }.should raise_error(ReaderError::AccessDenied)
+      end
+    end
+    
+    describe "and a reader is logged in" do
+      before do
+        Reader.current = login_as_reader(readers(:normal))
+      end
 
-      describe "but confined to his groups" do
-        before do
-          Radiant.config['readers.confine_to_groups?'] = true
-          Reader.current = login_as_reader(readers(:normal))
-        end
+      it "should allow access only to readers with group overlap" do
+        lambda { Page.find_by_path("/directory/#{reader_id(:inactive)}").reader.should == readers(:inactive) }.should_not raise_error
+        lambda { Page.find_by_path("/directory/#{reader_id(:ungrouped)}") }.should raise_error
+      end
 
-        it "should allow access only to readers with group overlap" do
-          lambda { Page.find_by_path("/directory/#{reader_id(:inactive)}").reader.should == readers(:inactive) }.should_not raise_error
-          lambda { Page.find_by_path("/directory/#{reader_id(:another)}") }.should raise_error
-        end
-
-        it "should allow access only to groups to which the reader belongs" do
-          lambda { Page.find_by_path("/directory/normal") }.should_not raise_error
-          lambda { Page.find_by_path("/directory/special") }.should raise_error(ReaderError::AccessDenied)
-          Page.find_by_path("/directory").groups.should =~ [groups(:normal), groups(:homed)]
-          Page.find_by_path("/directory").readers.should =~ (groups(:normal).readers + groups(:homed).readers).uniq
-        end
+      it "should allow access only to groups to which the reader belongs" do
+        lambda { Page.find_by_path("/directory/normal") }.should_not raise_error
+        lambda { Page.find_by_path("/directory/special") }.should raise_error(ReaderError::AccessDenied)
+        Page.find_by_path("/directory").groups.should =~ readers(:normal).all_visible_groups
       end
 
     end

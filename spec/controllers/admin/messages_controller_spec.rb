@@ -39,17 +39,5 @@ describe Admin::MessagesController do
       response.should redirect_to(admin_message_url(messages(:taggy)))
     end
   end
-  
-  describe "on update (and create)" do
-    before do
-      login_as :existing
-    end
     
-    it "should redirect to show the updated object" do
-      put :update, :id => message_id(:normal), :subject => 'testing'
-      response.should be_redirect
-      response.should redirect_to(admin_message_path(message_id(:normal)))
-    end
-  end
-  
 end

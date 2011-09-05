@@ -48,7 +48,7 @@ describe Message do
 
     it "should render a fake sending" do
       @preview.should be_kind_of(TMail::Mail)
-      @preview.from.should == ["admin@www.example.com"]
+      @preview.from.should == ["existing@example.com"]
       @preview.subject.should == messages(:taggy).subject
     end
   end

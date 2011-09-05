@@ -1,7 +1,6 @@
 - form_for [:admin, @group] do |f|
   .form-area
     = render_region :form_top
-    = hidden_field 'group', 'lock_version'
 
     - render_region :form do |form|
       - form.edit_group do

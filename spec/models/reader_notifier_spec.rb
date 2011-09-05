@@ -14,7 +14,7 @@ describe ReaderNotifier do
   it "should render a supplied message" do
     message = ReaderNotifier.create_message(readers(:normal), messages(:normal))
     message.to.should == [readers(:normal).email]
-    message.from.should == ["admin@www.example.com"]
+    message.from.should == [messages(:normal).created_by.email]
     message.body.should =~ /#{messages(:normal).filtered_body}/
     message.content_type.should == 'text/html'
   end

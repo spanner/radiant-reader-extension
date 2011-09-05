@@ -11,7 +11,6 @@ describe Reader do
   it "should have some groups" do
     reader = readers(:normal)
     reader.groups.any?.should be_true
-    reader.groups.size.should == 2
   end
   
   describe "on validation" do

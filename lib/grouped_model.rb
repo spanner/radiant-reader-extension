@@ -53,8 +53,8 @@ module GroupedModel
 
       named_scope :visible_to, lambda { |reader| 
         conditions = "pp.group_id IS NULL"
-        if reader && reader.groups.any?
-          ids = reader.group_ids
+        if reader && reader.is_grouped?
+          ids = reader.all_group_ids
           conditions = ["#{conditions} OR pp.group_id IS NULL OR pp.group_id IN(#{ids.map{"?"}.join(',')})", *ids]
         end
         {
@@ -94,7 +94,7 @@ module GroupedModel
       end
       
       named_scope :belonging_to, lambda { |group|
-        group_ids = group.groups_conferring_permission.map(&:id)
+        group_ids = group.subtree_ids
         {
           :joins => "INNER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
           :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
@@ -104,11 +104,8 @@ module GroupedModel
       }
       
       named_scope :find_these, lambda { |ids|
-        if ids.any?
-          { :conditions => ["#{self.table_name}.id IN (#{ids.map{"?"}.join(',')})", *ids] }
-        else
-          {}
-        end
+        ids = ['NULL'] unless ids && ids.any?
+        { :conditions => ["#{self.table_name}.id IN (#{ids.map{"?"}.join(',')})", *ids] }
       }
             
     end
@@ -121,9 +118,18 @@ module GroupedModel
     # associated and their descendant subgroups.
     #
     def permitted_groups
+      if permitted_group_ids.any?
+        Group.find(permitted_group_ids)
+      else
+        []
+      end
+    end
+
+    def permitted_group_ids
       # in GroupedPage this is chained to include groups inherited from ancestor pages
-      # while here groups_conferring_permission provides inheritance from ancester groups
-      groups.map(&:groups_conferring_permission).flatten.uniq
+      # while here the subtrees provide inheritance from ancestor groups.
+      #
+      groups.map(&:subtree_ids).flatten.uniq
     end
 
     def visible_to?(reader)
@@ -146,7 +152,7 @@ module GroupedModel
     end
 
     def permitted_readers
-      permitted_groups.any? ? Reader.in_groups(permitted_groups) : Reader.all
+      permitted_groups.any? ? Reader.in_groups(permitted_groups) : Reader.scoped({})
     end
     
     def has_group?(group)

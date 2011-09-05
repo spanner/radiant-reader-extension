@@ -58,20 +58,35 @@ From <r:sender:name />
     admit_to_group :normal, [readers(:normal), readers(:inactive)] 
     admit_to_group :special, [readers(:another)] 
     admit_to_group :subgroup, [readers(:normal), readers(:another)] 
+
     restrict_to_group :homed, [pages(:parent), pages(:childless)]
     restrict_to_group :special, [pages(:news)]
     restrict_to_group :normal, [messages(:grouped)]
     restrict_to_group :subgroup, [pages(:child)] 
+    restrict_to_group :subsubgroup, [pages(:child_2)] 
   end
   
   helpers do
     def create_reader(name, attributes={})
-      reader = create_model Reader, name.symbolize, default_reader_attributes(name).merge(attributes)
+      create_model :reader, name.symbolize, { 
+        :name => name,
+        :email => "#{name}@spanner.org",
+        :login => name.downcase,
+        :activated_at => Time.now - 1.week,
+        :password_salt => "golly",
+        :password => 'passw0rd',
+        :password_confirmation => 'passw0rd'
+      }.merge(attributes)
     end
     
     def create_group(name, attributes={})
       symbol = name.symbolize
-      group = create_record Group, symbol, default_group_attributes(name).merge(attributes)
+      create_model :group, symbol, { 
+        :name => name,
+        :slug => name.downcase,
+        :description => "#{name} group",
+        :parent_id => @group_id
+      }.merge(attributes)
       if block_given?
         @group_id = group_id(symbol)
         yield
@@ -80,49 +95,21 @@ From <r:sender:name />
     end
 
     def create_message(subject, attributes={})
-      message = create_model Message, subject.symbolize, default_message_attributes(subject).merge(attributes)
-      message.update_attribute(:created_by, users(:existing)) # otherwise this is blanked by the absence of a current_user, and we need it for preview rendering
+      create_record :message, subject.symbolize, { 
+        :subject => subject,
+        :body => "This is the #{subject} message",
+        :created_by_id => user_id(:existing)
+      }.merge(attributes)
     end
 
     def create_layout(name, attributes={})
-      attributes[:site] ||= sites(:test) if Layout.reflect_on_association(:site)
-      create_model :layout, name.symbolize, attributes.update(:name => name)
+      create_model :layout, name.symbolize, {
+        :name => name
+      }.merge(attributes)
     end
 
-    def default_reader_attributes(name="John Doe")
-      symbol = name.symbolize
-      attributes = { 
-        :name => name,
-        :email => "#{symbol}@spanner.org", 
-        :login => "#{symbol}@spanner.org",
-        :activated_at => Time.now - 1.week,
-        :password_salt => "golly",
-        :password => 'passw0rd',
-        :password_confirmation => 'passw0rd'
-      }
-      attributes[:site] = sites(:test) if defined? Site
-      attributes
-    end
-        
-    def default_group_attributes(name="Group")
-      attributes = { 
-        :name => name,
-        :slug => name.downcase,
-        :description => "#{name} group"
-      }
-      attributes[:parent_id] ||= @group_id if @group_id
-      attributes[:site_id] ||= site_id(:test) if defined? Site
-      attributes
-    end
 
-    def default_message_attributes(subject="Message")
-      attributes = { 
-        :subject => subject,
-        :body => "This is the #{subject} message"
-      }
-      attributes[:site] = sites(:test) if defined? Site
-      attributes
-    end
+
 
     def login_as_reader(reader)
       activate_authlogic

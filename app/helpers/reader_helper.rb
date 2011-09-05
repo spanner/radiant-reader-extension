@@ -1,6 +1,7 @@
 require 'sanitize'
 require "sanitize/config/generous"
 require "fastercsv"
+require "snail_helpers"
 
 module ReaderHelper
   include SnailHelpers
