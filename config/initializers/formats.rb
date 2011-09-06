@@ -1,2 +1,1 @@
-Mime::Type.register "text/x-vcard", :vcard
-Mime::Type.register "text/csv", :csv
+Mime::Type.register "text/x-vcard", :vcard unless Mime::Type.lookup(:vcard)
