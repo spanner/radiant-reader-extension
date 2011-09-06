@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :readers, :except => [:show]
   end
 
-  readers_prefix = Radiant.config['reader.profiles_path'] || "/directory"
+  readers_prefix = Radiant.config['reader.profiles_path'] || "directory"
 
   map.resources :readers, :controller => 'accounts', :path_prefix => readers_prefix
   map.resources :messages, :only => [:index, :show], :member => [:preview], :path_prefix => readers_prefix
@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
     group.resources :messages, :only => [:index, :show], :member => [:preview]
   end
 
-  accounts_prefix = Radiant.config['reader.preferences_path'] || "/account"
+  accounts_prefix = Radiant.config['reader.preferences_path'] || "account"
 
   map.resource :reader_session, :path_prefix => accounts_prefix
   map.resource :reader_activation, :only => [:show, :new], :path_prefix => accounts_prefix
@@ -37,4 +37,5 @@ ActionController::Routing::Routes.draw do |map|
   
   map.reader_index readers_prefix, :controller => 'accounts', :action => 'index'
   map.reader_dashboard accounts_prefix, :controller => 'accounts', :action => 'dashboard'
+
 end

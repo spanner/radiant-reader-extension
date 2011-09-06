@@ -8,7 +8,9 @@ The visitors are referred to as 'readers' here. Readers never see the admin inte
 
 ## Status
 
-Compatible with radiant 1, which isn't out yet. You can use radiant edge to try this out. Expect small changes in support of the new forum and group releases. Multi-site compatibility will follow soon.
+Compatible with radiant 1, which isn't out yet. You can use radiant edge to try this out. Expect a few point releases as radiant 1 is finalised.
+
+Multi-site compatibility is currently missing but will follow as soon as I can add a better scoping engine to radiant core.
 
 ## Note on internationalisation and customisation
 
@@ -16,39 +18,22 @@ The locale strings here are generally defined in a functional rather than gramma
 
 ## Requirements
 
-* Radiant 1.0.0 (or currently, edge)
-* [layouts](http://github.com/squaretalent/radiant-layouts-extension) extension
-* [mailer_layouts](http://github.com/spanner/radiant-mailer_layouts-extension) extension
+Versions 3.x of reader are designed to work with radiant 1 and will not work with older versions. There's a '0.9.1' tag in the repository for the last release that will.
 
-You also need some gems (in addition to those that radiant requires): 
-
-* authlogic
-* sanitize
-* snail
-* vcard
-* fastercsv
-
-If you're installing the radiant-reader-extension gem they will have been installed too. If you're installing it into vendor/extensins you will need to run:
-
-	sudo rake gems:install
-
-Sanitize uses nokogiri, which needs libxml2 and libxslt. It's very likely that you have those as a result of installing imagemagick, but if not you will need to get them before you can install this gem.
+Since you now have to install reader as a gem, all of its gem-based dependencies will be taken care of for you, but you may need some system libraries. We use Sanitize to whitelist html input. Sanitize uses Nogogiri to parse html, and Nokogiri needs `libxml2` and `libxslt` to do that. If you've installed imagemagick to work with radiant assets, it's very likely that you have those libraries already. If not, you will need to install them before you can install the reader gem.
 
 ## Installation
 
-As a gem:
+Install the gem:
 
-	gem install 'radiant_reader_extension'
-	
-or for more control:
+	sudo gem install radiant-reader-extension
 
-	git submodule add git://github.com/spanner/radiant-reader-extension.git vendor/extensions/reader
-	
-Before you can migrate the extension you need to add this line to environment.rb above all the other config.gem declarations:
+add it to your application's Gemfile:
 
-	config.gem 'authlogic', :version => "~> 2.1.6"
-  
-Authlogic has to load before _anything_ else requires `ApplicationController`. With that you can:
+	gem 'authlogic', "~> 2.1.6"
+	gem radiant-reader-extension, '~>2.0.0'
+
+and then you can bring over assets and create data tables:
 
 	rake radiant:extensions:update_all
 	rake radiant:extensions:reader:migrate
@@ -174,6 +159,6 @@ Also:
 
 ## Author and copyright
 
-* Copyright spanner ltd 2007-9.
+* Copyright spanner ltd 2007-11.
 * Released under the same terms as Rails and/or Radiant.
 * Contact will at spanner.org
