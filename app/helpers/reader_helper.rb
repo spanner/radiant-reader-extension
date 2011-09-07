@@ -1,6 +1,5 @@
 require 'sanitize'
 require "sanitize/config/generous"
-require "fastercsv"
 require "snail_helpers"
 
 module ReaderHelper
@@ -155,15 +154,4 @@ EOM
     mail_to address, nil, :encode => :hex, :replace_at => ' at ', :class => 'mailto'
   end
 
-  def generate_csv(readers=[])
-    columns = %w{forename surname email phone mobile postal_address}
-    table = FasterCSV.generate do |csv|
-      csv << columns.map { |f| t("activerecord.attributes.reader.#{f}") }
-      readers.each { |r| csv << columns.map{ |f| r.send(f.to_sym) } }
-    end
-  end
-
-  def generate_vcard(readers=[])
-    readers.map(&:vcard).join("\n")
-  end
 end

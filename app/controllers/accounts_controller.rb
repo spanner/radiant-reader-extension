@@ -17,10 +17,10 @@ class AccountsController < ReaderActionController
         render :template => 'readers/index'
       }
       format.csv {
-        send_data generate_csv(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "everyone.csv"
+        send_data Reader.csv_for(@readers), :type => 'text/csv; charset=utf-8; header=present', :filename => "everyone.csv"
       }
       format.vcard {
-        send_data @readers.map(&:vcard).join("\n"), :filename => "everyone.vcf"
+        send_data Reader.vcards_for(@readers), :filename => "everyone.vcf"
       }
     end
   end

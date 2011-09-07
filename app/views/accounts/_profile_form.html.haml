@@ -4,7 +4,7 @@
 - form_for reader, :html => {:class => 'friendly'} do |f| 
   %input{:type => :hidden, :name => :authentication_type, :value => :user}
 
-  - if 1 || Radiant::Config['reader.use_honorifics?']
+  - if Radiant.config['reader.use_honorifics?']
     %p
       = f.label :honorific, nil, :class => 'optional'
       %br
@@ -29,7 +29,7 @@
     %br
     %span.formnote= t('reader_extension.form_notes.account.post_country')
 
-  - if Radiant::Config['reader.postal.use_organisation?']
+  - if Radiant.config['reader.postal.use_organisation?']
     %p
       = f.label :post_organisation, nil, :class => 'optional'
       = f.text_field :post_organisation, :class => 'standard'
@@ -55,7 +55,7 @@
   %p
     = f.label :description, nil, :class => 'optional'
     %br
-    = f.text_area :description, :class => Radiant::Config['forum.toolbar?'] ? 'rte' : 'standard'
+    = f.text_area :description, :class => Radiant.config['forum.toolbar?'] ? 'rte' : 'standard'
     %span.formnote= t('reader_extension.form_notes.account.description')
 
   %p

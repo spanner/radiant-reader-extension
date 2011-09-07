@@ -2,6 +2,7 @@ require 'authlogic'
 require 'digest/sha1'
 require 'snail'
 require 'vcard'
+require "fastercsv"
 
 class Reader < ActiveRecord::Base
   @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
@@ -259,6 +260,24 @@ class Reader < ActiveRecord::Base
     else
       nil
     end
+  end
+  
+  # Generates a csv file listing the supplied group of readers.
+  # No access checks are performed here.
+  #
+  def self.csv_for(readers=[])
+    columns = %w{forename surname email phone mobile postal_address}
+    FasterCSV.generate do |csv|
+      csv << columns.map { |f| I18n.t("activerecord.attributes.reader.#{f}") }
+      readers.each { |r| csv << columns.map{ |f| r.send(f.to_sym) } }
+    end
+  end
+
+  # Generates a vcard file containing the supplied group of readers.
+  # No access checks are performed here.
+  #
+  def self.vcards_for(readers=[])
+    readers.map(&:vcard).join("\n")
   end
   
 private
