@@ -2,7 +2,7 @@
 - memberships = reader.memberships
 - if memberships.any?
   %ul.groups
-    - memberships.uniq.each do |membership|
+    - memberships.each do |membership|
       - if membership.group.visible_to?(current_reader)
         %li
           = link_to_group(membership.group)

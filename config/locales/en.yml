@@ -10,7 +10,7 @@ en:
         role: "Role"
         admin: "admin?"
       reader:
-        description: "Biog or remarks"
+        description: "Explain yourself"
         email: "Email address"
         forename: "Forename"
         honorific: "Title or rank"

@@ -5,6 +5,12 @@
 - content_for :title do
   = @reader.name
 
+- content_for :introduction do
+  = @reader.description
+  %p
+    = t('reader_extension.edit_profile')
+  
+
 - content_for :breadcrumbs do
   = yield :breadhead
   = t('reader_extension.separator')
