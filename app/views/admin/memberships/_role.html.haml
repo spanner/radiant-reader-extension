@@ -1,0 +1,3 @@
+- membership ||= @membership
+- group ||= @group
+= link_to membership.role || t('reader_extension.member'), edit_admin_membership_url(membership, :group_id => group.id), {:class => 'inplace'}

@@ -1,0 +1,5 @@
+- form_for [:admin, @membership], :html => {:class => 'inplace'} do |f|
+  = hidden_field_tag :group_id, @membership.group_id
+  = f.text_field :role, :maxlength => 100, :class => "minibox"
+  = f.check_box :admin
+  = f.label :admin
