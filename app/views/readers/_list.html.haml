@@ -4,16 +4,6 @@
   - if readers.respond_to?(:previous_page) && readers.previous_page
     = pagination_and_summary_for(readers, t('reader_extension.person'))
 
-  - if @display == 'gallery'
-    - if readers.size > 1
-      - cols = 3
-      - columns = readers.in_groups_of((readers.size / cols), false)
-    - else
-      - columns = [readers]
-    - columns.each do |column|
-      %div.column
-        = render :partial => 'readers/mugshot', :collection => column
-
   - else
     %table.readers
       %tbody

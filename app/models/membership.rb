@@ -10,5 +10,13 @@ class Membership < ActiveRecord::Base
   named_scope :of, lambda { |group|
     { :conditions => ["memberships.group_id = ?", group.id] }
   }
+
+  named_scope :by_reader_name, lambda {
+    { 
+      :joins => "INNER JOIN readers on memberships.reader_id = readers.id", 
+      :group => "readers.id",
+      :order => "readers.name ASC"
+    }
+  }
   
 end

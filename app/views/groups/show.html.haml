@@ -32,9 +32,12 @@
       = t('reader_extension.subgroups', :name => @group.name)
     = render :partial => 'groups/group', :collection => @group.children
 
-  %h2
-    = t('reader_extension.group_members')
-  = render :partial => 'readers/list', :locals => {:readers => @readers}
+  - if @group.memberships.any?
+    %h2
+      = t('reader_extension.group_members')
+    %table.readers
+      %tbody
+        = render :partial => 'memberships/membership', :collection => @group.memberships.by_reader_name
 
 = yield :main
 

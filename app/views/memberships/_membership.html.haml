@@ -1,0 +1,36 @@
+- if membership
+  - group = membership.group
+  - reader = membership.reader
+  - if reader
+    %tr.reader
+      - if reader.unshareable?
+        %td{:colspan => 8}
+          = t("reader_extension.listing_denied")
+      - else
+        %td.gravatar
+          = link_to gravatar_for(reader, {:size => 18}, {:class => 'gravatar'}), reader_url(reader), :title => reader.name
+        %td.name
+          %h3
+            = link_to reader.name, reader_url(reader)
+        %td.role
+          %p
+            %span.role
+              = membership.role
+        %td.email
+          %p
+            = mail_to reader.email, nil, :encode => 'hex', :replace_at => " #{t('reader_extension.at')} "
+
+        - [:phone, :mobile].each do |field|
+          - value = reader.send(field)
+          - unless value.blank?
+            %td{:class => field.to_s}
+              %p
+                = value
+          - else
+            %td.missing
+              %p
+                = t("reader_extension.no_#{field}")
+
+        %td.vcard
+          %p
+            = link_to "&nbsp;", reader_url(reader, :format => :vcard), :class => 'vcard'
