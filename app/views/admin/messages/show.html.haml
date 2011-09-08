@@ -34,17 +34,17 @@
     - delivery.function do
       - if @message.administrative?
         %p
-          - if @message.group
-            = t("reader_extension.belongs_to_group", :name => @message.group.name, :href => admin_group_url(@message.group))
+          - if @message.groups.any?
+            = t("reader_extension.belongs_to_groups", :links => @message.groups.map{ |g| link_to g.name, admin_group_url(g) }.to_sentence, :count => @message.groups.count)
             = t("reader_extension.message_group_administrative")
-            = t("reader_extension.message_function.#{@message.function}")
           - else
             = t("reader_extension.message_administrative")
-            = t("reader_extension.message_function.#{@message.function}")
+          = t("reader_extension.message_function.#{@message.function}")
       - else
         %p
           = t("reader_extension.message_adhoc")
-          = t("reader_extension.message_group_adhoc", :name => @message.group.name, :href => admin_group_url(@message.group))
+          - if @message.groups.any?
+            = t("reader_extension.message_group_adhoc", :links => @message.groups.map{|g| link_to g.name, admin_group_url(g)}.to_sentence, :count => @message.groups.count)
           
     - delivery.options do
       - unless @message.administrative?

@@ -8,11 +8,20 @@
         %tr
           - render_region :thead do |thead|
             - thead.title_header do
-              %th.reader Name / Login
+              %th.reader 
+                = t('reader_extension.name')
+            - thead.email_header do
+              %th.email 
+                = t('reader_extension.email')
+            - thead.groups_header do
+              %th.reader_groups
+                = t('reader_extension.groups')
             - thead.description_header do
-              %th.reader_description Self-description
+              %th.reader_description 
+                = t('reader_extension.self_description')
             - thead.modify_header do
-              %th.modify Modify
+              %th.modify
+                = t('modify')
               
     %tbody
       - @readers.each do |reader|
@@ -23,16 +32,24 @@
                 = link_to gravatar_for(reader, {:size => 32}, {:class => 'avatar avatar_32x32'}), edit_admin_reader_url(reader)
                 = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
                 %span.info
-                  = "(#{reader.login})"
+                  = "#{reader.login}"
                 - unless reader.notes.blank?
                   %p.admin_notes
                     %strong
                       note:
                     = reader.notes
 
+            - tbody.email_cell do
+              %td.reader_groups
+                = mail_to reader.email
+            
+            - tbody.groups_cell do
+              %td.reader_groups
+                = reader.groups.collect{|g| link_to(g.name, admin_group_url(g)) }.join("\n")
+
             - tbody.description_cell do
               %td.reader_description
-                = truncate_words(scrub_html(reader.description), 24)
+                = truncate_words(scrub_html(reader.description), 8)
 
             - tbody.modify_cell do
               %td.actions

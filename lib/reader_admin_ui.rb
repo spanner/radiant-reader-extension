@@ -33,8 +33,8 @@ module ReaderAdminUI
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           reader.index = Radiant::AdminUI::RegionSet.new do |index|
-            index.thead.concat %w{title_header description_header modify_header}
-            index.tbody.concat %w{title_cell description_cell modify_cell}
+            index.thead.concat %w{title_header email_header groups_header description_header modify_header}
+            index.tbody.concat %w{title_cell email_cell groups_cell description_cell modify_cell}
             index.bottom.concat %w{buttons}
           end
           reader.remove = reader.index

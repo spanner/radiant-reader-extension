@@ -104,7 +104,9 @@ en:
     and_try_again: "and try again."
     any_option: "<any>"
     at: "at"
-    belongs_to_group: 'This message belongs to the <a href="%{href}">%{name}</a> group.'
+    belongs_to_groups: 
+      one: 'This message is confined to the %{links} group.'
+      other: 'This message is confined to the %{links} groups.'
     belongs_to_these_groups: "This message is sent to these groups:"
     bold_required: "Fields with bold headings are required and will cause grumbling if left blank."
     but_not_active: 'but your account is not yet activated. Please check your email for our activation message.'
@@ -254,11 +256,14 @@ en:
       invitation: "when someone is invited to visit the site."
       password_reset: "when someone asks to reset their password."
       welcome: "when someone completes the registration and email-confirmation process."
-    message_group_adhoc: 'It is restricted to members of the <a href="%{href}">%{name}</a> group.'
+    message_group_adhoc:
+      one: 'It is restricted to members of the %{links} group.'
+      other: 'It is restricted to members of the %{links} groups.'
     message_group_administrative: "It is sent automatically"
     message_preview_introduction: "This is a snapshot of the message that was delivered to you %{date}. If it contains instructions they may now be out of date."
     mistaken_access_error: "If you think that's a mistake, and that you should be allowed to do whatever it was you just tried to do, please contact your site administrator."
     must_be_empty: "must be empty"
+    name_and_login: "Name and Login"
     navigation:
       account: "Preferences"
       activate: "Activate account"
@@ -355,6 +360,7 @@ en:
     return_to_page: "return to the page you were looking at before you started registering"
     select_all: "Select all"
     selected_people: "Selected people"
+    self_description: "Self-description"
     send_it_again: "send it again"
     send_message: "Send message"
     send_reset_button: "send me instructions"

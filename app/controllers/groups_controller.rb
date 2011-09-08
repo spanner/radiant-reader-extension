@@ -24,7 +24,7 @@ class GroupsController < ReaderActionController
 private
   
   def get_group_or_groups
-    @groups = Group.roots.visible_to(current_reader)
+    @groups = current_reader.all_visible_groups
     @group = Group.find(params[:id]) if params[:id]
   end
 
@@ -32,18 +32,6 @@ private
      if @group && !@group.visible_to?(current_reader)    # nb. @groups is a smaller set
        raise ReaderError::AccessDenied, "That group is not public and you are not in it."
      end
-  end
-  
-  def generate_csv(readers=[])
-    columns = %w{forename surname email phone mobile postal_address}
-    table = FasterCSV.generate do |csv|
-      csv << columns.map { |f| t("activerecord.attributes.reader.#{f}") }
-      readers.each { |r| csv << columns.map{ |f| r.send(f.to_sym) } }
-    end
-  end
-
-  def generate_vcard(readers=[])
-    readers.map(&:vcard).join("\n")
   end
   
 end
