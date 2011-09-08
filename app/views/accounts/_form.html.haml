@@ -73,13 +73,13 @@
         %br
         = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
-- unless reader.new_record?
-  %p
-    = f.label :description, nil, :class => 'optional'
-    %br
-    = f.text_area :description, :class => 'standard'
-    %br
-    %span.formnote= t('reader_extension.form_notes.account.description')
+  - unless reader.new_record?
+    %p
+      = f.label :description, nil, :class => 'optional'
+      %br
+      = f.text_area :description, :class => 'standard'
+      %br
+      %span.formnote= t('reader_extension.form_notes.account.description')
 
   = render :partial => 'choose_memberships'
 

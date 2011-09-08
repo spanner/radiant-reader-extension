@@ -13,11 +13,11 @@
 = render :partial => 'shared/standard_reader_parts'
 
 - content_for :sidebar do
-  - render_region :sidebar    
+  = render_region :sidebar    
   // UI -> readers/profile
 
 - content_for :main do
-  - render_region :main
+  = render_region :main
   // UI -> readers/memberships readers/description
 
 = yield :main
