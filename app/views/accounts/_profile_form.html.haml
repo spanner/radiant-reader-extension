@@ -12,6 +12,13 @@
       %span.formnote= t('reader_extension.form_notes.account.honorific')
 
   %p
+    = f.label :email, nil, :class => 'required'
+    %br
+    = f.text_field :email, :class => 'standard'
+    %br
+    %span.formnote= t('reader_extension.form_notes.account.email')
+
+  %p
     = f.label :phone, nil, :class => 'optional'
     %br
     = f.text_field :phone, :class => 'standard'
