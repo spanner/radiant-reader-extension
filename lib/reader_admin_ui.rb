@@ -103,11 +103,11 @@ module ReaderAdminUI
     def load_default_account_regions
       OpenStruct.new.tap do |account|
         account.dashboard = Radiant::AdminUI::RegionSet.new do |dashboard|
-          dashboard.main.concat %w{dashboard/welcome dashboard/groups dashboard/description}
+          dashboard.main.concat %w{dashboard/welcome dashboard/groups}
           dashboard.sidebar.concat %w{dashboard/profile dashboard/messages dashboard/directory}
         end
         account.index = Radiant::AdminUI::RegionSet.new do |index|
-          index.main.concat %w{readers/groups readers/people}
+          index.main.concat %w{readers/directory}
         end
         account.show = Radiant::AdminUI::RegionSet.new do |show|
           show.main.concat %w{readers/memberships readers/description}

@@ -1,9 +1,0 @@
-- groups ||= @groups
-
-%h2
-  = t('reader_extension.groups')
-- if groups.any?
-  = render :partial => 'groups/group', :collection => groups
-- else
-  %p
-    = t('reader_extension.no_groups')

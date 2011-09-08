@@ -122,7 +122,10 @@ form.friendly
         margin-left: 10px
         color: white
         text-decoration: none
-    
+
+div.indented
+  margin-left: 40px
+
 .dashboard_module
   margin-top: 2em
   &:first-child
@@ -136,11 +139,12 @@ form.friendly
 #marginalia
   div.contact
     border: 1px solid $paler
-    +box-shadow
+    +box-shadow(1px 2px 3px)
     padding: 1em
     margin: 1em -1em
     h3
       margin-bottom: 1em
+      margin-left: -4px
     ul
       margin-bottom: 0
       li
@@ -150,15 +154,12 @@ form.friendly
           margin-right: 0.5em
         address
           overflow: hidden
-  
-a.vcard, a.csv
-  padding-left: 12px
-  background: transparent url(/images/furniture/vcard_tiny.png) no-repeat 0 0
-  &:hover
-    background-position: 0 -19px
+      li.edit
+        text-align: right
 
-a.csv
-  background-image: url(/images/furniture/csv_tiny.png)
+a.vcard
+  padding-left: 30px
+  background: transparent url(/images/furniture/vcard.png) no-repeat 0 0
 
 h2
   span.headernote
@@ -235,3 +236,28 @@ div#preview
       margin: 0
       border: 0
       overflow: auto
+
+table.readers
+  td
+    vertical-align: top
+    padding-right: 1em
+    padding: 0.25em 1em 0.25em 0
+    border-bottom: 1px dotted $pale
+    h4
+      white-space: nowrap
+    h3, p
+      margin: 0
+      line-height: 25px
+  td.phone, td.mobile
+    white-space: nowrap
+  td.missing
+    color: $pale
+    font-size: 80%
+  tr:last-child
+    td
+      border-bottom: none
+    
+p.exception
+  color: #c00
+  font-size: 150%
+  text-align: center

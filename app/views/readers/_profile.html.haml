@@ -25,6 +25,6 @@
               = t("reader_extension.directory.postal_address") + ': '
             = reader.postal_address.to_html
         - if reader == current_reader
-          %li
+          %li.edit
             = link_to t("reader_extension.edit_profile"), reader_edit_profile_url, :class => 'edit'
           

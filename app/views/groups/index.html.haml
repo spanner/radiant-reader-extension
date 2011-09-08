@@ -2,6 +2,10 @@
   %p
     =t('reader_extension.groups_introduction')
 
+- content_for :breadhead do
+  = link_to t('reader_extension.readers_title').titlecase, reader_index_url
+  = t('reader_extension.separator')
+
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/'
   = t('reader_extension.separator')

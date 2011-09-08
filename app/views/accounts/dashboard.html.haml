@@ -18,10 +18,11 @@
 = render :partial => 'shared/standard_reader_parts'
 
 - content_for :sidebar do
-  - render_region :sidebar    
+  = render_region :sidebar   
+  // UI => dashboard/profile dashboard/messages dashboard/directory 
 
 - content_for :main do
-  - render_region :main
-
+  = render_region :main
+  // UI => dashboard/welcome dashboard/groups dashboard/description
 
 = yield :main

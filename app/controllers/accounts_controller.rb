@@ -14,6 +14,7 @@ class AccountsController < ReaderActionController
   def index
     respond_to do |format|
       format.html {
+        set_expiry
         render :template => 'readers/index'
       }
       format.csv {
@@ -28,6 +29,7 @@ class AccountsController < ReaderActionController
   def show
     respond_to do |format|
       format.html {
+        set_expiry
         render :template => 'readers/show'
       }
       format.vcard {
@@ -100,6 +102,14 @@ class AccountsController < ReaderActionController
   
 protected
 
+  def set_expiry
+    if Radiant.config['directory.visibility'] == 'public'
+      expires_in 1.day
+    else
+      expires_now
+    end
+  end
+
   def i_am_me
     params[:id] = current_reader.id if current_reader && params[:id] == 'me'
   end
@@ -142,7 +152,7 @@ private
 
   def get_readers_and_groups
     @readers = Reader.visible_to(current_reader)
-    @groups = Group.roots.visible_to(current_reader)
+    @groups = current_reader.all_visible_groups
     @reader = Reader.find(params[:id]) if params[:id]
   end
 

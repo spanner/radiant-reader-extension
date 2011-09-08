@@ -32,7 +32,9 @@
       = t('reader_extension.subgroups', :name => @group.name)
     = render :partial => 'groups/group', :collection => @group.children
 
-  = render :partial => 'readers/people', :readers => @readers
+  %h2
+    = t('reader_extension.group_members')
+  = render :partial => 'readers/list', :locals => {:readers => @readers}
 
 = yield :main
 
