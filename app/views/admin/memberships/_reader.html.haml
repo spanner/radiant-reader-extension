@@ -1,5 +1,9 @@
 - reader ||= @reader
 - group ||= @group
-- cssclass = reader.has_group?(group) ? "fake_checkbox checked" : "fake_checkbox unchecked"
+- membership = reader.membership_of(group)
+- cssclass = membership ? "fake_checkbox checked" : "fake_checkbox unchecked"
 
-= link_to reader.name, admin_toggle_group_membership_url(:group_id => group.id, :reader_id => reader.id),  {:class => cssclass, :id => "toggle_reader_#{reader.id}"}
+= link_to reader.name, toggle_admin_membership_url(:group_id => group.id, :reader_id => reader.id),  {:class => cssclass, :id => "toggle_reader_#{reader.id}"}
+- if membership
+  %span.role
+    = render :partial => 'admin/memberships/role', :locals => {:membership => membership, :group => group}

@@ -1,8 +1,11 @@
 - reader ||= @reader
-- groups = reader.groups.visible_to(current_reader)
-- if groups.any?
+- memberships = reader.memberships
+- if memberships.any?
   %ul.groups
-    - groups.each do |group|
-      %li
-        = link_to_group(group)
-        = t("reader_extension.member")
+    - memberships.each do |membership|
+      - if membership.group.visible_to?(current_reader)
+        %li
+          = link_to_group(membership.group)
+          - if membership.role?
+            %span.role
+              = membership.role

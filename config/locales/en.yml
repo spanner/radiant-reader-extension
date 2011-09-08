@@ -6,6 +6,9 @@ en:
         description: "Description"
         parent_id: "Subgroup of"
         homepage_id: "Group home page"
+      membership:
+        role: "Role"
+        admin: "admin?"
       reader:
         description: "Biog or remarks"
         email: "Email address"
@@ -140,7 +143,7 @@ en:
       directory: "Directory"
       edit_profile: "Edit profile"
       groups: "Your groups"
-      introduction: "Hello %{name}. Welcome back to %{site}. This page gathers together recent activity, useful links and bits of administration. You can always get back here by clicking on a 'dashboard' link."
+      introduction: "Hello %{name}. Welcome back. This page gathers together recent activity, useful links and bits of administration. You can always get back here by clicking on a 'dashboard' link."
       listing: "Directory listing"
       messages: "Messages for you"
       profile: "Your page"

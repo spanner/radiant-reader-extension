@@ -2,12 +2,7 @@
   %p
     = t("reader_extension.hello").titlecase
     = link_to(@reader.name, reader_url(@reader)) + '.'
-    - if Radiant.config['reader.public?']
-      = t('reader_extension.profile_intro_public')
-    - elsif Radiant.config['reader.confine_to_groups?']
-      = t('reader_extension.profile_intro_grouped')
-    - else
-      = t('reader_extension.profile_intro_private')
+    = t("reader_extension.profile_intro_#{Radiant.config['reader.directory_visibility']}")
     
 - content_for :breadcrumbs do 
   = link_to t('reader_extension.home').titlecase, '/'

@@ -19,7 +19,6 @@
 = render :partial => 'shared/standard_reader_parts'
 
 - content_for :main do
-  = render :partial => 'group', :collection => @groups
-
+  = render :partial => 'group', :collection => @groups, :locals => {:with_children => true}
 
 = yield :main

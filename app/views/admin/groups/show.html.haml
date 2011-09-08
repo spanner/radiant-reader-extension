@@ -50,15 +50,11 @@
         = link_to image('plus') + ' ' + t('reader_extension.add_members'), new_admin_group_group_invitation_url(@group), :class => 'action'
       %h3
         =t('reader_extension.group_members').titlecase
-      - readers = Reader.find(:all)
-      - total = readers.count
-      - column_length = (readers.count-1) / 2
-      - columns = [readers[0..column_length], readers[column_length+1..readers.count]]
-      - columns.each do |column|
         %ul.column
-          - column.each do |reader|
+          - Reader.all.each do |reader|
             %li{:id => "reader_holder_#{reader.id}"}
               = render :partial => 'admin/memberships/reader', :object => reader
+              
 
 - render_region :footer do |footer|
   - footer.notes do

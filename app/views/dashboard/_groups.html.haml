@@ -3,6 +3,6 @@
     %h3
       = t('reader_extension.dashboard.groups')
     %ul.groups
-      - current_reader.groups.each do |group|
+      - current_reader.all_groups.each do |group|
         %li
           = link_to_group(group)

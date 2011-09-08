@@ -1,3 +1,5 @@
+- with_children ||= false
+
 .group        
   %h3
     = link_to group.name, group_url(group)
@@ -9,6 +11,6 @@
     %p
       = group.description
       
-  - if group.children.any?
+  - if with_children && group.children.any?
     .indented
       = render :partial => 'groups/group', :collection => group.children

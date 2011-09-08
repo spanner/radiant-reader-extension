@@ -38,6 +38,22 @@ class Admin::MembershipsController < ApplicationController
     end
   end
   
+  def edit
+    @membership = @group.memberships.find(params[:id])
+    respond_to do |format|
+      format.js { render :partial => 'admin/memberships/role_form' }
+    end
+  end
+
+  def update
+    @membership = @group.memberships.find(params[:id])
+    @membership.update_attributes(params[:membership])
+    @membership.save!
+    respond_to do |format|
+      format.js { render :partial => 'admin/memberships/role' }
+    end
+  end
+  
 protected
 
   def find_reader_and_group

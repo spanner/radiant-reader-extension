@@ -135,8 +135,12 @@ class Reader < ActiveRecord::Base
     (grouplist & all_groups).any?
   end
 
+  def membership_of(group)
+    memberships.of(group).first
+  end
+
   def has_group? (group)
-    all_groups.include?(group)
+    !!membership_of(group)
   end
   alias :is_in? :has_group?
   

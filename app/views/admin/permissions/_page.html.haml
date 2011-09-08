@@ -9,7 +9,7 @@
 - else
   - cssclass = "fake_checkbox"
   - cssclass << ' checked' if page.has_group?(group)
-  = link_to page.title, admin_toggle_group_permission_url(:group_id => group.id, :page_id => page.id),  {:class => cssclass, :id => "toggle_page_#{page.id}"}
+  = link_to page.title, toggle_admin_permission_url(:group_id => group.id, :page_id => page.id),  {:class => cssclass, :id => "toggle_page_#{page.id}"}
 
 - if page.children.any?
   %ul

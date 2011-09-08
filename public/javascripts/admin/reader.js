@@ -13,9 +13,26 @@ Remote.UpdatingLink = Behavior.create(Remote.Base, {
   onclick : function() {
     var self = this;
     var options = Object.extend({ 
-      url : this.element.href, 
+      url : self.element.href, 
       method : 'get',
-      update: this.element.up(),
+      update: self.element.up(),
+      onLoading: function () { self.element.addClassName('waiting'); },
+      onComplete: function () { self.element.removeClassName('waiting'); },
+      onSuccess: function () { Event.addBehavior.reload(); },
+      onFailure: function () { self.element.addClassName('failed'); }
+    }, self.options);
+    return self._makeRequest(options);
+  }
+});
+
+Remote.UpdatingForm = Behavior.create(Remote.Base, {
+  onsubmit : function() {
+    var self = this;
+    var options = Object.extend({
+      url : self.element.action,
+      method : self.element.method || 'get',
+      parameters : self.element.serialize(),
+      update: self.element.up(),
       onLoading: function () { self.element.addClassName('waiting'); },
       onComplete: function () { self.element.removeClassName('waiting'); },
       onSuccess: function () { Event.addBehavior.reload(); },
@@ -28,5 +45,7 @@ Remote.UpdatingLink = Behavior.create(Remote.Base, {
 Event.addBehavior({ 
   'div.radio_group': Toggle.RadioGroupBehavior(),
   'input.select_all': Toggle.SelectAllBehavior(),
-  'a.fake_checkbox': Remote.UpdatingLink()
+  'a.fake_checkbox': Remote.UpdatingLink(),
+  'a.inplace': Remote.UpdatingLink(),
+  'form.inplace': Remote.UpdatingForm()
 });

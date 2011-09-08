@@ -91,15 +91,42 @@
 
 #group_pages ul
   padding-left: 20px
+  li
+    clear: left
 
 #group_people ul
   padding-left: 0
   li
+    clear: left
     font-size: 16px
+    line-height: 1.6
     list-style: none
-    line-height: 24px
     margin-top: 2px
     font-family: 'Lucida Grande'
+    .role
+      display: block
+      float: left
+      font-weight: normal
+      margin-left: 0.5em
+      a
+        color: #999
+        text-decoration: none
+        background-repeat: no-repeat
+        background-position: 0 3px
+        font-size: 60%
+        vertical-align: text-bottom
+        &.waiting
+          color: #8c8d8e
+          padding-left: 20px
+          background-image: url(/images/admin/spinner.gif)
+      form
+        font-size: 60%
+        input.minibox
+          width: 60px
+          color: #666
+        input, label
+          float: left      
+          vertical-align: text-bottom
 
 #group_pages ul li
   font-size: 16px
@@ -125,6 +152,7 @@
 
 .fake_checkbox
   display: block
+  float: left
   padding-left: 20px
   cursor: pointer
   background-repeat: no-repeat
