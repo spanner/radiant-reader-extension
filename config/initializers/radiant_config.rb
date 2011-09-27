@@ -7,8 +7,8 @@ Radiant.config do |config|
     reader.define 'public?', :default => false
     reader.define 'directory_visibility', :select_from => %w{public private grouped none}, :allow_blank => false, :default => 'private'
     reader.define 'share_details?', :default => false
-    reader.define 'profiles_path', :default => ""
-    reader.define 'preferences_path', :default => ""
+    reader.define 'profiles_path', :default => "directory"
+    reader.define 'preferences_path', :default => "account"
     reader.define 'login_to', :default => "dashboard"
   end
   config.namespace('email') do |email|

@@ -24,6 +24,9 @@ class ReaderExtension < Radiant::Extension
     end
     
     admin.page.edit.add :layout, "page_groups"
+    admin.page.edit.add :main, "groups_popup", :after => 'edit_popups'
+    admin.page.index.add :sitemap_head, "groups_column_header", :after => 'status_column_header'
+    admin.page.index.add :node, "groups_column", :after => 'status_column'
     
     tab("Readers") do
       add_item("Readers", "/admin/readers")

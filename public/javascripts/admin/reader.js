@@ -7,6 +7,42 @@ Toggle.SelectAllBehavior = Behavior.create(Toggle.CheckboxBehavior, {
   }
 });
 
+// This checkbox, when checked, will check and disable all others within the same containing element.
+// It's useful in a tree view when the checked property will be inherited.
+// For now I'm also using it to populate a hidden form field, but something more general would be preferable.
+//
+Treebox = Behavior.create({
+  onclick: function(e) {
+    this.toggle();
+  },
+  toggle: function() {
+    var state = this.element.checked;
+    this.element.up('li').down('ul').select('input').each(function (el) { 
+      el.checked = state; 
+      el.disabled = state == true;
+    });
+  }
+});
+
+GroupSelection = Behavior.create({
+  onsubmit : function(e) {
+    if (e) e.stop();
+    var group_list = this.element.getInputs('checkbox').collect(function(i) { if (i.checked && !i.disabled) return i.value; }).compact();
+    console.log('group_list: ', group_list);
+    if (group_list.length == 0) {
+      $('group_status_flag').removeClassName('restricted');
+      $('group_status_flag').addClassName('unrestricted');
+      $('group_status_flag').update('Open');
+    } else {
+      $('group_status_flag').removeClassName('unrestricted');
+      $('group_status_flag').addClassName('restricted');
+      $('group_status_flag').update('Restricted');
+    }
+    $('page_group_ids').value = group_list.join(',');
+    this.element.closePopup();
+  }
+});
+
 // This is a normal remote link that replaces itself with the response.
 //
 Remote.UpdatingLink = Behavior.create(Remote.Base, {
@@ -47,5 +83,7 @@ Event.addBehavior({
   'input.select_all': Toggle.SelectAllBehavior(),
   'a.fake_checkbox': Remote.UpdatingLink(),
   'a.inplace': Remote.UpdatingLink(),
-  'form.inplace': Remote.UpdatingForm()
+  'form.inplace': Remote.UpdatingForm(),
+  'input.treebox': Treebox(),
+  'form.group_selection': GroupSelection()
 });

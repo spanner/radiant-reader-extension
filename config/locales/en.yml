@@ -80,7 +80,12 @@ en:
   messages: "Messages"
   reader: "reader"
   reader_extension:
+    access: "Access"
+    access_control: "Restrict access"
     access_denied: "Not allowed!"
+    access_open: "Open"
+    access_restricted: "Restricted"
+    access_restricted_to: "only visible to %{groups}"
     account_settings: "Account settings"
     account_updated: "Your account has been updated"
     activate_account: "Activate your account"
@@ -301,6 +306,7 @@ en:
     or_edit_preferences: 'You can also <a href="%{url}">edit your account preferences</a>.'
     or_edit_profile: 'You can also <a href="%{url}">edit your profile</a> to add more information about yourself.'
     other_messages: "Ad-hoc messages"
+    page_access_explanation: "To restrict access to one or more groups, select them from the list below."
     page_not_public: "The page you have requested is not public. Please log in. If your account has the necessary permission you will be taken straight there."
     page_permission_denied: "You don't have permission to see the page that you have requested."
     page_private: "Sorry: you don't have permission to view that page."
@@ -369,6 +375,7 @@ en:
     sent_to_group: "sent automatically to the %{name} group"
     sent_to_these_groups: "sent automatically to these groups"
     separator: " &raquo; "
+    set_access: "Set access"
     set_message_function: "Message function"
     set_message_groups: "Message groups"
     set_new_password: "set new password"

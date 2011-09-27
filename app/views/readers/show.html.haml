@@ -8,7 +8,7 @@
 - content_for :introduction do
   = @reader.description
   %p
-    = t('reader_extension.edit_profile')
+    = link_to t('reader_extension.edit_profile'), reader_edit_profile_url
   
 
 - content_for :breadcrumbs do

@@ -1,8 +1,14 @@
-// This is going to be a tree of checkboxes with some 
-// javascript to make visible the inheritance of permission. 
-// It will be used on pages, messages and any other group-linkable object.
+- chooser ||= @page
+- if chooser
+  - root ||= nil
+  - disabled ||= false
+  - branches = root ? root.children : Group.roots
 
-- Group.roots.each do |group|
-  = f.check_box :group_ids, {}, group.id
-  = f.label :group_ids, group.name, :class => 'checkbox'
-  %br
+  %ul{:class => root ? '' : 'tree'}
+    - branches.each do |group|
+      %li
+        - checked = chooser.has_group?(group)
+        = check_box_tag 'group_ids', group.id, checked, :id => "group_ids_#{group.id}", :class => "treebox", :disabled => disabled
+        %label{:for => "group_ids_#{group.id}", :class => 'checkbox'} 
+          = group.name
+        = render :partial => 'admin/groups/chooser', :object => chooser, :locals => {:root => group, :disabled => checked}

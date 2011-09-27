@@ -5,9 +5,9 @@ class GroupsNestedSet < ActiveRecord::Migration
     add_column :groups, :lft, :integer
     add_column :groups, :rgt, :integer
     
-    Group.reset_column_information
-    Group.rebuild!
-    Group.all.each {|g| g.save }
+    # Group.reset_column_information
+    # Group.rebuild!
+    # Group.all.each {|g| g.save }
   end
 
   def self.down

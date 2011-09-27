@@ -1,7 +1,15 @@
+- include_stylesheet 'admin/reader_group'
+- include_javascript 'admin/reader'
+
 - groups = Group.find(:all)
 - if groups.any?
-  %p
-    = t('reader_extension.permitted_groups')
-    %br
-    - fields_for @page do |f|
-      = render :partial => 'admin/groups/chooser', :locals => {:f => f}
+  %p.access
+    %label
+      = t('reader_extension.access')
+    - if @page.visible?
+      = link_to t('reader_extension.access_open'), '#groups_popup', :class => 'popup unrestricted', :id => 'group_status_flag'
+    - else
+      = link_to t('reader_extension.access_restricted'), '#groups_popup', :class => 'popup restricted', :id => 'group_status_flag'
+  - fields_for @page do |f|
+    = f.hidden_field :group_ids
+    
