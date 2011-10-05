@@ -31,7 +31,7 @@ class ReaderActivationsController < ReaderActionController
     if @reader
       @reader.activate!
       self.current_reader = @reader
-      redirect_to dashboard_url
+      redirect_to reader_dashboard_url
     else
       @error = t("reader_extension.please_check_message")
       expires_now
