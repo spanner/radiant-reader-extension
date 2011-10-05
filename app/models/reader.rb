@@ -247,7 +247,7 @@ class Reader < ActiveRecord::Base
   end
   
   def create_password!
-    self.clear_password = self.randomize_password # randomize_password is provided by authlogic
+    self.clear_password = self.password_confirmation = self.randomize_password # randomize_password is provided by authlogic
     self.save! unless self.new_record?
     self.clear_password
   end
@@ -306,7 +306,7 @@ private
   def update_user
     if self.user
       user_columns.each { |att| self.user.send("#{att.to_s}=", send(att)) if send("#{att.to_s}_changed?") }
-      self.user.password_confirmation = password_confirmation if password_changed?
+      self.user.password_confirmation = password if password_changed?
       self.user.save! if self.user.changed?
     end
   end
