@@ -290,9 +290,9 @@ private
     reader = Reader.find_by_email(self.email)
     user = User.find_by_email(self.email)
     if user && user != self.user
-      errors.add :value, :taken_by_author
+      errors.add :email, :taken_by_author
     elsif reader && reader != self
-      errors.add :value, :taken
+      errors.add :email, :taken
     else
       return true
     end

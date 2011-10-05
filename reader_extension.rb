@@ -12,8 +12,9 @@ class ReaderExtension < Radiant::Extension
     ActiveRecord::Base.send :include, GroupedModel                                # has_group mechanism for any model that can belong_to a group
     ApplicationController.send :include, ControllerExtensions                     # hooks up reader authentication and layout-chooser
     SiteController.send :include, SiteControllerExtensions                        # access control based on group membership
+    User.send :include, ReaderUser                                                # update linked reader when user account values change
     Page.send :include, GroupedPage                                               # group associations and visibility decisions
-    Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
+    # Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
     Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
     UserActionObserver.instance.send :add_observer!, Reader 
     UserActionObserver.instance.send :add_observer!, Message
@@ -37,10 +38,6 @@ class ReaderExtension < Radiant::Extension
     tab("Settings") do
       add_item("Readers", "/admin/readers/reader_configuration")
     end
-  end
-  
-  def deactivate
-
   end
 end
 
