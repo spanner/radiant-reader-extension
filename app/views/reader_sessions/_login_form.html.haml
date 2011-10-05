@@ -17,7 +17,7 @@
           = t('reader_extension.please').titlecase
         = t('reader_extension.log_in')
         - if Radiant::Config['reader.allow_registration?']
-          = t('reader_extension.or')
+          = t('or')
           = link_to t('reader_extension.register'), new_reader_url
 
     - if @error

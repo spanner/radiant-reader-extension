@@ -1,14 +1,17 @@
 - content_for :breadcrumbs do
   = link_to t('reader_extension.home').titlecase, '/' 
   &gt; 
-  t('reader_extension.log_in').titlecase
+  = t('reader_extension.log_in').titlecase
 
 - content_for :title do
   = t('reader_extension.log_in').titlecase
 
 = render :partial => 'shared/standard_reader_parts'
 
-%div.login_form
-  %h1 
-    = t('reader_extension.log_in').titlecase
-  = render :partial => 'reader_sessions/login_form', :locals => {:backto => @backto}
+- content_for :form do
+  %div.login_form
+    %h1 
+      = t('reader_extension.log_in').titlecase
+    = render :partial => 'reader_sessions/login_form', :locals => {:backto => @backto}
+
+= yield :form
