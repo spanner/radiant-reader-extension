@@ -5,10 +5,10 @@ require 'vcard'
 require "fastercsv"
 
 class Reader < ActiveRecord::Base
-  @@user_columns = [:name, :email, :login, :created_at, :password, :notes]
+  @@user_columns = %w{name email login created_at password password_confirmation notes}
   cattr_accessor :user_columns
   cattr_accessor :current
-  attr_accessor :email_field, :newly_activated
+  attr_accessor :email_field, :newly_activated, :skip_user_update
 
   acts_as_authentic do |config|
     config.validations_scope = :site_id if defined? Site
@@ -31,7 +31,7 @@ class Reader < ActiveRecord::Base
 
   validates_presence_of :name, :email
   validates_length_of :name, :maximum => 100, :allow_nil => true
-  validates_length_of :password, :minimum => 6, :allow_nil => false, :unless => :existing_reader_keeping_password?
+  validates_length_of :password, :minimum => 5, :allow_nil => false, :unless => :existing_reader_keeping_password?
   # validates_format_of :password, :with => /[^A-Za-z]/, :unless => :existing_reader_keeping_password?  # we have to match radiant so that users can log in both ways
   validates_confirmation_of :password, :unless => :existing_reader_keeping_password?
   validates_uniqueness_of :login, :allow_blank => true
@@ -46,8 +46,9 @@ class Reader < ActiveRecord::Base
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
   named_scope :imported, :conditions => "old_id IS NOT NULL"
+
   named_scope :except, lambda { |readers|
-    readers = [readers].flatten
+    readers = [readers].flatten.compact
     if readers.any?
       { :conditions => ["NOT readers.id IN (#{readers.map{"?"}.join(',')})", *readers.map(&:id)] }
     else
@@ -304,11 +305,23 @@ private
   end
 
   def update_user
-    if self.user
-      user_columns.each { |att| self.user.send("#{att.to_s}=", send(att)) if send("#{att.to_s}_changed?") }
-      self.user.password_confirmation = password if password_changed?
-      self.user.save! if self.user.changed?
+    if self.user && !self.skip_user_update
+      changed_columns = Reader.user_columns & self.changed
+      att = self.attributes.slice(*changed_columns)
+      att['password'] = self.password if self.crypted_password_changed?
+      self.user.send :update_with, att if att.any?
     end
+    true
+  end
+  
+  def update_with(att)
+    self.skip_user_update = true
+    if att['password']
+      att["clear_password"] = att["password_confirmation"] = att["password"]
+    end
+    p "updating reader attributes with #{att.inspect}"
+    self.update_attributes(att)
+    self.skip_user_update = false
   end
   
   def send_group_welcomes

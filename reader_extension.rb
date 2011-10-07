@@ -24,8 +24,8 @@ class ReaderExtension < Radiant::Extension
       Radiant::AdminUI.load_reader_extension_regions
     end
     
-    admin.page.edit.add :layout, "page_groups"
-    admin.page.edit.add :main, "groups_popup", :after => 'edit_popups'
+    admin.page.edit.add :layout, "admin/groups/edit_access"
+    admin.page.edit.add :main, "admin/groups/popup", :after => 'edit_popups'
     admin.page.index.add :sitemap_head, "groups_column_header", :after => 'status_column_header'
     admin.page.index.add :node, "groups_column", :after => 'status_column'
     

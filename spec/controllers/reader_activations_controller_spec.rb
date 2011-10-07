@@ -23,7 +23,7 @@ describe ReaderActivationsController do
 
     it "should redirect to the dashboard" do
       response.should be_redirect
-      response.should redirect_to(dashboard_url)
+      response.should redirect_to(reader_dashboard_url)
     end
   end
 

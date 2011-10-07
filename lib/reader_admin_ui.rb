@@ -59,9 +59,9 @@ module ReaderAdminUI
       def load_default_message_regions
         OpenStruct.new.tap do |message|
           message.edit = Radiant::AdminUI::RegionSet.new do |edit|
-            edit.main.concat %w{edit_header edit_form edit_footer}
-            edit.form.concat %w{edit_subject edit_body edit_function}
-            edit.form_bottom.concat %w{edit_timestamp edit_buttons}
+            edit.main.concat %w{edit_header edit_form}
+            edit.form.concat %w{edit_subject edit_body edit_function edit_groups}
+            edit.form_bottom.concat %w{edit_timestamp edit_buttons edit_popups}
           end
           message.index = Radiant::AdminUI::RegionSet.new do |index|
             index.thead.concat %w{subject_header function_header groups_header sent_header modify_header}

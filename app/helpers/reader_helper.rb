@@ -143,15 +143,30 @@ EOM
   end
   
   def group_options_for_select
-    nested_set_options(Group) {|g| "#{'-' * g.level} #{g.name}" }.unshift([t("reader_extension.any_option"), nil])
+    options_from_tree(Group.arrange).unshift([t("reader_extension.any_option"), nil])
   end
   
   def parent_group_options_for_select(group=nil)
-    nested_set_options(Group, group) {|g| "#{'-' * g.level} #{g.name}" }.unshift([t("reader_extension.none_option"), nil])
+    options_from_tree(Group.arrange, :except => group).unshift([t("reader_extension.none_option"), nil])
   end
   
   def email_link(address)
     mail_to address, nil, :encode => :hex, :replace_at => ' at ', :class => 'mailto'
   end
 
+  # Takes a hash of hashes in the format returned by Ancestry#arrange, returns an indented option set.
+  #
+  def options_from_tree(tree, options={})
+    option_list = []
+    depth = options[:depth] || 0
+    exception = options[:except]
+    tree.each_pair do |key, values|
+      unless key == exception
+        option_list << [". " * depth + key.name, key.id]
+        option_list << options_from_tree(values, :depth => depth + 1, :except => exception) if values.any?
+      end
+    end
+    option_list.compact
+  end
 end
+

@@ -24,8 +24,18 @@ class Group < ActiveRecord::Base
   named_scope :unsubscribable, { :conditions => "public = 0" }
   
   named_scope :find_these, lambda { |ids|
-    ids = ['NULL'] unless ids && ids.any?
+    ids = [ids].flatten.compact
+    ids = ['NULL'] unless ids.any?
     { :conditions => ["groups.id IN (#{ids.map{"?"}.join(',')})", *ids] }
+  }
+
+  named_scope :except, lambda { |groups|
+    groups = [groups].flatten.compact
+    if groups.any?
+      { :conditions => ["NOT groups.id IN (#{groups.map{"?"}.join(',')})", *groups.map(&:id)] }
+    else
+      { }
+    end
   }
 
   named_scope :containing, lambda { |reader|

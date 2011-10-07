@@ -1,3 +1,5 @@
+- groupee ||= @page
+
 #groups_popup.popup{:style => "display: none"}
   #groups_busy.busy{:style => "display: none"}= image('spinner.gif', :alt => "")
   .popup_title
@@ -5,7 +7,7 @@
   %p
     = t('reader_extension.page_access_explanation')
   %form.group_selection
-    = render :partial => 'admin/groups/chooser', :object => @page
+    = render :partial => 'admin/groups/chooser', :object => groupee
     .buttons
       = submit_tag t('reader_extension.set_access'), :class=>'button', :id=>'add_page_field_button'
       = t('or')

@@ -21,6 +21,12 @@ class Message < ActiveRecord::Base
   named_scope :ordinary, { :conditions => "function_id = '' OR function_id IS NULL" }
   named_scope :published, { :conditions => "status_id >= 100" }
 
+  named_scope :except, lambda { |ids|
+    ids = [ids].flatten.compact
+    ids = ['NULL'] unless ids.any?
+    { :conditions => ["groups.id NOT IN (#{ids.map{"?"}.join(',')})", *ids] }
+  }
+
   def filtered_body
     filter.filter(body)
   end

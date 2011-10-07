@@ -99,20 +99,17 @@ describe Reader do
   end
   
   describe "on update if really a user" do
-    
     it "should update the user's attributes" do
       reader = readers(:user)
       reader.name = "Cardinal Fang"
       reader.save!
-      
-      User.find_by_name("Cardinal Fang").should == users(:existing)
+      reader.user.name.should == "Cardinal Fang"
     end
     
     it "should update the user's credentials" do
       reader = readers(:user)
       reader.password = reader.password_confirmation = 'bl0tto'
       reader.save!
-      ReaderSession.new(:login => reader.login, :password => 'bl0tto').should be_valid
       reader.user.authenticated?('bl0tto').should be_true
     end
   end
