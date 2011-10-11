@@ -32,9 +32,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.post_install_message = %{
-  Add this to your radiant project with:
+  Add this to your radiant project with a line in your Gemfile:
 
-    config.gem 'radiant-reader-extension', :version => '~> #{RadiantReaderExtension::VERSION}'
+    gem 'radiant-reader-extension', '~> #{RadiantReaderExtension::VERSION}'
 
   and if you haven't already, remember to enable ActionMailer in your
   project's config/environment.rb.

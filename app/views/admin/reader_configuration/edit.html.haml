@@ -5,7 +5,7 @@
     %h1 Reader configuration
 
   - main.edit_form do
-    - form_for :config, :url => admin_reader_configuration_url, :html => {"data-onsubmit_status"=>"Saving changes&#8230;", :method => :put} do |f|
+    - form_for :config, :url => admin_reader_settings_url, :html => {"data-onsubmit_status"=>"Saving changes&#8230;", :method => :put} do |f|
       = render_region :form_top
       - render_region :form do |form|
         - form.edit_registration do
@@ -42,4 +42,4 @@
           %p.buttons
             %input.button{:type=>"submit", :value=>"Save Changes"}/
             or
-            = link_to "Cancel", admin_reader_configuration_url
+            = link_to "Cancel", admin_reader_settings_url

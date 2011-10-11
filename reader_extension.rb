@@ -33,10 +33,10 @@ class ReaderExtension < Radiant::Extension
       add_item("Readers", "/admin/readers")
       add_item("Groups", "/admin/readers/groups")
       add_item("Messages", "/admin/readers/messages")
-      add_item("Settings", "/admin/readers/reader_configuration")
+      add_item("Settings", "/admin/reader_settings")
     end
     tab("Settings") do
-      add_item("Readers", "/admin/readers/reader_configuration")
+      add_item("Readers", "/admin/reader_settings")
     end
   end
 end

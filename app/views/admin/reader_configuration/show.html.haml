@@ -6,7 +6,7 @@
     #reader_settings.box
       %h3
         .actions
-          = button_to t("edit"), edit_admin_reader_configuration_url, :method => :get
+          = button_to t("edit"), edit_admin_reader_settings_url, :method => :get
         =t("reader_extension.reader_admin")
       %p.ruled
         = show_config 'reader.allow_registration?'
@@ -40,7 +40,7 @@
         %p.ruled
           %label= func.description
           - if message
-            = link_to message.subject, admin_message_url(message)
+            = link_to message.subject, edit_admin_reader_settings_url(message)
           - else
             = link_to image('plus') + " create message", new_admin_message_url(:function => func), :class => 'create'
 

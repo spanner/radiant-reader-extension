@@ -2,10 +2,6 @@
   - if @message
     %p
       = @message
-  - else
-    %p
-      = t('reader_extension.log_in_or_register')
-  
   = render :partial => 'login_form', :locals => {:no_title => true}
 
 - content_for :breadcrumbs do

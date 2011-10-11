@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
     admin.resources :readers, :except => [:show]
+    admin.resource :reader_settings, :controller => 'reader_configuration'
   end
 
   map.namespace :admin, :path_prefix => 'admin/readers' do |admin|
@@ -8,7 +9,6 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :groups, :has_many => [:memberships, :permissions, :group_invitations, :messages]
     admin.resources :memberships, :only => [:edit, :update], :member => [:toggle]
     admin.resources :permissions, :only => [], :member => [:toggle]
-    admin.resource :reader_configuration, :controller => 'reader_configuration'
   end
 
   readers_prefix = Radiant.config['reader.profiles_path'] || "directory"
