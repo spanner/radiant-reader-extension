@@ -26,6 +26,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader
+      Rails.logger.warn ">>> current_reader: current_reader_session is #{current_reader_session.inspect}"
       current_reader_session.record if current_reader_session
     end
 
@@ -44,6 +45,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def set_reader
+      Rails.logger.warn ">>> set_reader: current_reader is #{current_reader.inspect}"
       Reader.current = current_reader
     end
 
