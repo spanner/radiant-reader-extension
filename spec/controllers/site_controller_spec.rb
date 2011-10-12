@@ -55,8 +55,8 @@ describe SiteController do
     describe "getting a grouped page to which she doesn't have access" do
       it "should redirect to the permission-denied page" do
         get :show_page, :url => 'news/'
-        response.should be_redirect
-        response.should redirect_to(reader_permission_denied_url)
+        response.should be_success
+        response.should render_template('shared/not_allowed')
       end
     end
   end

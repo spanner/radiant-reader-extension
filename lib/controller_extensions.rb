@@ -112,7 +112,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
           flash[:notice] = e.message
           render :template => 'shared/not_allowed' 
         }
-        format.js { 
+        format.js {
           render :text => @message, :status => 403
         }
       end
