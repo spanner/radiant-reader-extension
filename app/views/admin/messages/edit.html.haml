@@ -2,7 +2,6 @@
 
 = render_region :top 
 - render_region :main do |main|
-
   - main.edit_header do
     %h1 
       = t('reader_extension.edit_message')
@@ -10,6 +9,9 @@
   - main.edit_form do
     - form_for :message, @message, :url => admin_message_url(@message), :html => {:id => 'message_form', :method => 'put'} do |f|
       = render :partial => 'form', :object => f
+
+  - main.edit_popups do
+    = render :partial => 'admin/groups/popup', :locals => {:groupee => @message}
 
   - main.edit_footer do
     = render :partial => 'help'

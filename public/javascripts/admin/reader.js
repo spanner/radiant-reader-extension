@@ -9,7 +9,6 @@ Toggle.SelectAllBehavior = Behavior.create(Toggle.CheckboxBehavior, {
 
 // This checkbox, when checked, will check and disable all others within the same containing element.
 // It's useful in a tree view when the checked property will be inherited.
-// For now I'm also using it to populate a hidden form field, but something more general would be preferable.
 //
 Treebox = Behavior.create({
   onclick: function(e) {
@@ -28,17 +27,14 @@ GroupSelection = Behavior.create({
   onsubmit : function(e) {
     if (e) e.stop();
     var group_list = this.element.getInputs('checkbox').collect(function(i) { if (i.checked && !i.disabled) return i.value; }).compact();
-    console.log('group_list: ', group_list);
+    var flag = $('group_status_flag');
     if (group_list.length == 0) {
-      $('group_status_flag').removeClassName('restricted');
-      $('group_status_flag').addClassName('unrestricted');
-      $('group_status_flag').update('Open');
+      flag.removeClassName('restricted').addClassName('unrestricted').update('Open');
     } else {
-      $('group_status_flag').removeClassName('unrestricted');
-      $('group_status_flag').addClassName('restricted');
-      $('group_status_flag').update('Restricted');
+      flag.removeClassName('unrestricted').addClassName('restricted').update('Restricted');
     }
-    $('page_group_ids').value = group_list.join(',');
+    field = $(this.element.readAttribute('rel'));
+    field.value = group_list.join(',');
     this.element.closePopup();
   }
 });

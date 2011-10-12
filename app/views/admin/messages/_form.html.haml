@@ -38,6 +38,3 @@
       = save_model_and_continue_editing_button(@message)
       = t('or')
       = link_to t("cancel"), @message.new_record? ? admin_messages_url : admin_message_url(@message)
-
-  - form_bottom.edit_popups do
-    = render :partial => 'admin/groups/popup', :locals => {:groupee => @message}

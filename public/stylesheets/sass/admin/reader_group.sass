@@ -1,5 +1,24 @@
 @import compass
 
+#content form p.access a
+  text-decoration: none
+  &.restricted
+    color: #a14242
+    font-weight: bold
+  &.unrestricted
+    color: #8de489
+  &:hover
+    color: white
+
+#groups_popup
+  width: 300px
+  ul
+    padding-left: 0
+    ul
+      padding-left: 20px
+  label
+    display: inline
+  
 #content
   table
     &#groups
@@ -272,11 +291,15 @@ ul.help
     color: #c00
     font-size: 115%
 
-
 #content
   form
     p
       textarea
         width: 100%
-        height: 8em
+        height: 24em
 
+table#pages.index td.access
+  font-size: 80%
+    color: #999
+  span.restricted
+    color: #c00
