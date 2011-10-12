@@ -1,7 +1,6 @@
 module ControllerExtensions    # for inclusion into ApplicationController
 
   def self.included(base)
-    
     base.class_eval do
       rescue_from ReaderError::AccessDenied, :with => :access_denied
       rescue_from ReaderError::LoginRequired, :with => :login_required

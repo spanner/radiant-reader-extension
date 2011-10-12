@@ -2,6 +2,10 @@ module SiteControllerExtensions
   
   def self.included(base)
     base.class_eval {
+      rescue_from ReaderError::AccessDenied, :with => :access_denied
+      rescue_from ReaderError::LoginRequired, :with => :login_required
+      rescue_from ReaderError::ActivationRequired, :with => :activation_required
+      
       # NB. to control access without disabling the cache we have overridden Page.cache? 
       # to return false for any page that has a group association.
       
