@@ -6,9 +6,9 @@
     = t('reader_extension.access_control')
   %p
     = t('reader_extension.page_access_explanation')
-  %form.group_selection
+  %form.group_selection{:rel => "#{groupee.class.to_s.downcase}_group_id_list"}
     = render :partial => 'admin/groups/chooser', :object => groupee
     .buttons
-      = submit_tag t('reader_extension.set_access'), :class=>'button', :id=>'add_page_field_button'
+      = submit_tag t('reader_extension.set_access'), :class=>'button', :id=>'update_groups_button'
       = t('or')
       = link_to_function t('cancel'), "$(this).closePopup()", :class=>"cancel"

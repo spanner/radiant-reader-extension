@@ -163,8 +163,12 @@ module GroupedModel
       self.groups << group unless self.has_group?(group)
     end
 
-    def group_ids=(ids)
-      self.groups = Group.from_list(ids)
+    def group_id_list
+      self.groups.map(&:id).join(',')
+    end
+
+    def group_id_list=(ids)
+      self.groups = Group.find_these(ids.split(/,\s*/))
     end
   end
 end

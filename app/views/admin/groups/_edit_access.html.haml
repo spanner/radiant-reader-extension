@@ -1,6 +1,9 @@
 - include_stylesheet 'admin/reader_group'
 - include_javascript 'admin/reader'
+- group ||= @group
 - groupee ||= @page
+- if group && groupee.new_record?
+  - groupee.groups = [group]
 
 - groups = Group.find(:all)
 - if groups.any?
@@ -11,6 +14,7 @@
       = link_to t('reader_extension.access_open'), '#groups_popup', :class => 'popup unrestricted', :id => 'group_status_flag'
     - else
       = link_to t('reader_extension.access_restricted'), '#groups_popup', :class => 'popup restricted', :id => 'group_status_flag'
+
   - fields_for groupee do |f|
-    = f.hidden_field :group_ids
+    = f.hidden_field :group_id_list
     
