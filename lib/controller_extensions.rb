@@ -47,7 +47,7 @@ module ControllerExtensions    # for inclusion into ApplicationController
       Reader.current = current_reader
     end
 
-    def store_location(location = request.request_uri)
+    def store_location!(location = request.request_uri)
       session[:return_to] = location
     end
 
@@ -76,11 +76,12 @@ module ControllerExtensions    # for inclusion into ApplicationController
 
     def login_required(e)
       @message = e.message
+      store_location!
       respond_to do |format|
         format.html {
           flash[:explanation] = t('reader_extension.reader_required')
           flash[:notice] = e.message
-          redirect_to reader_login_url 
+          redirect_to reader_login_url
         }
         format.js { 
           @inline = true

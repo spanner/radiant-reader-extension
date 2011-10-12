@@ -41,7 +41,7 @@ protected
     
   def require_reader
     unless set_reader     # set_reader is added to ApplicationController and sets Reader.current while checking authentication
-      store_location
+      store_location!
       raise ReaderError::LoginRequired, t('reader_extension.please_log_in')
       false
     end
@@ -56,7 +56,7 @@ protected
 
   def require_no_reader
     if set_reader
-      store_location
+      store_location!
       flash[:notice] = t('reader_extension.please_log_out')
       redirect_back_or_to url_for(current_reader)
       return false
