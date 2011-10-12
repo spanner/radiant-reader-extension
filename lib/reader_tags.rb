@@ -111,7 +111,7 @@ module ReaderTags
       %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
-        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => reader.name)}</span> }
+        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => tag.locals.reader.name)}</span> }
         links = []
         if tag.locals.reader.activated?
           links << %{<a href="#{edit_reader_path(tag.locals.reader)}">#{I18n.t('reader_extension.navigation.preferences')}</a>}
