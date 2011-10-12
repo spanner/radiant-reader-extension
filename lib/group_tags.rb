@@ -6,12 +6,26 @@ module GroupTags
   desc %{
     The root 'group' tag is not meant to be called directly. 
     All it does is summon a group object so that its fields can be displayed with eg.
+    
     <pre><code><r:group:name /></code></pre>
   
-    This tag will not throw an exception if there is no group; it will just disappear.
+    To show a particular group, supply an id or name attribute. There is no access control
+    involved here: if you choose to show a group on an unrestricted page, it will appear.
+    
+    Note that because of limitations in radius this has to be done in a containing root tag:
+    
+    <pre><code><r:group id="1"><r:group:url /></r;group></code></pre>
   }
   tag 'group' do |tag|
-    tag.locals.group = @mailer_vars ? @mailer_vars[:@group] : tag.locals.page.group
+    tag.locals.group = if tag.attr['id']
+      Group.find_by_id(tag.attr['id'])
+    elsif tag.attr['name']
+      Group.find_by_name(tag.attr['name'])
+    elsif @mailer_vars
+      @mailer_vars[:@group]
+    else
+      tag.locals.page.homegroup
+    end
     tag.expand if tag.locals.group
   end
 
