@@ -80,10 +80,6 @@ module MessageTags
     <pre><code><r:recipient:edit_preferences_url /></code></pre>
   }
   tag "recipient:edit_preferences_url" do |tag|
-    
-    Rails.logger.warn "and the :host argument will be #{@mailer_vars[:@host]}"
-    Rails.logger.warn "giving us #{reader_account_url(:host => @mailer_vars[:@host])}"
-    
     reader_account_url(:host => @mailer_vars[:@host])
   end
 

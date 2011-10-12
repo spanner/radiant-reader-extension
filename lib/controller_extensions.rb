@@ -26,7 +26,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def current_reader
-      Rails.logger.warn ">>> current_reader: current_reader_session is #{current_reader_session.inspect}"
       current_reader_session.record if current_reader_session
     end
 
@@ -45,7 +44,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def set_reader
-      Rails.logger.warn ">>> set_reader: current_reader is #{current_reader.inspect}"
       Reader.current = current_reader
     end
 
@@ -68,7 +66,6 @@ module ControllerExtensions    # for inclusion into ApplicationController
     end
 
     def redirect_back_with_format(format = 'html')
-      Rails.logger.warn "<<< redirect_back_with_format. session[:return_to] is #{session[:return_to].inspect}"
       address = session[:return_to]
       previous_format = File.extname(address)
       raise StandardError, "Can't add format to an already formatted url: #{address}" unless previous_format.blank? || previous_format == format
