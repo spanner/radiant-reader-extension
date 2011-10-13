@@ -17,7 +17,7 @@ module ReaderHelper
     size = gravatar_options[:size] || 40
     img_options[:size] ||= "#{size}x#{size}"
     gravatar_options[:default] ||= "#{request.protocol}#{request.host_with_port}/images/furniture/no_gravatar.png"
-    img_options[:alt] ||= reader.name if reader
+    img_options[:alt] ||= reader.preferred_name if reader
     if reader.nil? || reader.email.blank?
       image_tag gravatar_options[:default], img_options
     else
@@ -88,11 +88,11 @@ module ReaderHelper
   def message_preview(subject, body, reader)
     preview = <<EOM
 From: #{current_user.name} &lt;#{current_user.email}&gt;
-To: #{reader.name} &lt;#{reader.email}&gt;
+To: #{reader.preferred_name} &lt;#{reader.email}&gt;
 Date: #{Time.now.to_date.to_s :long}
 <strong>Subject: #{subject}</strong>
 
-Dear #{reader.name},
+Dear #{reader.preferred_name},
 
 #{body}
 

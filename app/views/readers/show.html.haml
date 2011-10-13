@@ -3,12 +3,13 @@
   = t('reader_extension.separator')
 
 - content_for :title do
-  = @reader.name
+  = @reader.preferred_name
 
 - content_for :introduction do
-  = @reader.description
-  %p
-    = link_to t('reader_extension.edit_profile'), reader_edit_profile_url
+  - if Radiant.config['reader.show_descriptions?']
+    = @reader.description
+    %p
+      = link_to t('reader_extension.edit_profile'), reader_edit_profile_url
   
 
 - content_for :breadcrumbs do

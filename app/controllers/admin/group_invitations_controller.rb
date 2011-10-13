@@ -57,7 +57,7 @@ private
     CSV::StringReader.parse(readerdata).each do |line|
       csv = line.collect {|value| value ? value.gsub(/^ */, '').chomp : ''}
       input = {}
-      input[:honorific] = csv.shift if Radiant::Config['reader.use_honorifics?']
+      input[:honorific] = csv.shift if Radiant::Config['reader.show_honorifics?']
       [:name, :email, :login, :phone].each {|field| input[field] = csv.shift}
       r = Reader.find_by_email(input[:email]) || Reader.new(input)
       r.create_password!    #only for validation purposes: not saved not passed through

@@ -10,6 +10,8 @@ Radiant.config do |config|
     reader.define 'profiles_path', :default => "directory"
     reader.define 'preferences_path', :default => "account"
     reader.define 'login_to', :default => "dashboard"
+    reader.define 'show_honorifics?', :default => false
+    reader.define 'show_descriptions?', :default => false
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

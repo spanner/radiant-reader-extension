@@ -1,5 +1,5 @@
 %p
   - if current_reader.newly_activated?
-    = t("reader_extension.dashboard.welcome", :name => current_reader.name, :site => Radiant.config['site.title'])
+    = t("reader_extension.dashboard.welcome", :name => current_reader.preferred_name, :site => Radiant.config['site.title'])
   - else
-    = t("reader_extension.dashboard.introduction", :name => current_reader.name, :site => Radiant.config['site.title'])
+    = t("reader_extension.dashboard.introduction", :name => current_reader.preferred_name, :site => Radiant.config['site.title'])

@@ -51,7 +51,7 @@ class ReaderPage < Page
     self.reader = Reader.find_by_id(params.last) if params.last !~ /\D/
 
     raise ReaderError::AccessDenied, "Group visibility denied" if group && !group.visible_to?(current_reader)
-    raise ReaderError::AccessDenied, "Reader visibility denied: #{current_reader} (#{current_reader.name}) cannot see #{reader} (#{reader.name})" if reader && !reader.visible_to?(current_reader)
+    raise ReaderError::AccessDenied, "Reader visibility denied: #{current_reader} (#{current_reader.preferred_name}) cannot see #{reader} (#{reader.preferred_name})" if reader && !reader.visible_to?(current_reader)
     raise ActiveRecord::RecordNotFound if reader && group && !reader.has_group?(group)
 
     self

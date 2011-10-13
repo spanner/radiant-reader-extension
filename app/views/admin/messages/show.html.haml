@@ -80,7 +80,7 @@
                 %li
                   = check_box_tag "recipients[]", reader.id, false, :id => "recipients_#{reader.id}", :class => 'toggled'
                   %label.checkbox
-                    = reader.name
+                    = reader.preferred_name
 
           %p.buttons
             = submit_tag t('reader_extension.send_message')

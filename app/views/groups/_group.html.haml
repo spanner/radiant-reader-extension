@@ -4,7 +4,7 @@
   %h3
     = link_to group.name, group_url(group)
       
-  %p.context
+  %span.context
     = t("reader_extension.member_count", :count => group.readers.count) + '.'
     
   - if group.description

@@ -4,10 +4,10 @@
       = t("reader_extension.listing_denied")
   - else
     %td.gravatar
-      = link_to gravatar_for(reader, {:size => 18}, {:class => 'gravatar'}), reader_url(reader), :title => reader.name
+      = link_to gravatar_for(reader, {:size => 18}, {:class => 'gravatar'}), reader_url(reader), :title => reader.preferred_name
     %td.name
       %h3
-        = link_to reader.name, reader_url(reader)
+        = link_to reader.preferred_name, reader_url(reader)
     %td.email
       %p
         = mail_to reader.email, nil, :encode => 'hex', :replace_at => " #{t('reader_extension.at')} "

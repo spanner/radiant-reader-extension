@@ -17,8 +17,9 @@
               %th.reader_groups
                 = t('reader_extension.groups')
             - thead.description_header do
-              %th.reader_description 
-                = t('reader_extension.self_description')
+              - if Radiant.config['reader.show_descriptions?']
+                %th.reader_description 
+                  = t('reader_extension.self_description')
             - thead.modify_header do
               %th.modify
                 = t('modify')
@@ -30,7 +31,7 @@
             - tbody.title_cell do
               %td{:class => reader.activated? ? 'name activated' : 'name inactive'}
                 = link_to gravatar_for(reader, {:size => 32}, {:class => 'avatar avatar_32x32'}), edit_admin_reader_url(reader)
-                = link_to reader.name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
+                = link_to reader.preferred_name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
                 %span.info
                   = "#{reader.login}"
                 - unless reader.notes.blank?
@@ -48,8 +49,9 @@
                 = reader.groups.collect{|g| link_to(g.name, admin_group_url(g)) }.join("\n")
 
             - tbody.description_cell do
-              %td.reader_description
-                = truncate_words(scrub_html(reader.description), 8)
+              - if Radiant.config['reader.show_descriptions?']
+                %td.reader_description
+                  = truncate_words(scrub_html(reader.description), 8)
 
             - tbody.modify_cell do
               %td.actions
@@ -57,7 +59,7 @@
                   - if reader.is_user?
                     %span.action.disabled= image('minus_disabled') + ' ' + t('remove')
                   - else
-                    = link_to(image('minus') + ' ' + t('remove'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('reader_extension.really_delete_reader', :name => reader.name))
+                    = link_to(image('minus') + ' ' + t('remove'), admin_reader_url(reader), :method => :delete, :class => 'action', :confirm => t('reader_extension.really_delete_reader', :name => reader.preferred_name))
         
       
   - render_region :bottom do |bottom|

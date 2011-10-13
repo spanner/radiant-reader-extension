@@ -37,5 +37,6 @@
   %li
     %code &lt;r:recipient:activation_url /&gt;
     is the address that will activate a newly-created account
-  %li
-    %code &lt;r:recipient:description /&gt;
+  - if Radiant.config['reader.show_descriptions?']
+    %li
+      %code &lt;r:recipient:description /&gt;

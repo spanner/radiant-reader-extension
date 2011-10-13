@@ -54,7 +54,7 @@
       %p
         %strong
           = t('reader_extension.hello').titlecase
-          = @reader.name + '!'
+          = @reader.preferred_name + '!'
         = t('reader_extension.new_password_instructions')
     - else
       %p.errornote

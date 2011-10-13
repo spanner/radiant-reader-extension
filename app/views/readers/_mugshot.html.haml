@@ -1,7 +1,7 @@
 .reader        
   %h2
-    = link_to gravatar_for(reader, :size => 128), reader_url(reader), :title => reader.name
-    = link_to reader.name, reader_url(reader)
+    = link_to gravatar_for(reader, :size => 128), reader_url(reader), :title => reader.preferred_name
+    = link_to reader.preferred_name, reader_url(reader)
     %span.headernote
       = link_to '&nbsp;', reader_url(reader, :format => :vcard), :class => 'vcard'
       

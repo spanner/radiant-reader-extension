@@ -4,19 +4,14 @@
 - form_for reader, :html => {:class => 'friendly'} do |f| 
   %input{:type => :hidden, :name => :authentication_type, :value => :user}
 
-  - if Radiant.config['reader.use_honorifics?']
+  - if Radiant.config['reader.show_honorifics?']
     %p
       = f.label :honorific, nil, :class => 'optional'
       %br
       = f.text_field :honorific, :class => 'standard'
       %span.formnote= t('reader_extension.form_notes.account.honorific')
 
-  %p
-    = f.label :email, nil, :class => 'required'
-    %br
-    = f.text_field :email, :class => 'standard'
-    %br
-    %span.formnote= t('reader_extension.form_notes.account.email')
+  = render :partial => 'edit_names', :locals => {:f => f}
 
   %p
     = f.label :phone, nil, :class => 'optional'
@@ -59,11 +54,12 @@
     = f.label :postcode, nil, :class => 'optional'
     = f.text_field :postcode, :class => 'standard'
 
-  %p
-    = f.label :description, nil, :class => 'optional'
-    %br
-    = f.text_area :description, :class => Radiant.config['forum.toolbar?'] ? 'rte' : 'standard'
-    %span.formnote= t('reader_extension.form_notes.account.description')
+  - if Radiant.config['reader.show_descriptions?']
+    %p
+      = f.label :description, nil, :class => 'optional'
+      %br
+      = f.text_area :description, :class => Radiant.config['forum.toolbar?'] ? 'rte' : 'standard'
+      %span.formnote= t('reader_extension.form_notes.account.description')
 
   %p
     = f.check_box :unshareable, :class => 'reversed'

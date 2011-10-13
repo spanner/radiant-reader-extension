@@ -29,8 +29,10 @@ class Reader < ActiveRecord::Base
   has_many :groups, :through => :memberships, :uniq => true
   accepts_nested_attributes_for :memberships
 
-  validates_presence_of :name, :email
-  validates_length_of :name, :maximum => 100, :allow_nil => true
+  before_validation :combine_names
+
+  validates_presence_of :name, :forename, :surname, :email
+  validates_length_of :name, :forename, :surname, :maximum => 100, :allow_nil => false
   validates_length_of :password, :minimum => 5, :allow_nil => false, :unless => :existing_reader_keeping_password?
   # validates_format_of :password, :with => /[^A-Za-z]/, :unless => :existing_reader_keeping_password?  # we have to match radiant so that users can log in both ways
   validates_confirmation_of :password, :unless => :existing_reader_keeping_password?
@@ -149,15 +151,10 @@ class Reader < ActiveRecord::Base
     groups.any?
   end
   
-  # not very i18nal, this
-  def forename
-    read_attribute(:forename) || name.split(/\s+/).first
+  def preferred_name
+    nickname? ? nickname : name
   end
-
-  def surname
-    read_attribute(:surname) || name.split(/\s+/).last
-  end
-
+  
   def postal_address?
     !post_line1.blank? && !post_city.blank?
   end
@@ -286,6 +283,15 @@ class Reader < ActiveRecord::Base
   end
   
 private
+
+  def combine_names
+    if self.name?
+      self.forename ||= self.name.split(/\s+/).first
+      self.surname ||= self.name.split(/\s+/).last
+    else
+      self.name = "#{self.forename} #{self.surname}"
+    end
+  end
 
   def email_must_not_be_in_use
     reader = Reader.find_by_email(self.email)

@@ -2,7 +2,7 @@
   = t('reader_extension.navigation.welcome_please_log_in', :login_url => reader_login_url, :register_url => new_reader_url)
 - else
   %strong
-    = link_to t('reader_extension.navigation.greeting', :name => current_reader.name), reader_profile_url
+    = link_to t('reader_extension.navigation.greeting', :name => current_reader.preferred_name), reader_profile_url
   - if !current_reader.activated?
     = link_to t('reader_extension.navigation.activate'), reader_activation_url
   - else

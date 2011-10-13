@@ -4,6 +4,7 @@
       %h2
         = t('reader_extension.groups').titlecase
       = render :partial => 'groups/group', :collection => @groups
+
     - if @readers.any?
       %h2
         = t('reader_extension.people').titlecase
@@ -16,6 +17,11 @@
       = render :partial => 'groups/group', :collection => @groups
     - else
       = t('reader_extension.no_groups')
+
+    - if @readers.any?
+      %h2
+        = t('reader_extension.your_group_members')
+      = render :partial => 'readers/list', :locals => {:readers => @readers}
 
   - else
     = t('reader_extension.no_directory')

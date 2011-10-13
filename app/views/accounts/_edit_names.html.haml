@@ -1,0 +1,21 @@
+%p
+  %span.semi
+    = f.label :forename, nil, :class => 'required'
+    %br
+    = f.text_field :forename, :class => 'standard'
+    %br
+    %span.formnote= t('reader_extension.form_notes.account.forename')
+
+  %span.semi
+    = f.label :surname, nil, :class => 'required'
+    %br
+    = f.text_field :surname, :class => 'standard'
+    %br
+    %span.formnote= t('reader_extension.form_notes.account.surname')
+
+%p.nickname.clear
+  = f.label :nickname, nil, :class => 'optional'
+  %br
+  = f.text_field :nickname, :class => 'standard'
+  %br
+  %span.formnote= t('reader_extension.form_notes.account.nickname')

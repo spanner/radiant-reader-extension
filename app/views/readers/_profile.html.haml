@@ -8,7 +8,7 @@
   - else
     %div.contact
       %h3
-        = link_to reader.name, reader_url(reader, :format => :vcard), :class => 'vcard', :title => t('reader_extension.directory.vcard_link')
+        = link_to reader.preferred_name, reader_url(reader, :format => :vcard), :class => 'vcard', :title => t('reader_extension.directory.vcard_link')
       %ul
         - if email = reader.email
           %li

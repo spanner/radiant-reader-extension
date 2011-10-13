@@ -4,12 +4,7 @@
 - form_for reader, :html => {:class => 'friendly'} do |f| 
   %input{:type => :hidden, :name => :authentication_type, :value => :user}
 
-  %p
-    = f.label :name, nil, :class => 'required'
-    %br
-    = f.text_field :name, :class => 'standard'
-    %br
-    %span.formnote= t('reader_extension.form_notes.account.name')
+  = render :partial => 'edit_names', :locals => {:f => f}
 
   - if reader.new_record?
     %p
@@ -72,14 +67,6 @@
         = f.label :password_confirmation, t('reader_extension.confirm_new_password'), :class => 'required'
         %br
         = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
-
-  - unless reader.new_record?
-    %p
-      = f.label :description, nil, :class => 'optional'
-      %br
-      = f.text_area :description, :class => 'standard'
-      %br
-      %span.formnote= t('reader_extension.form_notes.account.description')
 
   = render :partial => 'choose_memberships'
 

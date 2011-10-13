@@ -19,10 +19,16 @@ describe Reader do
       @reader.should be_valid
     end
     
-    it "should require a name" do
+    it "should require (but derive) a name" do
       @reader.name = nil
+      @reader.should be_valid
+      @reader.forename = @reader.surname = @reader.name = nil
       @reader.should_not be_valid
       @reader.errors.on(:name).should_not be_empty
+      @reader.forename = "very"
+      @reader.surname = "testy"
+      @reader.should be_valid
+      @reader.name.should == "very testy"
     end
   
     it "should require a valid email address" do

@@ -29,9 +29,10 @@
       = render "password_fields", :f => f
     
     - form.edit_description do
-      %p
-        = f.label :description, "Self-description", :class => "optional"
-        ~ f.text_area "description", :size => "53x8", :class => "textarea"
+      - if Radiant.config['reader.show_descriptions?']
+        %p
+          = f.label :description, "Self-description", :class => "optional"
+          ~ f.text_area "description", :size => "53x8", :class => "textarea"
 
     - form.edit_notes do
       %p

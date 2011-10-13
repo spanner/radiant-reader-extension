@@ -11,7 +11,7 @@
     %thead
       %tr
         %th
-        - if Radiant::Config['reader.use_honorifics?']
+        - if Radiant::Config['reader.show_honorifics?']
           %th= t('reader_extension.honorific')
         %th= t('reader_extension.full_name')
         %th= t('reader_extension.email')
@@ -24,11 +24,11 @@
           %tr.import
             %td
               = check_box_tag "import_reader[]", i, reader.valid?
-            - if Radiant::Config['reader.use_honorifics?']
+            - if Radiant::Config['reader.show_honorifics?']
               %td 
                 = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific)
             %td 
-              = text_field_tag "reader_#{i}[name]", reader.name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name)
+              = text_field_tag "reader_#{i}[name]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name)
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email)
             %td 
@@ -39,11 +39,11 @@
           %tr.invite
             %td
               = check_box_tag "invite_reader[]", reader.id, {:checked => true}
-            - if Radiant::Config['reader.use_honorifics?']
+            - if Radiant::Config['reader.show_honorifics?']
               %td
                 = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific), :disabled => true
             %td 
-              = text_field_tag "reader_#{i}[name]", reader.name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name), :disabled => true
+              = text_field_tag "reader_#{i}[name]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name), :disabled => true
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email), :disabled => true
             %td 

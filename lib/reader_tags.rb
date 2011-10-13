@@ -76,7 +76,7 @@ module ReaderTags
     tag.expand if get_reader(tag)
   end
 
-  [:name, :forename, :email, :description, :login].each do |field|
+  [:name, :forename, :surname, :nickname, :preferred_name, :email, :description, :login].each do |field|
     desc %{
       Displays the #{field} field of the current reader.
       <pre><code><r:reader:#{field} /></code></pre>
@@ -111,7 +111,7 @@ module ReaderTags
       %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
-        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => tag.locals.reader.name)}</span>. }
+        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => tag.locals.reader.preferred_name)}</span>. }
         if tag.locals.reader.activated?
           welcome << %{
 #{I18n.t('reader_extension.not_you')} <a href="#{reader_logout_path}">#{I18n.t('reader_extension.navigation.log_out')}</a>.

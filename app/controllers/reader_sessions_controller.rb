@@ -47,7 +47,7 @@ class ReaderSessionsController < ReaderActionController
         end
         respond_to do |format|
           format.html {
-            flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.name}. " + t('reader_extension.welcome_back')
+            flash[:notice] = t('reader_extension.hello').titlecase + " #{@reader_session.reader.preferred_name}. " + t('reader_extension.welcome_back')
             redirect_back_or_to default_welcome_url(@reader_session.reader)
           }
           format.js { 
