@@ -14,7 +14,7 @@ Multi-site compatibility is currently missing but will follow as soon as I can a
 
 ## Note on internationalisation and customisation
 
-The locale strings here are generally defined in a functional rather than grammatical way. That is, they have labels like `activation_required_explanation` rather than being assembled out of lexical units. This is partly because for flexibility of translation, but also because it gives you an easy way to change the text on functional pages like reader-preferences and registration forms.
+The locale strings here are generally defined in a functional rather than grammatical way. That is, they have labels like `activation_required_explanation` rather than being assembled out of lexical units. This is partly for flexibility of translation, but also because it gives you an easy way to change the text on functional pages like reader-preferences and registration forms.
 
 ## Requirements
 
@@ -31,13 +31,12 @@ Install the gem:
 add it to your application's Gemfile:
 
 	gem 'authlogic', "~> 2.1.6"
-	gem radiant-reader-extension, '~>2.0.0'
+	gem radiant-reader-extension, '~>3.1.0'
 
 and then you can bring over assets and create data tables:
 
-	rake radiant:extensions:update_all
-	rake radiant:extensions:reader:migrate
 	rake radiant:extensions:reader:update
+	rake radiant:extensions:reader:migrate
 
 ## Configuration
 
@@ -47,8 +46,7 @@ All the main configuration settings can now be managed through the `settings > r
 
 This is primarily a framework and its main purpose is to take care of the dull minutiae of account-management. The basic reader framework provides for:
 
-* registration
-* honeypot spam trap
+* registration with honeypot spam trap
 * activation by email confirmation
 * logging in and out
 * password reminders
@@ -58,6 +56,10 @@ This is primarily a framework and its main purpose is to take care of the dull m
 * configurable members directory with csv and vcard export
 * administrative email messages for welcome, invitation, etc
 * ad-hoc email messages to some or all readers
+* group-membership
+* group-based access control
+* group-based messaging
+* configurable directory service
 
 ## Reader groups
 
@@ -78,7 +80,7 @@ For more reader-facing usefulness please see our [forum extension](http://github
 
 ## Layouts
 
-We use the `layouts` extension to wrap the appearance of your public site around the views produced by the reader extension. You can configure this with the dropdown list on the reader configuration page.
+We use the `layouts` extension to wrap the appearance of your public site around the views produced by the reader extension. You can select a layout with the dropdown list on the reader configuration page.
 
 The laying-out is achieved by defining lots of fake page parts in the reader views. All your layout has to do is include those page parts with the usual `<r:content />` calls.
 
@@ -107,9 +109,9 @@ Some standard formatting and interaction is included for you to build upon.
 `/stylesheets/sass/reader.sass` includes the default formatting of reader-facing forms and lists. It could probably stand to be reorganised a bit but you should find it a useful starting point and I recommend that you override it selectively rather than replacing it completely. There are two ways to do that:
 
 * @import 'reader.sass' at the top of your (SASS-based) stylesheet within radiant
-* link to /stylesheets/reader.css in the old-fashioned way and then bring in your own stylesheets any way you like.
+* link to /stylesheets/reader.css in the old-fashioned way and then bring in your own stylesheets afterwards.
 
-Or you can replace all this with your own, of course.
+Or you can replace the whole lot with your own recipe, of course.
 
 ## ReaderPages
 
@@ -130,30 +132,7 @@ All the reader pages (both public and administrative) are sharded in the AdminUI
 
 Most of your reader-facing controllers will want to inherit from `ReaderActionController`.
 
-Marking a reader as untrusted does nothing here apart from making them go red, but we assume that in other extensions it will have some limiting effect.
-
-## Latest changes
-
-This version requires edge radiant, or radiant 1 when it becomes available.
-
-New ReaderPages provide flexible directory services with configurable access control. The old controller and page parts mechanism is likely to be phased out gradually both here and in the forum in favour of more orthodox radiant page-types. We will always need to use the layout-wrapper approach for login and registration forms, though.
-
-Right now we are **not compatible with multi_site or the sites extension**: that's mostly because neither is radiant edge: it will all be sorted out in time for the release of v1, which isn't far away.
-
-Also:
-
-* groups hierarchical
-* public interface internationalized;
-* Uses the new configuration interface;
-* Messaging much simplified and now intended to be purely administrative.
-* ajaxable status panel returned by `reader_session_url` (ie. you just have to call /reader_session.js over xmlhttp to get a sensible welcome and control block)
-
-## See also
-
-* [reader_group](http://github.com/spanner/radiant-reader_group-extension)
-* [downloads](http://github.com/spanner/radiant-downloads-extension)
-* [forum](http://github.com/spanner/radiant-forum-extension)
-* [group_forum](http://github.com/spanner/radiant-group_forum-extension)
+Marking a reader as untrusted does nothing here apart from making them go red, but in the forum it prevents participation and we assume that in other extensions it will have a similar limiting effect.
 
 ## Bugs and comments
 
