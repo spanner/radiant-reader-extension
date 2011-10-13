@@ -116,7 +116,7 @@ module ReaderTags
         if tag.locals.reader.activated?
           links << %{<a href="#{reader_dashboard_url}">#{I18n.t('reader_extension.navigation.dashboard')}</a>}
           links << %{<a href="#{reader_index_url}">#{I18n.t('reader_extension.navigation.directory')}</a>}
-          links << %{<a href="#{reader_account}">#{I18n.t('reader_extension.navigation.account')}</a>}
+          links << %{<a href="#{reader_account_url}">#{I18n.t('reader_extension.navigation.account')}</a>}
           links << %{<a href="#{reader_edit_profile_url}">#{I18n.t('reader_extension.navigation.profile')}</a>}
           links << %{<a href="/admin">#{I18n.t('reader_extension.navigation.admin')}</a>} if tag.locals.reader.is_user?
           links << %{<a href="#{reader_logout_path}">#{I18n.t('reader_extension.navigation.log_out')}</a>}
