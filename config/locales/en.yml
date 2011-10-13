@@ -55,6 +55,11 @@ en:
             password:
               too_short: "this must have at least six characters"
               invalid: "this must include at least one non-letter"
+  authlogic:
+    error_messages:
+      login_blank: "Please enter your email address or nickname"
+      login_not_found: "This is not recognised"
+      no_authentication_details: Please enter your email address and password
   config:
     reader:
       allow_registration?: "Allow registration"
@@ -250,7 +255,6 @@ en:
     log_in_or_register: "Please log in here. If you haven't already, you will need to <a href='/register'>register</a> first."
     log_out: "log out"
     login_name: "Login name"
-    login_or_email: "Login name or email address"
     login_unknown: "Sorry: we don't recognise that combination of username and password."
     logout_message: "You are logged out. Bye!"
     member: "member"
@@ -297,6 +301,7 @@ en:
     new_group: "new group"
     new_password: "New password"
     new_password_instructions: "Please enter and confirm the new password you would like to use. It should be at least six characters long, nothing obvious or typical and with at least one non-letter character."
+    nickname_or_email: "Nickname or email address"
     'no': "no"
     no_description: "No description available"
     no_directory: "This site does not make user information public."

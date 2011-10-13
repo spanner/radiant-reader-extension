@@ -14,7 +14,6 @@ class Reader < ActiveRecord::Base
     config.validations_scope = :site_id if defined? Site
     config.transition_from_restful_authentication = true
     config.validate_email_field = false
-    config.validate_login_field = false
     config.validate_password_field = false
   end
 

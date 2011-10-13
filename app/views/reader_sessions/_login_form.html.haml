@@ -26,11 +26,11 @@
         %br
         = link_to t('reader_extension.forgotten_password'), new_password_reset_url
 
-    %p{ :class => @reader_session.errors.on(:login) ? 'haserror' : '' }
-      %label{:for => "reader_session_login"}
-        = t('reader_extension.login_or_email')
+    %p{ :class => @reader_session.errors.on(:email) ? 'haserror' : '' }
+      %label{:for => "reader_session_email"}
+        = t('reader_extension.nickname_or_email')
       %br
-      = f.text_field :login, :class => 'login' 
+      = f.text_field :email, :class => 'login' 
         
     %p{ :class => @reader_session.errors.on(:password) ? 'haserror' : '' }
       %label{:for => "reader_session_password"}
