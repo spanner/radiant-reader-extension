@@ -29,13 +29,6 @@
       %br
       %span.formnote= t('reader_extension.form_notes.account.email')
 
-  %p
-    = f.label :login, nil, :class => 'optional'
-    %br
-    = f.text_field :login, :class => 'standard'
-    %br
-    %span.formnote= t('reader_extension.form_notes.account.login')
-
   - if reader.new_record?
     %p
       = f.label :password, nil, :class => 'required'

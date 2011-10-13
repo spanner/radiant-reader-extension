@@ -27,7 +27,6 @@ module ReaderUser
     def update_with(att)
       self.skip_reader_update = true
       self.confirm_password = false
-      p "updating user attributes with #{att.inspect}"
       self.update_attributes(att)
       self.skip_reader_update = false
     end

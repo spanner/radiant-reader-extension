@@ -5,7 +5,7 @@ require 'vcard'
 require "fastercsv"
 
 class Reader < ActiveRecord::Base
-  @@user_columns = %w{name email login created_at password password_confirmation notes}
+  @@user_columns = %w{name email created_at password password_confirmation notes}
   cattr_accessor :user_columns
   cattr_accessor :current
   attr_accessor :email_field, :newly_activated, :skip_user_update
@@ -32,11 +32,11 @@ class Reader < ActiveRecord::Base
   before_validation :combine_names
 
   validates_presence_of :name, :forename, :surname, :email
+  validates_uniqueness_of :nickname, :allow_blank => true
   validates_length_of :name, :forename, :surname, :maximum => 100, :allow_nil => false
   validates_length_of :password, :minimum => 5, :allow_nil => false, :unless => :existing_reader_keeping_password?
   # validates_format_of :password, :with => /[^A-Za-z]/, :unless => :existing_reader_keeping_password?  # we have to match radiant so that users can log in both ways
   validates_confirmation_of :password, :unless => :existing_reader_keeping_password?
-  validates_uniqueness_of :login, :allow_blank => true
   validate :email_must_not_be_in_use
 
   include RFC822
@@ -67,8 +67,8 @@ class Reader < ActiveRecord::Base
     }
   }
 
-  def self.find_by_login_or_email(login_or_email)
-    reader = find(:first, :conditions => ["login = ? OR email = ?", login_or_email, login_or_email])
+  def self.find_by_nickname_or_email(nickname_or_email)
+    reader = find(:first, :conditions => ["nickname = ? OR email = ?", nickname_or_email, nickname_or_email])
   end
   
   def self.for_user(user)
@@ -325,7 +325,6 @@ private
     if att['password']
       att["clear_password"] = att["password_confirmation"] = att["password"]
     end
-    p "updating reader attributes with #{att.inspect}"
     self.update_attributes(att)
     self.skip_user_update = false
   end

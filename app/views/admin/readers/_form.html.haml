@@ -5,26 +5,24 @@
   = render_region :form_top, :locals => {:f => f}
   
   - render_region :form, :locals => {:f => f} do |form|
-    - form.edit_name do
+    - form.name do
       %p
-        = f.label :name, t('reader_extension.name') 
-        = f.text_field :name, :class => "textbox activate", :size => 32, :maxlength => 100 
+        = f.label :forename
+        = f.text_field :forename, :class => "textbox activate", :size => 32, :maxlength => 100 
+      %p
+        = f.label :surname
+        = f.text_field :surname, :class => "textbox activate", :size => 32, :maxlength => 100 
     
     - form.edit_email do
       %p
-        = f.label :email, t('reader_extension.email_address') , :class => "optional"
+        = f.label :email
         = f.text_field "email", :class => 'textbox', :size => 32, :maxlength => 255
 
-    - form.edit_username do
+    - form.edit_nickname do
       %p
-        = f.label :login, t('reader_extension.username') , :class => "optional"
+        = f.label :nickname
         = f.text_field "login", :class => 'textbox', :size => 32, :maxlength => 255
-    
-    - form.edit_readername do
-      %p
-        = f.label :login, t('reader_extension.readername') 
-        = f.text_field "login", :class => "textbox", :size => 32, :maxlength => 40 
-    
+        
     - form.edit_password do
       = render "password_fields", :f => f
     

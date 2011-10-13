@@ -15,7 +15,6 @@
           %th= t('reader_extension.honorific')
         %th= t('reader_extension.full_name')
         %th= t('reader_extension.email')
-        %th= t('reader_extension.optional_login')
         %th= t('reader_extension.optional_phone')
     %tbody
       - i = 0
@@ -32,8 +31,6 @@
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email)
             %td 
-              = text_field_tag "reader_#{i}[login]", reader.login, :class => "preview#{ ' with_error' if reader.errors.on(:login)}", :title => reader.errors.on(:login)
-            %td 
               = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone)
         - else
           %tr.invite
@@ -46,8 +43,6 @@
               = text_field_tag "reader_#{i}[name]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name), :disabled => true
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email), :disabled => true
-            %td 
-              = text_field_tag "reader_#{i}[login]", reader.login, :class => "preview#{ ' with_error' if reader.errors.on(:login)}", :title => reader.errors.on(:login), :disabled => true
             %td 
               = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone), :disabled => true
         - i = i + 1

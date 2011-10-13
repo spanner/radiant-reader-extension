@@ -33,7 +33,7 @@
                 = link_to gravatar_for(reader, {:size => 32}, {:class => 'avatar avatar_32x32'}), edit_admin_reader_url(reader)
                 = link_to reader.preferred_name, edit_admin_reader_url(reader), :class => reader.trusted? ? '' : 'untrusted'
                 %span.info
-                  = "#{reader.login}"
+                  = "#{reader.nickname}"
                 - unless reader.notes.blank?
                   %p.admin_notes
                     %strong

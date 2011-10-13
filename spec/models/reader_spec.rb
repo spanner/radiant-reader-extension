@@ -15,7 +15,7 @@ describe Reader do
   
   describe "on validation" do
     before do
-      @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
+      @reader = Reader.new :name => "Test Reader", :email => 'test@spanner.org', :nickname => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
       @reader.should be_valid
     end
     
@@ -48,16 +48,16 @@ describe Reader do
       @reader.should_not be_valid
     end
   
-    it "should require a unique login" do
-      @reader.login = @existing_reader.login
+    it "should require a unique nickname" do
+      @reader.nickname = @existing_reader.nickname
       @reader.should_not be_valid
-      @reader.errors.on(:login).should_not be_empty
+      @reader.errors.on(:nickname).should_not be_empty
     end
   end
   
   describe "on creation" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :nickname => 'test', :password => 'passw0rd', :password_confirmation => 'passw0rd'
     end
       
     it 'should await activation' do
@@ -81,11 +81,11 @@ describe Reader do
     it "should create a matching reader if necessary" do
       user = users(:admin)
       reader = Reader.for_user(user)
-      [:name, :email, :login, :created_at, :notes].each do |att|
+      [:name, :email, :created_at, :notes].each do |att|
         reader.send(att).should == user.send(att)
       end
       reader.crypted_password.should == user.password
-      ReaderSession.new(:login => 'admin', :password => 'password').should be_valid
+      ReaderSession.new(:email => user.email, :password => 'password').should be_valid
       reader.is_user?.should be_true
       reader.is_admin?.should be_true
     end
@@ -122,7 +122,7 @@ describe Reader do
   
   describe "on activation" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'another_login', :password => 'passw0rd', :password_confirmation => 'passw0rd', :trusted => 1
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :nickname => 'another_nickname', :password => 'passw0rd', :password_confirmation => 'passw0rd', :trusted => 1
     end
     
     it 'should be retrieved by id and activation code' do
@@ -143,20 +143,20 @@ describe Reader do
   
   describe "on login" do
     before do
-      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :login => 'test', :password => 'h00haa', :password_confirmation => 'h00haa'
+      @reader = Reader.create :name => "Test Reader", :email => 'test@spanner.org', :nickname => 'test', :password => 'h00haa', :password_confirmation => 'h00haa'
       @reader.activate!
     end
     
     it 'should authenticate' do
-      ReaderSession.new(:login => 'test', :password => 'h00haa').should be_valid
+      ReaderSession.new(:email => 'test@spanner.org', :password => 'h00haa').should be_valid
     end
   
     it 'should not authenticate with bad password' do
-      ReaderSession.new(:login => 'test', :password => 'corcovado').should_not be_valid
+      ReaderSession.new(:email => 'test@spanner.org', :password => 'corcovado').should_not be_valid
     end
   
     it 'should not authenticate if it does not exist' do
-      ReaderSession.new(:login => 'loch ness monster', :password => 'blotto').should_not be_valid
+      ReaderSession.new(:email => 'loch ness monster', :password => 'blotto').should_not be_valid
     end
   end
 end

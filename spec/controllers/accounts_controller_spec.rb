@@ -180,7 +180,7 @@ describe AccountsController do
     describe "that does not validate" do
       before do
         login_as_reader(:normal)
-        put :update, {:id => reader_id(:normal), :reader => {:login => readers(:visible).login}}
+        put :update, {:id => reader_id(:normal), :reader => {:nickname => readers(:visible).nickname}}
       end
 
       it "should re-render the edit form" do 

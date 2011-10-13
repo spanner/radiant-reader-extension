@@ -22,7 +22,7 @@ describe "Reader Tags" do
       it { should render(%{<r:reader:name />}).as(person.name) }
       it { should render(%{<r:if_reader>hello</r:if_reader>}).as('hello') }
       it { should render(%{<r:unless_reader>hello</r:unless_reader>}).as('') }
-      [:name, :forename, :email, :description, :login].each { |field| it { should render(%{<r:reader:#{field} id="#{person.id}" />}).as(person.send(field)) } }
+      [:name, :nickname, :forename, :surname, :preferred_name, :email, :description].each { |field| it { should render(%{<r:reader:#{field} id="#{person.id}" />}).as(person.send(field)) } }
     end
 
     describe "on an uncached page" do
@@ -41,7 +41,7 @@ describe "Reader Tags" do
       it { should render(%{<r:reader:name />}).as('') }
       it { should render(%{<r:reader:welcome />}).as('') }
       it { should render(%{<r:reader_welcome />}).as(%{<div class="remote_controls"></div>}) }
-      [:name, :forename, :email, :description, :login].each { |field| it { should render(%{<r:reader id="#{another.id}"><r:#{field} /></r:reader>}).as(another.send(field)) } }
+      [:name, :nickname, :forename, :surname, :preferred_name, :email, :description].each { |field| it { should render(%{<r:reader id="#{another.id}"><r:#{field} /></r:reader>}).as(another.send(field)) } }
     end
   end
 

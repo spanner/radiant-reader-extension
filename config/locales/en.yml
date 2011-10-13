@@ -211,7 +211,7 @@ en:
         login: "you can always use your email address instead"
         mobile: "without country code"
         name: ""
-        nickname: "... but if you would rather we display a nickname, please enter it here"
+        nickname: "... but if you would rather we display a nickname, please enter it here. You can also log in with this name."
         new_password: "at least six characters, please, and with at least one non-letter character"
         phone: "with area code but no country code"
         post_country: "Please choose from the list"

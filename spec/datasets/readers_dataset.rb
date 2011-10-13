@@ -71,7 +71,7 @@ From <r:sender:name />
       create_model :reader, name.symbolize, { 
         :name => name,
         :email => "#{name}@spanner.org",
-        :login => name.downcase,
+        :nickname => name,
         :activated_at => Time.now - 1.week,
         :password_salt => "golly",
         :password => 'passw0rd',
@@ -107,9 +107,6 @@ From <r:sender:name />
         :name => name
       }.merge(attributes)
     end
-
-
-
 
     def login_as_reader(reader)
       activate_authlogic

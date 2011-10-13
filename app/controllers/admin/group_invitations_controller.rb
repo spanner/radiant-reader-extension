@@ -58,21 +58,13 @@ private
       csv = line.collect {|value| value ? value.gsub(/^ */, '').chomp : ''}
       input = {}
       input[:honorific] = csv.shift if Radiant::Config['reader.show_honorifics?']
-      [:name, :email, :login, :phone].each {|field| input[field] = csv.shift}
+      [:name, :email, :phone].each {|field| input[field] = csv.shift}
       r = Reader.find_by_email(input[:email]) || Reader.new(input)
-      r.create_password!    #only for validation purposes: not saved not passed through
-      r.login = generate_login(input[:name]) if r.login.blank?
-      r.valid?    # so that errors can be shown on the confirmation form
+      r.create_password!    # only for validation purposes: not saved nor passed through
+      r.valid?              # so that errors can be shown on the confirmation form
       readers << r
     end
     readers
-  end
-
-  def generate_login(name)
-    names = name.split
-    initials = names.map {|n| n.slice(0,1)}
-    initials.pop
-    initials.push(names.last).join('_').downcase
   end
 
 end
