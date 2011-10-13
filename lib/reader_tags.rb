@@ -111,19 +111,20 @@ module ReaderTags
       %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
-        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => tag.locals.reader.name)}</span> }
-        links = []
+        welcome = %{<span class="greeting">#{I18n.t('reader_extension.navigation.greeting', :name => tag.locals.reader.name)}</span>. }
         if tag.locals.reader.activated?
-          links << %{<a href="#{reader_dashboard_url}">#{I18n.t('reader_extension.navigation.dashboard')}</a>}
-          links << %{<a href="#{reader_index_url}">#{I18n.t('reader_extension.navigation.directory')}</a>}
-          links << %{<a href="#{reader_account_url}">#{I18n.t('reader_extension.navigation.account')}</a>}
-          links << %{<a href="#{reader_edit_profile_url}">#{I18n.t('reader_extension.navigation.profile')}</a>}
-          links << %{<a href="/admin">#{I18n.t('reader_extension.navigation.admin')}</a>} if tag.locals.reader.is_user?
-          links << %{<a href="#{reader_logout_path}">#{I18n.t('reader_extension.navigation.log_out')}</a>}
+          welcome << %{
+#{I18n.t('reader_extension.not_you')} <a href="#{reader_logout_path}">#{I18n.t('reader_extension.navigation.log_out')}</a>.
+<br />
+<a href="#{reader_dashboard_url}">#{I18n.t('reader_extension.navigation.dashboard')}</a> |
+<a href="#{reader_index_url}">#{I18n.t('reader_extension.navigation.directory')}</a> |
+<a href="#{reader_account_url}">#{I18n.t('reader_extension.navigation.account')}</a> |
+<a href="#{reader_edit_profile_url}">#{I18n.t('reader_extension.navigation.profile')}</a>
+        }
         else
           welcome << I18n.t('reader_extension.navigation.activate')
         end
-        %{<div class="controls"><p>} + welcome + '<br />' + links.join(%{<span class="separator"> | </span>}) + %{</p></div>}
+        %{<div class="controls"><p>} + welcome + %{</p></div>}
       elsif Radiant::Config['reader.allow_registration?']
         %{<div class="controls"><p>#{I18n.t('reader_extension.navigation.welcome_please_log_in', :login_url => reader_login_url, :register_url => new_reader_url)}</p></div>}
       end

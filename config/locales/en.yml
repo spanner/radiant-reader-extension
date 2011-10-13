@@ -300,6 +300,7 @@ en:
     no_postal_address: "no address"
     nobody_to_list: "There is nobody to display here."
     none: "none"
+    not_you: "Not you?"
     notes: "notes"
     optional_login: "[login]"
     optional_phone: "[phone]"
