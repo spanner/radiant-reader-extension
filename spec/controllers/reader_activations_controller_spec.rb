@@ -27,6 +27,24 @@ describe ReaderActivationsController do
     end
   end
 
+  describe "with a homed group member" do
+    before do
+      @newreader = readers(:homed)
+      put :update, :id => @newreader.id, :activation_code => @newreader.perishable_token
+      @reader = Reader.find_by_name('Homed')
+    end
+
+    it "should activate the reader" do
+      @reader.activated?.should be_true
+      @reader.activated_at.should be_close((Time.now).utc, 1.minute)
+    end
+
+    it "should redirect to the right group home page" do
+      response.should be_redirect
+      response.should redirect_to(pages(:parent).path)
+    end
+  end
+
   describe "with an incorrect activation" do
     before do
       @newreader = readers(:inactive)

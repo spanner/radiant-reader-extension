@@ -13,6 +13,7 @@ class ReadersDataset < Dataset::Base
     create_reader "Ungrouped"
     create_reader "User", :user_id => user_id(:existing)
     create_reader "Inactive", :activated_at => nil
+    create_reader "Homed", :activated_at => nil
 
     create_group "Normal"
     create_group "Special"
@@ -58,6 +59,7 @@ From <r:sender:name />
     admit_to_group :normal, [readers(:normal), readers(:inactive)] 
     admit_to_group :special, [readers(:another)] 
     admit_to_group :subgroup, [readers(:normal), readers(:another)] 
+    admit_to_group :homed, [readers(:homed)] 
 
     restrict_to_group :homed, [pages(:parent), pages(:childless)]
     restrict_to_group :special, [pages(:news)]

@@ -9,8 +9,9 @@ class ReaderActivationsController < ReaderActionController
   radiant_layout { |controller| Radiant::Config['reader.layout'] }
 
   # this is just fake REST: we're actually working on the reader, not an activation object.
-  # .show sends out an activation message if we can identify the current reader
-  # .update activates the reader, if the token is correct
+  # .new sends out an activation message, if we can identify the current reader
+  # .update updates the reader, if the supplied token and reader id match
+  # .show displays the activation in progress, ie it says 'check your email'
 
   def show
     expires_now
