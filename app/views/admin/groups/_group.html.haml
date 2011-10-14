@@ -2,7 +2,7 @@
   - render_region :tbody do |tbody|
     - tbody.name_cell do
       %td.name{:style => "padding-left: #{9 + (24 * level)}px;"}
-        = link_to image('group', :alt => '') + ' ' + group.name, admin_group_url(group)
+        = link_to image('group', :alt => '', :class => 'gravatar') + ' ' + group.name, admin_group_url(group)
         %br
         %span.notes
           = group.description

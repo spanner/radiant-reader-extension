@@ -45,9 +45,9 @@ module MessageTags
     tag.expand
   end
 
-  [:name, :forename, :surname, :email, :description, :login].each do |field|
+  [:name, :forename, :nickname, :preferred_name, :preferred_informal_name, :surname, :email, :description, :login].each do |field|
     desc %{
-      Only for use in email messages. Displays the #{field} field of the reader currently being emailed.
+      Only for use in email messages. Displays the #{field} of the reader currently being emailed.
       <pre><code><r:recipient:#{field} /></code></pre>
     }
     tag "recipient:#{field}" do |tag|
@@ -95,6 +95,34 @@ module MessageTags
   }
   tag "recipient:edit_profile_url" do |tag|
     reader_edit_profile_url(:host => @mailer_vars[:@host])
+  end
+
+  desc %{
+    Expands if the addressed reader has activated his or her account. Only for use in email messages. 
+  }
+  tag "recipient:if_activated" do |tag|
+    tag.expand if tag.locals.recipient.activated?
+  end
+
+  desc %{
+    Expands if the addressed reader has not activated his or her account. Only for use in email messages. 
+  }
+  tag "recipient:unless_activated" do |tag|
+    tag.expand unless tag.locals.recipient.activated?
+  end
+
+  desc %{
+    Expands if a clear password is available for the addressed reader.
+  }
+  tag "recipient:if_clear_password" do |tag|
+    tag.expand unless tag.locals.recipient.clear_password.blank?
+  end
+
+  desc %{
+    Expands if no clear password is available for the addressed reader.
+  }
+  tag "recipient:unless_clear_password" do |tag|
+    tag.expand if tag.locals.recipient.clear_password.blank?
   end
 
   desc %{

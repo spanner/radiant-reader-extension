@@ -153,6 +153,10 @@ class Reader < ActiveRecord::Base
   def preferred_name
     nickname? ? nickname : name
   end
+
+  def preferred_informal_name
+    nickname? ? nickname : forename
+  end
   
   def postal_address?
     !post_line1.blank? && !post_city.blank?
