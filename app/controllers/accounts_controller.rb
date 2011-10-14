@@ -104,7 +104,7 @@ protected
 
   def set_expiry
     if Radiant.config['directory.visibility'] == 'public'
-      expires_in 1.day
+      expires_in 1.day, :public => true, :private => false
     else
       expires_now
     end

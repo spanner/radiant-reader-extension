@@ -107,7 +107,7 @@ module ReaderTags
     <pre><code><r:reader_welcome /></code></pre>
   }
   tag "reader_welcome" do |tag|
-    if tag.locals.page.cache?
+    if tag.locals.page.cache? && !tag.locals.page.is_a?(RailsPage)
       %{<div class="remote_controls"></div>}
     else
       if tag.locals.reader = Reader.current
