@@ -12,10 +12,11 @@
       %tr
         %th
         - if Radiant::Config['reader.show_honorifics?']
-          %th= t('reader_extension.honorific')
-        %th= t('reader_extension.full_name')
-        %th= t('reader_extension.email')
-        %th= t('reader_extension.optional_phone')
+          %th= t('activerecord.attributes.reader.honorific')
+        %th= t('activerecord.attributes.reader.forename')
+        %th= t('activerecord.attributes.reader.surname')
+        %th= t('activerecord.attributes.reader.email')
+        %th= t('activerecord.attributes.reader.phone')
     %tbody
       - i = 0
       - @readers.each do |reader| 
@@ -27,7 +28,9 @@
               %td 
                 = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific)
             %td 
-              = text_field_tag "reader_#{i}[name]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name)
+              = text_field_tag "reader_#{i}[forename]", reader.forename, :class => "preview#{ ' with_error' if reader.errors.on(:forename)}", :title => reader.errors.on(:forename)
+            %td 
+              = text_field_tag "reader_#{i}[surname]", reader.surname, :class => "preview#{ ' with_error' if reader.errors.on(:surname)}", :title => reader.errors.on(:surname)
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email)
             %td 
@@ -40,7 +43,9 @@
               %td
                 = text_field_tag "reader_#{i}[honorific]", reader.honorific, :class => "preview#{ ' with_error' if reader.errors.on(:honorific)}", :title => reader.errors.on(:honorific), :disabled => true
             %td 
-              = text_field_tag "reader_#{i}[name]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:name)}", :title => reader.errors.on(:name), :disabled => true
+              = text_field_tag "reader_#{i}[forename]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:forename)}", :title => reader.errors.on(:forename), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[surname]", reader.preferred_name, :class => "preview#{ ' with_error' if reader.errors.on(:surname)}", :title => reader.errors.on(:surname), :disabled => true
             %td 
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email), :disabled => true
             %td 

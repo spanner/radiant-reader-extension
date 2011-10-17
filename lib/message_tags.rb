@@ -45,7 +45,7 @@ module MessageTags
     tag.expand
   end
 
-  [:name, :forename, :nickname, :preferred_name, :preferred_informal_name, :surname, :email, :description, :login].each do |field|
+  [:name, :forename, :nickname, :preferred_name, :preferred_informal_name, :surname, :email, :description].each do |field|
     desc %{
       Only for use in email messages. Displays the #{field} of the reader currently being emailed.
       <pre><code><r:recipient:#{field} /></code></pre>

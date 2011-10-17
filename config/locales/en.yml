@@ -30,7 +30,7 @@ en:
         postal_address: "Postal address"
         postcode: "Postcode"
         surname: "Surname"
-        unshareable: "Share none of this information"
+        unshareable: "Share none of this information with other users (note that you can omit any fields above)"
       message:
         body: "Message body"
         filter_id: "Filter"
@@ -251,6 +251,7 @@ en:
     is_free_and_quick: " is free and only takes a moment"
     joined_on: "Joined on"
     last_sent: "last sent"
+    listing_denied: "Details hidden"
     log_in: 'log in'
     log_in_or_register: "Please log in here. If you haven't already, you will need to <a href='/register'>register</a> first."
     log_out: "log out"

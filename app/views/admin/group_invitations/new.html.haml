@@ -13,7 +13,7 @@
           %span.formnote
             - if Radiant::Config['reader.show_honorifics?']
               title or rank, 
-            name, email, [phone]
+            forename, surname, email, [phone]
         = text_area_tag "readerlist", params[:readerlist], :class => "textarea", :style => "width: 100%; height: 240px;"
 
       %p.buttons
@@ -27,5 +27,5 @@
 - else
   %p
     = t('reader_extension.no_invitation_message')
-    = link_to image('plus') + ' ' + t("reader_extension.create_invitation_message"), new_admin_group_message_url(@group, :function => 'invitation'), :class => "action"
+    = link_to image('plus') + ' ' + t("reader_extension.create_invitation_message"), new_admin_group_message_url(@group, :function => 'group_invitation'), :class => "action"
   

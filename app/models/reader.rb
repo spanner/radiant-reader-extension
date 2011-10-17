@@ -285,6 +285,10 @@ class Reader < ActiveRecord::Base
     readers.map(&:vcard).join("\n")
   end
   
+  def send_group_invitation_message(group=nil)
+    send_functional_message('group_invitation', group)
+  end
+  
 private
 
   def combine_names
@@ -334,10 +338,6 @@ private
   
   def send_group_welcomes
     groups.each { |g| g.send_welcome_to(self) }
-  end
-
-  def send_group_invitation_message(group=nil)
-    send_functional_message('group_invitation', group)
   end
 
 end
