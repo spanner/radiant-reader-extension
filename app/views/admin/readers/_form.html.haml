@@ -16,12 +16,12 @@
     - form.edit_email do
       %p
         = f.label :email
-        = f.text_field "email", :class => 'textbox', :size => 32, :maxlength => 255
+        = f.text_field :email, :class => 'textbox', :size => 32, :maxlength => 255
 
     - form.edit_nickname do
       %p
         = f.label :nickname
-        = f.text_field "login", :class => 'textbox', :size => 32, :maxlength => 255
+        = f.text_field :nickname, :class => 'textbox', :size => 32, :maxlength => 255
         
     - form.edit_password do
       = render "password_fields", :f => f

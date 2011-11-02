@@ -73,7 +73,7 @@ module ReaderTags
     we are on an uncached page.
   }
   tag 'reader' do |tag|
-    tag.expand if get_reader(tag)
+    tag.expand if tag.locals.reader = get_reader(tag)
   end
 
   [:name, :forename, :surname, :nickname, :preferred_name, :preferred_informal_name, :email, :description, :login].each do |field|
@@ -178,7 +178,7 @@ module ReaderTags
 private
 
   def get_reader(tag)
-    tag.locals.reader ||= if tag.attr['id']
+    if tag.attr['id']
       Reader.find_by_id(tag.attr['id'].to_i)
     elsif tag.locals.page.respond_to? :reader
       tag.locals.page.reader
