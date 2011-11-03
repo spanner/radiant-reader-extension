@@ -54,6 +54,30 @@ module MessageTags
       tag.locals.recipient.send(field)
     end
   end
+  
+  desc %{
+    Displays the organisation recorded for the current recipient.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "recipient:organisation" do |tag|
+    tag.locals.recipient.post_organisation
+  end
+
+  desc %{
+    Expands if the current recipient has an organisation.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "recipient:if_organisation" do |tag|
+    tag.expand unless tag.locals.recipient.post_organisation.blank?
+  end
+  
+  desc %{
+    Expands unless the current reader has an organisation.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "recipient:unless_organisation" do |tag|
+    tag.expand if tag.locals.recipient.post_organisation.blank?
+  end
 
   desc %{
     Only for use in email messages. Displays the password of the reader currently being emailed, if we still have it.

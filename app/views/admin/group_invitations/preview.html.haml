@@ -17,6 +17,7 @@
         %th= t('activerecord.attributes.reader.surname')
         %th= t('activerecord.attributes.reader.email')
         %th= t('activerecord.attributes.reader.phone')
+        %th= t('activerecord.attributes.reader.post_organisation')
     %tbody
       - i = 0
       - @readers.each do |reader| 
@@ -35,6 +36,8 @@
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email)
             %td 
               = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone)
+            %td 
+              = text_field_tag "reader_#{i}[post_organisation]", reader.post_organisation, :class => "preview#{ ' with_error' if reader.errors.on(:post_organisation)}", :title => reader.errors.on(:post_organisation)
         - else
           %tr.invite
             %td
@@ -50,6 +53,8 @@
               = text_field_tag "reader_#{i}[email]", reader.email, :class => "preview#{ ' with_error' if reader.errors.on(:email)}", :title => reader.errors.on(:email), :disabled => true
             %td 
               = text_field_tag "reader_#{i}[phone]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:phone)}", :title => reader.errors.on(:phone), :disabled => true
+            %td 
+              = text_field_tag "reader_#{i}[post_organisation]", reader.phone, :class => "preview#{ ' with_error' if reader.errors.on(:post_organisation)}", :title => reader.errors.on(:post_organisation), :disabled => true
         - i = i + 1
 
   %p.buttons

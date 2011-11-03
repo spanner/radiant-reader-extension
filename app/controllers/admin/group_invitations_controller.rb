@@ -58,7 +58,7 @@ private
       csv = line.collect {|value| value ? value.gsub(/^ */, '').chomp : ''}
       input = {}
       input[:honorific] = csv.shift if Radiant::Config['reader.show_honorifics?']
-      [:forename, :surname, :email, :phone].each {|field| input[field] = csv.shift}
+      [:forename, :surname, :email, :phone, :post_organisation].each {|field| input[field] = csv.shift}
       r = Reader.find_by_email(input[:email]) || Reader.new(input)
       r.create_password!    # only for validation purposes: not saved nor passed through
       r.valid?              # so that errors can be shown on the confirmation form

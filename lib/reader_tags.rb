@@ -87,6 +87,30 @@ module ReaderTags
   end
   
   desc %{
+    Displays the organisation recorded for the current reader.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "reader:organisation" do |tag|
+    tag.locals.reader.post_organisation if tag.locals.reader
+  end
+
+  desc %{
+    Expands if the current reader has an organisation.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "reader:if_organisation" do |tag|
+    tag.expand unless tag.locals.reader.post_organisation.blank?
+  end
+
+  desc %{
+    Expands unless the current reader has an organisation.
+    <pre><code><r:reader:organisation /></code></pre>
+  }
+  tag "reader:unless_organisation" do |tag|
+    tag.expand if tag.locals.reader.post_organisation.blank?
+  end
+  
+  desc %{
     Displays the standard reader_welcome block, but only if a reader is present. For a block that shows an invitation to non-logged-in
     people, use @r:reader_welcome@
     
