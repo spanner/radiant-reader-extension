@@ -76,7 +76,7 @@ module ReaderTags
     tag.expand if tag.locals.reader = get_reader(tag)
   end
 
-  [:name, :forename, :surname, :nickname, :preferred_name, :preferred_informal_name, :email, :description, :login].each do |field|
+  [:name, :forename, :surname, :nickname, :preferred_name, :preferred_informal_name, :email, :description, :login, :honorific].each do |field|
     desc %{
       Displays the #{field} field of the current reader.
       <pre><code><r:reader:#{field} /></code></pre>

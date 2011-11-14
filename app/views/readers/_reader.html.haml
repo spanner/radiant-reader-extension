@@ -8,6 +8,9 @@
     %td.name
       %h3
         = link_to reader.preferred_name, reader_url(reader)
+        - if reader.preferred_name != reader.name
+          %span.note
+            = reader.name
     %td.email
       %p
         = mail_to reader.email, nil, :encode => 'hex', :replace_at => " #{t('reader_extension.at')} "
