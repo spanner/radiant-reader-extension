@@ -116,7 +116,7 @@ class Group < ActiveRecord::Base
   def self.define_retrieval_methods(classname)
     type_scope = "for_#{classname.downcase.pluralize}".intern
     Permission.send :named_scope, type_scope, :conditions => { :permitted_type => classname }
-    define_method("#{classname.downcase}_permissions") { self.inherited_permissions.send type_scope }
+    define_method("#{classname.downcase}_permissions") { self.permissions.send type_scope }
     define_method("#{classname.downcase.pluralize}") {
       ids = self.send("#{classname.to_s.downcase}_permissions".intern).map(&:permitted_id)
       classname.constantize.find_these(ids)

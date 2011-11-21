@@ -5,7 +5,7 @@
   = render_region :form_top, :locals => {:f => f}
   
   - render_region :form, :locals => {:f => f} do |form|
-    - form.name do
+    - form.edit_name do
       %p
         = f.label :forename
         = f.text_field :forename, :class => "textbox activate", :size => 32, :maxlength => 100 
@@ -26,6 +26,30 @@
     - form.edit_password do
       = render "password_fields", :f => f
     
+    - form.edit_phone do
+      %p
+        = f.label :phone
+        = f.text_field :phone, :class => 'textbox'
+      %p
+        = f.label :mobile
+        = f.text_field :mobile, :class => 'textbox'
+
+    - form.edit_address do
+      %p
+        = f.label :post_line1, t('activerecord.attributes.reader.postal_address')
+        = f.text_field :post_line1, :class => 'textbox'
+        %br
+        = f.text_field :post_line2, :class => 'textbox'
+      %p
+        = f.label :post_city
+        = f.text_field :post_city, :class => 'textbox'
+      %p
+        = f.label :post_province
+        = f.text_field :post_province, :class => 'textbox'
+      %p
+        = f.label :postcode
+        = f.text_field :postcode, :class => 'textbox'
+
     - form.edit_description do
       - if Radiant.config['reader.show_descriptions?']
         %p

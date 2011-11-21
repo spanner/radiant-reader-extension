@@ -86,8 +86,7 @@ From <r:sender:name />
       create_model :group, symbol, { 
         :name => name,
         :slug => name.downcase,
-        :description => "#{name} group",
-        :parent_id => @group_id
+        :description => "#{name} group"
       }.merge(attributes)
       if block_given?
         @group_id = group_id(symbol)

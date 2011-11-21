@@ -36,6 +36,8 @@ module ReaderTags
   end
   tag 'readers:each' do |tag|
     tag.locals.readers = get_readers(tag)
+    
+    Rails.logger.warn "readers:each: tlr has #{tag.locals.readers.size} readers"
     tag.render('reader_list', tag.attr.dup, &tag.block)
   end
 
@@ -73,7 +75,7 @@ module ReaderTags
     we are on an uncached page.
   }
   tag 'reader' do |tag|
-    tag.expand if tag.locals.reader = get_reader(tag)
+    tag.expand if tag.locals.reader ||= get_reader(tag)
   end
 
   [:name, :forename, :surname, :nickname, :preferred_name, :preferred_informal_name, :email, :description, :login, :honorific].each do |field|

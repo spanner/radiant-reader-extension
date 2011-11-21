@@ -280,6 +280,7 @@ en:
     message_preview_introduction: "This is a snapshot of the message that was delivered to you %{date}. If it contains instructions they may now be out of date."
     mistaken_access_error: "If you think that's a mistake, and that you should be allowed to do whatever it was you just tried to do, please contact your site administrator."
     must_be_empty: "must be empty"
+    name: "Name"
     name_and_login: "Name and Login"
     navigation:
       account: "Preferences"
