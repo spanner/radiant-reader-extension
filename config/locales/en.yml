@@ -153,7 +153,7 @@ en:
     create_message: "create message"
     create_new_message: "Send a new message"
     create_welcome: "create welcome"
-    csv_file: "CSV data"
+    csv_file: "csv data"
     dashboard:
       account: "Account settings"
       directory: "Directory"
@@ -185,7 +185,7 @@ en:
       vcard_link: "vcard"
     dont_fill: "Don't fill this in!"
     download_as: "Download as"
-    download_group_as: "Download the whole group as"
+    download_group_as: "You can download the whole group as"
     download_vcard: "Download vcard"
     edit_group: "edit group"
     edit_message: "Edit message"
@@ -319,6 +319,7 @@ en:
     optional_phone: "[phone]"
     or_edit_preferences: 'You can also <a href="%{url}">edit your account preferences</a>.'
     or_edit_profile: 'You can also <a href="%{url}">edit your profile</a> to add more information about yourself.'
+    or_individual_card: ' or click on an individual <img src="/images/furniture/vcard-16x16.png" /> to get their card.'
     other_messages: "Ad-hoc messages"
     page_access_explanation: "To restrict access to one or more groups, select them from the list below."
     page_not_public: "The page you have requested is not public. Please log in. If your account has the necessary permission you will be taken straight there."

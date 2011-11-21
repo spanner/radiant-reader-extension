@@ -7,7 +7,7 @@
       = t('reader_extension.edit_message')
 
   - main.edit_form do
-    - form_for :message, @message, :url => admin_message_url(@message), :html => {:id => 'message_form', :method => 'put'} do |f|
+    - form_for :message, @message, :url => admin_message_path(@message), :html => {:id => 'message_form', :method => 'put'} do |f|
       = render :partial => 'form', :object => f
 
   - main.edit_popups do

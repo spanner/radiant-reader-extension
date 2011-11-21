@@ -48,7 +48,7 @@
           
     - delivery.options do
       - unless @message.administrative?
-        - form_for :message, @message, :url => deliver_admin_message_url(@message), :html => {"data-onsubmit_status"=>"Sending email messages&#8230;"} do |f|
+        - form_for :message, @message, :url => deliver_admin_message_path(@message), :html => {"data-onsubmit_status"=>"Sending email messages&#8230;"} do |f|
           %h3
             = t("reader_extension.send_to").titlecase + ":"
           .radio_group

@@ -20,13 +20,15 @@
 
 = render :partial => 'shared/standard_reader_parts'
 
-- content_for :main do
+- content_for :introduction do
   %p
     = t('reader_extension.download_group_as')
     = link_to t("reader_extension.csv_file"), group_url(@group, :format => :csv), :class => 'csv'
     = t('or')
-    = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcard'
+    = link_to t("reader_extension.vcard_file"), group_url(@group, :format => :vcard), :class => 'vcards'
+    = t('reader_extension.or_individual_card')
 
+- content_for :main do
   - if @group.children.any?
     %h2
       = t('reader_extension.subgroups', :name => @group.name)
