@@ -114,7 +114,7 @@ describe ReaderPage do
       it "should allow access only to groups to which the reader belongs" do
         lambda { Page.find_by_path("/directory/normal") }.should_not raise_error
         lambda { Page.find_by_path("/directory/special") }.should raise_error(ReaderError::AccessDenied)
-        Page.find_by_path("/directory").groups.should =~ readers(:normal).all_visible_groups
+        Page.find_by_path("/directory").groups.should =~ readers(:normal).groups
       end
 
     end

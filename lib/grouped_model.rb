@@ -54,7 +54,7 @@ module GroupedModel
       named_scope :visible_to, lambda { |reader| 
         conditions = "pp.group_id IS NULL"
         if reader && reader.is_grouped?
-          ids = reader.all_group_ids
+          ids = reader.group_ids
           conditions = ["#{conditions} OR pp.group_id IS NULL OR pp.group_id IN(#{ids.map{"?"}.join(',')})", *ids]
         end
         {
@@ -94,11 +94,10 @@ module GroupedModel
       end
       
       named_scope :belonging_to, lambda { |group|
-        group_ids = group.subtree_ids
         {
           :joins => "INNER JOIN permissions as pp on pp.permitted_id = #{self.table_name}.id AND pp.permitted_type = '#{self.to_s}'", 
           :group => column_names.map { |n| self.table_name + '.' + n }.join(','),
-          :conditions => ["pp.group_id IN (#{group_ids.map{"?"}.join(',')})", *group_ids],
+          :conditions => ["pp.group_id = ?", group.id],
           :readonly => false
         }
       }
@@ -114,49 +113,31 @@ module GroupedModel
 
   module GroupedInstanceMethods
 
-    # The list of groups that is allowed to see this object. This will include the groups directly
-    # associated and their descendant subgroups.
-    #
-    def permitted_groups
-      if permitted_group_ids.any?
-        Group.find(permitted_group_ids)
-      else
-        []
-      end
-    end
-
-    def permitted_group_ids
-      # in GroupedPage this is chained to include groups inherited from ancestor pages
-      # while here the subtrees provide inheritance from ancestor groups.
-      #
-      groups.map(&:subtree_ids).flatten.uniq
-    end
-
     def visible_to?(reader)
-      return true if self.permitted_groups.empty?
+      return true if self.groups.empty?
       return false if reader.nil?
       return true if reader.is_admin?
-      return (reader.groups & self.permitted_groups).any?
+      return (reader.groups & self.groups).any?
     end
 
     def group
-      if self.permitted_groups.length == 1
-        self.permitted_groups.first
+      if self.groups.length == 1
+        self.groups.first
       else
         nil
       end
     end
     
     def visible?
-      permitted_groups.empty?
+      groups.empty?
     end
 
     def permitted_readers
-      permitted_groups.any? ? Reader.in_groups(permitted_groups) : Reader.scoped({})
+      groups.any? ? Reader.in_groups(groups) : Reader.scoped({})
     end
     
     def has_group?(group)
-      return self.permitted_groups.include?(group)
+      return self.groups.include?(group)
     end
     
     def permit(group)

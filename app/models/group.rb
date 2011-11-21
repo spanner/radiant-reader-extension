@@ -2,7 +2,6 @@ require 'ancestry'
 
 class Group < ActiveRecord::Base
 
-  has_ancestry
   belongs_to :leader, :class_name => 'Reader'
   belongs_to :created_by, :class_name => 'User'
   belongs_to :updated_by, :class_name => 'User'
@@ -66,7 +65,7 @@ class Group < ActiveRecord::Base
     when 'private'
       reader ? self.all : self.none
     when 'grouped'
-      (reader && reader.is_grouped?) ? reader.all_visible_groups : self.none
+      (reader && reader.is_grouped?) ? reader.groups : self.none
     else
       self.none
     end
@@ -75,24 +74,11 @@ class Group < ActiveRecord::Base
   def visible_to?(reader=nil)
     self.class.visible_to(reader).map(&:id).include? self.id
   end
-
-  def tree
-    # can't quite do this in one step, but we can return a scope
-    self.root.subtree
-  end
-  
-  def tree_ids
-    self.root.subtree_ids
-  end
   
   def members
-    Reader.in_groups(subtree)
+    readers
   end
   
-  def inherited_permissions
-    Permission.to_groups(path)
-  end
-    
   def url
     homepage.url if homepage
   end

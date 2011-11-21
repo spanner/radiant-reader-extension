@@ -24,6 +24,4 @@
         = link_to_unless_current image('plus') + ' ' + t('reader_extension.add_subgroup'), new_admin_group_url(:parent_id => group.id), :class => 'action'
         = link_to_unless_current image('delta') + ' ' + t('reader_extension.edit_group'), edit_admin_group_url(group), :class => 'action'
         = link_to_unless_current image('minus') + ' ' + t('reader_extension.delete_group'), admin_group_url(group), :method => 'delete', :confirm => t("reader_extension.really_delete_group", :name => group.name), :class => 'action'
-
-= render :partial => 'group', :collection => group.children, :locals => {:level => level+1}
   

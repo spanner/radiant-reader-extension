@@ -10,7 +10,3 @@
   - if group.description
     %p
       = group.description
-      
-  - if with_children && group.children.any?
-    .indented
-      = render :partial => 'groups/group', :collection => group.children

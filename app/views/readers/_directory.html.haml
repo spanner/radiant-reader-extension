@@ -1,27 +1,30 @@
 - case Radiant.config['reader.directory_visibility']
   - when 'public'
-    - if @groups.any?
-      %h2
-        = t('reader_extension.groups').titlecase
-      = render :partial => 'groups/group', :collection => @groups
+    .groups
+      - if @groups.any?
+        %h2
+          = t('reader_extension.groups').titlecase
+        = render :partial => 'groups/group', :collection => @groups
 
-    - if @readers.any?
-      %h2
-        = t('reader_extension.people').titlecase
-      = render :partial => 'readers/list', :locals => {:readers => @readers}
+    .readers
+      - if @readers.any?
+        %h2
+          = t('reader_extension.people').titlecase
+        = render :partial => 'readers/list', :locals => {:readers => @readers}
 
   - when 'grouped'
-    %h2
-      = t('reader_extension.your_groups')
-    - if @groups.any
-      = render :partial => 'groups/group', :collection => @groups
-    - else
-      = t('reader_extension.no_groups')
-
-    - if @readers.any?
+    .groups
       %h2
-        = t('reader_extension.your_group_members')
-      = render :partial => 'readers/list', :locals => {:readers => @readers}
+        = t('reader_extension.your_groups')
+      - if @groups.any
+        = render :partial => 'groups/group', :collection => @groups
+      - else
+        = t('reader_extension.no_groups')
+    .readers
+      - if @readers.any?
+        %h2
+          = t('reader_extension.your_group_members')
+        = render :partial => 'readers/list', :locals => {:readers => @readers}
 
   - else
     = t('reader_extension.no_directory')

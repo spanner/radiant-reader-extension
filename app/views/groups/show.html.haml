@@ -3,9 +3,6 @@
   = t('reader_extension.separator')
   = link_to t('reader_extension.groups').titlecase, groups_url
   = t('reader_extension.separator')
-  - if @group.parent
-    = link_to @group.parent.name, group_url(@group.parent)
-    = t('reader_extension.separator')
 
 - content_for :title do
   = @group.name
@@ -29,11 +26,6 @@
     = t('reader_extension.or_individual_card')
 
 - content_for :main do
-  - if @group.children.any?
-    %h2
-      = t('reader_extension.subgroups', :name => @group.name)
-    = render :partial => 'groups/group', :collection => @group.children
-
   - if @group.memberships.any?
     %h2
       = t('reader_extension.group_members')

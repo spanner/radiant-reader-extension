@@ -5,7 +5,7 @@ module GroupedPage
       has_groups
       has_one :homegroup, :foreign_key => 'homepage_id', :class_name => 'Group'
       include InstanceMethods
-      alias_method_chain :permitted_group_ids, :inheritance
+      alias_method_chain :group_ids, :inheritance
       alias_method_chain :cache?, :restrictions
     }
   end
@@ -23,15 +23,15 @@ module GroupedPage
       self.ancestors.map(&:group_ids).flatten.uniq
     end
 
-    def permitted_group_ids_with_inheritance
-      (permitted_group_ids_without_inheritance + inherited_group_ids).flatten.uniq
+    def group_ids_with_inheritance
+      (group_ids_without_inheritance + inherited_group_ids).flatten.uniq
     end
 
     # this is regrettably expensive and I plan to replace it with a 
-    # private? method that would be cascaded on page update
+    # private? setter that would be cascaded on page update
     #
     def restricted?
-      self.permitted_groups.any?
+      self.groups.any?
     end
     
     def cache_with_restrictions?

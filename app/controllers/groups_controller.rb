@@ -24,7 +24,7 @@ class GroupsController < ReaderActionController
 private
   
   def get_group_or_groups
-    @groups = current_reader.all_visible_groups
+    @groups = current_reader.groups
     @group = Group.find(params[:id]) if params[:id]
   end
 

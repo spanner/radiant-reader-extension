@@ -7,10 +7,10 @@
       = link_to gravatar_for(reader, {:size => 18}, {:class => 'gravatar'}), reader_url(reader), :title => reader.preferred_name
     %td.name
       %h3
-        = link_to reader.preferred_name, reader_url(reader)
+        = link_to reader.name, reader_url(reader)
         - if reader.preferred_name != reader.name
           %span.note
-            = reader.name
+            = reader.preferred_name
     %td.email
       %p
         = mail_to reader.email, nil, :encode => 'hex', :replace_at => " #{t('reader_extension.at')} "

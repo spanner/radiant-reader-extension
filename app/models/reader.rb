@@ -93,7 +93,7 @@ class Reader < ActiveRecord::Base
     when 'private'
       reader ? self.all : self.none
     when 'grouped'
-      reader ? self.in_groups(reader.all_visible_group_ids) : self.none
+      reader ? self.in_groups(reader.group_ids) : self.none
     else
       self.none
     end
@@ -103,38 +103,12 @@ class Reader < ActiveRecord::Base
     (reader && (reader == self)) || self.class.visible_to(reader).map(&:id).include?(self.id)
   end
   
-  # returns a useful list of the groups that this person is in and all their ancestor groups.
-  # for most authorisation purposes, that's the set of groups of which this reader is considered a member.
-  # 
-  # Returns a scope.
-  #
-  def all_groups
-    Group.find_these(all_group_ids)
-  end
-  
-  def all_group_ids
-    self.groups.map(&:path_ids).flatten.uniq
-  end
-  
-  # Returns a list of the groups that this person is in along with their whole tree of super and subgroups.
-  # That's the list of groups that this person can see. It is larger than the list of groups that confer permission:
-  # this reader can see subgroups of his own groups in the directory, but he can't see their pages.
-  #
-  def all_visible_groups
-    Group.find_these(all_visible_group_ids)
-  end
-
-  def all_visible_group_ids
-    self.groups.map(&:tree_ids).flatten.uniq
-  end
-  
   def can_see? (this)
-    permitted_groups = this.permitted_groups
-    permitted_groups.empty? or in_any_of_these_groups?(permitted_groups)
+    this.groups.empty? or in_any_of_these_groups?(this.groups)
   end
     
   def in_any_of_these_groups? (grouplist)
-    (grouplist & all_groups).any?
+    (grouplist & groups).any?
   end
 
   def membership_of(group)

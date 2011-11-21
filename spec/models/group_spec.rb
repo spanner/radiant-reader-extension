@@ -49,45 +49,7 @@ describe Group do
       g.slug.should == 'testy-group'
     end
   end
-  
-  describe "in a hierarchy" do
-    it "should have parent and children relations" do
-      group = groups(:subgroup)
-      group.respond_to?(:parent).should be_true
-      group.respond_to?(:children).should be_true
-      group.children.should =~ [groups(:subsubgroup), groups(:anothersubsubgroup)]
-      group.parent.should == groups(:supergroup)
-    end
     
-    it "should have descendants and ancestors" do
-      groups(:subsubgroup).path.should == [groups(:supergroup), groups(:subgroup), groups(:subsubgroup)]
-      groups(:subsubgroup).root.should == groups(:supergroup)
-      groups(:supergroup).subtree.should =~ [groups(:supergroup), groups(:subgroup), groups(:subsubgroup), groups(:anothersubsubgroup)]
-    end
-
-    it "should have a root group" do
-      [:supergroup, :subgroup, :subsubgroup].each do |g|
-        groups(g).root.should == groups(:supergroup)
-      end
-    end
-
-    it "should inherit memberships from descendants" do
-      groups(:supergroup).members.should =~ [readers(:normal), readers(:another)]
-    end
-    
-    it "should not inherit memberships from ancestors" do
-      groups(:subsubgroup).members.should be_empty
-    end
-    
-    it "should inherit permissions from ancestors" do
-      groups(:subsubgroup).pages.should =~ [pages(:child), pages(:child_2)]
-    end
-
-    it "should not inherit permissions from descendants" do
-      groups(:supergroup).pages.should be_empty
-    end
-  end
-  
   describe "directory visibility" do
     describe "when directory is grouped" do
       before do
@@ -96,18 +58,6 @@ describe Group do
       
       it "should be visible to members" do
         groups(:subgroup).visible_to?(readers(:normal)).should be_true
-      end
-      
-      it "should be visible to members of ancestor groups" do
-        groups(:supergroup).visible_to?(readers(:normal)).should be_true
-      end
-      
-      it "should be visible to members of descendant groups" do
-        groups(:subsubgroup).visible_to?(readers(:normal)).should be_true
-      end
-      
-      it "should not be visible to members of groups outside the family" do
-        groups(:subgroup).visible_to?(readers(:inactive)).should be_false
       end
       
       it "should not be visible to readers without groups" do
