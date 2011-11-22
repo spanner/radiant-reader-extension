@@ -13,6 +13,7 @@ en:
         dob: "Date of birth"
         dob_secret: "Keep secret"
         description: "A but of text about yourself"
+        disabled: "Disable account (hides without deleting)"
         email: "Email address"
         forename: "Forename"
         honorific: "Title or rank"

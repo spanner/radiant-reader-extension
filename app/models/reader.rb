@@ -47,6 +47,8 @@ class Reader < ActiveRecord::Base
   named_scope :active, :conditions => "activated_at IS NOT NULL"
   named_scope :inactive, :conditions => "activated_at IS NULL"
   named_scope :imported, :conditions => "old_id IS NOT NULL"
+  named_scope :disabled, :conditions => "disabled = 1"
+  named_scope :enabled, :conditions => "disabled = 0"
 
   named_scope :except, lambda { |readers|
     readers = [readers].flatten.compact

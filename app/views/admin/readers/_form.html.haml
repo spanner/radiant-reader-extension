@@ -67,6 +67,9 @@
 
     - form.edit_notes do
       %p
+        = f.check_box :disabled
+        = f.label :disabled
+      %p
         = f.label :notes, t('reader_extension.notes'), :class => "optional"
         ~ f.text_area "notes", :size => "53x4", :class => "textarea"
   
