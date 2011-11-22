@@ -29,7 +29,7 @@ module ReaderAdminUI
         OpenStruct.new.tap do |reader|
           reader.edit = Radiant::AdminUI::RegionSet.new do |edit|
             edit.main.concat %w{edit_header edit_form}
-            edit.form.concat %w{edit_name edit_email edit_nickname edit_password reader_groups edit_address edit_phone edit_description edit_notes}
+            edit.form.concat %w{edit_name edit_email edit_nickname edit_password edit_dob reader_groups edit_address edit_phone edit_description edit_notes}
             edit.form_bottom.concat %w{edit_timestamp edit_buttons}
           end
           reader.index = Radiant::AdminUI::RegionSet.new do |index|
@@ -120,7 +120,7 @@ module ReaderAdminUI
         end
         account.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
           edit_profile.main.concat %w{preamble profile_form gravatar}
-          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_phone edit_mobile edit_address edit_shareability}
+          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_dob edit_phone edit_mobile edit_address edit_shareability}
           edit_profile.form_bottom.concat %w{edit_buttons}
         end
         account.new = account.edit

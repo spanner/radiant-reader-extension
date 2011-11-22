@@ -15,6 +15,18 @@
     - form.edit_name do
       = render :partial => 'edit_names', :locals => {:f => f}
 
+    - form.edit_dob do
+      - if Radiant.config['reader.show_dobs?']
+        %p
+          = f.label :dob, nil, :class => 'optional'
+          %br
+          %span.dateparts
+            = f.date_select :dob, :order => [:day, :month, :year], :start_year => Time.now.year - 100, :end_year => Time.now.year, :include_blank => true
+          = f.check_box :dob_secret
+          = f.label :dob_secret
+          %br
+          %span.formnote= t('reader_extension.form_notes.account.dob')
+
     - form.edit_phone do
       %p
         = f.label :phone, nil, :class => 'optional'

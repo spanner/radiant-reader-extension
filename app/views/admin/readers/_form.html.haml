@@ -26,6 +26,15 @@
     - form.edit_password do
       = render "password_fields", :f => f
     
+    - form.edit_dob do
+      %p
+        = f.label :dob
+        %br
+        = f.date_select :dob
+        %br
+        = f.check_box :dob_secret
+        = f.label :dob_secret
+
     - form.edit_phone do
       %p
         = f.label :phone

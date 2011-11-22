@@ -12,6 +12,7 @@ Radiant.config do |config|
     reader.define 'login_to', :default => "dashboard"
     reader.define 'show_honorifics?', :default => false
     reader.define 'show_descriptions?', :default => false
+    reader.define 'show_dobs?', :default => false
   end
   config.namespace('email') do |email|
     email.define 'layout', :select_from => lambda { Layout.all.map(&:name) }, :allow_blank => true

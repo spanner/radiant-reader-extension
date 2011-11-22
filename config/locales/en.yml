@@ -10,6 +10,8 @@ en:
         role: "Role"
         admin: "admin?"
       reader:
+        dob: "Date of birth"
+        dob_secret: "Keep secret"
         description: "A but of text about yourself"
         email: "Email address"
         forename: "Forename"
@@ -70,6 +72,7 @@ en:
       require_confirmation?: "Confirm email addresses"
       show_honorifics?: "Show honorifics"
       show_descriptions?: "Show biography"
+      show_dobs?: "Show dates of birth"
     email:
       address: "Message reply-to"
       layout: "Email layout"
@@ -210,6 +213,7 @@ en:
     form_notes:
       account:
         description: "This appears at the top of your profile page."
+        dob: "This is used for some calculations and might appear in your profile."
         email: "we will send activation instructions to this address"
         existing_password: "leave blank to keep present password. If changing, at least four characters."
         forename: "This is normally how we refer to you..."
