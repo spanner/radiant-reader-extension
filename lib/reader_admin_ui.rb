@@ -115,13 +115,11 @@ module ReaderAdminUI
         end
         account.edit = Radiant::AdminUI::RegionSet.new do |edit|
           edit.main.concat %w{preamble form gravatar}
-          edit.form.concat %w{edit_name edit_email edit_password}
-          edit.form_bottom.concat %w{edit_buttons}
+          edit.form.concat %w{edit_name edit_email edit_password buttons}
         end
         account.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
           edit_profile.main.concat %w{preamble profile_form gravatar}
-          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_dob edit_phone edit_mobile edit_address edit_shareability}
-          edit_profile.form_bottom.concat %w{edit_buttons}
+          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_dob edit_phone edit_mobile edit_address edit_shareability buttons}
         end
         account.new = account.edit
       end

@@ -90,9 +90,8 @@ class AccountsController < ReaderActionController
   end
 
   def update
-    @reader.attributes = params[:reader]
-    @reader.clear_password = params[:reader][:password] if params[:reader][:password]
-    if @reader.save
+    params[:reader][:clear_password] = params[:reader][:password] if params[:reader][:password]
+    if @reader.update_attributes(params[:reader])
       flash[:notice] = t('reader_extension.account_updated')
       redirect_to reader_dashboard_url
     else

@@ -18,6 +18,7 @@ class Reader < ActiveRecord::Base
   end
 
   belongs_to :user
+  before_validation :combine_names
   before_update :update_user
   
   belongs_to :created_by, :class_name => 'User'
@@ -27,8 +28,6 @@ class Reader < ActiveRecord::Base
   has_many :memberships
   has_many :groups, :through => :memberships, :uniq => true
   accepts_nested_attributes_for :memberships
-
-  before_validation :combine_names
 
   validates_presence_of :name, :forename, :surname, :email
   validates_uniqueness_of :nickname, :allow_blank => true
@@ -268,12 +267,15 @@ class Reader < ActiveRecord::Base
 private
 
   def combine_names
-    if self.name?
-      self.forename ||= self.name.split(/\s+/).first
-      self.surname ||= self.name.split(/\s+/).last
-    else
+    if self.forename_changed? || self.surname_changed?
       self.name = "#{self.forename} #{self.surname}"
+    elsif self.name_changed?
+      self.forename = self.name.split(/\s+/).first
+      self.surname = self.name.split(/\s+/).last
     end
+    self.forename = self.name.split(/\s+/).first unless self.forename?
+    self.surname = self.name.split(/\s+/).last unless self.surname?
+    self.name = "#{self.forename} #{self.surname}" unless self.name?
   end
 
   def email_must_not_be_in_use

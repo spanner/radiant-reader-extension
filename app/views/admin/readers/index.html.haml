@@ -26,7 +26,7 @@
               
     %tbody
       - @readers.each do |reader|
-        %tr
+        %tr{:class => reader.disabled? ? 'disabled' : 'active'}
           - render_region :tbody do |tbody|
             - tbody.title_cell do
               %td{:class => reader.activated? ? 'name activated' : 'name inactive'}

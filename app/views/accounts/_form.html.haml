@@ -67,9 +67,9 @@
     - form.edit_groups do
       = render :partial => 'choose_memberships'
 
-  - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
-    - form_bottom.edit_buttons do
+    - form.buttons do
       %p
         = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
         or 
         = link_to 'cancel', request.referer
+

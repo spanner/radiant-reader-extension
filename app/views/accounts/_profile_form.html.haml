@@ -86,9 +86,8 @@
         %br
         %span.formnote= t('reader_extension.form_notes.account.unshareable')
 
-    - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
-      - form_bottom.edit_buttons do
-        %p
-          = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
-          or 
-          = link_to 'cancel', request.referer
+    - form.buttons do
+      %p
+        = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
+        or 
+        = link_to 'cancel', request.referer
