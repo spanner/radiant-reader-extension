@@ -1,28 +1,30 @@
 (function($) { 
 
-	$.fn.rails_flash = function() { 
-		this.each(function() { 
-		  var self = $(this);
+  $.fn.rails_flash = function() { 
+    this.each(function() { 
+      var self = $(this);
       var closer = $('<a href="#" class="closer">x</a>').appendTo(self);
       closer.click( function (event) {
         event.preventDefault();
         self.fadeOut('fast');
       });
-		});
-		return this;
+    });
+    return this;
   };
 
-	$.fn.toggler = function() { 
-		this.each(function() { 
-		  var self = $(this);
-		  var toggling = $(self.attr('rel'));
+  $.fn.toggler = function() { 
+    this.each(function() { 
+      var self = $(this);
+      var toggling = $(self.attr('rel'));
       self.click( function (event) {
         event.preventDefault();
         toggling.toggle();
+        if (toggling.is(':visible')) self.text(self.text().replace('more', 'fewer'));
+        else self.text(self.text().replace('fewer', 'more'));
       });
-		});
-		return this;
-	};
+    });
+    return this;
+  };
 
   $.ajaxSetup({
     'beforeSend': function(xhr) {
@@ -38,18 +40,18 @@
       if (e.target) e.target.blur();
     } 
   }
-	
-	$.fn.fetch_remote_content = function() {
-		this.each(function() {
-		  var self = $(this);
-		  var url = self.attr('href');
-		  if (url) {
-  		  self.addClass('waiting');
+  
+  $.fn.fetch_remote_content = function() {
+    this.each(function() {
+      var self = $(this);
+      var url = self.attr('href');
+      if (url) {
+        self.addClass('waiting');
         $.get(url, function (result) { self.replaceWith($(result)); }, 'html');
-		  }
-		});
-		return this;
-	};
+      }
+    });
+    return this;
+  };
 
   /*
    * jQuery Color Animations
@@ -72,7 +74,7 @@
       Math.max(Math.min(parseInt((fx.pos * (fx.end[1] - fx.start[1])) + fx.start[1], 10), 255), 0),
       Math.max(Math.min(parseInt((fx.pos * (fx.end[2] - fx.start[2])) + fx.start[2], 10), 255), 0)
       ].join(",") + ")";
-    }
+    };
   });
 
   // Color Conversion functions from highlightFade

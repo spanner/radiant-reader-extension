@@ -1,30 +1,30 @@
-- if Radiant.config['reader.share_details?']
-  - reader ||= @reader
-  
+- reader ||= @reader
+
+%div.contact
   - if reader.unshareable?
     - if reader == current_reader
       %p.warning
         = t('reader_extension.you_are_not_shared')
   - else
-    %div.contact
-      %h3
-        = link_to reader.preferred_name, reader_url(reader, :format => :vcard), :class => 'vcard', :title => t('reader_extension.directory.vcard_link')
-      %ul
-        - if email = reader.email
+    %h3
+      = link_to reader.name, reader_url(reader, :format => :vcard), :class => 'vcard', :title => t('reader_extension.directory.vcard_link')
+      - if reader == current_reader
+        %span.note
+          = link_to t("reader_extension.edit_profile"), reader_edit_profile_url, :class => 'edit'
+    %ul
+      - if email = reader.email
+        %li
+          = t("reader_extension.directory.email") + ': '
+          = email_link email
+      - %w{phone mobile}.each do |field|
+        - if value = reader.send(field.to_sym)
           %li
-            = t("reader_extension.directory.email") + ': '
-            = email_link email
-        - %w{phone mobile}.each do |field|
-          - if value = reader.send(field.to_sym)
-            %li
-              = t("reader_extension.directory.#{field}") + ': '
-              = value
-        - if reader.postal_address?
-          %li
-            %span.indent
-              = t("reader_extension.directory.postal_address") + ': '
-            = reader.postal_address.to_html
-        - if reader == current_reader
-          %li.edit
-            = link_to t("reader_extension.edit_profile"), reader_edit_profile_url, :class => 'edit'
+            = t("reader_extension.directory.#{field}") + ': '
+            = value
+      - if reader.postal_address?
+        %li
+          %span.indent
+            = t("reader_extension.directory.postal_address") + ': '
+          = reader.postal_address.to_html
           
+      

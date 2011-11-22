@@ -104,7 +104,7 @@ module ReaderAdminUI
       OpenStruct.new.tap do |account|
         account.dashboard = Radiant::AdminUI::RegionSet.new do |dashboard|
           dashboard.main.concat %w{dashboard/welcome dashboard/groups}
-          dashboard.sidebar.concat %w{dashboard/profile dashboard/messages dashboard/directory}
+          dashboard.sidebar.concat %w{dashboard/profile dashboard/messages}
         end
         account.index = Radiant::AdminUI::RegionSet.new do |index|
           index.main.concat %w{readers/directory}
@@ -115,12 +115,12 @@ module ReaderAdminUI
         end
         account.edit = Radiant::AdminUI::RegionSet.new do |edit|
           edit.main.concat %w{preamble form gravatar}
-          edit.form.concat %w{edit_name edit_email edit_username edit_password}
+          edit.form.concat %w{edit_name edit_email edit_password}
           edit.form_bottom.concat %w{edit_buttons}
         end
         account.edit_profile = Radiant::AdminUI::RegionSet.new do |edit_profile|
           edit_profile.main.concat %w{preamble profile_form gravatar}
-          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_email edit_phone edit_mobile edit_address edit_shareability}
+          edit_profile.profile_form.concat %w{edit_honorific edit_name edit_phone edit_mobile edit_address edit_shareability}
           edit_profile.form_bottom.concat %w{edit_buttons}
         end
         account.new = account.edit

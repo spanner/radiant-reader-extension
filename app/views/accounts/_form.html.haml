@@ -2,68 +2,74 @@
 - check_password ||= false
 
 - form_for reader, :html => {:class => 'friendly'} do |f| 
-  %input{:type => :hidden, :name => :authentication_type, :value => :user}
+  - render_region :form do |form|
 
-  = render :partial => 'edit_names', :locals => {:f => f}
+    - form.edit_name do
+      = render :partial => 'edit_names', :locals => {:f => f}
 
-  - if reader.new_record?
-    %p
-      = f.label reader.email_field, t('activerecord.attributes.reader.email'), :class => 'required'
-      %br
-      = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
-      %br
-      %span.formnote= t('reader_extension.form_notes.account.email')
-    .innocuous
-      %p
-        =f.label :email, nil, :class => 'required'
-        %br
-        = f.text_field :email, :class => 'standard', :value => ""
-        %br
-        %span.formnote= t('reader_extension.spam_trap')
+    - form.edit_email do
+      - if reader.new_record?
+        %p
+          = f.label reader.email_field, t('activerecord.attributes.reader.email'), :class => 'required'
+          %br
+          = text_field_tag reader.email_field, params[reader.email_field] || reader.email, :id => "reader_#{reader.email_field}", :class => 'standard'
+          %br
+          %span.formnote= t('reader_extension.form_notes.account.email')
+        .innocuous
+          %p
+            =f.label :email, nil, :class => 'required'
+            %br
+            = f.text_field :email, :class => 'standard', :value => ""
+            %br
+            %span.formnote= t('reader_extension.spam_trap')
 
-  - else
-    %p
-      = f.label :email, nil, :class => 'required'
-      %br
-      = f.text_field :email, :class => 'standard'
-      %br
-      %span.formnote= t('reader_extension.form_notes.account.email')
+      - else
+        %p
+          = f.label :email, nil, :class => 'required'
+          %br
+          = f.text_field :email, :class => 'standard'
+          %br
+          %span.formnote= t('reader_extension.form_notes.account.email')
 
-  - if reader.new_record?
-    %p
-      = f.label :password, nil, :class => 'required'
-      %br
-      = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-      %br
-      %span.formnote= t('reader_extension.form_notes.account.new_password')
+    - form.edit_password do
+      - if reader.new_record?
+        %p
+          = f.label :password, nil, :class => 'required'
+          %br
+          = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+          %br
+          %span.formnote= t('reader_extension.form_notes.account.new_password')
 
-    %p
-      = f.label :password_confirmation, nil, :class => 'required'
-      %br
-      = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
+        %p
+          = f.label :password_confirmation, nil, :class => 'required'
+          %br
+          = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
-  - else 
-    .display_password
-      %p
-        = f.label :password, nil, :class => 'optional'
-        %span.password
-          &bull;&bull;&bull;&bull;&bull;
-        %span.formnote= link_to t('reader_extension.change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
+      - else 
+        .display_password
+          %p
+            = f.label :password, nil, :class => 'optional'
+            %span.password
+              &bull;&bull;&bull;&bull;&bull;
+            %span.formnote= link_to t('reader_extension.change_password'), '#', :class => 'toggle', :rel => ".display_password, .new_password"
           
-    .new_password.hidden
-      %p
-        = f.label :password, t('reader_extension.new_password'), :class => 'required'
-        %br
-        = f.password_field :password, :class => 'standard', :autocomplete => 'off'
-        %span.formnote= t('reader_extension.form_notes.account.new_password')
-      %p
-        = f.label :password_confirmation, t('reader_extension.confirm_new_password'), :class => 'required'
-        %br
-        = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
+        .new_password.hidden
+          %p
+            = f.label :password, t('reader_extension.new_password'), :class => 'required'
+            %br
+            = f.password_field :password, :class => 'standard', :autocomplete => 'off'
+            %span.formnote= t('reader_extension.form_notes.account.new_password')
+          %p
+            = f.label :password_confirmation, t('reader_extension.confirm_new_password'), :class => 'required'
+            %br
+            = f.password_field :password_confirmation, :class => 'standard', :autocomplete => 'off'
 
-  = render :partial => 'choose_memberships'
+    - form.edit_groups do
+      = render :partial => 'choose_memberships'
 
-  %p
-    = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
-    or 
-    = link_to 'cancel', request.referer
+  - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
+    - form_bottom.edit_buttons do
+      %p
+        = submit_tag reader.new_record? ? t('reader_extension.create_account') : t("reader_extension.update_account")
+        or 
+        = link_to 'cancel', request.referer

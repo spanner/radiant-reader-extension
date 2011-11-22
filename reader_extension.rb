@@ -14,7 +14,8 @@ class ReaderExtension < Radiant::Extension
     SiteController.send :include, SiteControllerExtensions                        # access control based on group membership
     User.send :include, ReaderUser                                                # update linked reader when user account values change
     Page.send :include, GroupedPage                                               # group associations and visibility decisions
-    # Site.send :include, ReaderSite if defined? Site                               # adds site scope and site-based layout-chooser
+    RailsPage.send :include, GroupedRailsPage                                     # some control over the caching of ShareLayouts pages
+    # Site.send :include, ReaderSite if defined? Site                             # adds site scope and site-based layout-chooser
     Page.send :include, ReaderTags                                                # a few mailmerge-like radius tags for use in messages, or for greeting readers on (uncached) pages
     UserActionObserver.instance.send :add_observer!, Reader 
     UserActionObserver.instance.send :add_observer!, Message

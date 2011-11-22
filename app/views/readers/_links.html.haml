@@ -4,6 +4,6 @@
   %li
     = link_to t("reader_extension.directory.link"), readers_url
   %li
-    = link_to t("reader_extension.directory.csv_link"), readers_url(:format => :csv)
+    = link_to t("reader_extension.directory.csv_link"), readers_url(:format => :csv), :class => 'csv'
   %li
-    = link_to t("reader_extension.directory.vcard_link"), readers_url(:format => :vcard)
+    = link_to t("reader_extension.directory.vcard_link"), readers_url(:format => :vcard), :class => 'vcards'
