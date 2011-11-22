@@ -12,6 +12,20 @@
           = t('reader_extension.people').titlecase
         = render :partial => 'readers/list', :locals => {:readers => @readers}
 
+  - when 'private'
+    .groups
+      %h2
+        = t('reader_extension.your_groups')
+      - if @groups.any
+        = render :partial => 'groups/group', :collection => @groups
+      - else
+        = t('reader_extension.no_groups')
+    .readers
+      - if @readers.any?
+        %h2
+          = t('reader_extension.people')
+        = render :partial => 'readers/list', :locals => {:readers => @readers}
+
   - when 'grouped'
     .groups
       %h2
