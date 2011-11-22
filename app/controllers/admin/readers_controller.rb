@@ -1,7 +1,6 @@
 class Admin::ReadersController < Admin::ResourceController
   helper :reader
   paginate_models
-  before_filter :redirect_to_user, :only => :edit
 
   only_allow_access_to :new, :create, :edit, :update, :remove, :destroy, :settings,
     :when => :admin,
@@ -18,12 +17,4 @@ class Admin::ReadersController < Admin::ResourceController
 
 private
 
-  def redirect_to_user
-    if model.is_user?
-      redirect_to edit_admin_user_url(model.user)
-      return false
-    end
-    true
-  end
-  
 end

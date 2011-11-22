@@ -1,14 +1,11 @@
 - chooser ||= @page
 - if chooser
-  - root ||= nil
   - disabled ||= false
-  - branches = root ? root.children : Group.roots
 
-  %ul{:class => root ? '' : 'tree'}
-    - branches.each do |group|
+  %ul
+    - Group.all.each do |group|
       %li
         - checked = chooser.has_group?(group)
-        = check_box_tag 'group_ids', group.id, checked, :id => "group_ids_#{group.id}", :class => "treebox", :disabled => disabled
+        = check_box_tag 'group_ids', group.id, checked, :id => "group_ids_#{group.id}", :disabled => disabled
         %label{:for => "group_ids_#{group.id}", :class => 'checkbox'} 
           = group.name
-        = render :partial => 'admin/groups/chooser', :object => chooser, :locals => {:root => group, :disabled => checked}

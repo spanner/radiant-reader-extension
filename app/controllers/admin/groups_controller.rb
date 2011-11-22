@@ -9,7 +9,7 @@ class Admin::GroupsController < Admin::ResourceController
   end
   
   def load_models
-    self.models = paginated? ? model_class.roots.paginate(pagination_parameters) : model_class.roots.all
+    self.models = paginated? ? model_class.paginate(pagination_parameters) : model_class.all
   end
   
   def load_model
